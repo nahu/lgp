@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 class Reader:
 
     def get_matrix_from_file(self, filename):
@@ -18,13 +18,13 @@ class Reader:
 if __name__ == "__main__":
     r = Reader()
     """La tupla retornada tiene: (columnas, filas, matriz)"""
-    tuple = r.get_matrix_from_file("Datos60.txt")
+    _tuple = r.get_matrix_from_file("Datos60.txt")
     
     print "Transformadores> "
-    print tuple[0]
+    print _tuple [0]
     print "Muestras> "
-    print tuple[1]
+    print _tuple [1]
     print "Datos>"
-    for i in tuple[2]:
+    for i in _tuple [2]:
         print i
     
