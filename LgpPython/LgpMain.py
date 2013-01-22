@@ -67,13 +67,10 @@ if __name__ == "__main__":
     config = "1010101010" + "1010101010" + "1010101010" + "1010101010" 
     filename = "Datos60.txt"
     lgp = LgpMain(config,filename)
-    #lgp.init_parameters()
-    #lgp.initialize_population()
-    
-    #print lgp.population.internalPop[0].genomeList
+
     
     lgp.genome = Individual(lgp.num_ini_instructions,5) #instr. iniciales, 5 componentes por instruccion
-    lgp.genome.inicializar(range(1,lgp.k), range(lgp.k+1, 2*lgp.k), range(2*lgp.k+1, lgp.k*4), range(1,9) )
+    lgp.genome.inicializar(0,1,lgp.k, lgp.k+1, lgp.k*2, lgp.k*2+1,lgp.k*4)
         
     """ se podria hacer lo siguiente"""
     ga = GSimpleGA.GSimpleGA(lgp.genome)
