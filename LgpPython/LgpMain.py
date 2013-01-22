@@ -44,7 +44,7 @@ class LgpMain():
         
         #ALGORITMO EVOLUTIVO
         self.num_generations = 10000
-        self.population_size = 1000
+        self.population_size = 1000000
         
         #PROBABILIDADES
         self.p_reg_op2_const = 0.5
@@ -81,7 +81,7 @@ if __name__ == "__main__":
     ga.setMinimax(Consts.minimaxType["minimize"])
     ga.setCrossoverRate(1.0)
     ga.setMutationRate(0.03)
-    ga.setPopulationSize(80)
+    ga.setPopulationSize(10000)
     ga.initialize()
     print ga.internalPop[0].genomeList
     ga.evolve(freq_stats=10)

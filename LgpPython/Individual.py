@@ -26,6 +26,7 @@ def iniInd(obj, **args):
         obj.genomeList[len(obj.genomeList)-1][1]=0
       
 
+
 class Individual(G2DList.G2DList):
     op_reg_in_const = []
     op_reg_rand_const = []
@@ -44,7 +45,7 @@ class Individual(G2DList.G2DList):
         self.setRanges(op_reg_in_const, op_reg_rand_const, op_reg_var, op_instrucciones)
         self.initializator.set(iniInd)
         #self.initialize()
-        self.evaluator.set(self.eval_func)
+#        self.evaluator.set(self.eval_func)
 
     def setRanges(self, op_reg_in_const, op_reg_rand_const, op_reg_var, op_instrucciones):
         """ Almacena los posibles valores para cada componente de la instruccion."""
