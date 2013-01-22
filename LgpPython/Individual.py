@@ -14,7 +14,13 @@ def iniInd(obj, **args):
             row[0] = random.choice(Individual.op_instrucciones) #Instrucciones
             row[1] = random.choice(Individual.op_reg_var) #Registros destinos - Solo los variables
             row[2] = random.choice(Individual.op_reg_var)#Solo puede ser variable.
-            row[3] = random.choice(Individual.op_reg_in_const + Individual.op_reg_rand_const)
+            #operador 2 con probabilidad p_const
+            prob = random.random()
+            if prob>=0.5:
+                row[3] = random.choice(Individual.op_reg_var)
+            else:
+                row[3] = random.choice(Individual.op_reg_in_const + Individual.op_reg_rand_const)
+                Individual.const+=1
             row[4] = 0
         """Asegurar que el la ultima instrucción tenga como registro destino al registro de salida"""
         obj.genomeList[len(obj.genomeList)-1][1]=0
@@ -25,6 +31,7 @@ class Individual(G2DList.G2DList):
     op_reg_rand_const = []
     op_reg_var = []
     op_instrucciones = []
+    const = 0
     """
         heigth: cantidad de instrucciones para un programa
         width: componentes de una instruccion [instrucción, destino, operador1, operador2, efectiva]
@@ -51,7 +58,12 @@ class Individual(G2DList.G2DList):
             row[0] = random.choice(Individual.op_instrucciones) #Instrucciones
             row[1] = random.choice(Individual.op_reg_var) #Registros destinos - Solo los variables
             row[2] = random.choice(Individual.op_reg_var)#Solo puede ser variable.
-            row[3] = random.choice(Individual.op_reg_in_const + Individual.op_reg_rand_const)
+            prob = random.random()
+            if prob>=0.5:
+                row[3] = random.choice(Individual.op_reg_var)
+            else:
+                row[3] = random.choice(Individual.op_reg_in_const + Individual.op_reg_rand_const)
+                Individual.const+=1
             row[4] = 0
         """Asegurar que el la ultima instrucción tenga como registro destino al registro de salida"""
         self.genomeList[len(self.genomeList)-1][1]=0
@@ -63,4 +75,6 @@ class Individual(G2DList.G2DList):
 if __name__ == "__main__":
     r = Individual(10,5)
     r.inicializar(range(1,9), range(1,4), range(1,4), range(1,20))
+    r.initialize()
+    print Individual.const
     print r.genomeList

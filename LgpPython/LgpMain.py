@@ -5,7 +5,13 @@ from pyevolve import GPopulation
 from pyevolve import GSimpleGA
 from pyevolve import Consts
 class LgpMain():
-    
+    def __init__(self, config, filename):
+        reader = Reader()
+        self.n,self.T, self.data = reader.get_matrix_from_file(filename)        
+        self.k = config.count('1')
+        self.r_const = []
+        self.init_parameters()
+        
     def init_parameters(self):
         #REGISTROS
         """
@@ -48,11 +54,7 @@ class LgpMain():
         self.training_lines = 144
         self.validation_lines = 96
 
-    def __init__(self, config, filename):
-        reader = Reader()
-        self.n,self.T, self.data = reader.get_matrix_from_file(filename)        
-        self.k = config.count('1')
-        self.r_const = []
+
     def initialize_population(self):
         self.genome = Individual(lgp.num_ini_instructions,5) #instr. iniciales, 5 componentes por instruccion
         self.genome.inicializar(range(1,lgp.k), range(lgp.k+1, 2*lgp.k), range(2*lgp.k+1, lgp.k*4), range(1,9) )
@@ -65,22 +67,27 @@ if __name__ == "__main__":
     config = "1010101010" + "1010101010" + "1010101010" + "1010101010" 
     filename = "Datos60.txt"
     lgp = LgpMain(config,filename)
-    lgp.init_parameters()
-    lgp.initialize_population()
+    #lgp.init_parameters()
+    #lgp.initialize_population()
     
-    print lgp.population.internalPop[0].genomeList
+    #print lgp.population.internalPop[0].genomeList
     
+    lgp.genome = Individual(lgp.num_ini_instructions,5) #instr. iniciales, 5 componentes por instruccion
+    lgp.genome.inicializar(range(1,lgp.k), range(lgp.k+1, 2*lgp.k), range(2*lgp.k+1, lgp.k*4), range(1,9) )
+        
     """ se podria hacer lo siguiente"""
-#    ga = GSimpleGA.GSimpleGA(lgp.genome)
-#    ga.setGenerations(100)
-#    ga.setMinimax(Consts.minimaxType["minimize"])
-#    ga.setCrossoverRate(1.0)
-#    ga.setMutationRate(0.03)
-#    ga.setPopulationSize(80)
-#    ga.evolve(freq_stats=10)
-#    """ Dentro de ga.internalPop estan los individuos.
-#    Los individuos de la poblacion se inicializan cuando la poblacion se inicializa.
-#    ver en GSimpleGA.initialize """
-#    print ga.internalPop[0].genomeList
-#    
-#    best = ga.bestIndividual()
+    ga = GSimpleGA.GSimpleGA(lgp.genome)
+    ga.setGenerations(100)
+    ga.setMinimax(Consts.minimaxType["minimize"])
+    ga.setCrossoverRate(1.0)
+    ga.setMutationRate(0.03)
+    ga.setPopulationSize(80)
+    ga.initialize()
+    print ga.internalPop[0].genomeList
+    ga.evolve(freq_stats=10)
+    """ Dentro de ga.internalPop estan los individuos.
+    Los individuos de la poblacion se inicializan cuando la poblacion se inicializa.
+    ver en GSimpleGA.initialize """
+    
+    
+    best = ga.bestIndividual()
