@@ -52,9 +52,9 @@ class LgpMain():
         
         #DATOS
         self.training_lines = 144
-        self.validation_lines = 96
-
-
+        self.validation_lines = 96       
+        
+        
     def initialize_population(self):
         self.genome = Individual(lgp.num_ini_instructions,5) #instr. iniciales, 5 componentes por instruccion
         self.genome.inicializar(range(1,lgp.k), range(lgp.k+1, 2*lgp.k), range(2*lgp.k+1, lgp.k*4), range(1,9) )
@@ -66,12 +66,9 @@ class LgpMain():
 if __name__ == "__main__":
     config = "1010101010" + "1010101010" + "1010101010" + "1010101010" 
     filename = "Datos60.txt"
-    lgp = LgpMain(config,filename)
-
-    
+    lgp = LgpMain(config,filename)    
     lgp.genome = Individual(lgp.num_ini_instructions,5) #instr. iniciales, 5 componentes por instruccion
     lgp.genome.inicializar(0,1,lgp.k, lgp.k+1, lgp.k*2, lgp.k*2+1,lgp.k*4)
-        
     """ se podria hacer lo siguiente"""
     ga = GSimpleGA.GSimpleGA(lgp.genome)
     ga.setGenerations(100)

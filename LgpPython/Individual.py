@@ -7,6 +7,7 @@ from pyevolve import Crossovers
 from pyevolve import Mutators
 import random
 
+const_max = 10
 # This function is the evaluation function, we want
 # to give high score to more zero'ed chromosomes
 def iniInd(obj, **args):
@@ -55,11 +56,12 @@ class Individual(G2DList.G2DList):
                      cons_al_min, cons_al_max, var_min, var_max):
         self.setRanges( reg_sal,op_min, op_max, cons_in_min, cons_in_max,cons_al_min, cons_al_max, var_min, var_max)
         self.initializator.set(iniInd)
+        self.init_registers()
 #        self.initialize()
 #        self.evaluator.set(self.eval_func)
 
-    def setRanges(self, reg_sal,op_min, op_max, cons_in_min, cons_in_max,cons_al_min, cons_al_max, var_min, var_max):
-
+    def setRanges(self, reg_sal,op_min, op_max, cons_in_min, 
+                  cons_in_max,cons_al_min, cons_al_max, var_min, var_max):
         Individual.reg_sal = reg_sal
         Individual.op_min = op_min
         Individual.op_max = op_max        
@@ -69,7 +71,14 @@ class Individual(G2DList.G2DList):
         Individual.cons_al_max = cons_al_max
         Individual.var_min = var_min
         Individual.var_max = var_max
-
+    def init_registers(self):
+        self.r_all=[]
+        [self.r_all.append(random.uniform(0,const_max)) 
+         for i in range(Individual.cons_al_min,Individual.cons_al_max)]
+        [self.r_all.append(1.0) 
+         for i in range(Individual.var_min,Individual.var_max)]
+        
+            
     def initialize(self):
         for row in self.genomeList:
             row[0] = random.randint(Individual.op_min, Individual.op_max) #Instrucciones
@@ -98,5 +107,5 @@ if __name__ == "__main__":
     k=10
     r.inicializar(0,1,1,9,k, k+1, k*2, k*2+1,k*4)
     r.initialize()
-    print Individual.const
     print r.genomeList
+    print r.r_all
