@@ -9,16 +9,22 @@ import random
 
 # This function is the evaluation function, we want
 # to give high score to more zero'ed chromosomes
-def initialize():
-        for row in Individual.genomeList:
+def iniInd(obj, **args):
+        for row in obj.genomeList:
             row[0] = random.choice(Individual.op_instrucciones) #Instrucciones
             row[1] = random.choice(Individual.op_reg_var) #Registros destinos - Solo los variables
             row[2] = random.choice(Individual.op_reg_var)#Solo puede ser variable.
             row[3] = random.choice(Individual.op_reg_in_const + Individual.op_reg_rand_const)
             row[4] = 0
         """Asegurar que el la ultima instrucción tenga como registro destino al registro de salida"""
-        Individual.genomeList[len(Individual.genomeList)-1][1]=0
+        obj.genomeList[len(obj.genomeList)-1][1]=0
+      
+
 class Individual(G2DList.G2DList):
+    op_reg_in_const = []
+    op_reg_rand_const = []
+    op_reg_var = []
+    op_instrucciones = []
     """
         heigth: cantidad de instrucciones para un programa
         width: componentes de una instruccion [instrucción, destino, operador1, operador2, efectiva]
@@ -29,23 +35,23 @@ class Individual(G2DList.G2DList):
     """
     def inicializar(self, op_reg_in_const,op_reg_rand_const, op_reg_var, op_instrucciones):
         self.setRanges(op_reg_in_const, op_reg_rand_const, op_reg_var, op_instrucciones)
-        self.initializator.set(initialize)
-#        self.initialize()
+        self.initializator.set(iniInd)
+        #self.initialize()
         self.evaluator.set(self.eval_func)
 
     def setRanges(self, op_reg_in_const, op_reg_rand_const, op_reg_var, op_instrucciones):
         """ Almacena los posibles valores para cada componente de la instruccion."""
-        self.op_reg_in_const = op_reg_in_const
-        self.op_reg_rand_const= op_reg_rand_const
-        self.op_reg_var = op_reg_var
-        self.op_instrucciones = op_instrucciones
+        Individual.op_reg_in_const = op_reg_in_const
+        Individual.op_reg_rand_const= op_reg_rand_const
+        Individual.op_reg_var = op_reg_var
+        Individual.op_instrucciones = op_instrucciones
 
-    def initialize(self, **args):
+    def initialize(self):
         for row in self.genomeList:
-            row[0] = random.choice(self.op_instrucciones) #Instrucciones
-            row[1] = random.choice(self.op_reg_var) #Registros destinos - Solo los variables
-            row[2] = random.choice(self.op_reg_var)#Solo puede ser variable.
-            row[3] = random.choice(self.op_reg_in_const + self.op_reg_rand_const)
+            row[0] = random.choice(Individual.op_instrucciones) #Instrucciones
+            row[1] = random.choice(Individual.op_reg_var) #Registros destinos - Solo los variables
+            row[2] = random.choice(Individual.op_reg_var)#Solo puede ser variable.
+            row[3] = random.choice(Individual.op_reg_in_const + Individual.op_reg_rand_const)
             row[4] = 0
         """Asegurar que el la ultima instrucción tenga como registro destino al registro de salida"""
         self.genomeList[len(self.genomeList)-1][1]=0
