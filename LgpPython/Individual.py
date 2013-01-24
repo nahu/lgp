@@ -1,49 +1,51 @@
 # -*- coding: utf-8 -*-
 
+"""
+Módulo que define la clase del Individuo dentro del LGP
+y las funciones a la clase
+
+@authors:
+- U{Nahuel Hernández<mailto:jnahuelhernandez@gmail.com>}
+- U{Vanessa Cañete<mailto:vanessa.can.89@gmail.com>}
+
+@since: 1.0
+"""
+
 from pyevolve import G2DList
 from pyevolve import GSimpleGA
 from pyevolve import Selectors
 from pyevolve import Crossovers
 from pyevolve import Mutators
-import random
 
-const_max = 10
-reg_sal = 0
-op_min = 0 
-op_max = 0
-cons_in_min = 0
-cons_in_max = 0
-cons_al_min = 0
-cons_al_max = 0
-var_min = 0
-var_max = 0
-const = 0
-r_const=[[]]
+from Parameters import *
+from Functions import r_const
+
+import random
 
 
 def fitness_func(obj, **args):
     return random.random()
 
 def iniInd(obj, **args):
-        for row in obj.genomeList:
-            row[0] = random.randint(Individual.op_min, Individual.op_max) #Instrucciones
-            row[1] = random.randint(Individual.var_min, Individual.var_max)  #Registros destinos - Solo los variables
-            row[2] = random.randint(Individual.var_min, Individual.var_max) #Solo puede ser variable.
-            #operador 2 con probabilidad p_const
-            p_const = random.random()
-            if p_const>=0.5:
-                row[3] = random.randint(Individual.var_min, Individual.var_max) 
+    for instruction in obj.genomeList:
+        instruction[0] = random.randint(Individual.op_min, Individual.op_max) #Instrucciones
+        instruction[1] = random.randint(Individual.var_min, Individual.var_max)  #Registros destinos - Solo los variables
+        instruction[2] = random.randint(Individual.var_min, Individual.var_max) #Solo puede ser variable.
+        #operador 2 con probabilidad p_const
+        p_const = random.random()
+        if p_const>=0.5:
+            instruction[3] = random.randint(Individual.var_min, Individual.var_max) 
+        else:
+            p_const2 = random.random()
+            if p_const2>=0.5:
+                instruction[3] = random.randint(Individual.cons_in_min, Individual.cons_in_max)
             else:
-                p_const2 = random.random()
-                if p_const2>=0.5:
-                    row[3] = random.randint(Individual.cons_in_min, Individual.cons_in_max)
-                else:
-                    row[3] = random.randint(Individual.cons_al_min, Individual.cons_al_max)
-            row[4] = 0 #false para efectiva
-        """Asegurar que el la ultima instrucción tenga como registro destino al registro de salida"""
-        obj.genomeList[len(obj.genomeList)-1][1]=0
-        init_registers(obj)
-        
+                instruction[3] = random.randint(Individual.cons_al_min, Individual.cons_al_max)
+        #instruction[4] = 0 #false para efectiva
+    """Asegurar que el la ultima instrucción tenga como registro destino al registro de salida"""
+    obj.genomeList[len(obj.genomeList)-1][1]=0
+    init_registers(obj)
+    
 def init_registers(obj):
     obj.r_all=[]
     [obj.r_all.append(random.uniform(0,const_max)) 

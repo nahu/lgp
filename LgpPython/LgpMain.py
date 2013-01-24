@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
+
 import Individual
 from Reader import Reader
 from pyevolve import GPopulation
 from pyevolve import GSimpleGA
 from pyevolve import Consts
+
+
 class LgpMain():
     def __init__(self, config, filename):
         reader = Reader()
