@@ -346,11 +346,11 @@ class GSimpleGA:
         
         size_iterate = len(self.internalPop)
         if size_iterate % 2 != 0: size_iterate -= 1
-
+        
         for i in xrange(0, size_iterate, 2):
             genomeMom = self.select(popID=self.currentGeneration)
             genomeDad = self.select(popID=self.currentGeneration)
-            
+            '''
             if     not genomeMom.crossover.isEmpty() and self.pCrossover >= 1.0:
                 for it in genomeMom.crossover.applyFunctions(genomeMom, mom=genomeMom, dad=genomeDad, count=2):
                     (sister, brother) = it
@@ -359,9 +359,10 @@ class GSimpleGA:
                     for it in genomeMom.crossover.applyFunctions(genomeMom, mom=genomeMom, dad=genomeDad, count=2):
                         (sister, brother) = it
                 else:
-                    sister = genomeMom.clone()
-                    brother = genomeDad.clone()
-
+            '''
+            sister = genomeMom.clone()
+            brother = genomeDad.clone()
+            
             newPop.internalPop.append(sister)
             newPop.internalPop.append(brother)
 

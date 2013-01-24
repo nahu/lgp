@@ -19,11 +19,11 @@ k = config.count('1')
 
 #DATOS
 filename = "Datos60.txt"
-lines = 240
+lines = 248
 training_lines = 144
 validation_lines = 96
-r_const = []
-data = []
+r_const = None
+data_samples = []
 #Constante máxima para inicialización de registros
 const_max = 10
 
@@ -62,9 +62,9 @@ r[1] .. r[2*k] registros variables inicializados a 1
 r[2*k + 1] .. r[3*k] registros aleatorios constantes
 r[3*k + 1] .. r[4*k] registros de entrada constantes
 """
-r_out = [1]
+r_out = [1.0]
 r_var = []
-[r_var.append(1.0) for i in range(var_min, var_max)]
+[r_var.append(1.0) for i in range(var_min, var_max + 1)]
 
 
 num_registers = 5*k + 1
@@ -120,8 +120,11 @@ operations = {  1   : 'r_all[{0}]=r_all[{1}]+r_all[{2}]',
                 96  : 'r_all[{0}]=math.log10(in_t[{2}])',
                 7   : 'r_all[{0}]=math.sqrt(r_all[{2}])',
                 112 : 'r_all[{0}]=math.sqrt(in_t[{2}])',
-                8   : 'r_all[{0}]=math.sen(r_all[{2}])',
-                128 : 'r_all[{0}]=math.sen(in_t[{2}])',
+                8   : 'r_all[{0}]=math.sin(r_all[{2}])',
+                128 : 'r_all[{0}]=math.sin(in_t[{2}])',
                 9   : 'r_all[{0}]=math.cos(r_all[{2}])',
                 144 : 'r_all[{0}]=math.cos(in_t[{2}])'
                 }
+
+
+
