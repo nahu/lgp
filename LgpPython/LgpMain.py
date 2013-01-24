@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from Individual import Individual
+import Individual
 from Reader import Reader
 from pyevolve import GPopulation
 from pyevolve import GSimpleGA
@@ -7,10 +7,20 @@ from pyevolve import Consts
 class LgpMain():
     def __init__(self, config, filename):
         reader = Reader()
+        self.config = config
         self.n,self.T, self.data = reader.get_matrix_from_file(filename)        
         self.k = config.count('1')
-        self.r_const = []
         self.init_parameters()
+        self.r_const = self.init_r_const()
+    def init_r_const(self):
+        r_const = [[]]
+        for t in range(0, self.training_lines): 
+            instant = []
+            for i in range(0, self.n):
+                if (self.config[i] == '1'):
+                    instant.append(self.data[t][i])
+                r_const.append(instant)
+        return r_const
         
     def init_parameters(self):
         #REGISTROS
@@ -67,8 +77,9 @@ if __name__ == "__main__":
     config = "1010101010" + "1010101010" + "1010101010" + "1010101010" 
     filename = "Datos60.txt"
     lgp = LgpMain(config,filename)    
-    lgp.genome = Individual(lgp.num_ini_instructions,5) #instr. iniciales, 5 componentes por instruccion
-    lgp.genome.inicializar(0,1,lgp.k, lgp.k+1, lgp.k*2, lgp.k*2+1,lgp.k*4)
+    lgp.genome = Individual.Individual(lgp.num_ini_instructions,5) #instr. iniciales, 5 componentes por instruccion
+    lgp.genome.init_class(0,1,1,9,lgp.k, lgp.k+1, lgp.k*2, lgp.k*2+1,lgp.k*4, lgp.r_const)
+    print lgp.genome.r_const
     """ se podria hacer lo siguiente"""
     ga = GSimpleGA.GSimpleGA(lgp.genome)
     ga.setGenerations(100)

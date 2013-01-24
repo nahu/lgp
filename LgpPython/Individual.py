@@ -8,8 +8,22 @@ from pyevolve import Mutators
 import random
 
 const_max = 10
-# This function is the evaluation function, we want
-# to give high score to more zero'ed chromosomes
+reg_sal = 0
+op_min = 0 
+op_max = 0
+cons_in_min = 0
+cons_in_max = 0
+cons_al_min = 0
+cons_al_max = 0
+var_min = 0
+var_max = 0
+const = 0
+r_const=[[]]
+
+
+def fitness_func(obj, **args):
+    return random.random()
+
 def iniInd(obj, **args):
         for row in obj.genomeList:
             row[0] = random.randint(Individual.op_min, Individual.op_max) #Instrucciones
@@ -28,20 +42,19 @@ def iniInd(obj, **args):
             row[4] = 0 #false para efectiva
         """Asegurar que el la ultima instrucción tenga como registro destino al registro de salida"""
         obj.genomeList[len(obj.genomeList)-1][1]=0
-      
+        init_registers(obj)
+        
+def init_registers(obj):
+    obj.r_all=[]
+    [obj.r_all.append(random.uniform(0,const_max)) 
+     for i in range(Individual.cons_al_min,Individual.cons_al_max)]
+    [obj.r_all.append(1.0) 
+     for i in range(Individual.var_min,Individual.var_max)]
+
 
 
 class Individual(G2DList.G2DList):
-    reg_sal = 0
-    op_min = 0 
-    op_max = 0
-    cons_in_min = 0
-    cons_in_max = 0
-    cons_al_min = 0
-    cons_al_max = 0
-    var_min = 0
-    var_max = 0
-    const = 0
+
     """
         heigth: cantidad de instrucciones para un programa
         width: componentes de una instruccion [instrucción, destino, operador1, operador2, efectiva]
@@ -52,13 +65,13 @@ class Individual(G2DList.G2DList):
         var_min, var_max             -> registros variables inicializados a 1.
     """
 
-    def inicializar(self, reg_sal,op_min, op_max, cons_in_min, cons_in_max,
-                     cons_al_min, cons_al_max, var_min, var_max):
+    def init_class(self, reg_sal,op_min, op_max, cons_in_min, cons_in_max,
+                     cons_al_min, cons_al_max, var_min, var_max, data):
         self.setRanges( reg_sal,op_min, op_max, cons_in_min, cons_in_max,cons_al_min, cons_al_max, var_min, var_max)
+        Individual.r_const = data
+        #Funciones sobre escritas
         self.initializator.set(iniInd)
-        self.init_registers()
-#        self.initialize()
-#        self.evaluator.set(self.eval_func)
+        self.evaluator.set(fitness_func)
 
     def setRanges(self, reg_sal,op_min, op_max, cons_in_min, 
                   cons_in_max,cons_al_min, cons_al_max, var_min, var_max):
@@ -70,33 +83,7 @@ class Individual(G2DList.G2DList):
         Individual.cons_al_min = cons_al_min
         Individual.cons_al_max = cons_al_max
         Individual.var_min = var_min
-        Individual.var_max = var_max
-    def init_registers(self):
-        self.r_all=[]
-        [self.r_all.append(random.uniform(0,const_max)) 
-         for i in range(Individual.cons_al_min,Individual.cons_al_max)]
-        [self.r_all.append(1.0) 
-         for i in range(Individual.var_min,Individual.var_max)]
-        
-            
-    def initialize(self):
-        for row in self.genomeList:
-            row[0] = random.randint(Individual.op_min, Individual.op_max) #Instrucciones
-            row[1] = random.randint(Individual.var_min, Individual.var_max)  #Registros destinos - Solo los variables
-            row[2] = random.randint(Individual.var_min, Individual.var_max) #Solo puede ser variable.
-            #operador 2 con probabilidad p_const
-            p_const = random.random()
-            if p_const>=0.5:
-                row[3] = random.randint(Individual.var_min, Individual.var_max) 
-            else:
-                p_const2 = random.random()
-                if p_const2>=0.5:
-                    row[3] = random.randint(Individual.cons_in_min, Individual.cons_in_max)
-                else:
-                    row[3] = random.randint(Individual.cons_al_min, Individual.cons_al_max)
-            row[4] = 0 #false para efectiva
-        """Asegurar que el la ultima instrucción tenga como registro destino al registro de salida"""
-        self.genomeList[len(self.genomeList)-1][1]=0
+        Individual.var_max = var_max     
     
     def eval_func(self, genome):
         """ The evaluation function """
@@ -105,7 +92,7 @@ class Individual(G2DList.G2DList):
 if __name__ == "__main__":
     r = Individual(10,5)
     k=10
-    r.inicializar(0,1,1,9,k, k+1, k*2, k*2+1,k*4)
+    r.init_class(0,1,1,9,k, k+1, k*2, k*2+1,k*4,[[]])
     r.initialize()
     print r.genomeList
     print r.r_all
