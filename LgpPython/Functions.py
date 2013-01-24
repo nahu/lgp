@@ -15,64 +15,35 @@ from Parameters import *
 
 import math
 import copy
+import Util
 
-
-#INICIALIZACION DE REGISTROS DE ENTRADA CONSTANTES
-"""
-Una solo lista para los registros de entrada constantes.
-Todos los individuos lo usan.
-
-r_const lista de instantes, cada instante t tiene las medidas Xi
-de los transformadores en donde hay un medidor
-
-
-X[t][i] es el entero leido del archivo, 
-medición del transformador i en el instante t
-"""
-r_const = []
-def init_reg_in_const(X):
-    #Para cada t en el periodo de entrenamiento
-    for t in range(0, training_lines):
-        instant = []
-        for i in range(0, n):
-            if (config[i] == '1'):
-                instant.append(X[t][i])
-            
-        r_const.append(instant)
+def ini_individual(obj, **args):
+    obj.height = random.randint(num_min_instructions, num_ini_instructions)
     
-
-
-def mark_effective_instructions(instructions):
-    """
-    intructions[i][0] = identificador de instucción
-    intructions[i][1] = registro destino
-    intructions[i][2] = registro operando 1
-    intructions[i][3] = registro operando 2
-    intructions[i][4] = efectiva o no efectiva
-    """
-    reg_eff = set([0])
-    eff_i = []
-    for i in reversed(instructions):
-        if (i[1] in reg_eff):
-            # los operadores unarios tiene identificador del 6 al 9
-            reg_eff.remove(i[1])
+    for i in range(obj.height):
+        instruction = []
+        instruction.append(random.randint(op_min, op_max)) #Instrucciones
+        instruction.append(random.randint(var_min, var_max))  #Registros destinos - Solo los variables
+        instruction.append(random.randint(var_min, var_max)) #Solo puede ser variable.
+        
+        #operador 2 es constante con probabilidad p_const
+        if Util.randomFlipCoin(p_const):
+            instruction.append(random.randint(cons_al_min, cons_in_max))
+        else:
+            instruction.append(random.randint(var_min, var_max))
+        
+        obj.genomeList.append(instruction)
             
-            if (i[0] < 6):
-                reg_eff.add(i[2])
-            
-            reg_eff.add(i[3])
-            #i[4] = True
-            eff_i.append(i)
-            
-    return eff_i.reverse()
-
+    """Asegurar que el la ultima instrucción tenga como registro destino al registro de salida"""
+    obj.genomeList[len(obj.genomeList)-1][1] = reg_out
+    init_registers(obj)
 
 
 """
-se debe llamar com eval_fitness(individual.genomeList)
+Funcion de evaluación de fitnes llamada desde la GPopulation.evaluate()
 """
-def eval_fitness(individual):
-    eff_instructions = mark_effective_instructions(individual.genomeList)
+def eval_fitness(obj, **args):
+    eff_instructions = obj.get_effective_instructions()
     
     program = ""
     for i in eff_instructions:
@@ -81,15 +52,17 @@ def eval_fitness(individual):
         else:
             program += operations[i[0]].format(i[1], i[2], i[3])
     
-    #in_t tiene las mediciones en el isntante t
+    #in_t tiene las mediciones en el instante t
     error_a_quad = 0
     for t in range(0, training_lines):
         in_t = r_const[t]
-        r_all = copy.copy(individual.r_all)
+        r_all = copy.copy(self.r_all)
         exec program
-        error_a_quad += (r_all[0] - X[t][index_to_predict]) ** 2
+        error_a_quad += (r_all[0] - data[t][index_to_predict]) ** 2
         
-    fitness = 1/error_a_quad
+    error_prom_quad = error_a_quad / training_lines
+    
+    fitness = 1 / error_prom_quad
     
     return fitness
 

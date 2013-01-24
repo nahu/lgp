@@ -18,40 +18,7 @@ from pyevolve import Crossovers
 from pyevolve import Mutators
 
 from Parameters import *
-from Functions import r_const
-
 import random
-
-
-def fitness_func(obj, **args):
-    return random.random()
-
-def iniInd(obj, **args):
-    for instruction in obj.genomeList:
-        instruction[0] = random.randint(Individual.op_min, Individual.op_max) #Instrucciones
-        instruction[1] = random.randint(Individual.var_min, Individual.var_max)  #Registros destinos - Solo los variables
-        instruction[2] = random.randint(Individual.var_min, Individual.var_max) #Solo puede ser variable.
-        #operador 2 con probabilidad p_const
-        p_const = random.random()
-        if p_const>=0.5:
-            instruction[3] = random.randint(Individual.var_min, Individual.var_max) 
-        else:
-            p_const2 = random.random()
-            if p_const2>=0.5:
-                instruction[3] = random.randint(Individual.cons_in_min, Individual.cons_in_max)
-            else:
-                instruction[3] = random.randint(Individual.cons_al_min, Individual.cons_al_max)
-        #instruction[4] = 0 #false para efectiva
-    """Asegurar que el la ultima instrucción tenga como registro destino al registro de salida"""
-    obj.genomeList[len(obj.genomeList)-1][1]=0
-    init_registers(obj)
-    
-def init_registers(obj):
-    obj.r_all=[]
-    [obj.r_all.append(random.uniform(0,const_max)) 
-     for i in range(Individual.cons_al_min,Individual.cons_al_max)]
-    [obj.r_all.append(1.0) 
-     for i in range(Individual.var_min,Individual.var_max)]
 
 
 
@@ -70,10 +37,19 @@ class Individual(G2DList.G2DList):
     def init_class(self, reg_sal,op_min, op_max, cons_in_min, cons_in_max,
                      cons_al_min, cons_al_max, var_min, var_max, data):
         self.setRanges( reg_sal,op_min, op_max, cons_in_min, cons_in_max,cons_al_min, cons_al_max, var_min, var_max)
-        Individual.r_const = data
-        #Funciones sobre escritas
-        self.initializator.set(iniInd)
-        self.evaluator.set(fitness_func)
+        self.init_registers()
+        r_const = data
+        """ Las siguientes funciones son sobre escritas en Functions.py"""
+        self.initializator.set(ini_individual)
+        self.evaluator.set(eval_fitness)
+        
+    def init_registers(self):
+        self.r_all = []
+        self.r_all += r_out
+        self.r_all += r_var
+        
+        [self.r_all.append(random.uniform(0, const_max)) for i in range(cons_al_min, cons_al_max)]
+
 
     def setRanges(self, reg_sal,op_min, op_max, cons_in_min, 
                   cons_in_max,cons_al_min, cons_al_max, var_min, var_max):
@@ -85,14 +61,35 @@ class Individual(G2DList.G2DList):
         Individual.cons_al_min = cons_al_min
         Individual.cons_al_max = cons_al_max
         Individual.var_min = var_min
-        Individual.var_max = var_max     
+        Individual.var_max = var_max
+        
+        
+    def get_effective_instructions(self):
+        """
+        intructions[i][0] = identificador de instucción
+        intructions[i][1] = registro destino
+        intructions[i][2] = registro operando 1
+        intructions[i][3] = registro operando 2
+        intructions[i][4] = efectiva o no efectiva
+        """
+        reg_eff = set([0])
+        eff_i = []
+        for i in reversed(self.genomeList):
+            if (i[1] in reg_eff):
+                # los operadores unarios tiene identificador del 6 al 9
+                reg_eff.remove(i[1])
+                
+                if (i[0] < 6):
+                    reg_eff.add(i[2])
+                
+                reg_eff.add(i[3])
+                eff_i.append(i)
+                
+        return eff_i.reverse()
     
-    def eval_func(self, genome):
-        """ The evaluation function """
-        return 1
         
 if __name__ == "__main__":
-    r = Individual(10,5)
+    r = Individual(10,4)
     k=10
     r.init_class(0,1,1,9,k, k+1, k*2, k*2+1,k*4,[[]])
     r.initialize()

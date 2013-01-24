@@ -11,35 +11,22 @@ Módulo que define las funciones asociadas al algoritmo LGP
 
 from multiprocessing import cpu_count
 
-config = "1010101010101"
+config = "1010101010" + "1010101010" + "1010101010" + "1010101010"
 n = len(config)
 index_to_predict = 1
 
-k = 0
-for i in config:
-    if (i == '1'):
-        k += 1
+k = config.count('1')
 
 #DATOS
+filename = "Datos60.txt"
+lines = 240
 training_lines = 144
 validation_lines = 96
+r_const = []
+data = []
+#Constante máxima para inicialización de registros
+const_max = 10
 
-
-#REGISTROS
-"""
-r[0] registro de salida - inicializado a 1
-r[1] .. r[k] registros aleatorios constantes
-r[k + 1] .. r[3*k] registros variables inicializados a 1
-r[3*k + 1] .. r[4*k] registros de entrada constantes
-"""
-
-num_registers = 5*k + 1
-num_conts_registers = 2*k
-num_var_register = 2*k
-num_const_in_registers = k
-num_out_registers = 1
-num_const_random_registers = k
-register_offset = 3*k + 1
 
 #INSTRUCCIONES
 """
@@ -56,17 +43,37 @@ num_ini_instructions = 2*k
 num_operators = 9
 
 #Límetes en las instrucciones
-const_max = 10
-reg_sal = 0
-op_min = 0 
-op_max = 0
-cons_in_min = 0
-cons_in_max = 0
-cons_al_min = 0
-cons_al_max = 0
-var_min = 0
-var_max = 0
-const = 0
+reg_out = 0
+var_min = 1
+var_max = 2*k
+cons_al_min = 2*k + 1
+cons_al_max = 3*k
+cons_in_min = 3*k + 1
+cons_in_max = 4*k
+op_min = 1 
+op_max = 9
+
+
+
+#REGISTROS
+"""
+r[0] registro variable de salida - inicializado a 1
+r[1] .. r[2*k] registros variables inicializados a 1
+r[2*k + 1] .. r[3*k] registros aleatorios constantes
+r[3*k + 1] .. r[4*k] registros de entrada constantes
+"""
+r_out = [1]
+r_var = []
+[r_var.append(1.0) for i in range(var_min, var_max)]
+
+
+num_registers = 5*k + 1
+num_conts_registers = 2*k
+num_var_register = 2*k
+num_const_in_registers = k
+num_out_registers = 1
+num_const_random_registers = k
+register_offset = 3*k + 1
 
 #ALGORITMO EVOLUTIVO
 num_generations = 10000

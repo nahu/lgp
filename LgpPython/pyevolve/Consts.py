@@ -10,43 +10,43 @@ General constants
 
 .. attribute:: CDefPythonRequire
   
-   The mininum version required to run Pyevolve.
+    The mininum version required to run Pyevolve.
 
 .. attribute:: CDefLogFile
-   
-   The default log filename.
+    
+    The default log filename.
 
 .. attribute:: CDefLogLevel
 
-   Default log level.
+    Default log level.
 
 .. attribute:: sortType
-   
-   Sort type, raw or scaled.
+    
+    Sort type, raw or scaled.
 
-   Example:
-      >>> sort_type = Consts.sortType["raw"]
-      >>> sort_type = Consts.sortType["scaled"]
+    Example:
+        >>> sort_type = Consts.sortType["raw"]
+        >>> sort_type = Consts.sortType["scaled"]
 
 .. attribute:: minimaxType
 
-   The Min/Max type, maximize or minimize the evaluation function.
+    The Min/Max type, maximize or minimize the evaluation function.
 
-   Example:
-      >>> minmax = Consts.minimaxType["minimize"]
-      >>> minmax = Consts.minimaxType["maximize]
+    Example:
+        >>> minmax = Consts.minimaxType["minimize"]
+        >>> minmax = Consts.minimaxType["maximize]
   
 .. attribute:: CDefESCKey
 
-   The ESC key ASCII code. Used to start Interactive Mode.
+    The ESC key ASCII code. Used to start Interactive Mode.
 
 .. attribute:: CDefRangeMin
 
-   Minimum range. This constant is used as integer and real max/min.
+    Minimum range. This constant is used as integer and real max/min.
 
 .. attribute:: CDefRangeMax
 
-   Maximum range. This constant is used as integer and real max/min.
+    Maximum range. This constant is used as integer and real max/min.
 
 
 Selection methods constants (:mod:`Selectors`)
@@ -54,38 +54,38 @@ Selection methods constants (:mod:`Selectors`)
 
 .. attribute:: CDefTournamentPoolSize
 
-   The default pool size for the Tournament Selector (:class:`Selectors.GTournamentSelector`).
+    The default pool size for the Tournament Selector (:class:`Selectors.GTournamentSelector`).
 
 Scaling scheme constants (:mod:`Scaling`)
 ----------------------------------------------------------------------------
 
 .. attribute:: CDefScaleLinearMultiplier
 
-   The multiplier of the Linear (:class:`Scaling.LinearScaling`) scaling scheme.
+    The multiplier of the Linear (:class:`Scaling.LinearScaling`) scaling scheme.
 
 .. attribute:: CDefScaleSigmaTruncMultiplier
 
-   The default Sigma Truncation (:class:`Scaling.SigmaTruncScaling`) scaling scheme.
+    The default Sigma Truncation (:class:`Scaling.SigmaTruncScaling`) scaling scheme.
 
 .. attribute:: CDefScalePowerLawFactor
 
-   The default Power Law (:class:`Scaling.PowerLawScaling`) scaling scheme factor.
+    The default Power Law (:class:`Scaling.PowerLawScaling`) scaling scheme factor.
 
 
 Population constants (:class:`GPopulation.GPopulation`)
 ----------------------------------------------------------------------------
-   
+    
 .. attribute:: CDefPopSortType
-   
-   Default sort type parameter.
+    
+    Default sort type parameter.
 
 .. attribute:: CDefPopMinimax
 
-   Default min/max parameter.
+    Default min/max parameter.
 
 .. attribute:: CDefPopScale
 
-   Default scaling scheme.
+    Default scaling scheme.
 
 
 1D Binary String Defaults (:class:`G1DBinaryString.G1DBinaryString`)
@@ -93,19 +93,19 @@ Population constants (:class:`GPopulation.GPopulation`)
 
 .. attribute:: CDefG1DBinaryStringMutator
 
-   The default mutator for the 1D Binary String (:class:`G1DBinaryString.G1DBinaryString`) chromosome.
+    The default mutator for the 1D Binary String (:class:`G1DBinaryString.G1DBinaryString`) chromosome.
 
 .. attribute:: CDefG1DBinaryStringCrossover
 
-   The default crossover method for the 1D Binary String (:class:`G1DBinaryString.G1DBinaryString`) chromosome.
+    The default crossover method for the 1D Binary String (:class:`G1DBinaryString.G1DBinaryString`) chromosome.
 
 .. attribute:: CDefG1DBinaryStringInit
 
-   The default initializator for the 1D Binary String (:class:`G1DBinaryString.G1DBinaryString`) chromosome.
+    The default initializator for the 1D Binary String (:class:`G1DBinaryString.G1DBinaryString`) chromosome.
 
 .. attribute:: CDefG1DBinaryStringUniformProb
 
-   The default uniform probability used for some uniform genetic operators for the 1D Binary String (:class:`G1DBinaryString.G1DBinaryString`) chromosome.
+    The default uniform probability used for some uniform genetic operators for the 1D Binary String (:class:`G1DBinaryString.G1DBinaryString`) chromosome.
 
 
 
@@ -114,19 +114,19 @@ Population constants (:class:`GPopulation.GPopulation`)
 
 .. attribute:: CDefG1DListMutIntMU
 
-   Default *mu* value of the 1D List Gaussian Integer Mutator (:class:`Mutators.G1DListMutatorIntegerGaussian`), the *mu* represents the mean of the distribution.
-   
+    Default *mu* value of the 1D List Gaussian Integer Mutator (:class:`Mutators.G1DListMutatorIntegerGaussian`), the *mu* represents the mean of the distribution.
+    
 .. attribute:: CDefG1DListMutIntSIGMA
 
-   Default *sigma* value of the 1D List Gaussian Integer Mutator (:class:`Mutators.G1DListMutatorIntegerGaussian`), the *sigma* represents the standard deviation of the distribution.
-   
+    Default *sigma* value of the 1D List Gaussian Integer Mutator (:class:`Mutators.G1DListMutatorIntegerGaussian`), the *sigma* represents the standard deviation of the distribution.
+    
 .. attribute:: CDefG1DListMutRealMU
 
-   Default *mu* value of the 1D List Gaussian Real Mutator (:class:`Mutators.G1DListMutatorRealGaussian`), the *mu* represents the mean of the distribution.
-   
+    Default *mu* value of the 1D List Gaussian Real Mutator (:class:`Mutators.G1DListMutatorRealGaussian`), the *mu* represents the mean of the distribution.
+    
 .. attribute:: CDefG1DListMutRealSIGMA
 
-   Default *sigma* value of the 1D List Gaussian Real Mutator (:class:`Mutators.G1DListMutatorRealGaussian`), the *sigma* represents the mean of the distribution.
+    Default *sigma* value of the 1D List Gaussian Real Mutator (:class:`Mutators.G1DListMutatorRealGaussian`), the *sigma* represents the mean of the distribution.
 
 
 2D List chromosome constants (:class:`G2DList.G2DList`)
@@ -134,35 +134,35 @@ Population constants (:class:`GPopulation.GPopulation`)
 
 .. attribute:: CDefG2DListMutRealMU
 
-   Default *mu* value of the 2D List Gaussian Real Mutator (:class:`Mutators.G2DListMutatorRealGaussian`), the *mu* represents the mean of the distribution.
+    Default *mu* value of the 2D List Gaussian Real Mutator (:class:`Mutators.G2DListMutatorRealGaussian`), the *mu* represents the mean of the distribution.
 
 .. attribute:: CDefG2DListMutRealSIGMA
 
-   Default *sigma* value of the 2D List Gaussian Real Mutator (:class:`Mutators.G2DListMutatorRealGaussian`), the *sigma* represents the mean of the distribution.
+    Default *sigma* value of the 2D List Gaussian Real Mutator (:class:`Mutators.G2DListMutatorRealGaussian`), the *sigma* represents the mean of the distribution.
 
 .. attribute:: CDefG2DListMutIntMU
 
-   Default *mu* value of the 2D List Gaussian Integer Mutator (:class:`Mutators.G2DListMutatorIntegerGaussian`), the *mu* represents the mean of the distribution.
-   
+    Default *mu* value of the 2D List Gaussian Integer Mutator (:class:`Mutators.G2DListMutatorIntegerGaussian`), the *mu* represents the mean of the distribution.
+    
 .. attribute:: CDefG2DListMutIntSIGMA
 
-   Default *sigma* value of the 2D List Gaussian Integer Mutator (:class:`Mutators.G2DListMutatorIntegerGaussian`), the *sigma* represents the mean of the distribution.
+    Default *sigma* value of the 2D List Gaussian Integer Mutator (:class:`Mutators.G2DListMutatorIntegerGaussian`), the *sigma* represents the mean of the distribution.
 
 .. attribute:: CDefG2DListMutator
 
-   Default mutator for the 2D List chromosome.
+    Default mutator for the 2D List chromosome.
 
 .. attribute:: CDefG2DListCrossover
 
-   Default crossover method for the 2D List chromosome.
+    Default crossover method for the 2D List chromosome.
 
 .. attribute:: CDefG2DListInit
 
-   Default initializator for the 2D List chromosome.
+    Default initializator for the 2D List chromosome.
 
 .. attribute:: CDefG2DListCrossUniformProb
 
-   Default uniform probability for the 2D List Uniform Crossover method (:class:`Crossovers.G2DListCrossoverUniform`).
+    Default uniform probability for the 2D List Uniform Crossover method (:class:`Crossovers.G2DListCrossoverUniform`).
 
 
 GA Engine constants (:class:`GSimpleGA.GSimpleGA`)
@@ -170,23 +170,23 @@ GA Engine constants (:class:`GSimpleGA.GSimpleGA`)
 
 .. attribute:: CDefGAGenerations
 
-   Default number of generations.
+    Default number of generations.
 
 .. attribute:: CDefGAMutationRate
 
-   Default mutation rate.
+    Default mutation rate.
 
 .. attribute:: CDefGACrossoverRate
 
-   Default crossover rate.
+    Default crossover rate.
 
 .. attribute:: CDefGAPopulationSize
 
-   Default population size.
+    Default population size.
 
 .. attribute:: CDefGASelector
 
-   Default selector method.
+    Default selector method.
 
 DB Adapters constants (:mod:`DBAdapters`)
 ----------------------------------------------------------------------------
@@ -197,43 +197,43 @@ SQLite3 DB Adapter Constants (:class:`DBAdapters.DBSQLite`)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. attribute:: CDefSQLiteDBName
-   
-   Default database filename.
+    
+    Default database filename.
 
 .. attribute:: CDefSQLiteDBTable
 
-   Default statistical table name.
+    Default statistical table name.
 
 .. attribute:: CDefSQLiteDBTablePop
 
-   Default population statistical table name.
+    Default population statistical table name.
 
 .. attribute:: CDefSQLiteStatsGenFreq
 
-   Default generational frequency for dump statistics.
+    Default generational frequency for dump statistics.
 
 .. attribute:: CDefSQLiteStatsCommitFreq
 
-   Default commit frequency.
+    Default commit frequency.
 
 URL Post DB Adapter Constants (:class:`DBAdapters.DBURLPost`)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. attribute:: CDefURLPostStatsGenFreq
 
-   Default generational frequency for dump statistics.
+    Default generational frequency for dump statistics.
 
 
 CSV File DB Adapter Constants (:class:`DBAdapters.DBFileCSV`)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. attribute:: CDefCSVFileName
-   
-   The default CSV filename to dump statistics.
+    
+    The default CSV filename to dump statistics.
 
 .. attribute:: CDefCSVFileStatsGenFreq
 
-   Default generational frequency for dump statistics.
+    Default generational frequency for dump statistics.
 
 """
 import Scaling
@@ -254,15 +254,15 @@ CDefLogLevel = logging.DEBUG
 # - raw: uses the "score" attribute
 # - scaled: uses the "fitness" attribute
 sortType = { 
-   "raw"    : 0,
-   "scaled" : 1
+    "raw"        : 0,
+    "scaled" : 1
 }
 
 # Optimization type
 # - Minimize or Maximize the Evaluator Function
 minimaxType = { "minimize" : 0,
-                "maximize" : 1
-               }
+                     "maximize" : 1
+                    }
 
 CDefESCKey = 27
 ####################
@@ -273,30 +273,30 @@ CDefESCKey = 27
 CDefTournamentPoolSize = 2
 
 # - Scale methods defaults
-CDefScaleLinearMultiplier     = 1.2
+CDefScaleLinearMultiplier        = 1.2
 CDefScaleSigmaTruncMultiplier = 2.0
-CDefScalePowerLawFactor       = 1.0005
+CDefScalePowerLawFactor            = 1.0005
 
 # - Population Defaults
-CDefPopSortType               = sortType["scaled"]
-CDefPopMinimax                = minimaxType["maximize"]
-CDefPopScale                  = Scaling.LinearScaling
+CDefPopSortType                    = sortType["scaled"]
+CDefPopMinimax                        = minimaxType["maximize"]
+CDefPopScale                        = Scaling.LinearScaling
 
 # - GA Engine defaults
-CDefGAGenerations    = 100
-CDefGAMutationRate   = 0.02
-CDefGACrossoverRate  = 0.9
+CDefGAGenerations        = 100
+CDefGAMutationRate    = 0.02
+CDefGACrossoverRate    = 0.9
 CDefGAPopulationSize = 80
-CDefGASelector       = Selectors.GRankSelector
+CDefGASelector            = Selectors.GRankSelector
 
 # - This is general used by integer/real ranges defaults
 CDefRangeMin = 0
 CDefRangeMax = 100
 
 # - G1DBinaryString defaults
-CDefG1DBinaryStringMutator   = Mutators.G1DBinaryStringMutatorFlip
+CDefG1DBinaryStringMutator      = Mutators.G1DBinaryStringMutatorFlip
 CDefG1DBinaryStringCrossover = Crossovers.G1DBinaryStringXSinglePoint
-CDefG1DBinaryStringInit      = Initializators.G1DBinaryStringInitializator
+CDefG1DBinaryStringInit          = Initializators.G1DBinaryStringInitializator
 CDefG1DBinaryStringUniformProb = 0.5
 
 # - G1DList defaults
@@ -306,9 +306,9 @@ CDefG1DListMutIntSIGMA = 10
 CDefG1DListMutRealMU = 0
 CDefG1DListMutRealSIGMA = 1
 
-CDefG1DListMutator   = Mutators.G1DListMutatorSwap
+CDefG1DListMutator    = Mutators.G1DListMutatorSwap
 CDefG1DListCrossover = Crossovers.G1DListCrossoverSinglePoint
-CDefG1DListInit      = Initializators.G1DListInitializatorInteger
+CDefG1DListInit        = Initializators.G1DListInitializatorInteger
 CDefG1DListCrossUniformProb = 0.5
 
 # - G2DList defaults
@@ -318,9 +318,9 @@ CDefG2DListMutIntSIGMA = 10
 CDefG2DListMutRealMU = 0
 CDefG2DListMutRealSIGMA = 1
 
-CDefG2DListMutator   = Mutators.G2DListMutatorSwap
+CDefG2DListMutator    = Mutators.G2DListMutatorSwap
 CDefG2DListCrossover = Crossovers.G2DListCrossoverUniform
-CDefG2DListInit      = Initializators.G2DListInitializatorInteger
+CDefG2DListInit        = Initializators.G2DListInitializatorInteger
 CDefG2DListCrossUniformProb = 0.5
 
 # - DB Adapters SQLite defaults
