@@ -30,7 +30,7 @@ class Reader:
         
         
         _file.close()
-        matrix = [map(int, i) for i in matrix]
+        matrix = [map(float, i) for i in matrix]
         
         #Se retorna: cantidad de columnas, cantidad de filas, matriz de datos
         return(int(n), int(T), matrix) 
