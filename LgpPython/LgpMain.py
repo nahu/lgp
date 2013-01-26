@@ -98,16 +98,7 @@ def eval_fitness(obj, **args):
     
     #in_t tiene las mediciones en el instante t
     error_a_quad = 0
-    """
-    shake!
-    división por 0
-    logaritmo de numero negativo
-    número negativo elevado a un fraccionario
-    raíz cuadrada de un número negativo
-    
-    efectivo a veces no tiene algo SHAKEEE!!!
-    
-    """
+
     for t in range(0, training_lines -1):
         in_t = r_const[t]
         r_all = copy.copy(obj.r_all)
@@ -126,11 +117,11 @@ def eval_fitness(obj, **args):
             else:
                 print i, r_all[i]
         '''
-        try:
-            exec program
-            error_a_quad += (r_all[0] - data_samples[t][index_to_predict]) ** 2
-        except:
-            error_a_quad += (99) ** 2
+        #try:
+        exec program
+        error_a_quad += (r_all[0] - data_samples[t][index_to_predict]) ** 2
+        #except:
+        #    error_a_quad += (99) ** 2
         
     error_prom_quad = error_a_quad / training_lines
     

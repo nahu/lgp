@@ -105,6 +105,16 @@ y el segundo puede ser constante
 o variable con cierta probabilidad (p_reg_op2).
 
 Para registros constantes en el segundo operador usar operations[num_operation<<4]
+
+Para operaciones ilegales como:
+    División por 0
+    logaritmo de un número negativo
+    Número negativo elevado a un fraccionario (se hacía)
+    Raíz cuadrada de un número negativo
+se hace que el resultado de la operación sea 1.0
+
+El operador de potencia pasó a ser un operador de elevado al cuadrado
+
 """
 operations = {  1   : 'r_all[{0}]=r_all[{1}]+r_all[{2}]',
                 16  : 'r_all[{0}]=r_all[{1}]+in_t[{2}]',
@@ -112,14 +122,16 @@ operations = {  1   : 'r_all[{0}]=r_all[{1}]+r_all[{2}]',
                 32  : 'r_all[{0}]=r_all[{1}]-in_t[{2}]',
                 3   : 'r_all[{0}]=r_all[{1}]*r_all[{2}]',
                 48  : 'r_all[{0}]=r_all[{1}]*in_t[{2}]',
-                4   : 'r_all[{0}]=r_all[{1}]/r_all[{2}]',
-                64  : 'r_all[{0}]=r_all[{1}]/in_t[{2}]',
-                5   : 'r_all[{0}]=r_all[{1}]**r_all[{2}]',
-                80  : 'r_all[{0}]=r_all[{1}]**in_t[{2}]',
-                6   : 'r_all[{0}]=math.log10(r_all[{2}])',
-                96  : 'r_all[{0}]=math.log10(in_t[{2}])',
-                7   : 'r_all[{0}]=math.sqrt(r_all[{2}])',
-                112 : 'r_all[{0}]=math.sqrt(in_t[{2}])',
+                4   : 'r_all[{0}]=(r_all[{1}]/r_all[{2}]) if r_all[{2}] != 0 else 1.0',
+                64  : 'r_all[{0}]=(r_all[{1}]/in_t[{2}]) if in_t[{2}] != 0 else 1.0',
+                5   : 'r_all[{0}]=r_all[{2}]**2',
+                80  : 'r_all[{0}]=in_t[{2}]**2',
+#                5   : 'r_all[{0}]=(r_all[{1}]**r_all[{2}]) if not (r_all[{1}] < 0 and not (r_all[{2}]).is_integer()) or (r_all[{2}] > 100) else 1.0',
+#                80  : 'r_all[{0}]=r_all[{1}]**in_t[{2}] if not (r_all[{1}] < 0 and not (in_t[{2}]).is_integer()) or (in_t[{2}] > 100) else 1.0',
+                6   : 'r_all[{0}]=math.log10(r_all[{2}]) if r_all[{2}] > 0 else 1.0',
+                96  : 'r_all[{0}]=math.log10(in_t[{2}]) if in_t[{2}] > 0 else 1.0',
+                7   : 'r_all[{0}]=math.sqrt(r_all[{2}]) if r_all[{2}] >= 0 else 1.0',
+                112 : 'r_all[{0}]=math.sqrt(in_t[{2}]) if in_t[{2}] >= 0 else 1.0',
                 8   : 'r_all[{0}]=math.sin(r_all[{2}])',
                 128 : 'r_all[{0}]=math.sin(in_t[{2}])',
                 9   : 'r_all[{0}]=math.cos(r_all[{2}])',
