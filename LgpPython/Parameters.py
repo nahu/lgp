@@ -110,6 +110,9 @@ Para operaciones ilegales como:
     División por 0
     logaritmo de un número negativo
     Número negativo elevado a un fraccionario (se hacía)
+5   : 'r_all[{0}]=(r_all[{1}]**r_all[{2}]) if not (r_all[{1}] < 0 and not (r_all[{2}]).is_integer()) or (r_all[{2}] > 100) else 1.0',
+80  : 'r_all[{0}]=r_all[{1}]**in_t[{2}] if not (r_all[{1}] < 0 and not (in_t[{2}]).is_integer()) or (in_t[{2}] > 100) else 1.0',
+
     Raíz cuadrada de un número negativo
 se hace que el resultado de la operación sea 1.0
 
@@ -126,8 +129,6 @@ operations = {  1   : 'r_all[{0}]=r_all[{1}]+r_all[{2}]',
                 64  : 'r_all[{0}]=(r_all[{1}]/in_t[{2}]) if in_t[{2}] != 0 else 1.0',
                 5   : 'r_all[{0}]=r_all[{2}]**2',
                 80  : 'r_all[{0}]=in_t[{2}]**2',
-#                5   : 'r_all[{0}]=(r_all[{1}]**r_all[{2}]) if not (r_all[{1}] < 0 and not (r_all[{2}]).is_integer()) or (r_all[{2}] > 100) else 1.0',
-#                80  : 'r_all[{0}]=r_all[{1}]**in_t[{2}] if not (r_all[{1}] < 0 and not (in_t[{2}]).is_integer()) or (in_t[{2}] > 100) else 1.0',
                 6   : 'r_all[{0}]=math.log10(r_all[{2}]) if r_all[{2}] > 0 else 1.0',
                 96  : 'r_all[{0}]=math.log10(in_t[{2}]) if in_t[{2}] > 0 else 1.0',
                 7   : 'r_all[{0}]=math.sqrt(r_all[{2}]) if r_all[{2}] >= 0 else 1.0',
