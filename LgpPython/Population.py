@@ -7,13 +7,16 @@ from Util import list_swap_element, randomFlipCoin
 
 import random
 
+
 def tournament(competitors):
-        choosen = competitors[0]
-        for i in range(1, len(competitors)):
-            if choosen.evaluate() < i.evaluate():
-                choosen = i
-                
-        return choosen
+    choosen = competitors[0]
+    
+    for i in range(1, len(competitors)):
+        if choosen.evaluate() < i.evaluate():
+            choosen = i
+            
+    return choosen
+
 
 def crossover(mom, dad):
     sister = None
@@ -34,6 +37,8 @@ def crossover(mom, dad):
     brother.genomeList[cuts_points_dad[0]:cuts_points_dad[1]] = mom.genomeList[cuts_points_mom[0]:cuts_points_mom[1]]
 
     return (sister, brother)
+
+
 def impresiones_mutacion(ins, mutpoint, eff):
     if ins:
         print "Insercion de instrucciones en el punto " + str(mutpoint)
@@ -42,10 +47,11 @@ def impresiones_mutacion(ins, mutpoint, eff):
     else:
         print "Borrado de instrucciones en el punto " + str(mutpoint)
 
+
 def micro_mutation(genome):
     """Muta las instrucciones efectivas internamente"""
-    
-    
+
+
 def macro_mutation(genome):
     """Agrega o quita instrucciones - Alg. 6.1 --p_ins > p_del """
     insertion = randomFlipCoin(p_ins)
@@ -67,9 +73,10 @@ def macro_mutation(genome):
 
 
 class Population:
-    def __init__(self, size):
+    def __init__(self, size, pool):
         self.internalPop = []
         self.popSize = size
+        self.pool = pool
 
     def create(self, **args):
         for i in xrange(self.popSize):
@@ -77,19 +84,19 @@ class Population:
 
     def initialize(self):
         self.create()
-        pool = Pool(processes=num_processors)
         
-        iter = pool.imap(ini_individual, self.internalPop, chunk_size)
+        iter = self.pool.imap(ini_individual, self.internalPop, chunk_size)
 
         for individual in range(self.popSize):
             self.internalPop[individual] = iter.next()
-        
-        pool.close() 
-        pool.join()
+       
+#        self.pool.close() 
+#        self.pool.join()
         
         
     def selection(self):
         index_pool = []
+        
         while len(index_pool) < pool_size:
             index = random.randint(0,len(population.internalPop))
             if not (self.internalPop[index] in index_pool):
@@ -99,7 +106,8 @@ class Population:
     
     
 if __name__ == "__main__":
-    population = Population(1)
+    pool = Pool(processes=num_processors)
+    population = Population(2, pool)
     population.initialize()
     genome = population.internalPop[0]
     print "Instruciones originales"
@@ -107,4 +115,8 @@ if __name__ == "__main__":
     genome1 = macro_mutation(genome)
     print "Instruciones mutadas"
     print genome1
+    
+    
+    pool.close() 
+    pool.join()
     
