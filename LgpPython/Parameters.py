@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # -*- coding: utf-8 -*-
 """
 Módulo que define las funciones asociadas al algoritmo LGP
@@ -78,6 +79,8 @@ register_offset = 3*k + 1
 #ALGORITMO EVOLUTIVO
 num_generations = 10000
 population_size = 1000000
+pool_size = 4
+
 
 #PROBABILIDADES
 p_reg_op2_const = 0.5
@@ -138,6 +141,5 @@ operations = {  1   : 'r_all[{0}]=r_all[{1}]+r_all[{2}]',
                 9   : 'r_all[{0}]=math.cos(r_all[{2}])',
                 144 : 'r_all[{0}]=math.cos(in_t[{2}])'
                 }
-
 
 
