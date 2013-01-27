@@ -78,9 +78,11 @@ register_offset = 3*k + 1
 #ALGORITMO EVOLUTIVO
 num_generations = 10000
 population_size = 1000000
+pool_size = 4
 
 #PROBABILIDADES
 p_reg_op2_const = 0.5
+
 
 """
 Las operaciones sobre la población,
