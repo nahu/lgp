@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from multiprocessing import Pool
-from Parameters import num_processors, chunk_size, pool_size,p_ins, p_del, num_max_instructions, num_min_instructions
-from Individual import Individual, ini_individual, get_random_instruction
+from Individual import Individual, ini_individual, get_random_instruction, get_random_operand
+from Parameters import num_processors, chunk_size, pool_size,p_ins, p_del, num_max_instructions, num_min_instructions,\
+op_min,op_max, step_size_const, p_regmut, p_opermut, p_constmut
 from Util import list_swap_element, randomFlipCoin
 
 import random
@@ -48,10 +49,6 @@ def impresiones_mutacion(ins, mutpoint, eff):
         print "Borrado de instrucciones en el punto " + str(mutpoint)
 
 
-def micro_mutation(genome):
-    """Muta las instrucciones efectivas internamente"""
-
-
 def macro_mutation(genome):
     """Agrega o quita instrucciones - Alg. 6.1 --p_ins > p_del """
     insertion = randomFlipCoin(p_ins)
@@ -69,7 +66,48 @@ def macro_mutation(genome):
         impresiones_mutacion(insertion,mutation_point,[])
     return genome
 
-            
+
+def micro_mutation(genome):
+    """Muta las instrucciones efectivas internamente
+    p_regmut = 0.5 #probabilidad de mutar un registro 
+    p_opermut = 0.25 #probabilidad de mutar una
+    p_constmut = 0.25
+    """
+    eff = genome.get_effective_instructions_index_absolute()
+    instruction = eff[random.randint(0, len(eff)-1)]
+    index = instruction[4]
+    del instruction[4]
+    tipo = getTipoMicroMutacion(random.random())
+    if (tipo=="registros"):
+        pos_to_replace = random.randint(1,3)
+        if pos_to_replace == 1: #es destino
+            reg_eff = genome.get_effective_registers(index)
+            reg_eff.remove(instruction[1])
+            instruction[pos_to_replace] = random.choice(reg_eff)
+        else:
+            op = get_random_operand(pos_to_replace == 2 ) #Si es el primer op manda true
+            instruction[pos_to_replace] = op
+        genome.genomeList[index] = instruction                    
+    elif (tipo=="operaciones"):
+        diff_op = random.randint(op_min,op_max)
+        while instruction[0] == diff_op:
+            diff_op = random.randint(op_min,op_max)
+        instruction[0] = diff_op
+        genome.genomeList[index] = instruction
+    elif(tipo=="constantes"):
+        instruction = genome.get_effective_instructions_index_absolute_constants(0)
+        index = instruction[4]
+        del instruction[4]
+        genome.r_all[instruction[3]]= genome.r_all[instruction[3]] + random.random(0,step_size_const) 
+
+def getTipoMicroMutacion(prob):
+    if prob <= p_regmut:
+        return "registros"
+    elif prob > p_regmut and prob <= p_opermut + p_regmut:
+        return "operaciones"
+    elif prob > (p_opermut + p_regmut) and prob <= (p_opermut + p_regmut + p_constmut):
+        return "constantes"
+       
 
 
 class Population:

@@ -59,6 +59,14 @@ def get_random_instruction():
         instruction.append(random.randint(var_min, var_max))
     
     return instruction
+def get_random_operand(op1):
+    if op1:
+        return random.randint(var_min, var_max)
+    else:
+        if randomFlipCoin(p_reg_op2_const):
+            return random.randint(cons_al_min, cons_in_max)
+        else:
+            return random.randint(var_min, var_max)
 class Individual():
     """
         heigth: cantidad de instrucciones para un programa
@@ -102,6 +110,55 @@ class Individual():
         return eff_i
     
     
+    def get_effective_instructions_index_absolute(self):
+        """
+        intructions[i][0] = identificador de instucción
+        intructions[i][1] = registro destino
+        intructions[i][2] = registro operando 1
+        intructions[i][3] = registro operando 2
+        intructions[i][4] = efectiva o no efectiva
+        """
+        reg_eff = set([0])
+        eff_i = []
+        current_pos = len(self.genomeList) -1 
+        for i in reversed(self.genomeList):
+            if (i[1] in reg_eff):
+                # los operadores unarios tiene identificador del 6 al 9
+                reg_eff.remove(i[1])
+                
+                if (i[0] < 6):
+                    reg_eff.add(i[2])
+                
+                reg_eff.add(i[3])
+                eff_i.append(i.append(current_pos))
+            current_pos -=1
+        eff_i.reverse()     
+        return eff_i
+    def get_effective_instructions_index_absolute_constants(self):
+        """
+        intructions[i][0] = identificador de instucción
+        intructions[i][1] = registro destino
+        intructions[i][2] = registro operando 1
+        intructions[i][3] = registro operando 2
+        intructions[i][4] = efectiva o no efectiva
+        """
+        reg_eff = set([0])
+        eff_i = []
+        current_pos = len(self.genomeList) -1 
+        for i in reversed(self.genomeList):
+            if (i[1] in reg_eff):
+                # los operadores unarios tiene identificador del 6 al 9
+                reg_eff.remove(i[1])
+                
+                if (i[0] < 6):
+                    reg_eff.add(i[2])
+                
+                reg_eff.add(i[3])
+                if(i[3] in range(cons_al_min,cons_in_max)): #solo me interesa si es constante
+                    eff_i.append(i.append(current_pos))
+            current_pos -=1
+        eff_i.reverse()     
+        return eff_i
     def get_effective_registers(self, position):
         """
         intructions[i][0] = identificador de instucción

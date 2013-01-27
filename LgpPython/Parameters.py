@@ -26,6 +26,7 @@ r_const = None
 data_samples = []
 #Constante máxima para inicialización de registros
 const_max = 10
+step_size_const = 2
 
 
 #INSTRUCCIONES
@@ -83,6 +84,11 @@ pool_size = 4
 
 #PROBABILIDADES
 p_reg_op2_const = 0.5
+p_ins = 0.8
+p_del = 0.2
+p_regmut = 0.5
+p_opermut = 0.25
+p_constmut = 0.25
 
 """
 Las operaciones sobre la población,
