@@ -14,7 +14,7 @@ y las funciones a la clase
 import random
 import copy
 from Parameters import *
-import Util
+from Util import randomFlipCoin
 
 def ini_individual(obj):
     obj.height = random.randint(num_min_instructions, num_ini_instructions)
@@ -28,7 +28,7 @@ def ini_individual(obj):
         instruction.append(random.randint(var_min, var_max)) #Solo puede ser variable.
         
         #operador 2 es constante con probabilidad p_const
-        if Util.randomFlipCoin(p_reg_op2_const):
+        if randomFlipCoin(p_reg_op2_const):
             instruction.append(random.randint(cons_al_min, cons_in_max))
         else:
             instruction.append(random.randint(var_min, var_max))
@@ -46,6 +46,19 @@ def ini_individual(obj):
     [obj.r_all.append(random.uniform(0, const_max)) for i in range(cons_al_min, cons_al_max + 1)]
     return obj
 
+def get_random_instruction():
+    instruction = []
+    instruction.append(random.randint(op_min, op_max)) #Instrucciones
+    instruction.append(random.randint(var_min, var_max))  #Registros destinos - Solo los variables
+    instruction.append(random.randint(var_min, var_max)) #Solo puede ser variable.
+    
+    #operador 2 es constante con probabilidad p_const
+    if randomFlipCoin(p_reg_op2_const):
+        instruction.append(random.randint(cons_al_min, cons_in_max))
+    else:
+        instruction.append(random.randint(var_min, var_max))
+    
+    return instruction
 class Individual():
     """
         heigth: cantidad de instrucciones para un programa
@@ -63,15 +76,8 @@ class Individual():
         self.index = index
         self.evaluated = False
         
-        
-        
-        
-        
-        
-
-        
-    
-    def get_effective_instructions(self, genomeList):
+            
+    def get_effective_instructions(self):
         """
         intructions[i][0] = identificador de instucción
         intructions[i][1] = registro destino
@@ -81,7 +87,7 @@ class Individual():
         """
         reg_eff = set([0])
         eff_i = []
-        for i in reversed(genomeList):
+        for i in reversed(self.genomeList):
             if (i[1] in reg_eff):
                 # los operadores unarios tiene identificador del 6 al 9
                 reg_eff.remove(i[1])
@@ -95,6 +101,31 @@ class Individual():
         eff_i.reverse()     
         return eff_i
     
+    
+    def get_effective_registers(self, position):
+        """
+        intructions[i][0] = identificador de instucción
+        intructions[i][1] = registro destino
+        intructions[i][2] = registro operando 1
+        intructions[i][3] = registro operando 2
+        intructions[i][4] = efectiva o no efectiva
+        """
+        reg_eff = set([0])
+        current_pos = len(self.genomeList) -1 
+        for i in reversed(self.genomeList):
+            if (i[1] in reg_eff):
+                # los operadores unarios tiene identificador del 6 al 9
+                reg_eff.remove(i[1])
+                
+                if (i[0] < 6):
+                    reg_eff.add(i[2])
+                
+                reg_eff.add(i[3])
+                if current_pos == position:
+                    return list(reg_eff)
+                current_pos-=1
+        return list(reg_eff)
+        
     """
     Funcion de evaluación de fitnes llamada desde la GPopulation.evaluate()
     """
@@ -149,7 +180,7 @@ class Individual():
     
     def __repr__(self):
         """ Return a string representation of Genome """
-        ret = "- G2DList\n"
+        ret = "- Individual\n"
         ret += "\tList size:\t %s\n" % (len(self.genomeList))
         ret += "\tList:\n"
         for line in self.genomeList:

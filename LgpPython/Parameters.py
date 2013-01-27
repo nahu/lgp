@@ -37,9 +37,9 @@ Cada instrucción se representa como una lista de 4 enteros como sigue
 la convención para asegurar que el programa tenga una salida es que la
 última instrucción sea del tipo [operación, 0, operador1, operador2]
 """
-num_min_instructions = k
+num_min_instructions = 5 #k
 num_max_instructions = 6*k
-num_ini_instructions = 2*k
+num_ini_instructions = 5#2*k
 num_operators = 9
 
 #Límetes en las instrucciones
@@ -82,6 +82,8 @@ pool_size = 4
 
 #PROBABILIDADES
 p_reg_op2_const = 0.5
+p_ins = 0.8
+p_del = 0.2
 
 
 """
