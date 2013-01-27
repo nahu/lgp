@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from multiprocessing import Pool
-from Parameters import num_processors, chunk_size, pool_size
-from Individual import Individual, ini_individual
-from Util import list_swap_element
+from Parameters import num_processors, chunk_size, pool_size,p_ins, p_del, num_max_instructions, num_min_instructions
+from Individual import Individual, ini_individual, get_random_instruction
+from Util import list_swap_element, randomFlipCoin
 
 import random
 
@@ -30,11 +30,41 @@ def crossover(mom, dad):
     sister = mom.clone()
     sister.genomeList[cuts_points_mom[0]:cuts_points_mom[1]] = dad.genomeList[cuts_points_dad[0]:cuts_points_dad[1]]
 
-    #if args["count"] == 2:
     brother = dad.clone()
     brother.genomeList[cuts_points_dad[0]:cuts_points_dad[1]] = mom.genomeList[cuts_points_mom[0]:cuts_points_mom[1]]
 
     return (sister, brother)
+def impresiones_mutacion(ins, mutpoint, eff):
+    if ins:
+        print "Insercion de instrucciones en el punto " + str(mutpoint)
+        print "Registros efectivos al punto de mutacion"
+        print eff
+    else:
+        print "Borrado de instrucciones en el punto " + str(mutpoint)
+
+def micro_mutation(genome):
+    """Muta las instrucciones efectivas internamente"""
+    
+    
+def macro_mutation(genome):
+    """Agrega o quita instrucciones - Alg. 6.1 --p_ins > p_del """
+    insertion = randomFlipCoin(p_ins)
+    mutation_point = random.randint(0, len(genome.genomeList))    
+    if len(genome.genomeList) < num_max_instructions and \
+    (insertion or len(genome.genomeList) == num_min_instructions):
+        new_instruction= get_random_instruction()
+        eff = genome.get_effective_registers(mutation_point)
+        new_instruction[1] = random.choice(eff)
+        genome.genomeList[mutation_point] = new_instruction
+        impresiones_mutacion(insertion,mutation_point,eff)
+    if len(genome.genomeList) > num_min_instructions and \
+    (not insertion or len(genome.genomeList) == num_max_instructions):
+        del genome.genomeList[mutation_point]
+        impresiones_mutacion(insertion,mutation_point,[])
+    return genome
+
+            
+
 
 class Population:
     def __init__(self, size):
@@ -69,10 +99,12 @@ class Population:
     
     
 if __name__ == "__main__":
-    population = Population(10)
+    population = Population(1)
     population.initialize()
-    print "len"
-    print len(population.internalPop)
-    for i in population.internalPop:
-        print i.genomeList
+    genome = population.internalPop[0]
+    print "Instruciones originales"
+    print genome
+    genome1 = macro_mutation(genome)
+    print "Instruciones mutadas"
+    print genome1
     

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # -*- coding: utf-8 -*-
 """
 Módulo que define las funciones asociadas al algoritmo LGP
@@ -141,5 +140,4 @@ operations = {  1   : 'r_all[{0}]=r_all[{1}]+r_all[{2}]',
                 9   : 'r_all[{0}]=math.cos(r_all[{2}])',
                 144 : 'r_all[{0}]=math.cos(in_t[{2}])'
                 }
-
 
