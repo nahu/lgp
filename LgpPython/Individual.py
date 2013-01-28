@@ -108,9 +108,10 @@ class Individual():
         return eff_i
     
     
-    def get_effective_instructions_index_absolute(self):
+    def get_effective_instructions_with_indices(self):
         reg_eff = set([0])
         eff_i = []
+        indices = []
         current_pos = len(self.genomeList)
         for i in reversed(self.genomeList):
             current_pos -= 1
@@ -123,15 +124,18 @@ class Individual():
                 if (i[3] <= var_max): #los registros constantes no pueden ser registros efectivos
                     reg_eff.add(i[3])
                     
-                eff_i.append(i.append(current_pos))
+                eff_i.append(i)
+                indices.append(current_pos)
             
-        eff_i.reverse()     
-        return eff_i
+        eff_i.reverse()
+        indices.reverse()    
+        return eff_i, indices
     
     
-    def get_effective_instructions_index_absolute_constants(self):
+    def get_effective_instructions_with_constant_indices(self):
         reg_eff = set([0])
         eff_i = []
+        indices = []
         current_pos = len(self.genomeList) 
         for i in reversed(self.genomeList):
             current_pos -= 1
@@ -143,13 +147,13 @@ class Individual():
                 
                 if (i[3] <= var_max): #los registros constantes no pueden ser registros efectivos
                     reg_eff.add(i[3])
-                
-                if(i[3] in range(cons_al_min,cons_in_max)): #solo me interesa si es constante
-                    eff_i.append(i.append(current_pos))
+                else:
+                    indices.append(current_pos)
+
             
         eff_i.reverse()
-        
-        return eff_i
+        indices.reverse()
+        return eff_i, indices
     
     
     def get_effective_registers(self, position):
@@ -177,7 +181,6 @@ class Individual():
                 return list(reg_eff), current_pos
         
     
-    
     def get_program_in_python(self):
         eff_instructions = self.get_effective_instructions()
         
@@ -198,34 +201,39 @@ class Individual():
         program = self.get_program_in_python()
         #in_t tiene las mediciones en el instante t
         error_a_quad = 0
-    
-        for t in range(0, training_lines -1):
-            in_t = r_const[t]
-            r_all = copy.copy(self.r_all)
-            print "program"
-            print program
-            print "in_t"
-            print in_t
-            print "t"
-            print t
-            '''
-            print "r_all"
-            
-            for i in range (0, len(r_all)):
-                if (i< len(in_t)):
-                    print i, r_all[i], in_t[i]
-                else:
-                    print i, r_all[i]
-            '''
-            #try:
-            exec program
-            error_a_quad += (r_all[0] - data_samples[t][index_to_predict]) ** 2
-            #except:
-            #    error_a_quad += (99) ** 2
-            
-        error_prom_quad = error_a_quad / training_lines
         
-        self.fitness = 1 / error_prom_quad
+        try:
+            for t in range(0, training_lines -1):
+                in_t = r_const[t]
+                r_all = copy.copy(self.r_all)
+                '''
+                print "program"
+                print program
+                print "in_t"
+                print in_t
+                print "t"
+                print t
+                print "r_all"
+                
+                for i in range (0, len(r_all)):
+                    if (i< len(in_t)):
+                        print i, r_all[i], in_t[i]
+                    else:
+                        print i, r_all[i]
+                '''
+                exec program
+                
+                error_a_quad += (r_all[0] - data_samples[t][index_to_predict]) ** 2
+
+                
+            error_prom_quad = error_a_quad / training_lines
+            self.fitness = 1 / error_prom_quad
+        except:
+            """
+            Si ocurre una excepción el fitness se iguala a cero (Overflow muy probablemente)
+            """
+            self.fitness = 0.0
+            
         self.evaluated = True
         
         
