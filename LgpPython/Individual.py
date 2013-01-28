@@ -2,7 +2,7 @@
 
 """
 Módulo que define la clase del Individuo dentro del LGP
-y las funciones a la clase
+y las funciones relacionadas
 
 @authors:
 - U{Nahuel Hernández<mailto:jnahuelhernandez@gmail.com>}
@@ -22,20 +22,10 @@ def ini_individual(obj):
     obj.fitness = 0.0      
     
     for i in range(obj.height):
-        instruction = []
-        instruction.append(random.randint(op_min, op_max)) #Instrucciones
-        instruction.append(random.randint(var_min, var_max))  #Registros destinos - Solo los variables
-        instruction.append(random.randint(var_min, var_max)) #Solo puede ser variable.
-        
-        #operador 2 es constante con probabilidad p_const
-        if randomFlipCoin(p_reg_op2_const):
-            instruction.append(random.randint(cons_al_min, cons_in_max))
-        else:
-            instruction.append(random.randint(var_min, var_max))
-        
+        instruction = create_new_instruction()
         obj.genomeList.append(instruction)
             
-    """Asegurar que el la ultima instrucción tenga como registro destino al registro de salida"""
+    """Asegurar que la última instrucción tenga como registro destino al registro de salida"""
     obj.genomeList[len(obj.genomeList)-1][1] = reg_out
     #obj.init_registers()
     
@@ -46,7 +36,15 @@ def ini_individual(obj):
     [obj.r_all.append(random.uniform(0, const_max)) for i in range(cons_al_min, cons_al_max + 1)]
     return obj
 
-def get_random_instruction():
+
+def create_new_instruction():
+    """
+    reg_sal                      -> registro de salida
+    op_min, op_max               -> instrucciones
+    cons_in_min, cons_in_max     -> registros de entrada constantes --> estan en r_const
+    cons_al_min, cons_al_max     -> Constantes aleatorias inicializadas entre (0,random_max)
+    var_min, var_max             -> registros variables inicializados a 1.
+    """
     instruction = []
     instruction.append(random.randint(op_min, op_max)) #Instrucciones
     instruction.append(random.randint(var_min, var_max))  #Registros destinos - Solo los variables
@@ -59,6 +57,8 @@ def get_random_instruction():
         instruction.append(random.randint(var_min, var_max))
     
     return instruction
+
+
 def get_random_operand(op1):
     if op1:
         return random.randint(var_min, var_max)
@@ -67,15 +67,13 @@ def get_random_operand(op1):
             return random.randint(cons_al_min, cons_in_max)
         else:
             return random.randint(var_min, var_max)
+        
+        
+
 class Individual():
     """
         heigth: cantidad de instrucciones para un programa
-        width: componentes de una instruccion [instrucción, destino, operador1, operador2, efectiva]
-        reg_sal                      -> registro de salida
-        op_min, op_max               -> instrucciones
-        cons_in_min, cons_in_max     -> registros de entrada constantes --> estan en r_const
-        cons_al_min, cons_al_max     -> Constantes aleatorias inicializadas entre (0,random_max)
-        var_min, var_max             -> registros variables inicializados a 1.
+        width: componentes de una instruccion [instrucción, destino, operador1, operador2]
     """
     def __init__(self, width, index):
         self.width = width
@@ -91,19 +89,19 @@ class Individual():
         intructions[i][1] = registro destino
         intructions[i][2] = registro operando 1
         intructions[i][3] = registro operando 2
-        intructions[i][4] = efectiva o no efectiva
         """
         reg_eff = set([0])
         eff_i = []
         for i in reversed(self.genomeList):
             if (i[1] in reg_eff):
-                # los operadores unarios tiene identificador del 6 al 9
                 reg_eff.remove(i[1])
                 
-                if (i[0] < 6):
+                if (i[0] < 6): #los operadores unarios tiene identificador del 6 al 9
                     reg_eff.add(i[2])
                 
-                reg_eff.add(i[3])
+                if (i[3] <= var_max): #los registros constantes no pueden ser registros efectivos
+                    reg_eff.add(i[3])
+                
                 eff_i.append(i)
     
         eff_i.reverse()     
@@ -111,83 +109,77 @@ class Individual():
     
     
     def get_effective_instructions_index_absolute(self):
-        """
-        intructions[i][0] = identificador de instucción
-        intructions[i][1] = registro destino
-        intructions[i][2] = registro operando 1
-        intructions[i][3] = registro operando 2
-        intructions[i][4] = efectiva o no efectiva
-        """
         reg_eff = set([0])
         eff_i = []
-        current_pos = len(self.genomeList) -1 
+        current_pos = len(self.genomeList)
         for i in reversed(self.genomeList):
+            current_pos -= 1
             if (i[1] in reg_eff):
-                # los operadores unarios tiene identificador del 6 al 9
                 reg_eff.remove(i[1])
                 
-                if (i[0] < 6):
+                if (i[0] < 6): #los operadores unarios tiene identificador del 6 al 9
                     reg_eff.add(i[2])
                 
-                reg_eff.add(i[3])
+                if (i[3] <= var_max): #los registros constantes no pueden ser registros efectivos
+                    reg_eff.add(i[3])
+                    
                 eff_i.append(i.append(current_pos))
-            current_pos -=1
+            
         eff_i.reverse()     
         return eff_i
+    
+    
     def get_effective_instructions_index_absolute_constants(self):
-        """
-        intructions[i][0] = identificador de instucción
-        intructions[i][1] = registro destino
-        intructions[i][2] = registro operando 1
-        intructions[i][3] = registro operando 2
-        intructions[i][4] = efectiva o no efectiva
-        """
         reg_eff = set([0])
         eff_i = []
-        current_pos = len(self.genomeList) -1 
+        current_pos = len(self.genomeList) 
         for i in reversed(self.genomeList):
+            current_pos -= 1
             if (i[1] in reg_eff):
-                # los operadores unarios tiene identificador del 6 al 9
                 reg_eff.remove(i[1])
                 
                 if (i[0] < 6):
-                    reg_eff.add(i[2])
+                    reg_eff.add(i[2]) #los operadores unarios tiene identificador del 6 al 9
                 
-                reg_eff.add(i[3])
+                if (i[3] <= var_max): #los registros constantes no pueden ser registros efectivos
+                    reg_eff.add(i[3])
+                
                 if(i[3] in range(cons_al_min,cons_in_max)): #solo me interesa si es constante
                     eff_i.append(i.append(current_pos))
-            current_pos -=1
-        eff_i.reverse()     
+            
+        eff_i.reverse()
+        
         return eff_i
+    
+    
     def get_effective_registers(self, position):
         """
         intructions[i][0] = identificador de instucción
         intructions[i][1] = registro destino
         intructions[i][2] = registro operando 1
         intructions[i][3] = registro operando 2
-        intructions[i][4] = efectiva o no efectiva
         """
         reg_eff = set([0])
-        current_pos = len(self.genomeList) -1 
+        current_pos = len(self.genomeList) 
+        
         for i in reversed(self.genomeList):
+            current_pos -= 1
             if (i[1] in reg_eff):
-                # los operadores unarios tiene identificador del 6 al 9
                 reg_eff.remove(i[1])
                 
-                if (i[0] < 6):
+                if (i[0] < 6):# los operadores unarios tiene identificador del 6 al 9
                     reg_eff.add(i[2])
                 
-                reg_eff.add(i[3])
-                if current_pos == position:
-                    return list(reg_eff)
-                current_pos-=1
-        return list(reg_eff)
+                if (i[3] <= var_max): #los registros constantes no pueden ser registros efectivos
+                    reg_eff.add(i[3])
+                
+            if current_pos == position or not reg_eff:
+                return list(reg_eff), current_pos
         
-    """
-    Funcion de evaluación de fitnes llamada desde la GPopulation.evaluate()
-    """
-    def eval_fitness(self):
-        eff_instructions = self.get_effective_instructions(self.genomeList)
+    
+    
+    def get_program_in_python(self):
+        eff_instructions = self.get_effective_instructions()
         
         program = ""
         for i in eff_instructions:
@@ -196,7 +188,14 @@ class Individual():
             else:
                 program += (operations[i[0]].format(i[1], i[2], i[3]) + '\n')
                 
-        
+        return program
+    
+    
+    def eval_fitness(self):
+        """
+        Función de evaluación de fitnes
+        """     
+        program = self.get_program_in_python()
         #in_t tiene las mediciones en el instante t
         error_a_quad = 0
     
@@ -235,6 +234,7 @@ class Individual():
             self.eval_fitness()
         return self.fitness
     
+    
     def __repr__(self):
         """ Return a string representation of Genome """
         ret = "- Individual\n"
@@ -254,7 +254,9 @@ class Individual():
     def clone(self):
         newcopy = copy.deepcopy(self)
         return newcopy    
-        
+
+
+
 if __name__ == "__main__":
     r = Individual(0, 4)
     r.init_class()

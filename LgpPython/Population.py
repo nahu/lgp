@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from multiprocessing import Pool
-from Individual import Individual, ini_individual, get_random_instruction, get_random_operand
+from Individual import Individual, ini_individual, create_new_instruction, get_random_operand
 from Parameters import num_processors, chunk_size, pool_size,p_ins, p_del, num_max_instructions, num_min_instructions,\
-op_min,op_max, step_size_const, p_regmut, p_opermut, p_constmut
+op_min,op_max, step_size_const, p_regmut, p_opermut, p_constmut, var_min, var_max
 from Util import list_swap_element, randomFlipCoin
 
 import random
@@ -50,20 +50,38 @@ def impresiones_mutacion(ins, mutpoint, eff):
 
 
 def macro_mutation(genome):
-    """Agrega o quita instrucciones - Alg. 6.1 --p_ins > p_del """
+    """Agrega o quita instrucciones
+     -- Alg. 6.1 -- 
+     p_ins > p_del 
+     """
     insertion = randomFlipCoin(p_ins)
-    mutation_point = random.randint(0, len(genome.genomeList))    
+    mutation_point = random.randint(0, len(genome.genomeList) - 1)
+        
     if len(genome.genomeList) < num_max_instructions and \
     (insertion or len(genome.genomeList) == num_min_instructions):
-        new_instruction= get_random_instruction()
-        eff = genome.get_effective_registers(mutation_point)
+        new_instruction = create_new_instruction()
+        eff, to_mutate = genome.get_effective_registers(mutation_point)
+        impresiones_mutacion(insertion, mutation_point, eff)
+        
+        while not eff: 
+            """
+            se da en el caso de que el punto de mutación esté por debajo de la última
+            instrucción efectiva 
+            y ésta sea unaria con un operando constante
+            """
+            #cambiar el registro constante del operador unario por uno variable
+            genome.genomeList[to_mutate][3] = random.randint(var_min, var_max)
+            eff, to_mutate = genome.get_effective_registers(mutation_point)
+        
         new_instruction[1] = random.choice(eff)
-        genome.genomeList[mutation_point] = new_instruction
-        impresiones_mutacion(insertion,mutation_point,eff)
+        genome.genomeList.insert(mutation_point, new_instruction)
+        
+        
     if len(genome.genomeList) > num_min_instructions and \
     (not insertion or len(genome.genomeList) == num_max_instructions):
         del genome.genomeList[mutation_point]
         impresiones_mutacion(insertion,mutation_point,[])
+    
     return genome
 
 
@@ -100,6 +118,7 @@ def micro_mutation(genome):
         del instruction[4]
         genome.r_all[instruction[3]]= genome.r_all[instruction[3]] + random.random(0,step_size_const) 
 
+
 def getTipoMicroMutacion(prob):
     if prob <= p_regmut:
         return "registros"
@@ -107,7 +126,7 @@ def getTipoMicroMutacion(prob):
         return "operaciones"
     elif prob > (p_opermut + p_regmut) and prob <= (p_opermut + p_regmut + p_constmut):
         return "constantes"
-       
+
 
 
 class Population:
@@ -150,9 +169,14 @@ if __name__ == "__main__":
     genome = population.internalPop[0]
     print "Instruciones originales"
     print genome
+    print "Effectivas antes"
+    print genome.get_program_in_python()
     genome1 = macro_mutation(genome)
     print "Instruciones mutadas"
     print genome1
+    
+    print "Effectivas después"
+    print genome.get_program_in_python()
     
     
     pool.close() 
