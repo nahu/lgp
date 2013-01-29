@@ -21,7 +21,8 @@ public class SCICTD {
     public static int numberOfTrafos_;
     public int numberOfMuestras_;
     private double[][] matrizConsumo_;
-
+    public int[] nodos = new int[numberOfTrafos_];
+    
     public SCICTD(int cantidadTrafos, int numeroDeObjetivos) throws FileNotFoundException, IOException, ClassNotFoundException {
         numberOfTrafos_ = cantidadTrafos;
         matrizConsumo_ = readProblem("\\Datos60.txt", matrizConsumo_);
@@ -33,7 +34,8 @@ public class SCICTD {
 //        length_[0] = numberOfTrafos_;
     } // TSP
 
-    public void evaluate(int[] nodos) {
+    public Double [][] evaluate(int[] nodos) {
+        
         System.out.println("Configuracion: " + nodos.toString());
         // Se crea el vector fitness de dos elementos: uno para cada objetivo.
         double[] fitness = new double[6];
@@ -52,7 +54,7 @@ public class SCICTD {
         int n = numberOfTrafos_; // Cantidad de transformadores.
         int T = numberOfMuestras_; // Cantidad de muestras.
         double[][] mediciones = matrizConsumo_;
-
+        Double [][] resultados = new Double[T][n];
         // PASO 1: Generar derivadas de errores (Sistemas de ecuaciones).
         // Se guardan las posiciones de los medidores en el vector posiciones.
         int[] posiciones = new int[k];
@@ -150,6 +152,9 @@ public class SCICTD {
                     }
                     // Se calcula la sumatoria de los errores de cada medicion.
                     errorCuad += Math.pow(error, 2.0);
+                    /*GUARDAR ERROR [desconocido][l]*/
+                    resultados[l][desconocido] = Math.pow(error, 2.0);
+                    
                     abs = Math.abs(error);
                     errorAbs += abs;
                     relativo = 100 * abs / real;
@@ -184,6 +189,7 @@ public class SCICTD {
         // Almacena el Fitness del Individuo.
         System.out.println("Fitness - Objetivo 1: " + fitness[2]);
         System.out.println("Fitness - Objetivo 2: " + fitness[5]);
+        return resultados;
         // 0 => Error Cuadratico Promedio
         // 1 => Error Absoluto Promedio
         // 2 => Error Relativo Promedio
@@ -234,14 +240,14 @@ public class SCICTD {
         return matriz;
     }
 
-    public static int[] getConfiguracion(String conf, int n) {
+    public int[] getConfiguracion(String conf, int n) {
         String array[] = conf.split(" ");
-        int[] configuracion = new int[n];
         int i = -1;
+        nodos = new int[n];
         for (String s : array) {
-            configuracion[++i] = Integer.parseInt(s);
+            nodos[++i] = Integer.parseInt(s);
         }
-        return configuracion;
+        return nodos;
     }
 
     public static void main(String[] args) {
@@ -259,13 +265,34 @@ public class SCICTD {
 //            }
 
             n = 40;
-            configuracion = "0 1 1 1 1 1 1 1 1 0 "
-                    + "1 1 1 1 1 1 1 1 1 1 "
-                    + "1 1 1 1 1 1 1 1 1 1 "
-                    + "1 1 1 1 1 1 1 1 1 1 ";
+            configuracion = "1 0 1 0 1 0 1 0 1 0 "
+                    + "1 0 1 0 1 0 1 0 1 0 "
+                    + "1 0 1 0 1 0 1 0 1 0 "
+                    + "1 0 1 0 1 0 1 0 1 0 ";
 
-            SCICTD programa = new SCICTD(n, 2);
-            programa.evaluate(getConfiguracion(configuracion, n));
+            SCICTD programa = new SCICTD(40, 2);
+            
+            FileWriter fw = new FileWriter("C:\\Results.csv");
+            PrintWriter pw = new PrintWriter(fw);
+            Double [][] resultados = programa.evaluate(programa.getConfiguracion(configuracion, n));
+            pw.println("");
+            for (int muestra = 0; muestra < programa.numberOfMuestras_; muestra++) {
+                for (int trans = 0; trans < n; trans++){
+                    if (programa.nodos[trans] == 0){
+                        pw.print(String.valueOf(resultados[muestra][trans]).replace('.', ','));
+                        pw.print(";");
+                    }
+                }
+                pw.println("");
+            }
+            //Flush the output to the file
+            pw.flush();
+
+            //Close the Print Writer
+            pw.close();
+
+            //Close the File Writer
+            fw.close();
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(SCICTD.class.getName()).log(Level.SEVERE, null, ex);

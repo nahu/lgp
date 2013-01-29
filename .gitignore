@@ -36,3 +36,4 @@ nosetests.xml
 
 #eclipse
 .settings/*
+/MathModel/MathModel/nbproject/private/
