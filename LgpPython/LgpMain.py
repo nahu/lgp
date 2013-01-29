@@ -10,87 +10,29 @@ Módulo que define el algoritmo LGP
 @since: 1.0
 """
 
-from sets import Set
 from multiprocessing import Pool
-from Population import Population, tournament
 
+import Population
 import Util
-from Parameters import *
-
-import math
+import Parameters
 import copy
-import random
 
 
 
-"""
-if __name__ == '__main__':
-    pool = Pool(processes=num_processors)
-    
-    '''
-    imap aplica la función eval_fitness para cada elemento de la lista population,
-    es decir, a cada individuo de la población
-    
-    si tarda mucho, considerar usar map o imap_unordered...
-    '''
-    iter = pool.imap(eval_fitness, population, chunk_size)
-    
-    #ver bien como se llaman los atributos de individual
-    for individual in population:
-        individual.fitness = iter.next()
-    
-    pool.close()
-    pool.join()
-"""
-#INICIALIZACION DE REGISTROS DE ENTRADA CONSTANTES
-def init_reg_in_const():
-    """
-    Una solo lista para los registros de entrada constantes. Todos los individuos lo usan.
-    
-    r_const lista de instantes, cada instante t tiene las medidas Xi de los transformadores en donde hay un medidor
-    
-    X[t][i] es el entero leido del archivo, medición del transformador i en el instante t
-    """
-    #Para cada t en el periodo de entrenamiento
-    const = []
-
-    for t in range(0, training_lines):
-        instant = []
-        for i in range(0, n):
-            if (config[i] == '1'):
-                instant.append(data_samples[t][i])
-            
-        const.append(instant)
-        
-    return const
-    
-
-def read_samples():
-    n_data, lines_data, data = Util.get_matrix_from_file(filename)
-    
-    if ( n_data != n or lines_data != lines):
-        print "El archivo no coincide con los parámetros"
-        exit(-1)
-        
-    return data
-    
-
-class LPG():
+class LGP():
     def __init__(self, population_size=1, generations=10):
-        self.population = Population(population_size)
+        self.pool = Pool(processes=Parameters.num_processors)
+        self.population = Population.Population(population_size, self.pool)
         self.num_generations = generations
         self.generation = 0
-        
-        self.pool = Pool(processes=num_processors)
-        
-        
+           
     def terminate(self):
         self.pool.close() 
         self.pool.join()
         
         
     def set_population_size(self, population_size):
-        self.population = Population(population_size)
+        self.population = Population.Population(population_size, self.pool)
         
         
     def set_num_generations(self, generations):
@@ -98,16 +40,48 @@ class LPG():
         
         
     def step(self):
-        to_tour_1 = self.population.selection()
-        to_tour_2 = self.population.selection()
+        to_tournament = []
+        selected_indices = self.population.indices_selection(Parameters.pool_size * 2)
         
-        iter = self.pool.imap(tournament, [to_tour_1, to_tour_2], 1)
+        to_tournament_indices = []
+        to_tournament_indices.append(selected_indices[:Parameters.pool_size])
+        to_tournament_indices.append(selected_indices[Parameters.pool_size:])
+        to_tournament.append(self.population.selection_from_indices(to_tournament_indices[0]))
+        to_tournament.append(self.population.selection_from_indices(to_tournament_indices[1]))
         
+        iter = self.pool.imap(Population.tournament, to_tournament, 99999)
+
+        winners = []
+        for i in range(2):
+            winners.append(iter.next())
         
+        print winners
+        '''Se hacen copias temporales para remplazar luego a los perdedores del torneo'''
+        winners_tmp = []
+        for w in winners:
+            winners_tmp.append(copy.deepcopy(w))
         
-        for individual in range(self.popSize):
-            self.internalPop[individual] = iter.next()
+        if Util.random_flip_coin(Parameters.p_crossover):
+            winners[0], winners[1] = Population.crossover(winners[0], winners[1])
         
+        for i in range(2):
+            if Util.random_flip_coin(Parameters.p_macro_mutation):
+                winners[i] = Population.macro_mutation(winners[i])
+                
+            if Util.random_flip_coin(Parameters.p_micro_mutation):
+                winners[i] = Population.micro_mutation(winners[i])
+            '''Se elimina de la lista de participantes del torneo al ganador, para remplazar a los perdedores'''
+            to_tournament_indices[i].remove(winners[i].index)
+            
+            '''Se setean las copias temporales en las posiciones de los perdedores del torneo
+            y se actualiza el indice dentro de la poblacion'''
+            for l in to_tournament_indices[i]:
+                self.population.internal_pop[l] = copy.deepcopy(winners_tmp[i])
+                self.population.internal_pop[l].index = l
+            
+            '''Se remplaza a los ganadores del torneo por los nuevos individos operados geneticamente'''    
+            self.population.internal_pop[winners[i].index] = winners[i]
+
         
     def termination_criteria(self):
         return self.generation == self.num_generations
@@ -134,31 +108,18 @@ class LPG():
         
         
     def best_individual(self):
-        pass
-    
+        return self.population.best()
+        
     
     def get_validation_errors(self, individual, data):
         pass
         
     
 if __name__ == "__main__":
-
-    data_samples = read_samples()
-    r_const = init_reg_in_const()
-
-    
-    ga = LGP(100, 1000)
-    ga.set_num_generations(1000)
-    ga.set_population_size(100)
-
-    '''
-    print "len" + str(len (ga.internalPop))
-    for i in range(0, len(ga.internalPop)):
-        print i, ga.internalPop[i].r_all
-    print ga.internalPop[0].genomeList
-    '''
-
-    ga.evolve(freq_stats=10)
+    ga = LGP()
+    ga.set_num_generations(10)
+    ga.set_population_size(10)
+    ga.evolve(freq_stats=1)
     
     best = ga.best_individual()
     print "Solución"

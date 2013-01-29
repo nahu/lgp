@@ -11,6 +11,40 @@ Módulo que define las funciones asociadas al algoritmo LGP
 
 from multiprocessing import cpu_count
 
+import Util
+
+
+#INICIALIZACION DE REGISTROS DE ENTRADA CONSTANTES
+def init_reg_in_const():
+    """
+    Una solo lista para los registros de entrada constantes. Todos los individuos lo usan.
+    
+    r_const lista de instantes, cada instante t tiene las medidas Xi de los transformadores en donde hay un medidor
+    
+    X[t][i] es el entero leido del archivo, medición del transformador i en el instante t
+    """
+    #Para cada t en el periodo de entrenamiento
+    const = []
+
+    for t in range(0, training_lines):
+        instant = []
+        for i in range(0, n):
+            if (config[i] == '1'):
+                instant.append(data_samples[t][i])
+            
+        const.append(instant)
+        
+    return const
+
+def read_samples():
+    n_data, lines_data, data = Util.get_matrix_from_file(filename)
+    
+    if ( n_data != n or lines_data != lines):
+        print "El archivo no coincide con los parámetros"
+        exit(-1)
+        
+    return data
+    
 config = "1010101010" + "1010101010" + "1010101010" + "1010101010"
 n = len(config)
 index_to_predict = 1
@@ -22,8 +56,8 @@ filename = "Datos60.txt"
 lines = 248
 training_lines = 144
 validation_lines = 96
-r_const = None
-data_samples = []
+#r_const = None
+#data_samples = []
 #Constante máxima para inicialización de registros
 const_max = 10
 step_size_const = 2
@@ -90,6 +124,10 @@ p_regmut = 0.5
 p_opermut = 0.25
 p_constmut = 0.25
 
+p_micro_mutation = 0.95
+p_crossover = 0.05
+p_macro_mutation = 0.50
+
 """
 Las operaciones sobre la población,
 como la inicialización y la evaluación de fitness se realiza 
@@ -147,3 +185,5 @@ operations = {  1   : 'r_all[{0}] = r_all[{1}] + r_all[{2}]',
                 144 : 'r_all[{0}] = math.cos(in_t[{2}])'
                 }
 
+data_samples = read_samples()
+r_const = init_reg_in_const()
