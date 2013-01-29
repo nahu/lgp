@@ -12,9 +12,12 @@ y las funciones relacionadas
 """
 
 import random
+import math
 import copy
+import copy
+
 from Parameters import *
-from Util import randomFlipCoin
+from Util import random_flip_coin
 
 def ini_individual(obj):
     obj.height = random.randint(num_min_instructions, num_ini_instructions)
@@ -51,7 +54,7 @@ def create_new_instruction():
     instruction.append(random.randint(var_min, var_max)) #Solo puede ser variable.
     
     #operador 2 es constante con probabilidad p_const
-    if randomFlipCoin(p_reg_op2_const):
+    if random_flip_coin(p_reg_op2_const):
         instruction.append(random.randint(cons_al_min, cons_in_max))
     else:
         instruction.append(random.randint(var_min, var_max))
@@ -59,16 +62,32 @@ def create_new_instruction():
     return instruction
 
 
-def get_random_operand(op1):
-    if op1:
-        return random.randint(var_min, var_max)
-    else:
-        if randomFlipCoin(p_reg_op2_const):
-            return random.randint(cons_al_min, cons_in_max)
+def get_random_register(op, reg_eff=None, instruction=None):
+    register = None
+    if op == 1: #destino
+        if not reg_eff:
+            if instruction[0] < 5:
+                op = 2 if random_flip_coin(0.5) else 3 #se hace que se mute uno de los registros operandos
+            else: #operación unaria, se muta el operando 2 para que sea efectiva
+                op = 3
         else:
-            return random.randint(var_min, var_max)
+            print "destino..."
+            register = random.choice(reg_eff)
+    
+    if op == 2: #operando 1
+        print "operando 1"
+        register = random.randint(var_min, var_max)
+    
+    if op == 3: #operando 2
+        print "operando 2"
+        if random_flip_coin(p_reg_op2_const):
+            register = random.randint(cons_al_min, cons_in_max)
+        else:
+            register = random.randint(var_min, var_max)
         
-        
+    return register, op
+
+
 
 class Individual():
     """
@@ -96,7 +115,7 @@ class Individual():
             if (i[1] in reg_eff):
                 reg_eff.remove(i[1])
                 
-                if (i[0] < 6): #los operadores unarios tiene identificador del 6 al 9
+                if (i[0] < 5): #los operadores unarios tiene identificador del 5 al 9
                     reg_eff.add(i[2])
                 
                 if (i[3] <= var_max): #los registros constantes no pueden ser registros efectivos
@@ -118,7 +137,7 @@ class Individual():
             if (i[1] in reg_eff):
                 reg_eff.remove(i[1])
                 
-                if (i[0] < 6): #los operadores unarios tiene identificador del 6 al 9
+                if (i[0] < 5): #los operadores unarios tiene identificador del 5 al 9
                     reg_eff.add(i[2])
                 
                 if (i[3] <= var_max): #los registros constantes no pueden ser registros efectivos
@@ -132,9 +151,8 @@ class Individual():
         return eff_i, indices
     
     
-    def get_effective_instructions_with_constant_indices(self):
+    def get_effective_constant_indices(self):
         reg_eff = set([0])
-        eff_i = []
         indices = []
         current_pos = len(self.genomeList) 
         for i in reversed(self.genomeList):
@@ -142,18 +160,16 @@ class Individual():
             if (i[1] in reg_eff):
                 reg_eff.remove(i[1])
                 
-                if (i[0] < 6):
-                    reg_eff.add(i[2]) #los operadores unarios tiene identificador del 6 al 9
+                if (i[0] < 6): #los operadores unarios tiene identificador del 5 al 9
+                    reg_eff.add(i[2]) 
                 
                 if (i[3] <= var_max): #los registros constantes no pueden ser registros efectivos
                     reg_eff.add(i[3])
-                else:
+                    
+                elif(i[3] <= cons_al_max):
                     indices.append(current_pos)
 
-            
-        eff_i.reverse()
-        indices.reverse()
-        return eff_i, indices
+        return indices
     
     
     def get_effective_registers(self, position):
@@ -165,13 +181,12 @@ class Individual():
         """
         reg_eff = set([0])
         current_pos = len(self.genomeList) 
-        
         for i in reversed(self.genomeList):
             current_pos -= 1
             if (i[1] in reg_eff):
                 reg_eff.remove(i[1])
                 
-                if (i[0] < 6):# los operadores unarios tiene identificador del 6 al 9
+                if (i[0] < 5):# los operadores unarios tiene identificador del 5 al 9
                     reg_eff.add(i[2])
                 
                 if (i[3] <= var_max): #los registros constantes no pueden ser registros efectivos
@@ -246,12 +261,23 @@ class Individual():
     def __repr__(self):
         """ Return a string representation of Genome """
         ret = "- Individual\n"
-        ret += "\tList size:\t %s\n" % (len(self.genomeList))
-        ret += "\tList:\n"
-        for line in self.genomeList:
-            ret += "\t\t\t"
-            for item in line:
-                ret += "[%s] " % (item)
+        ret += "\tList size:\t %s\n" % (self.height)
+        ret += "\tList:\t\t\t\t\t\tRegisters:\n"
+        
+        top = self.height if self.height > len(self.r_all) else len(self.r_all)
+        for line in range(top):
+            ret += "\t"
+            if line < self.height:
+                for item in self.genomeList[line]:
+                    ret += "[%s] " % (item)
+            else:
+                ret += "\t\t"
+            
+            if line < len(self.r_all):   
+                ret += "\t\t\t\t"
+                ret += "r_all[%s] = " % (line)
+                ret += str(self.r_all[line])
+            
             ret += "\n"
         ret+= "\tFitness:\t\t %.6f\n\n" % (self.fitness,)
 

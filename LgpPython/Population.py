@@ -12,10 +12,10 @@ y las funciones relacionadas
 """
 
 from multiprocessing import Pool
-from Individual import Individual, ini_individual, create_new_instruction, get_random_operand
+from Individual import Individual, ini_individual, create_new_instruction, get_random_register
 from Parameters import num_processors, chunk_size, pool_size,p_ins, p_del, num_max_instructions, num_min_instructions,\
 op_min,op_max, step_size_const, p_regmut, p_opermut, p_constmut, var_min, var_max
-from Util import list_swap_element, randomFlipCoin
+from Util import list_swap_element, random_flip_coin
 
 import random
 
@@ -65,16 +65,16 @@ def macro_mutation(genome):
      -- Alg. 6.1 -- 
      p_ins > p_del 
      """
-    insertion = randomFlipCoin(p_ins)
+    insertion = random_flip_coin(p_ins)
     mutation_point = random.randint(0, len(genome.genomeList) - 1)
         
     if len(genome.genomeList) < num_max_instructions and \
     (insertion or len(genome.genomeList) == num_min_instructions):
         new_instruction = create_new_instruction()
-        eff, to_mutate = genome.get_effective_registers(mutation_point)
-        impresiones_mutacion(insertion, mutation_point, eff)
+        reg_eff, to_mutate = genome.get_effective_registers(mutation_point)
+        #impresiones_mutacion(insertion, mutation_point, reg_eff)
         
-        while not eff: 
+        while not reg_eff: 
             """
             se da en el caso de que el punto de mutación esté por debajo de la última
             instrucción efectiva 
@@ -82,16 +82,17 @@ def macro_mutation(genome):
             """
             #cambiar el registro constante del operador unario por uno variable
             genome.genomeList[to_mutate][3] = random.randint(var_min, var_max)
-            eff, to_mutate = genome.get_effective_registers(mutation_point)
+            reg_eff, to_mutate = genome.get_effective_registers(mutation_point)
         
-        new_instruction[1] = random.choice(eff)
+        new_instruction[1] = random.choice(reg_eff)
         genome.genomeList.insert(mutation_point, new_instruction)
+        self.height += 1
         
         
     if len(genome.genomeList) > num_min_instructions and \
     (not insertion or len(genome.genomeList) == num_max_instructions):
         del genome.genomeList[mutation_point]
-        impresiones_mutacion(insertion,mutation_point,[])
+        #impresiones_mutacion(insertion,mutation_point,[])
     
     return genome
 
@@ -103,40 +104,73 @@ def micro_mutation(genome):
     p_constmut = 0.25
     """
     eff, indices = genome.get_effective_instructions_with_indices()
-    mutation_point = random.randint(0, len(eff) - 1)
-    instruction = eff[mutation_point]
-    index = indices[mutation_point]
+    index = random.randint(0, len(eff) - 1)
+    #print "index " + str(index)
+    instruction = eff[index]
+    mutation_point = indices[index]
+    #print "mutation point: " + str(mutation_point) + " index : " + str(index)
+    
+    type = select_micro_mutacion_type(random.random())
 
-    type = select_micro_mutacion_type(0.4)#random.random())
-    if (type == "registros"):
-        pos_to_replace = random.randint(1, 3)
-        
-        if pos_to_replace == 1: #es destino
-            reg_eff = genome.get_effective_registers(index)
-            reg_eff.remove(instruction[1])
-            instruction[pos_to_replace] = random.choice(reg_eff)
-        else:
-            op = get_random_operand(pos_to_replace == 2 ) #Si es el primer op manda true
-            instruction[pos_to_replace] = op
+    if (type == "constantes"):
+        constants_indices = genome.get_effective_constant_indices()
+        print constants_indices
+        if constants_indices:
+            ins_with_constant_index = random.choice(constants_indices)
+            register_mutation_index = genome.genomeList[ins_with_constant_index][3]
+            genome.r_all[register_mutation_index] += ((-1)**(random.randint(0, 1)) * random.uniform(0, step_size_const))
             
-        genome.genomeList[index] = instruction
+        else: #no hay instrucciones efectivas con registros constantes variables
+            type = select_micro_mutacion_type(random.random()) #si vuelve a salir constante, se elige mutación de registro o operaciones con igual probabilidad
+            if (type == "constantes"):
+                type = "registros" if random_flip_coin(0.5) else "operaciones"
+                
+                
+    if (type == "registros"):
+        if len(eff) == 1: #una sola instrucción efectiva, no se puede cambiar r[0]
+            if (instruction[0] < 5):
+                pos_to_replace = random.randint(2, 3)
+            else: #operación unaria, cambiar el segundo operando
+                pos_to_replace = 3
+        else:
+            if (instruction[0] < 5):
+                pos_to_replace = random.randint(1, 3)
+            else: #operación unaria, cambiar el segundo operando o el destino
+                pos_to_replace = 1 if random_flip_coin(0.5) else 3
         
-    elif (type == "operaciones"):
+        if pos_to_replace == 1:
+
+            if (index + 1) < len(indices):
+                reg_eff, to_mutate = genome.get_effective_registers(indices[index + 1])
+                
+                if reg_eff:
+                    reg_eff.remove(instruction[1]) #remover el registro destino de los registros efectivos
+                    
+                op, pos_to_replace = get_random_register(pos_to_replace, reg_eff, instruction)
+            else: #el punto de mutación es la última instrucción con el r[0]
+                if (instruction[0] < 5): 
+                    pos_to_replace = random.randint(2, 3)
+                else: #operación unaria, cambiar el segundo operando
+                    pos_to_replace = 3
+                    
+                op, pos_to_replace = get_random_register(pos_to_replace)
+        else: #para los casos de operandos 1 y 2
+            op, pos_to_replace = get_random_register(pos_to_replace)
+            
+        instruction[pos_to_replace] = op
+            
+        genome.genomeList[mutation_point] = instruction
+        
+    if (type == "operaciones"):
         diff_op = random.randint(op_min, op_max)
         
         while instruction[0] == diff_op:
             diff_op = random.randint(op_min, op_max)
             
         instruction[0] = diff_op
-        genome.genomeList[index] = instruction
-        
-    elif(type == "constantes"):
-        indices = genome.get_effective_instructions_with_constant_indices()
-        index = random.choise(indices)
-        instruction[4]
-        del instruction[4]
-        genome.r_all[instruction[3]]= genome.r_all[instruction[3]] + random.random(0,step_size_const) 
-
+        genome.genomeList[mutation_point] = instruction
+    
+    return genome
 
 def select_micro_mutacion_type(prob):
     if prob <= p_regmut:

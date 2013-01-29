@@ -59,10 +59,10 @@ def get_effective_instructions(genomeList):
         eff_i = []
         for i in reversed(genomeList):
             if (i[1] in reg_eff):
-                # los operadores unarios tiene identificador del 6 al 9
+                # los operadores unarios tiene identificador del 5 al 9
                 reg_eff.remove(i[1])
                 
-                if (i[0] < 6):
+                if (i[0] < 5):
                     reg_eff.add(i[2])
                 
                 reg_eff.add(i[3])
