@@ -40,6 +40,30 @@ def ini_individual(obj):
     return obj
 
 
+def eval_individual(individual):
+    """
+    Función de evaluación, dado un objeto con el atributo config_position 
+    retorna una lista del error cuadrático
+    para cada línea del los casos de evaluación
+    """
+    
+    program = individual.get_program_in_python()
+    #in_t tiene las mediciones en el instante t
+    error_a_quad = []
+#        print Parameters.r_const
+    #try:
+    for t in range(Parameters.training_lines, Parameters.lines):
+        in_t = Parameters.r_const[t]
+        r_all = copy.copy(individual.r_all)
+        
+        exec program
+        
+        error_a_quad.append((r_all[0] - Parameters.data_samples[t][individual.config_position]) ** 2)
+        
+        
+    return error_a_quad
+
+
 def create_new_instruction():
     """
     reg_sal                      -> registro de salida
@@ -96,12 +120,13 @@ class Individual():
         heigth: cantidad de instrucciones para un programa
         width: componentes de una instruccion [instrucción, destino, operador1, operador2]
     """
-    def __init__(self, width, index):
+    def __init__(self, width, index, config_position):
         self.width = width
         self.genomeList = []
         self.fitness= 0.0
         self.index = index
         self.evaluated = False
+        self.config_position = config_position
         
             
     def get_effective_instructions(self):
@@ -219,42 +244,50 @@ class Individual():
         #in_t tiene las mediciones en el instante t
         error_a_quad = 0
 #        print Parameters.r_const
-        #try:
-        for t in range(0, Parameters.training_lines -1):
-            in_t = Parameters.r_const[t]
-            r_all = copy.copy(self.r_all)
-            '''
-            print "program"
-            print program
-            print "in_t"
-            print in_t
-            print "t"
-            print t
-            print "r_all"
-            
-            for i in range (0, len(r_all)):
-                if (i< len(in_t)):
-                    print i, r_all[i], in_t[i]
-                else:
-                    print i, r_all[i]
-            '''
-            exec program
-            
-            error_a_quad += (r_all[0] - Parameters.data_samples[t][Parameters.index_to_predict]) ** 2
-
+        try:
+            for t in range(0, Parameters.training_lines):
+                in_t = Parameters.r_const[t]
+                r_all = copy.copy(self.r_all)
+                '''
+                print "program"
+                print program
+                print "in_t"
+                print in_t
+                print "t"
+                print t
+                print "r_all"
                 
-            error_prom_quad = error_a_quad / Parameters.training_lines
+                for i in range (0, len(r_all)):
+                    if (i< len(in_t)):
+                        print i, r_all[i], in_t[i]
+                    else:
+                        print i, r_all[i]
+                '''
+                exec program
+                
+                error_a_quad += (r_all[0] - Parameters.data_samples[t][self.config_position]) ** 2
+    
+                    
+                error_prom_quad = error_a_quad / Parameters.training_lines
             
-            
-        self.fitness = 1 / error_prom_quad
-        '''
-        except:
+            #para evitar la división por cero
+            if error_prom_quad == 0.0:
+                error_prom_quad = 0.000000001
+                
+            self.fitness = 1 / error_prom_quad
+        
+        except Exception as e:
             """
             Si ocurre una excepción el fitness se iguala a cero (Overflow muy probablemente)
             """
             print "EXCEPCION"
+            print e
+            print program
+            print self
+            print "error_prom_quad " + str(error_prom_quad)
+            print "error_a_quad " + str(error_a_quad)
             self.fitness = 0.0
-        '''   
+        
         self.evaluated = True
         
         
@@ -267,6 +300,7 @@ class Individual():
     def __repr__(self):
         """ Return a string representation of Genome """
         ret = " %s - Individual\n" % (self.index)
+        ret = " Config Position: %s\n" % (self.config_position)
         ret += "\tList size:\t %s\n" % (self.height)
         ret += "\tList:\t\t\t\t\t\tRegisters:\n"
         
@@ -303,8 +337,7 @@ class Individual():
 
 
 if __name__ == "__main__":
-    r = Individual(0, 4)
-    r.init_class()
+    r = Individual(0, 4, 0)
     r.initialize()
 
     print r.genomeList

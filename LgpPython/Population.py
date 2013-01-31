@@ -240,14 +240,16 @@ def select_micro_mutacion_type(prob):
 
 
 class Population:
-    def __init__(self, size, pool):
+    def __init__(self, size, pool, config_position):
         self.internal_pop = []
         self.pop_size = size
         self.pool = pool
+        self.config_position = config_position
+        
 
     def create(self, **args):
         for i in xrange(self.pop_size):
-            self.internal_pop.append(Individual.Individual(4, i))
+            self.internal_pop.append(Individual.Individual(4, i, self.config_position))
 
     def initialize(self):
         self.create()
@@ -292,7 +294,7 @@ class Population:
     
 if __name__ == "__main__":
     pool = Pool(processes=Parameters.num_processors)
-    population = Population(2, pool)
+    population = Population(2, pool, Parameters.index_to_predict)
     population.initialize()
     genome1 = population.internal_pop[0]
     genome2 = population.internal_pop[1]

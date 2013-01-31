@@ -26,7 +26,7 @@ def init_reg_in_const():
     #Para cada t en el periodo de entrenamiento
     const = []
 
-    for t in range(0, training_lines):
+    for t in range(0, lines):
         instant = []
         for i in range(0, n):
             if (config[i] == '1'):
@@ -73,7 +73,7 @@ la convención para asegurar que el programa tenga una salida es que la
 última instrucción sea del tipo [operación, 0, operador1, operador2]
 """
 num_min_instructions = k
-num_max_instructions = 6*k
+num_max_instructions = 8*k
 num_ini_instructions = 2*k
 num_operators = 9
 
@@ -111,8 +111,10 @@ num_const_random_registers = k
 register_offset = 3*k + 1
 
 #ALGORITMO EVOLUTIVO
-num_generations = 10000
+num_generations = 100000
 population_size = 1000000
+
+freq_stats=10000
 pool_size = 4
 
 
@@ -125,8 +127,8 @@ p_opermut = 0.25
 p_constmut = 0.25
 
 p_micro_mutation = 0.95
-p_crossover = 0.05
-p_macro_mutation = 0.50
+p_crossover = 0.10
+p_macro_mutation = 0.60
 
 """
 Las operaciones sobre la población,

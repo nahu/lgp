@@ -16,15 +16,16 @@ import Population
 import Util
 import Parameters
 import copy
-
+import Individual
 
 
 class LGP():
-    def __init__(self, population_size=1, generations=10):
+    def __init__(self, population_size=1, generations=10, config_position=0):
         self.pool = Pool(processes=Parameters.num_processors)
-        self.population = Population.Population(population_size, self.pool)
+        self.population = Population.Population(population_size, self.pool, config_position)
         self.num_generations = generations
         self.generation = 0
+        self.config_position = config_position
     
     
     def terminate(self):
@@ -33,7 +34,7 @@ class LGP():
         
         
     def set_population_size(self, population_size):
-        self.population = Population.Population(population_size, self.pool)
+        self.population = Population.Population(population_size, self.pool, self.config_position)
         
         
     def set_num_generations(self, generations):
@@ -136,14 +137,51 @@ class LGP():
         
     
 if __name__ == "__main__":
+#    print Parameters.data_samples
+#    print Parameters.r_const
+    best_individuals = []
+    for i in range(Parameters.n):
+        if Parameters.config[i] == '0':
+            print "Transformador " + str(i)
+            ga = LGP(config_position=i)
+            ga.set_num_generations(Parameters.num_generations)
+            ga.set_population_size(Parameters.population_size)
+            ga.evolve(freq_stats=Parameters.freq_stats)
+            
+            best = ga.best_individual()
+            ga.terminate()
+            
+            best_individuals.append(best)
+        #    print "Solución"
+        #    print best
+            
     
-    ga = LGP()
-    ga.set_num_generations(1000)
-    ga.set_population_size(40)
-    ga.evolve(freq_stats=100)
+    pool = Pool(processes=Parameters.num_processors)
     
-    best = ga.best_individual()
-    print "Solución"
-    print best
-    ga.terminate()
+    iter = pool.imap(Individual.eval_individual, best_individuals, Parameters.chunk_size)
     
+    final_table = []
+    for j in range(Parameters.n - Parameters.k):
+        final_table.append(iter.next())
+    f_errors = "errores" + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + ".csv"
+    f = open(f_errors, "w")
+    for t in range(Parameters.validation_lines):
+        row = ""
+        for i in range(Parameters.n - Parameters.k):
+            row += (str(final_table[i][t]) + ";")
+        row += "\n"
+        f.write(row.replace('.', ','))
+    
+    f_programs = "programas" + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + ".txt"
+    g = open(f_programs, "w")
+    for b in best_individuals:
+        g.write(repr(b))
+        g.write("\n")
+        g.write(b.get_program_in_python())
+        g.write("\n\n\n")
+    
+    
+    g.close()
+    f.close()
+    pool.close() 
+    pool.join()
