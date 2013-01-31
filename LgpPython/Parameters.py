@@ -111,10 +111,10 @@ num_const_random_registers = k
 register_offset = 3*k + 1
 
 #ALGORITMO EVOLUTIVO
-num_generations = 100000
-population_size = 1000000
+num_generations = 10000
+population_size = 50
 
-freq_stats=10000
+freq_stats=100
 pool_size = 4
 
 
@@ -127,7 +127,7 @@ p_opermut = 0.25
 p_constmut = 0.25
 
 p_micro_mutation = 0.95
-p_crossover = 0.10
+p_crossover = 1.0
 p_macro_mutation = 0.60
 
 """

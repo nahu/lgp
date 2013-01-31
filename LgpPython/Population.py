@@ -51,6 +51,18 @@ def crossover(genome1, genome2):
     cuts_points_mom = [None, None]
     cuts_points_dad = [None, None]
     
+    if genome1.height > Parameters.num_max_instructions:
+        print "genome 1 - superado el número maximo de instrucciones ENTRADA CROSS"
+    
+    if genome2.height > Parameters.num_max_instructions:
+        print "genome 2 - superado el número maximo de instrucciones ENTRADA CROSS"
+        
+    if genome1.height < Parameters.num_min_instructions:
+        print "genome 1 - superado el número minimo de instrucciones ENTRADA CROSS"
+    
+    if genome2.height < Parameters.num_min_instructions:
+        print "genome 2 - superado el número minimo de instrucciones ENTRADA CROSS"
+        
     mom, dad = (genome1, genome2) if genome1.height < genome2.height else (genome2, genome1)
     try:
         max_segment_size_mom = mom.height - 1 #se puede cruzar todo menos la última instrucción
@@ -62,18 +74,24 @@ def crossover(genome1, genome2):
         #cuts_points_mom = [0, mom.height - 2]#[random.randint(1, mom.height - 2), random.randint(1, mom.height - 2)]
        
         #el máximo segmento a cruzar es lo que le falta al mom para completar el máximo número de instrucciones permitidas
-        max_segment_full_mom = Parameters.num_max_instructions - (mom.height - mom_segment_size - 1) 
-        max_segment_num_min_in_dad = (dad.height + mom_segment_size) + Parameters.num_min_instructions
+        max_segment_full_mom = Parameters.num_max_instructions - (mom.height - mom_segment_size) 
+        max_segment_num_min_in_dad = (dad.height + mom_segment_size) - Parameters.num_min_instructions
         
         #se elije el menor de los máximos
-        
         max_segment_size_dad = max_segment_full_mom if max_segment_full_mom < max_segment_num_min_in_dad else max_segment_num_min_in_dad
         #si el maximo es mayor a lo longitud del padre, se elige la longitud como máximo
-        max_segment_size_dad = (dad.height - 1) if dad.height < max_segment_size_dad else max_segment_size_dad
-        # lo que falta para completar el mínimo número de instrucciones al mom
-        mim_segment_size_dad = Parameters.num_min_instructions - (mom.height - mom_segment_size - 1) 
-        mim_segment_size_dad = 1 if mim_segment_size_dad < 0 else mim_segment_size_dad
+        max_segment_size_dad = (dad.height - 1) if (dad.height - 1) < max_segment_size_dad else max_segment_size_dad
         
+
+        
+        #lo que hay que quitarle para que quede en máximo número de instrucciones
+        min_segment_full_dad = (dad.height + mom_segment_size) - Parameters.num_max_instructions
+        
+        # lo que falta para completar el mínimo número de instrucciones al mom
+        mim_segment_size_num_min_in_mom = Parameters.num_min_instructions - (mom.height - mom_segment_size)
+         
+        mim_segment_size_dad = min_segment_full_dad if (min_segment_full_dad > mim_segment_size_num_min_in_mom) else mim_segment_size_num_min_in_mom
+        mim_segment_size_dad = 1 if mim_segment_size_dad <= 0 else mim_segment_size_dad
         
         dad_segment_size = random.randint(mim_segment_size_dad, max_segment_size_dad)
         
@@ -96,6 +114,19 @@ def crossover(genome1, genome2):
         brother.height = len(brother.genomeList)
         brother.index = genome2.index
         brother.set_altered()
+        
+        if sister.height > Parameters.num_max_instructions:
+            print "sister  - superado el número maximo de instrucciones ENTRADA CROSS"
+        
+        if brother.height > Parameters.num_max_instructions:
+            print "brother- superado el número maximo de instrucciones ENTRADA CROSS"
+            
+        if sister.height < Parameters.num_min_instructions:
+            print "sister 1 - superado el número minimo de instrucciones ENTRADA CROSS"
+        
+        if brother.height < Parameters.num_min_instructions:
+            print "brother 2 - superado el número minimo de instrucciones ENTRADA CROSS"
+            
     except Exception as e:
         print "oh no!"
         print e
@@ -122,8 +153,8 @@ def macro_mutation(genome):
     insertion = random_flip_coin(Parameters.p_ins)
     mutation_point = random.randint(0, len(genome.genomeList) - 2)
         
-    if len(genome.genomeList) < Parameters.num_max_instructions and \
-    (insertion or len(genome.genomeList) == Parameters.num_min_instructions):
+    if genome.height < Parameters.num_max_instructions and \
+    (insertion or genome.height == Parameters.num_min_instructions):
         new_instruction = Individual.create_new_instruction()
         reg_eff, to_mutate = genome.get_effective_registers(mutation_point)
         #impresiones_mutacion(insertion, mutation_point, reg_eff)
@@ -143,13 +174,15 @@ def macro_mutation(genome):
         genome.height += 1
         
         
-    if len(genome.genomeList) > Parameters.num_min_instructions and \
-    (not insertion or len(genome.genomeList) == Parameters.num_max_instructions):
+    if genome.height > Parameters.num_min_instructions and \
+    (not insertion or genome.height == Parameters.num_max_instructions):
         del genome.genomeList[mutation_point]
         genome.height -= 1
         #impresiones_mutacion(insertion,mutation_point,[])
     
     genome.set_altered()
+    if genome.height > Parameters.num_max_instructions:
+        print "superado el número maximo de instrucciones MACRO"
     return genome
 
 
