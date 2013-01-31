@@ -71,6 +71,23 @@ def random_flip_coin(p):
     if random.random() <= p: return True
     else: return False
 
+def write_csv_results(index_trafo, T):
+    import csv, os
+    
+    lol = []
+    '''para cada muestra se halla el error'''
+    for t in range(0, T): 
+        error = get_estimation_error(index_trafo, t)
+        lol.append(error)
+    file_writer = csv.writer(open(os.getcwd() + "python.csv","wb"), delimiter=';')
+    muestra = -1
+    for x in lol:
+        muestra+=1
+        file_writer.writerow([muestra, str(x).replace('.', ',')])
+        
+def get_estimation_error(index, t):
+    return random.uniform(0,1000)
+
 
 if __name__ == "__main__":
     """

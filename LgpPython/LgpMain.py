@@ -145,5 +145,6 @@ if __name__ == "__main__":
     best = ga.best_individual()
     print "Solución"
     print best
+    Util.write_csv_results(1, 96)
     ga.terminate()
     
