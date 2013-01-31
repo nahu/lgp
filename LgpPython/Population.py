@@ -15,6 +15,8 @@ from multiprocessing import Pool
 import Individual
 import Parameters
 
+import sys
+
 from Util import list_swap_element, random_flip_coin
 
 import random
@@ -26,7 +28,7 @@ def tournament(competitors):
     for i in range(1, len(competitors)):
         if choosen.evaluate() < competitors[i].evaluate():
             choosen = competitors[i]
-            
+    '''        
     print "ganador del torneo: " + str(choosen.index)
     
     bandera = False
@@ -38,28 +40,68 @@ def tournament(competitors):
             
     print imprimir
     if not bandera:
-        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa"
+        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    '''
     return choosen
 
 
-def crossover(mom, dad):
+def crossover(genome1, genome2):
     sister = None
     brother = None
-
-    cuts_points_mom = [random.randint(1, len(mom.genomeList)-1), random.randint(1, len(mom.genomeList)-1)]
-    if cuts_points_mom[0] > cuts_points_mom[1]:
-        list_swap_element(cuts_points_mom, 0, 1)
-        
-    cuts_points_dad = [random.randint(1, len(dad.genomeList)-1), random.randint(1, len(dad.genomeList)-1)]    
-    if cuts_points_dad[0] > cuts_points_dad[1]:
-        list_swap_element(cuts_points_dad, 0, 1)
+    cuts_points_mom = [None, None]
+    cuts_points_dad = [None, None]
     
-    sister = mom.clone()
-    sister.genomeList[cuts_points_mom[0]:cuts_points_mom[1]] = dad.genomeList[cuts_points_dad[0]:cuts_points_dad[1]]
-
-    brother = dad.clone()
-    brother.genomeList[cuts_points_dad[0]:cuts_points_dad[1]] = mom.genomeList[cuts_points_mom[0]:cuts_points_mom[1]]
-
+    mom, dad = (genome1, genome2) if genome1.height < genome2.height else (genome2, genome1)
+    try:
+        max_segment_size_mom = mom.height - 1 #se puede cruzar todo menos la última instrucción
+        mom_segment_size = random.randint(1, max_segment_size_mom) #por lo menos una instrucción se tiene que cruzar
+        max_padding_mom =  mom.height - mom_segment_size - 1
+        cuts_points_mom[0] = random.randint(0, max_padding_mom) #desde donde se puede comenzar para que alcancen las instrucciones del segmento a cruzar
+        cuts_points_mom[1] = cuts_points_mom[0] + mom_segment_size
+        
+        #cuts_points_mom = [0, mom.height - 2]#[random.randint(1, mom.height - 2), random.randint(1, mom.height - 2)]
+       
+        #el máximo segmento a cruzar es lo que le falta al mom para completar el máximo número de instrucciones permitidas
+        max_segment_full_mom = Parameters.num_max_instructions - (mom.height - mom_segment_size - 1) 
+        max_segment_num_min_in_dad = (dad.height + mom_segment_size) + Parameters.num_min_instructions
+        
+        #se elije el menor de los máximos
+        
+        max_segment_size_dad = max_segment_full_mom if max_segment_full_mom < max_segment_num_min_in_dad else max_segment_num_min_in_dad
+        #si el maximo es mayor a lo longitud del padre, se elige la longitud como máximo
+        max_segment_size_dad = (dad.height - 1) if dad.height < max_segment_size_dad else max_segment_size_dad
+        # lo que falta para completar el mínimo número de instrucciones al mom
+        mim_segment_size_dad = Parameters.num_min_instructions - (mom.height - mom_segment_size - 1) 
+        mim_segment_size_dad = 1 if mim_segment_size_dad < 0 else mim_segment_size_dad
+        
+        
+        dad_segment_size = random.randint(mim_segment_size_dad, max_segment_size_dad)
+        
+        max_padding_dad = dad.height - dad_segment_size - 1
+        cuts_points_dad[0] = random.randint(0, max_padding_dad) #desde donde se puede comenzar para que alcancen las instrucciones del segmento a cruzar
+        cuts_points_dad[1] = cuts_points_dad[0] + dad_segment_size
+        
+        
+        sister = mom.clone()
+        sister.genomeList[cuts_points_mom[0]:cuts_points_mom[1]] = dad.genomeList[cuts_points_dad[0]:cuts_points_dad[1]]
+    
+        brother = dad.clone()
+        brother.genomeList[cuts_points_dad[0]:cuts_points_dad[1]] = mom.genomeList[cuts_points_mom[0]:cuts_points_mom[1]]
+        
+        
+        
+        sister.height = len(sister.genomeList)
+        sister.index = genome1.index
+        sister.set_altered()
+        brother.height = len(brother.genomeList)
+        brother.index = genome2.index
+        brother.set_altered()
+    except Exception as e:
+        print "oh no!"
+        print e
+        print sys.exc_info()[0]
+        
+    
     return (sister, brother)
 
 
@@ -78,7 +120,7 @@ def macro_mutation(genome):
      p_ins > p_del 
      """
     insertion = random_flip_coin(Parameters.p_ins)
-    mutation_point = random.randint(0, len(genome.genomeList) - 1)
+    mutation_point = random.randint(0, len(genome.genomeList) - 2)
         
     if len(genome.genomeList) < Parameters.num_max_instructions and \
     (insertion or len(genome.genomeList) == Parameters.num_min_instructions):
@@ -104,8 +146,10 @@ def macro_mutation(genome):
     if len(genome.genomeList) > Parameters.num_min_instructions and \
     (not insertion or len(genome.genomeList) == Parameters.num_max_instructions):
         del genome.genomeList[mutation_point]
+        genome.height -= 1
         #impresiones_mutacion(insertion,mutation_point,[])
     
+    genome.set_altered()
     return genome
 
 
@@ -126,7 +170,7 @@ def micro_mutation(genome):
 
     if (type == "constantes"):
         constants_indices = genome.get_effective_constant_indices()
-        print constants_indices
+        #print constants_indices
         if constants_indices:
             ins_with_constant_index = random.choice(constants_indices)
             register_mutation_index = genome.genomeList[ins_with_constant_index][3]
@@ -182,6 +226,7 @@ def micro_mutation(genome):
         instruction[0] = diff_op
         genome.genomeList[mutation_point] = instruction
     
+    genome.set_altered()
     return genome
 
 def select_micro_mutacion_type(prob):
@@ -249,17 +294,39 @@ if __name__ == "__main__":
     pool = Pool(processes=Parameters.num_processors)
     population = Population(2, pool)
     population.initialize()
-    genome = population.internal_pop[0]
+    genome1 = population.internal_pop[0]
+    genome2 = population.internal_pop[1]
     print "Instruciones originales"
-    print genome
-    print "Effectivas antes"
-    print genome.get_program_in_python()
-    genome1 = micro_mutation(genome)
-    print "Instruciones mutadas"
+    print "ind 1"
     print genome1
+    print "ind 2"
+    print genome2
     
+    print "Effectivas antes"
+    print "program 1"
+    print genome1.get_program_in_python()
+    print "program 2"
+    print genome2.get_program_in_python()
+    
+    
+    sister, brother = crossover(genome1, genome2)
+    print "Instruciones cruzadas"
+    print "el 1"
+    print sister
+    print "el 2"
+    print brother
+    '''
+    print "Instruciones originales"
+    print "el 1"
+    print genome1
+    print "el 2"
+    print genome2
+    '''
     print "Effectivas después"
-    print genome.get_program_in_python()
+    print "program 1"
+    print sister.get_program_in_python()
+    print "program 2"
+    print brother.get_program_in_python()
     
     
     pool.close() 

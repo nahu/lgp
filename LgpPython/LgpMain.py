@@ -25,7 +25,8 @@ class LGP():
         self.population = Population.Population(population_size, self.pool)
         self.num_generations = generations
         self.generation = 0
-           
+    
+    
     def terminate(self):
         self.pool.close() 
         self.pool.join()
@@ -49,34 +50,49 @@ class LGP():
         to_tournament.append(self.population.selection_from_indices(to_tournament_indices[0]))
         to_tournament.append(self.population.selection_from_indices(to_tournament_indices[1]))
         
-        iter = self.pool.imap(Population.tournament, to_tournament, 99999)
+        iter = self.pool.imap(Population.tournament, to_tournament, Parameters.chunk_size)
 
         winners = []
         for i in range(2):
             winners.append(iter.next())
         
-        print winners
+        
         '''Se hacen copias temporales para remplazar luego a los perdedores del torneo'''
         winners_tmp = []
         for w in winners:
-            winners_tmp.append(copy.deepcopy(w))
+            winners_tmp.append(w.clone())
         
         if Util.random_flip_coin(Parameters.p_crossover):
             winners[0], winners[1] = Population.crossover(winners[0], winners[1])
-        
+            
+        if not self.check_out_register(winners[0]) or not self.check_out_register(winners[1]):
+            print "El crossover mató"
+            
         for i in range(2):
-            if Util.random_flip_coin(Parameters.p_macro_mutation):
-                winners[i] = Population.macro_mutation(winners[i])
-                
+            try:
+                if Util.random_flip_coin(Parameters.p_macro_mutation):
+                    winners[i] = Population.macro_mutation(winners[i])
+            
+                if not self.check_out_register(winners[i]):
+                    print "La macro mató"
+            except:
+                print "La macro matOOOó"
+                 
             if Util.random_flip_coin(Parameters.p_micro_mutation):
                 winners[i] = Population.micro_mutation(winners[i])
+            try:   
+                if not self.check_out_register(winners[i]):
+                    print "La miiicro mató"
+            except:
+                print "La miiicro mató"
+                
             '''Se elimina de la lista de participantes del torneo al ganador, para remplazar a los perdedores'''
             to_tournament_indices[i].remove(winners[i].index)
             
             '''Se setean las copias temporales en las posiciones de los perdedores del torneo
             y se actualiza el indice dentro de la poblacion'''
             for l in to_tournament_indices[i]:
-                self.population.internal_pop[l] = copy.deepcopy(winners_tmp[i])
+                self.population.internal_pop[l] = winners_tmp[i].clone()
                 self.population.internal_pop[l].index = l
             
             '''Se remplaza a los ganadores del torneo por los nuevos individos operados geneticamente'''    
@@ -85,6 +101,10 @@ class LGP():
         
     def termination_criteria(self):
         return self.generation == self.num_generations
+    
+    
+    def check_out_register(self, individual):
+        return individual.genomeList[individual.height - 1][1] == 0
     
     
     def evolve(self, freq_stats=0):
@@ -116,11 +136,14 @@ class LGP():
         
     
 if __name__ == "__main__":
+    
     ga = LGP()
-    ga.set_num_generations(10)
-    ga.set_population_size(10)
-    ga.evolve(freq_stats=1)
+    ga.set_num_generations(1000)
+    ga.set_population_size(40)
+    ga.evolve(freq_stats=100)
     
     best = ga.best_individual()
     print "Solución"
     print best
+    ga.terminate()
+    

@@ -45,7 +45,7 @@ def create_new_instruction():
     reg_sal                      -> registro de salida
     op_min, op_max               -> instrucciones
     cons_in_min, cons_in_max     -> registros de entrada constantes --> estan en r_const
-    cons_al_min, cons_al_max     -> Constantes aleatorias inicializadas entre (0,random_max)
+    cons_al_min, cons_al_max     -> Constantes aleatorias inicializadas entre (0, random_max)
     var_min, var_max             -> registros variables inicializados a 1.
     """
     instruction = []
@@ -218,7 +218,7 @@ class Individual():
         program = self.get_program_in_python()
         #in_t tiene las mediciones en el instante t
         error_a_quad = 0
-        print Parameters.r_const
+#        print Parameters.r_const
         #try:
         for t in range(0, Parameters.training_lines -1):
             in_t = Parameters.r_const[t]
@@ -244,6 +244,8 @@ class Individual():
 
                 
             error_prom_quad = error_a_quad / Parameters.training_lines
+            
+            
         self.fitness = 1 / error_prom_quad
         '''
         except:
@@ -267,7 +269,7 @@ class Individual():
         ret = " %s - Individual\n" % (self.index)
         ret += "\tList size:\t %s\n" % (self.height)
         ret += "\tList:\t\t\t\t\t\tRegisters:\n"
-        '''
+        
         top = self.height if self.height > len(self.r_all) else len(self.r_all)
         for line in range(top):
             ret += "\t"
@@ -283,7 +285,7 @@ class Individual():
                 ret += str(self.r_all[line])
             
             ret += "\n"
-        '''
+        
         ret+= "\tFitness:\t\t %.6f\n\n" % (self.fitness)
 
         ret += "\n"
@@ -292,7 +294,11 @@ class Individual():
     
     def clone(self):
         newcopy = copy.deepcopy(self)
-        return newcopy    
+        return newcopy
+    
+    def set_altered(self):
+        self.fitness = 0.0
+        self.evaluated = False    
 
 
 
