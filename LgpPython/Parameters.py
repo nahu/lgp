@@ -127,8 +127,8 @@ p_opermut = 0.25
 p_constmut = 0.25
 
 p_micro_mutation = 0.95
-p_crossover = 1.0
-p_macro_mutation = 0.60
+p_crossover = 0.15
+p_macro_mutation = 1.0
 
 """
 Las operaciones sobre la población,

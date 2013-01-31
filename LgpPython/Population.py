@@ -82,8 +82,6 @@ def crossover(genome1, genome2):
         #si el maximo es mayor a lo longitud del padre, se elige la longitud como máximo
         max_segment_size_dad = (dad.height - 1) if (dad.height - 1) < max_segment_size_dad else max_segment_size_dad
         
-
-        
         #lo que hay que quitarle para que quede en máximo número de instrucciones
         min_segment_full_dad = (dad.height + mom_segment_size) - Parameters.num_max_instructions
         
@@ -151,7 +149,7 @@ def macro_mutation(genome):
      p_ins > p_del 
      """
     insertion = random_flip_coin(Parameters.p_ins)
-    mutation_point = random.randint(0, len(genome.genomeList) - 2)
+    mutation_point = random.randint(0, genome.height - 2)
         
     if genome.height < Parameters.num_max_instructions and \
     (insertion or genome.height == Parameters.num_min_instructions):
@@ -181,8 +179,10 @@ def macro_mutation(genome):
         #impresiones_mutacion(insertion,mutation_point,[])
     
     genome.set_altered()
+    
     if genome.height > Parameters.num_max_instructions:
         print "superado el número maximo de instrucciones MACRO"
+        print genome.height > Parameters.num_max_instructions
     return genome
 
 
