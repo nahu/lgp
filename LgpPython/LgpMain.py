@@ -178,9 +178,10 @@ if __name__ == "__main__":
         g.write(repr(b))
         g.write("\n")
         g.write(b.get_program_in_python())
-        g.write("\n\n\n")
+        g.write("\n\n\n")
         
-        g.close()
+        
+    g.close()
     f.close()
-    pool.close() 
-    pool.join()
+    pool.close()
+    pool.join()
