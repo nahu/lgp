@@ -18,7 +18,14 @@ import Parameters
 import copy
 import Individual
 
-
+def sum_errors(lista):
+    error_total = 0
+    for x in lista:
+        error_total+=x
+    lista.append(error_total)
+    lista.append(error_total/Parameters.validation_lines)
+    return lista
+    
 class LGP():
     def __init__(self, population_size=1, generations=10, config_position=0):
         self.pool = Pool(processes=Parameters.num_processors)
@@ -140,6 +147,7 @@ if __name__ == "__main__":
 #    print Parameters.data_samples
 #    print Parameters.r_const
     import time
+    from datetime import datetime
     best_individuals = []
     for i in range(Parameters.n):
         if Parameters.config[i] == '0':
@@ -165,19 +173,23 @@ if __name__ == "__main__":
     
     iter = pool.imap(Individual.eval_individual, best_individuals, Parameters.chunk_size)
     
-    final_table = []
+    final_table = [] #lista de errores para los transformadores. Se recorre por columnas.    
+    diff =  str(datetime.now())
+    diff = "-" + diff.replace(':', "-")
     for j in range(Parameters.n - Parameters.k):
         final_table.append(iter.next())
-    f_errors = "errores" + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + ".csv"
+    for j in range(0, len(final_table)):
+        final_table[j] = sum_errors(final_table[j])
+    f_errors = "errores" + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + diff + ".csv"
     f = open(f_errors, "w")
-    for t in range(Parameters.validation_lines):
+    for t in range(Parameters.validation_lines + 2):
         row = ""
         for i in range(Parameters.n - Parameters.k):
             row += (str(final_table[i][t]) + ";")
         row += "\n"
         f.write(row.replace('.', ','))
     
-    f_programs = "programas" + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + ".txt"
+    f_programs = "programas" + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size)+ diff +".txt"
     g = open(f_programs, "w")
     for b in best_individuals:
         g.write(repr(b))

@@ -55,7 +55,7 @@ k = config.count('1')
 filename = "Datos60.txt"
 lines = 248
 training_lines = 144
-validation_lines = 96
+validation_lines = 104
 #r_const = None
 #data_samples = []
 #Constante máxima para inicialización de registros
@@ -108,8 +108,8 @@ r_var = []
 [r_var.append(1.0) for i in range(var_min, var_max + 1)]
 
 #ALGORITMO EVOLUTIVO
-num_generations = 1000
-population_size = 500
+num_generations = 1
+population_size = 50
 
 freq_stats=100
 pool_size = 4
