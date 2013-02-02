@@ -79,7 +79,11 @@ def create_new_instruction():
     
     #operador 2 es constante con probabilidad p_const
     if random_flip_coin(Parameters.p_reg_op2_const):
-        instruction.append(random.randint(Parameters.cons_al_min, Parameters.cons_in_max))
+        #Si va a ser constante, las constantes de entrada tienen mayor probabilidad que las aleatorias.
+        if random_flip_coin(Parameters.p_const_in):
+            instruction.append(random.randint(Parameters.cons_in_min, Parameters.cons_in_max))
+        else:
+            instruction.append(random.randint(Parameters.cons_al_min, Parameters.cons_al_max))
     else:
         instruction.append(random.randint(Parameters.var_min, Parameters.var_max))
     

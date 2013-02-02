@@ -139,9 +139,11 @@ class LGP():
 if __name__ == "__main__":
 #    print Parameters.data_samples
 #    print Parameters.r_const
+    import time
     best_individuals = []
     for i in range(Parameters.n):
         if Parameters.config[i] == '0':
+            t1 = time.clock()
             print "Transformador " + str(i)
             ga = LGP(config_position=i)
             ga.set_num_generations(Parameters.num_generations)
@@ -152,6 +154,9 @@ if __name__ == "__main__":
             ga.terminate()
             
             best_individuals.append(best)
+            t2 = time.clock()
+            print '%s Duracion %0.5f s' % ("Transf. " + str(i), (t2-t1))
+            print "\n"
         #    print "Solución"
         #    print best
             

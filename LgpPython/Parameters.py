@@ -122,7 +122,7 @@ p_del = 0.2
 p_regmut = 0.5
 p_opermut = 0.40
 p_constmut = 0.1
-
+p_const_in = 0.7
 p_micro_mutation = 0.95
 p_crossover = 0.15
 p_macro_mutation = 0.5
