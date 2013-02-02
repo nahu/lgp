@@ -243,6 +243,7 @@ class Individual():
         program = self.get_program_in_python()
         #in_t tiene las mediciones en el instante t
         error_a_quad = 0
+        #error_prom_quad = 0.0;
 #        print Parameters.r_const
         try:
             for t in range(0, Parameters.training_lines):

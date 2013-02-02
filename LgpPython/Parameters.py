@@ -77,42 +77,39 @@ num_max_instructions = 8*k
 num_ini_instructions = 2*k
 num_operators = 9
 
-#Límetes en las instrucciones
+num_registers = 5*k + 1
+num_conts_registers = 2*k
+num_var_register = k
+num_const_in_registers = k
+num_out_registers = 1
+num_const_random_registers = k
+
+#Límites en las instrucciones
 reg_out = 0
 var_min = 1
-var_max = 2*k
-cons_al_min = 2*k + 1
-cons_al_max = 3*k
-cons_in_min = 3*k + 1
-cons_in_max = 4*k
+var_max = num_var_register
+cons_al_min = var_max + 1
+cons_al_max = var_max + num_const_random_registers #3*k
+cons_in_min = cons_al_max + 1
+cons_in_max = cons_al_max + num_const_in_registers
 op_min = 1 
 op_max = 9
-
-
+register_offset = cons_al_max + 1
 
 #REGISTROS
 """
 r[0] registro variable de salida - inicializado a 1
-r[1] .. r[2*k] registros variables inicializados a 1
-r[2*k + 1] .. r[3*k] registros aleatorios constantes
-r[3*k + 1] .. r[4*k] registros de entrada constantes
+r[1] .. r[k] registros variables inicializados a 1
+r[k + 1] .. r[2*k] registros aleatorios constantes
+r[2*k + 1] .. r[3*k] registros de entrada constantes
 """
 r_out = [1.0]
 r_var = []
 [r_var.append(1.0) for i in range(var_min, var_max + 1)]
 
-
-num_registers = 5*k + 1
-num_conts_registers = 2*k
-num_var_register = 2*k
-num_const_in_registers = k
-num_out_registers = 1
-num_const_random_registers = k
-register_offset = 3*k + 1
-
 #ALGORITMO EVOLUTIVO
-num_generations = 10000
-population_size = 50
+num_generations = 1000
+population_size = 500
 
 freq_stats=100
 pool_size = 4
@@ -123,12 +120,12 @@ p_reg_op2_const = 0.5
 p_ins = 0.8
 p_del = 0.2
 p_regmut = 0.5
-p_opermut = 0.25
-p_constmut = 0.25
+p_opermut = 0.40
+p_constmut = 0.1
 
 p_micro_mutation = 0.95
 p_crossover = 0.15
-p_macro_mutation = 1.0
+p_macro_mutation = 0.5
 
 """
 Las operaciones sobre la población,
