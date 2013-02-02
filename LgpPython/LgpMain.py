@@ -148,6 +148,7 @@ if __name__ == "__main__":
 #    print Parameters.r_const
     import time
     from datetime import datetime
+    t_inicio = time.clock()
     best_individuals = []
     for i in range(Parameters.n):
         if Parameters.config[i] == '0':
@@ -202,3 +203,6 @@ if __name__ == "__main__":
     f.close()
     pool.close()
     pool.join()
+    t_final = time.clock()
+    print '%s Duracion %0.5f s' % ("LGPMAIN", (t_final - t_inicio))
+    print "\n"

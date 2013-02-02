@@ -108,8 +108,8 @@ r_var = []
 [r_var.append(1.0) for i in range(var_min, var_max + 1)]
 
 #ALGORITMO EVOLUTIVO
-num_generations = 1
-population_size = 50
+num_generations = 10000
+population_size = 500
 
 freq_stats=100
 pool_size = 4
