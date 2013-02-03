@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 """
 Módulo que define el algoritmo LGP
@@ -12,12 +12,14 @@ Módulo que define el algoritmo LGP
 
 from multiprocessing import Pool
 from multiprocessing import Manager
+from datetime import datetime
 
 import Population
 import Util
 import Parameters
 import copy
 import Individual
+import time
 
 def step_by_pool_size(population):
     migrators = []
@@ -319,6 +321,7 @@ if __name__ == "__main__":
 #    print Parameters.data_samples
 #    print Parameters.r_const
 
+    t_inicio = time.clock()
     pool = Pool(processes=Parameters.num_processors)
     
     positions = []
@@ -329,6 +332,7 @@ if __name__ == "__main__":
             #positions.append(i)
     '''
     i = 1
+    t1 = time.clock()
     print "Transformador " + str(i)
     positions.append(i)
     ga = LGP(config_position=i, pool=pool, demes=Parameters.demes)
@@ -341,32 +345,44 @@ if __name__ == "__main__":
     ga.terminate()
     
     best_individuals.append(best)
+    t2 = time.clock()
+    print '%s Duracion %0.5f s' % ("Transf. " + str(i), (t2-t1))
+    print "\n"
     
     iter = pool.imap(Individual.eval_individual, best_individuals, Parameters.chunk_size)
+    
+    diff =  str(datetime.now())
+    diff = "-" + diff.replace(':', "-")
     
     final_table = []
     for i in positions:
         errors_i = iter.next()
-        errors_i.append(i)
         final_table.append(errors_i)
         
-    f_errors = "errores" + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + ".csv"
+    for j in range(0, len(final_table)):
+        errors_and_sum = sum_errors(final_table[j])
+        errors_and_sum.append(positions[j])
+        final_table[j] = errors_and_sum
+        
+        
+    f_errors = "errores" + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + diff + ".csv"
     f = open(f_errors, "w")
         
-    for t in range(Parameters.validation_lines):
-        row = str(Parameters.training_lines + t) + ";"
+    for t in range(Parameters.validation_lines + 3):
+        if t == Parameters.validation_lines:
+            row = "error total"
+        elif t ==  Parameters.validation_lines + 1:
+            row = "error promedio"
+        elif t ==  Parameters.validation_lines + 2:
+            row = "posicion"
+        else:
+            row = str(Parameters.training_lines + t) + ";"
         for i in range(len(final_table)):
             row += (str(final_table[i][t]) + ";")
         row += "\n"
         f.write(row.replace('.', ','))
-    row = "pos;"
     
-    for i in range(len(final_table)):
-        row += (str(final_table[i][Parameters.validation_lines]) + ";")
-    row += "\n"
-    f.write(row)
-    
-    f_programs = "programas" + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + ".txt"
+    f_programs = "programas" + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size)+ diff +".txt"
     g = open(f_programs, "w")
     for b in best_individuals:
         g.write(repr(b))
@@ -379,4 +395,6 @@ if __name__ == "__main__":
     f.close()
     pool.close()
     pool.join()
-    print "Fin"
+    t_final = time.clock()
+    print '%s Duracion %0.5f s' % ("LGPMAIN", (t_final - t_inicio))
+    print "\n"

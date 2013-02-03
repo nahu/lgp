@@ -5,9 +5,6 @@
  * @version 1.0
  */
 
-package MathModel;
-
-
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +19,9 @@ public class SCICTD {
     public int numberOfMuestras_;
     private double[][] matrizConsumo_;
     public int[] nodos = new int[numberOfTrafos_];
+    public int training_lines = 144;
+    public int validation_lines = 104;
+    public Double [][] resultados = null;
     
     public SCICTD(int cantidadTrafos, int numeroDeObjetivos) throws FileNotFoundException, IOException, ClassNotFoundException {
         numberOfTrafos_ = cantidadTrafos;
@@ -54,7 +54,7 @@ public class SCICTD {
         int n = numberOfTrafos_; // Cantidad de transformadores.
         int T = numberOfMuestras_; // Cantidad de muestras.
         double[][] mediciones = matrizConsumo_;
-        Double [][] resultados = new Double[T][n];
+        resultados = new Double[T+2][n];
         // PASO 1: Generar derivadas de errores (Sistemas de ecuaciones).
         // Se guardan las posiciones de los medidores en el vector posiciones.
         int[] posiciones = new int[k];
@@ -71,11 +71,7 @@ public class SCICTD {
         int desconocido = 0;
         for (int d = 0; d < n; d++) {
             // Se calculan los errores para cada transformador que no tiene medidor.
-            double errorCuad = 0;
-            double errorAbs = 0;
-            double errorRel = 0;
-            double errorMax = 0;
-            double errRelMax = 0;
+
             if (nodos[d] == 0) { //Si no hay medidor
                 // Matriz de ecuaciones inicializada a ceros.
                 double[][] ecuaciones = new double[k][k + 1];
@@ -95,7 +91,7 @@ public class SCICTD {
                 for (int i = 0; i < k; i++) {
                     pivot = posiciones[i];
                     for (int j = 0; j < k + 1; j++) {
-                        for (int l = 0; l < T; l++) {
+                        for (int l = 0; l < training_lines; l++) { 
                             if (j == k) {
                                 ecuaciones[i][j] += mediciones[l][pivot] * mediciones[l][desconocido];
                             } else {
@@ -104,7 +100,6 @@ public class SCICTD {
                         }
                     }
                 }
-
                 // PASO 2: Resolver el Sistema de ecuaciones por el metodo de Gauss.
                 // Escalonar la matriz de ecuaciones.
                 int col = k + 1;
@@ -135,47 +130,13 @@ public class SCICTD {
                     }
                     fac--;
                 }
-                System.out.println("\nFactores de : " + d);
+                
+                resolverSistemaValidacion(factores, desconocido, posiciones, k);
+                /*System.out.println("\nFactores de : " + d);
                 for (double dd : factores) {
                     System.out.println(String.valueOf(dd) + ";");
-                }
-                // PASO 3: Hallar el error promedio elevado al Cuadrado.
-                double real;
-                double error;
-                double abs;
-                double relativo;
-                for (int l = 0; l < T; l++) {
-                    real = mediciones[l][desconocido];
-                    error = real;
-                    for (int i = 0; i < k; i++) {
-                        error -= factores[i] * mediciones[l][posiciones[i]];
-                    }
-                    // Se calcula la sumatoria de los errores de cada medicion.
-                    errorCuad += Math.pow(error, 2.0);
-                    /*GUARDAR ERROR [desconocido][l]*/
-                    resultados[l][desconocido] = Math.pow(error, 2.0);
-                    
-                    abs = Math.abs(error);
-                    errorAbs += abs;
-                    relativo = 100 * abs / real;
-                    errorRel += relativo;
-                    if (abs > errorMax) {
-                        errorMax = abs;
-                    }
-                    if (relativo > errRelMax) {
-                        errRelMax = relativo;
-                    }
-                }
-                // Se suman los errores medios del conjunto de muestras de cada transformador desconocido.
-                fitness[0] += errorCuad / T;
-                fitness[1] += errorAbs / T;
-                fitness[2] += errorRel / T;
-                if (errorMax > fitness[3]) {
-                    fitness[3] = errorMax;
-                }
-                if (errRelMax > fitness[4]) {
-                    fitness[4] = errRelMax;
-                }
+                }*/
+                
                 // FIN DEL CALCULO de Error promedio.
             }
         }
@@ -197,7 +158,57 @@ public class SCICTD {
         // 4 => Error Relativo Maximo
         // 5 => n/k
     } // evaluate
+    
+    private void resolverSistemaValidacion(double[] factores, int desconocido, int[] posiciones,
+            int k){
+        double[] fitness = new double[6];
+        double errorCuad = 0;
+        double errorAbs = 0;
+        double errorRel = 0;
+        double errorMax = 0;
+        double errRelMax = 0;
+        // PASO 3: Hallar el error promedio elevado al Cuadrado.
+        double real;
+        double error;
+        double abs;
+        double relativo;
+        //
+        double[][] mediciones = matrizConsumo_;
+        int total = matrizConsumo_.length;
+        /*linea 144 hasta el final*/
+        for (int l = training_lines; l < matrizConsumo_.length; l++) {
+            real = mediciones[l][desconocido];
+            error = real;
+            for (int i = 0; i < k; i++) {
+                error -= factores[i] * mediciones[l][posiciones[i]];
+            }
+            // Se calcula la sumatoria de los errores de cada medicion.
+            errorCuad += Math.pow(error, 2.0);
+            /*GUARDAR ERROR [desconocido][l]*/
+            resultados[l][desconocido] = Math.pow(error, 2.0);
 
+            abs = Math.abs(error);
+            errorAbs += abs;
+            relativo = 100 * abs / real;
+            errorRel += relativo;
+            if (abs > errorMax) {
+                errorMax = abs;
+            }
+            if (relativo > errRelMax) {
+                errRelMax = relativo;
+            }
+        }
+        // Se suman los errores medios del conjunto de muestras de cada transformador desconocido.
+        fitness[0] += errorCuad / total-validation_lines;
+        fitness[1] += errorAbs / total-validation_lines;
+        fitness[2] += errorRel / total-validation_lines;
+        if (errorMax > fitness[3]) {
+            fitness[3] = errorMax;
+        }
+        if (errRelMax > fitness[4]) {
+            fitness[4] = errRelMax;
+        }
+    }
     private double[][] readProblem(String fileName, double[][] matriz) throws FileNotFoundException, IOException {
         double min = 999999999999.00;
         double max = -999999999999.00;
@@ -271,12 +282,25 @@ public class SCICTD {
                     + "1 0 1 0 1 0 1 0 1 0 ";
 
             SCICTD programa = new SCICTD(40, 2);
-            
-            FileWriter fw = new FileWriter("C:\\Results.csv");
+                
+            FileWriter fw = new FileWriter("C:\\Users\\vanecan\\Desktop\\RRR.csv");
             PrintWriter pw = new PrintWriter(fw);
             Double [][] resultados = programa.evaluate(programa.getConfiguracion(configuracion, n));
-            pw.println("");
-            for (int muestra = 0; muestra < programa.numberOfMuestras_; muestra++) {
+            
+            
+            for (int pos = 0; pos<resultados[0].length; pos++){ //transformador
+            	double error = 0;
+            	if (programa.nodos[pos] == 0){
+		            for (int i=programa.training_lines; i<programa.numberOfMuestras_; i++){ //muestra por trasformador.
+		            	error += resultados[i][pos];
+		            }
+		            resultados[programa.numberOfMuestras_][pos] = error;
+		            resultados[programa.numberOfMuestras_+1][pos] = error/programa.validation_lines;
+            	}
+	            
+            }
+            
+            for (int muestra = programa.training_lines; muestra < programa.numberOfMuestras_+2; muestra++) {
                 for (int trans = 0; trans < n; trans++){
                     if (programa.nodos[trans] == 0){
                         pw.print(String.valueOf(resultados[muestra][trans]).replace('.', ','));
