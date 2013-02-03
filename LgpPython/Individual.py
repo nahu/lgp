@@ -116,33 +116,33 @@ def get_random_register(op, reg_eff=None, instruction=None):
 
 
 def compare(x, y):
-       '''
-       Método para comparar dos individuos,
-       si tienen el mismo fitness, se considera mejor el que tenga menos
-       instrucciones efectivas
-       '''
-       if x.evaluate() > y.evaluate():
+   '''
+   Método para comparar dos individuos,
+   si tienen el mismo fitness, se considera mejor el que tenga menos
+   instrucciones efectivas
+   '''
+   if x.evaluate() > y.evaluate():
+       return 1
+   elif x.evaluate() < y.evaluate():
+       return -1
+   elif x.evaluate() == y.evaluate():
+       if x.n_eff < y.n_eff:
            return 1
-       elif x.evaluate() < y.evaluate():
+       elif x.n_eff > y.n_eff:
            return -1
-       elif x.evaluate() == y.evaluate():
-           if x.n_eff < y.n_eff:
-               return 1
-           elif x.n_eff > y.n_eff:
-               return -1
-           else:
-               return 0
+       else:
+           return 0
 
 def compare_error(x, y):
-       '''
-       Método para comparar dos individuos por los errores obtenidos en validación,
-       '''
-       if x.validation_error > y.validation_error:
-           return 1
-       elif x.validation_error < y.validation_error:
-           return -1
-       elif x.validation_error == y.validation_error:
-           return 0
+   '''
+   Método para comparar dos individuos por los errores obtenidos en validación,
+   '''
+   if x.validation_error > y.validation_error:
+       return 1
+   elif x.validation_error < y.validation_error:
+       return -1
+   elif x.validation_error == y.validation_error:
+       return 0
 
 
 
