@@ -16,8 +16,7 @@ import math
 import copy
 import Parameters
 
-from Util import random_flip_coin
-
+import Util 
 
 def ini_individual(obj):
     obj.height = random.randint(Parameters.num_min_instructions, Parameters.num_ini_instructions)
@@ -78,9 +77,9 @@ def create_new_instruction():
     instruction.append(random.randint(Parameters.var_min, Parameters.var_max)) #Solo puede ser variable.
     
     #operador 2 es constante con probabilidad p_const
-    if random_flip_coin(Parameters.p_reg_op2_const):
+    if Util.random_flip_coin(Parameters.p_reg_op2_const):
         #Si va a ser constante, las constantes de entrada tienen mayor probabilidad que las aleatorias.
-        if random_flip_coin(Parameters.p_const_in):
+        if Util.random_flip_coin(Parameters.p_const_in):
             instruction.append(random.randint(Parameters.cons_in_min, Parameters.cons_in_max))
         else:
             instruction.append(random.randint(Parameters.cons_al_min, Parameters.cons_al_max))
@@ -95,7 +94,7 @@ def get_random_register(op, reg_eff=None, instruction=None):
     if op == 1: #destino
         if not reg_eff:
             if instruction[0] < 5:
-                op = 2 if random_flip_coin(0.5) else 3 #se hace que se mute uno de los registros operandos
+                op = 2 if Util.random_flip_coin(0.5) else 3 #se hace que se mute uno de los registros operandos
             else: #operación unaria, se muta el operando 2 para que sea efectiva
                 op = 3
         else:
@@ -108,7 +107,7 @@ def get_random_register(op, reg_eff=None, instruction=None):
     
     if op == 3: #operando 2
         #print "operando 2"
-        if random_flip_coin(Parameters.p_reg_op2_const):
+        if Util.random_flip_coin(Parameters.p_reg_op2_const):
             register = random.randint(Parameters.cons_al_min, Parameters.cons_in_max)
         else:
             register = random.randint(Parameters.var_min, Parameters.var_max)

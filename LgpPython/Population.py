@@ -16,7 +16,7 @@ import Parameters
 
 import sys
 
-from Util import list_swap_element, random_flip_coin
+import Util
 
 import random
 
@@ -33,7 +33,11 @@ def tournament(competitors):
     return choosen
 
 
-def tournament_and_mutations(competitors):
+def check_out_register(individual):
+    return individual.genomeList[individual.height - 1][1] == 0
+    
+    
+def tournament_with_mutation(competitors):
     choosen = competitors[0]
     
     for i in range(1, len(competitors)):
@@ -41,7 +45,7 @@ def tournament_and_mutations(competitors):
             choosen = competitors[i]
         
     '''
-    Se hacen copias temporales para remplazar luego a los perdedores del torneo
+    Se hacen copias temporales para reemplazar luego a los perdedores del torneo
     '''
     winner = choosen.clone()
     
@@ -50,22 +54,24 @@ def tournament_and_mutations(competitors):
     '''
     try:
         if Util.random_flip_coin(Parameters.p_macro_mutation):
-            winner = Population.macro_mutation(winner)
+            winner = macro_mutation(winner)
     
-        if not self.check_out_register(winner):
+        if not check_out_register(winner):
             print "La macro mató"
     except:
         print "La macro matOOOó"
-         
-    if Util.random_flip_coin(Parameters.p_micro_mutation):
-        winner = Population.micro_mutation(winner)
-    try:   
-        if not self.check_out_register(winner):
+    
+    try:
+        if Util.random_flip_coin(Parameters.p_micro_mutation):
+            winner = micro_mutation(winner)
+           
+        if not check_out_register(winner):
             print "La miiicro mató"
     except:
         print "La miiicro mató"
         
-    return (winner, choosen)
+    return list([winner, choosen])
+
 
 def crossover(genome1, genome2):
     sister = None
@@ -153,7 +159,7 @@ def crossover(genome1, genome2):
         print sys.exc_info()[0]
         
     
-    return (sister, brother)
+    return list([sister, brother])
 
 
 def impresiones_mutacion(ins, mutpoint, eff):
@@ -170,7 +176,7 @@ def macro_mutation(genome):
      -- Alg. 6.1 -- 
      p_ins > p_del 
      """
-    insertion = random_flip_coin(Parameters.p_ins)
+    insertion = Util.random_flip_coin(Parameters.p_ins)
     mutation_point = random.randint(0, genome.height - 2)
         
     if genome.height < Parameters.num_max_instructions and \
@@ -234,7 +240,7 @@ def micro_mutation(genome):
         else: #no hay instrucciones efectivas con registros constantes variables
             type = select_micro_mutacion_type(random.random()) #si vuelve a salir constante, se elige mutación de registro o operaciones con igual probabilidad
             if (type == "constantes"):
-                type = "registros" if random_flip_coin(0.5) else "operaciones"
+                type = "registros" if Util.random_flip_coin(0.5) else "operaciones"
                 
                 
     if (type == "registros"):
@@ -247,7 +253,7 @@ def micro_mutation(genome):
             if (instruction[0] < 5):
                 pos_to_replace = random.randint(1, 3)
             else: #operación unaria, cambiar el segundo operando o el destino
-                pos_to_replace = 1 if random_flip_coin(0.5) else 3
+                pos_to_replace = 1 if Util.random_flip_coin(0.5) else 3
         
         if pos_to_replace == 1:
 
