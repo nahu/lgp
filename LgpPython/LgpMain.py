@@ -21,6 +21,18 @@ import copy
 import Individual
 import time
 
+
+def sum_errors(lista):
+    error_total = 0
+    
+    for x in lista:
+        error_total += x
+    lista.append(error_total)
+    lista.append(error_total/Parameters.validation_lines)
+    
+    return lista
+
+
 def step_by_pool_size(population):
     migrators = []
     loosers = set([])
