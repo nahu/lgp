@@ -108,10 +108,10 @@ r_var = []
 [r_var.append(1.0) for i in range(var_min, var_max + 1)]
 
 #ALGORITMO EVOLUTIVO
-num_generations = 10000
+num_generations = 100
 #migration_gen = 0.10 * num_generation
 
-population_size = 1000
+population_size = 400
 demes = 4
 
 freq_stats=100

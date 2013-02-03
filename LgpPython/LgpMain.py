@@ -14,12 +14,15 @@ from multiprocessing import Pool
 from multiprocessing import Manager
 from datetime import datetime
 
+import os
+import copy
+import time
+import types
 import Population
 import Util
 import Parameters
-import copy
 import Individual
-import time
+
 
 
 def sum_errors(lista):
@@ -302,7 +305,7 @@ class LGP():
         
         iter = self.pool.imap(Population.best_training_in_pop, self.population, Parameters.chunk_size)
         
-        print "Los 5 mejores en Entrenamiento"
+        print "Los " + str(self.num_demes) + " mejores en Entrenamiento..."
         for deme in range(self.num_demes):
             best = iter.next()
             deme_best.append(best)
@@ -317,7 +320,7 @@ class LGP():
         
         iter = self.pool.imap(Population.best_validation_in_pop, self.population, Parameters.chunk_size)
         
-        print "Los 5 mejores en Validación"
+        print "Los  " + str(self.num_demes) + " mejores en Validación..."
         for deme in range(self.num_demes):
             best = iter.next()
             deme_best.append(best)
@@ -327,12 +330,57 @@ class LGP():
         
         return deme_best[0]
         
+        
+def errors_to_file(f_errors, final_table):
+    f = open(f_errors, "w")
+
+    for t in range(Parameters.validation_lines + 3):
+        if t == Parameters.validation_lines:
+            row = "Error total;"
+        elif t ==  Parameters.validation_lines + 1:
+            row = "Error promedio;"
+        elif t ==  Parameters.validation_lines + 2:
+            row = "Posicion;"
+        else:
+            row = str(Parameters.training_lines + t) + ";"
+        for i in range(len(final_table)):
+            row += (str(final_table[i][t]) + ";")
+        row += "\n"
+        f.write(row.replace('.', ','))
+        
+    f.close()
 
 
+
+def programs_to_file(f_programs, best_individuals):
+    g = open(f_programs, "w")
+    
+    for b in best_individuals:
+        g.write(repr(b))
+        g.write("\n")
+        g.write("#Effective Program:\n")
+        g.write(b.get_program_in_python())
+        g.write("\n\n\n")
+        
+    g.close()
+
+
+def parameters_to_file(f_param):
+    f = open(f_param, "w")
+    
+    ps =  [(a + " = " + str(Parameters.__dict__.get(a)) + "\n") for a in dir(Parameters) 
+           if (isinstance(Parameters.__dict__.get(a), types.FloatType) or 
+               isinstance(Parameters.__dict__.get(a), types.IntType))]
+    for l in ps:
+        f.write(l)
+        
+    f.close()
+    
+    
 if __name__ == "__main__":
 #    print Parameters.data_samples
 #    print Parameters.r_const
-
+    
     t_inicio = time.clock()
     pool = Pool(processes=Parameters.num_processors)
     
@@ -352,61 +400,50 @@ if __name__ == "__main__":
     ga.set_population_size(Parameters.population_size)
     ga.evolve(freq_stats=Parameters.freq_stats)
     
-    best = ga.best_individual_in_training()
-    best2 = ga.best_individual_in_validation()
+    best_training = ga.best_individual_in_training()
+    best_validation = ga.best_individual_in_validation()
     ga.terminate()
     
-    best_individuals.append(best)
+    best_individuals.append(best_training)
+    best_individuals.append(best_validation)
+    
     t2 = time.clock()
+    print "\n"
     print '%s Duracion %0.5f s' % ("Transf. " + str(i), (t2-t1))
     print "\n"
     
     iter = pool.imap(Individual.eval_individual, best_individuals, Parameters.chunk_size)
     
-    diff =  str(datetime.now())
-    diff = "-" + diff.replace(':', "-")
+    diff = str(datetime.now())
+    dir = "resultados/"
+    dir += diff[:19].replace(':', '.')
     
     final_table = []
-    for i in positions:
-        errors_i = iter.next()
-        final_table.append(errors_i)
+    '''
+    final_table[0] errores de validación con el mejor individuo de entrenamiento
+    final_table[1] errorer de validación con el mejor individuo con datos de validación
+    '''
+    for j in range(2):
+        errors_j = iter.next()
+        errors_and_sum = sum_errors(errors_j)
+        errors_and_sum.append(i)
+        final_table.append(errors_and_sum)
         
-    for j in range(0, len(final_table)):
-        errors_and_sum = sum_errors(final_table[j])
-        errors_and_sum.append(positions[j])
-        final_table[j] = errors_and_sum
+    if not os.path.exists(dir):
+        os.makedirs(dir)
         
-        
-    f_errors = "errores" + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + diff + ".csv"
-    f = open(f_errors, "w")
-        
-    for t in range(Parameters.validation_lines + 3):
-        if t == Parameters.validation_lines:
-            row = "error total"
-        elif t ==  Parameters.validation_lines + 1:
-            row = "error promedio"
-        elif t ==  Parameters.validation_lines + 2:
-            row = "posicion"
-        else:
-            row = str(Parameters.training_lines + t) + ";"
-        for i in range(len(final_table)):
-            row += (str(final_table[i][t]) + ";")
-        row += "\n"
-        f.write(row.replace('.', ','))
+    f_errors = dir + "/errores-TRAF" + str(i) + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + ".csv"
+    errors_to_file(f_errors, final_table)
+    f_programs = dir + "/programas-TRAF" + str(i) + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + ".txt"
+    programs_to_file(f_programs, best_individuals)
+    '''
+    f_parameters = dir + "/parameters-TRAF" + str(i)
+    parameters_to_file(f_parameters)
+    '''
     
-    f_programs = "programas" + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size)+ diff +".txt"
-    g = open(f_programs, "w")
-    for b in best_individuals:
-        g.write(repr(b))
-        g.write("\n")
-        g.write(b.get_program_in_python())
-        g.write("\n\n\n")
-        
-        
-    g.close()
-    f.close()
     pool.close()
     pool.join()
+    
     t_final = time.clock()
     print '%s Duracion %0.5f s' % ("LGPMAIN", (t_final - t_inicio))
     print "\n"

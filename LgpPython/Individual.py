@@ -368,35 +368,29 @@ class Individual():
 
     def __repr__(self):
         """ Return a string representation of Genome """
-        ret = " %s - Individual\n" % (self.index)
-        ret = " Config Position: %s\n" % (self.config_position)
-        ret += "\tList size:\t %s\n" % (self.height)
-        ret += "\tList:\t\t\t\t\t\tRegisters:\n"
+        ret = "#%s - Individual\n" % (self.index)
+        ret = "#Config Position: %s\n" % (self.config_position)
+        ret += "#List size:\t %s\n" % (self.height)
+        ret += "#List:\n"
         
-        top = self.height if self.height > len(self.r_all) else len(self.r_all)
-        ret += "\t["
-        for line in range(top):
-            ret += "\t["
-            if line < (self.height - 1):
-                for item in self.genomeList[line]:
-                    ret += "%s, " % (item)
-            elif line == (self.height - 1):
-                for item in self.genomeList[line]:
-                    ret += "%s, " % (item)
-                ret += "]]\t\t"
-            else:
-                ret += "],\t\t"
-            
-            if line < len(self.r_all):   
-                ret += "\t\t\t\t"
-                ret += "r_all[%s] = " % (line)
-                ret += str(self.r_all[line])
-            
-            ret += "\n"
-        
-        ret+= "\tFitness:\t\t %.6f\n\n" % (self.fitness)
 
+        ret += "genome_list = [ \n"
+        for line in range(self.height):
+            ret += ""
+            if line < (self.height - 1):
+                item = str(self.genomeList[line])
+                ret += "%s,\n" % (item)
+            elif line == (self.height - 1):
+                ret += "%s]\n\n" % (item)
+                
+        ret += "#Registers:\n"
+        for line in range(len(self.r_all)):
+            ret += "r_all[%s] = " % (line)
+            ret += str(self.r_all[line])
+            ret += "\n"
         ret += "\n"
+        ret+= "#Fitness:\t %.6f\n\n" % (self.fitness)
+
         return ret    
     
     
@@ -413,7 +407,5 @@ class Individual():
 
 if __name__ == "__main__":
     r = Individual(0, 4, 0)
-    r.initialize()
-
-    print r.genomeList
-    print r.r_all
+    r = ini_individual(r)
+    print r
