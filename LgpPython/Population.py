@@ -11,7 +11,6 @@ y las funciones relacionadas
 @since: 1.0
 """
 
-from multiprocessing import Pool
 import Individual
 import Parameters
 
@@ -21,29 +20,52 @@ from Util import list_swap_element, random_flip_coin
 
 import random
 
-
+'''
+deprecade
+'''
 def tournament(competitors):
     choosen = competitors[0]
     
     for i in range(1, len(competitors)):
         if choosen.evaluate() < competitors[i].evaluate():
             choosen = competitors[i]
-    '''        
-    print "ganador del torneo: " + str(choosen.index)
-    
-    bandera = False
-    imprimir = "competidores:  "
-    for i in range(0, len(competitors)):
-        imprimir += " " + str(competitors[i].index)
-        if competitors[i].index == choosen.index:
-            bandera = True
-            
-    print imprimir
-    if not bandera:
-        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-    '''
+
     return choosen
 
+
+def tournament_and_mutations(competitors):
+    choosen = competitors[0]
+    
+    for i in range(1, len(competitors)):
+        if Individual.compare(choosen, competitors[i]) == -1:
+            choosen = competitors[i]
+        
+    '''
+    Se hacen copias temporales para remplazar luego a los perdedores del torneo
+    '''
+    winner = choosen.clone()
+    
+    '''
+    Se realizan la macro y micro mutación según probabilidades
+    '''
+    try:
+        if Util.random_flip_coin(Parameters.p_macro_mutation):
+            winner = Population.macro_mutation(winner)
+    
+        if not self.check_out_register(winner):
+            print "La macro mató"
+    except:
+        print "La macro matOOOó"
+         
+    if Util.random_flip_coin(Parameters.p_micro_mutation):
+        winner = Population.micro_mutation(winner)
+    try:   
+        if not self.check_out_register(winner):
+            print "La miiicro mató"
+    except:
+        print "La miiicro mató"
+        
+    return (winner, choosen)
 
 def crossover(genome1, genome2):
     sister = None
@@ -270,32 +292,24 @@ def select_micro_mutacion_type(prob):
     elif prob > (Parameters.p_opermut + Parameters.p_regmut) and prob <= (Parameters.p_opermut + Parameters.p_regmut + Parameters.p_constmut):
         return "constantes"
 
+def best_training_in_pop(population):
+    return population.best_training()
 
+def best_validation_in_pop(population):
+    return population.best_validation()
 
 class Population:
-    def __init__(self, size, pool, config_position):
+    def __init__(self, size, config_position):
         self.internal_pop = []
         self.pop_size = size
-        self.pool = pool
         self.config_position = config_position
-        
+        self.create()
 
     def create(self, **args):
         for i in xrange(self.pop_size):
             self.internal_pop.append(Individual.Individual(4, i, self.config_position))
 
-    def initialize(self):
-        self.create()
-        
-        iter = self.pool.imap(Individual.ini_individual, self.internal_pop, Parameters.chunk_size)
 
-        for individual in range(self.pop_size):
-            self.internal_pop[individual] = iter.next()
-       
-#        self.pool.close() 
-#        self.pool.join()
-        
-        
     def indices_selection(self, pool_size):
         index_pool = []
         
@@ -305,6 +319,7 @@ class Population:
                 index_pool.append(index)
                 
         return index_pool
+
     
     def selection_from_indices(self, indices):
         pool = []
@@ -313,17 +328,34 @@ class Population:
             pool.append(self.internal_pop[i])
                 
         return pool
-    
-    def best(self):
+
+
+    def best_training(self):
         best = self.internal_pop[0]
         
-        for i in range(1, self.pop_size - 1):
-            if (self.internal_pop[i].evaluate() > best):
+        for i in range(1, self.pop_size):
+            if (Individual.compare(self.internal_pop[i], best) == 1):
                 best = self.internal_pop[i]
         
         return best
     
-    
+    def best_validation(self):
+        '''
+        Se establece el atributo validation error de los individuos de la población
+        '''
+        for i in self.internal_pop:
+            i.eval_validation()
+            
+        best = self.internal_pop[0]
+        
+        '''
+        Se busca el de menor error
+        '''
+        for i in range(1, self.pop_size):
+            if (Individual.compare_error(self.internal_pop[i], best) == -1):
+                best = self.internal_pop[i]
+        
+        return best
     
 if __name__ == "__main__":
     pool = Pool(processes=Parameters.num_processors)

@@ -55,7 +55,7 @@ k = config.count('1')
 filename = "Datos60.txt"
 lines = 248
 training_lines = 144
-validation_lines = 96
+validation_lines = 104
 #r_const = None
 #data_samples = []
 #Constante máxima para inicialización de registros
@@ -108,11 +108,14 @@ r_var = []
 [r_var.append(1.0) for i in range(var_min, var_max + 1)]
 
 #ALGORITMO EVOLUTIVO
-num_generations = 1000
-population_size = 500
+num_generations = 10000
+#migration_gen = 0.10 * num_generation
+
+population_size = 1000
+demes = 4
 
 freq_stats=100
-pool_size = 4
+pool_size = 5
 
 
 #PROBABILIDADES
@@ -126,6 +129,8 @@ p_constmut = 0.1
 p_micro_mutation = 0.95
 p_crossover = 0.15
 p_macro_mutation = 0.5
+
+ 
 
 """
 Las operaciones sobre la población,

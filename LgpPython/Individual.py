@@ -112,7 +112,35 @@ def get_random_register(op, reg_eff=None, instruction=None):
     return register, op
 
 
-    
+def compare(x, y):
+       '''
+       Método para comparar dos individuos,
+       si tienen el mismo fitness, se considera mejor el que tenga menos
+       instrucciones efectivas
+       '''
+       if x.evaluate() > y.evaluate():
+           return 1
+       elif x.evaluate() < y.evaluate():
+           return -1
+       elif x.evaluate() == y.evaluate():
+           if x.n_eff < y.n_eff:
+               return 1
+           elif x.n_eff > y.n_eff:
+               return -1
+           else:
+               return 0
+
+def compare_error(x, y):
+       '''
+       Método para comparar dos individuos por los errores obtenidos en validación,
+       '''
+       if x.validation_error > y.validation_error:
+           return 1
+       elif x.validation_error < y.validation_error:
+           return -1
+       elif x.validation_error == y.validation_error:
+           return 0
+
 
 
 class Individual():
@@ -127,7 +155,8 @@ class Individual():
         self.index = index
         self.evaluated = False
         self.config_position = config_position
-        
+        self.n_eff = 1
+            
             
     def get_effective_instructions(self):
         """
@@ -149,7 +178,11 @@ class Individual():
                     reg_eff.add(i[3])
                 
                 eff_i.append(i)
-    
+                
+        '''
+        Se setea un atributo con el número de instrucciones efectivas del individuo
+        '''
+        self.n_eff = len(eff_i)
         eff_i.reverse()     
         return eff_i
     
@@ -298,6 +331,37 @@ class Individual():
         return self.fitness
     
     
+    def eval_validation(self):
+        """
+        Función de evaluación, dado un objeto con el atributo config_position 
+        retorna una lista del error cuadrático
+        para cada línea del los casos de evaluación
+        """
+        
+        program = self.get_program_in_python()
+        #in_t tiene las mediciones en el instante t
+        #error_a_quad = []
+        error_a_quad = 0.0
+    #        print Parameters.r_const
+        try:
+            for t in range(Parameters.training_lines, Parameters.lines):
+                in_t = Parameters.r_const[t]
+                r_all = copy.copy(self.r_all)
+                
+                exec program
+                
+                #error_a_quad.append((r_all[0] - Parameters.data_samples[t][self.config_position]) ** 2)
+                error_a_quad += (r_all[0] - Parameters.data_samples[t][self.config_position]) ** 2
+    
+            error_prom_quad = error_a_quad / Parameters.validation_lines
+        except:
+            error_prom_quad = 999999999
+            
+        self.validation_error = error_prom_quad
+        
+        return error_prom_quad
+
+
     def __repr__(self):
         """ Return a string representation of Genome """
         ret = " %s - Individual\n" % (self.index)
@@ -306,13 +370,18 @@ class Individual():
         ret += "\tList:\t\t\t\t\t\tRegisters:\n"
         
         top = self.height if self.height > len(self.r_all) else len(self.r_all)
+        ret += "\t["
         for line in range(top):
-            ret += "\t"
-            if line < self.height:
+            ret += "\t["
+            if line < (self.height - 1):
                 for item in self.genomeList[line]:
-                    ret += "[%s] " % (item)
+                    ret += "%s, " % (item)
+            elif line == (self.height - 1):
+                for item in self.genomeList[line]:
+                    ret += "%s, " % (item)
+                ret += "]]\t\t"
             else:
-                ret += "\t\t"
+                ret += "],\t\t"
             
             if line < len(self.r_all):   
                 ret += "\t\t\t\t"
@@ -330,6 +399,7 @@ class Individual():
     def clone(self):
         newcopy = copy.deepcopy(self)
         return newcopy
+    
     
     def set_altered(self):
         self.fitness = 0.0
