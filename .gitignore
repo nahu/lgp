@@ -41,4 +41,4 @@ nosetests.xml
 #resultados
 errores*
 programas*
-resultados/*
+LgpPython/resultados/*

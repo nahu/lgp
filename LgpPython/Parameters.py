@@ -59,8 +59,8 @@ validation_lines = 104
 #r_const = None
 #data_samples = []
 #Constante máxima para inicialización de registros
-const_max = 10
-step_size_const = 2
+const_max = 50
+step_size_const = 5
 
 
 #INSTRUCCIONES
@@ -73,7 +73,7 @@ la convención para asegurar que el programa tenga una salida es que la
 última instrucción sea del tipo [operación, 0, operador1, operador2]
 """
 num_min_instructions = k
-num_max_instructions = 8*k
+num_max_instructions = 10*k
 num_ini_instructions = 2*k
 num_operators = 9
 
@@ -111,10 +111,10 @@ r_var = []
 num_generations = 1000
 #migration_gen = 0.10 * num_generation
 
-population_size = 400
+population_size = 4000
 demes = 4
 
-freq_stats=100
+freq_stats= 100
 pool_size = 5
 
 

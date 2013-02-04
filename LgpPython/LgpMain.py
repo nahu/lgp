@@ -357,7 +357,7 @@ if __name__ == "__main__":
         if Parameters.config[i] == '0':
             #positions.append(i)
     '''
-    i = 1
+    i = 3
     t1 = time.clock()
     print "Transformador " + str(i)
     positions.append(i)
@@ -413,3 +413,4 @@ if __name__ == "__main__":
     t_final = time.clock()
     print '%s Duracion %0.5f s' % ("LGPMAIN", (t_final - t_inicio))
     print "\n"
+    raw_input()
