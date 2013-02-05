@@ -119,16 +119,21 @@ pool_size = 5
 
 
 #PROBABILIDADES
-p_reg_op2_const = 0.8
-p_ins = 0.8
-p_del = 0.2
-p_regmut = 0.5
-p_opermut = 0.40
-p_constmut = 0.1
-p_const_in = 0.7
-p_micro_mutation = 0.95
-p_crossover = 0.10
+p_reg_op2_const = 0.6
+p_const_in = 0.75
+const_max = 50 #Constante máxima para inicialización de registros
+
 p_macro_mutation = 0.45
+p_ins = 0.75
+p_del = 0.25
+
+p_micro_mutation = 0.90
+p_regmut = 0.5
+p_opermut = 0.45
+p_constmut = 0.05
+step_size_const = 2 #Variacion para mutacion de constantes
+
+p_crossover = 0.05
 
 
  
