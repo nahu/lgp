@@ -181,7 +181,7 @@ class LGP():
             while not self.termination_criteria():
                 
                 self.generation += Parameters.pool_size
-                iter = self.pool.imap(step_by_pool_size, self.population, Parameters.chunk_size)
+                iter = self.pool.imap(step_by_pool_size, self.population, 1)
                 
                 '''
                 iter:
@@ -269,7 +269,7 @@ class LGP():
     def best_individual_in_training(self):
         deme_best = []
         
-        iter = self.pool.imap(Population.best_training_in_pop, self.population, Parameters.chunk_size)
+        iter = self.pool.imap(Population.best_training_in_pop, self.population, 2)
         
         print "Los " + str(self.num_demes) + " mejores en Entrenamiento..."
         for deme in range(self.num_demes):
@@ -284,7 +284,7 @@ class LGP():
     def best_individual_in_validation(self):
         deme_best = []
         
-        iter = self.pool.imap(Population.best_validation_in_pop, self.population, Parameters.chunk_size)
+        iter = self.pool.imap(Population.best_validation_in_pop, self.population, 2)
         
         print "Los  " + str(self.num_demes) + " mejores en Validación..."
         for deme in range(self.num_demes):
@@ -350,62 +350,64 @@ if __name__ == "__main__":
     t_inicio = time.clock()
     pool = Pool(processes=Parameters.num_processors)
     
-    positions = []
-    best_individuals = []
-    '''
-    for i in range(Parameters.n):
-        if Parameters.config[i] == '0':
-            #positions.append(i)
-    '''
-    i = 3
-    t1 = time.clock()
-    print "Transformador " + str(i)
-    positions.append(i)
-    ga = LGP(config_position=i, pool=pool, demes=Parameters.demes)
-    ga.set_num_generations(Parameters.num_generations)
-    ga.set_population_size(Parameters.population_size)
-    ga.evolve(freq_stats=Parameters.freq_stats)
+    positions = [15,23]
     
-    best_training = ga.best_individual_in_training()
-    best_validation = ga.best_individual_in_validation()
-    ga.terminate()
-    
-    best_individuals.append(best_training)
-    best_individuals.append(best_validation)
-    
-    t2 = time.clock()
-    print "\n"
-    print '%s Duracion %0.5f s' % ("Transf. " + str(i), (t2-t1))
-    print "\n"
-    
-    iter = pool.imap(Individual.eval_individual, best_individuals, Parameters.chunk_size)
     
     diff = str(datetime.now())
     dir = "resultados/"
     dir += diff[:19].replace(':', '.')
-    
-    final_table = []
+    '''   
+    for i in range(Parameters.n):
+        if Parameters.config[i] == '0':
+            positions.append(i)
     '''
-    final_table[0] errores de validación con el mejor individuo de entrenamiento
-    final_table[1] errorer de validación con el mejor individuo con datos de validación
-    '''
-    for j in range(2):
-        errors_j = iter.next()
-        errors_and_sum = sum_errors(errors_j)
-        errors_and_sum.append(i)
-        final_table.append(errors_and_sum)
+    for i in positions:
+        #i = 3
+        best_individuals = []
+        t1 = time.clock()
+        print "Transformador " + str(i)
+        #positions.append(i)
+        ga = LGP(config_position=i, pool=pool, demes=Parameters.demes)
+        ga.set_num_generations(Parameters.num_generations)
+        ga.set_population_size(Parameters.population_size)
+        ga.evolve(freq_stats=Parameters.freq_stats)
         
-    if not os.path.exists(dir):
-        os.makedirs(dir)
+        best_training = ga.best_individual_in_training()
+        best_validation = ga.best_individual_in_validation()
+        ga.terminate()
         
-    f_errors = dir + "/errores-TRAF" + str(i) + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + ".csv"
-    errors_to_file(f_errors, final_table)
-    f_programs = dir + "/programas-TRAF" + str(i) + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + ".txt"
-    programs_to_file(f_programs, best_individuals)
-    '''
-    f_parameters = dir + "/parameters-TRAF" + str(i)
-    parameters_to_file(f_parameters)
-    '''
+        best_individuals.append(best_training)
+        best_individuals.append(best_validation)
+        
+        t2 = time.clock()
+        print "\n"
+        print '%s Duracion %0.5f s' % ("Transf. " + str(i), (t2-t1))
+        print "\n"
+        
+        iter = pool.imap(Individual.eval_individual, best_individuals, 1)
+        
+        final_table = []
+        '''
+        final_table[0] errores de validación con el mejor individuo de entrenamiento
+        final_table[1] errorer de validación con el mejor individuo con datos de validación
+        '''
+        for j in range(2):
+            errors_j = iter.next()
+            errors_and_sum = sum_errors(errors_j)
+            errors_and_sum.append(i)
+            final_table.append(errors_and_sum)
+            
+        if not os.path.exists(dir):
+            os.makedirs(dir)
+            
+        f_errors = dir + "/errores-TRAF" + str(i) + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + ".csv"
+        errors_to_file(f_errors, final_table)
+        f_programs = dir + "/programas-TRAF" + str(i) + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + ".txt"
+        programs_to_file(f_programs, best_individuals)
+        '''
+        f_parameters = dir + "/parameters-TRAF" + str(i)
+        parameters_to_file(f_parameters)
+        '''
     
     pool.close()
     pool.join()

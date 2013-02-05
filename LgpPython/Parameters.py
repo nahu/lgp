@@ -74,7 +74,7 @@ la convención para asegurar que el programa tenga una salida es que la
 """
 num_min_instructions = k
 num_max_instructions = 10*k
-num_ini_instructions = 2*k
+num_ini_instructions = 4*k
 num_operators = 9
 
 num_registers = 5*k + 1
@@ -111,15 +111,15 @@ r_var = []
 num_generations = 1000
 #migration_gen = 0.10 * num_generation
 
-population_size = 4000
-demes = 4
+population_size = 8000
+demes = 8
 
 freq_stats= 100
 pool_size = 5
 
 
 #PROBABILIDADES
-p_reg_op2_const = 0.5
+p_reg_op2_const = 0.8
 p_ins = 0.8
 p_del = 0.2
 p_regmut = 0.5
@@ -127,8 +127,9 @@ p_opermut = 0.40
 p_constmut = 0.1
 p_const_in = 0.7
 p_micro_mutation = 0.95
-p_crossover = 0.15
-p_macro_mutation = 0.5
+p_crossover = 0.10
+p_macro_mutation = 0.45
+
 
  
 
@@ -139,7 +140,7 @@ utilizando multiprocessing de Python
 """
 #Número de procesos workers
 num_processors = cpu_count()
-chunk_size = population_size // (num_processors * 2)
+chunk_size = (population_size // demes) // (num_processors * 2)
 
 
 """
