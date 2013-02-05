@@ -13,11 +13,9 @@ y las funciones relacionadas
 
 import Individual
 import Parameters
-
-import sys
-
 import Util
 
+import sys
 import random
 
 '''
@@ -107,7 +105,7 @@ def crossover(genome1, genome2):
         
         #se elije el menor de los máximos
         max_segment_size_dad = max_segment_full_mom if max_segment_full_mom < max_segment_num_min_in_dad else max_segment_num_min_in_dad
-        #si el maximo es mayor a lo longitud del padre, se elige la longitud como máximo
+        #si el maximo es mayor a la longitud del padre, se elige la longitud como máximo
         max_segment_size_dad = (dad.height - 1) if (dad.height - 1) < max_segment_size_dad else max_segment_size_dad
         
         #lo que hay que quitarle para que quede en máximo número de instrucciones
@@ -215,13 +213,15 @@ def macro_mutation(genome):
 
 
 def micro_mutation(genome):
-    """Muta las instrucciones efectivas internamente
-    p_regmut = 0.5 #probabilidad de mutar un registro 
-    p_opermut = 0.25 #probabilidad de mutar una
-    p_constmut = 0.25
     """
+    Muta las instrucciones efectivas internamente
+    p_regmut = probabilidad de mutar un registro 
+    p_opermut = probabilidad de mutar una operación
+    p_constmut = probabilidad de mutar una constante efectiva
+    """
+    
     eff, indices = genome.get_effective_instructions_with_indices()
-    index = random.randint(0, len(eff) - 1)
+    index = random.randint(0, len(indices) - 1)
     #print "index " + str(index)
     instruction = eff[index]
     mutation_point = indices[index]
@@ -256,8 +256,12 @@ def micro_mutation(genome):
                 pos_to_replace = 1 if Util.random_flip_coin(0.5) else 3
         
         if pos_to_replace == 1:
-
+            #si no es el último índice, la última 
             if (index + 1) < len(indices):
+                '''
+                Se obtiene la lista de registros efectivos en esa posición, para reemplazar
+                en la instrucción y permitir que siga siendo efectiva
+                '''
                 reg_eff, to_mutate = genome.get_effective_registers(indices[index + 1])
                 
                 if reg_eff:
@@ -285,6 +289,7 @@ def micro_mutation(genome):
             diff_op = random.randint(Parameters.op_min, Parameters.op_max)
             
         instruction[0] = diff_op
+        
         genome.genomeList[mutation_point] = instruction
     
     genome.set_altered()

@@ -18,17 +18,15 @@ import Util
 def init_reg_in_const():
     """
     Una solo lista para los registros de entrada constantes. Todos los individuos lo usan.
-    
     r_const lista de instantes, cada instante t tiene las medidas Xi de los transformadores en donde hay un medidor
-    
     X[t][i] es el entero leido del archivo, medición del transformador i en el instante t
     """
     #Para cada t en el periodo de entrenamiento
     const = []
 
-    for t in range(0, lines):
+    for t in range(lines):
         instant = []
-        for i in range(0, n):
+        for i in range(n):
             if (config[i] == '1'):
                 instant.append(data_samples[t][i])
             
@@ -45,7 +43,7 @@ def read_samples():
         
     return data
     
-config = "1010101010" + "1010101010" + "1010101010" + "1010101010"
+config = "1011111011" + "1111101111" + "1110111111" + "1111111110"
 n = len(config)
 index_to_predict = 1
 
@@ -145,7 +143,7 @@ utilizando multiprocessing de Python
 """
 #Número de procesos workers
 num_processors = cpu_count()
-chunk_size = (population_size // demes) // (num_processors * 2)
+chunk_size = (population_size // demes) // num_processors
 
 
 """

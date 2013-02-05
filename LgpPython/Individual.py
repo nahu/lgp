@@ -27,15 +27,17 @@ def ini_individual(obj):
         instruction = create_new_instruction()
         obj.genomeList.append(instruction)
             
-    """Asegurar que la última instrucción tenga como registro destino al registro de salida"""
-    obj.genomeList[len(obj.genomeList)-1][1] = Parameters.reg_out
-    #obj.init_registers()
+    """
+    Asegurar que la última instrucción tenga como registro destino al registro de salida
+    """
+    obj.genomeList[len(obj.genomeList) - 1][1] = Parameters.reg_out
     
     obj.r_all = []
     obj.r_all += Parameters.r_out
     obj.r_all += Parameters.r_var
     
     [obj.r_all.append(random.uniform(0, Parameters.const_max)) for i in range(Parameters.cons_al_min, Parameters.cons_al_max + 1)]
+    
     return obj
 
 
@@ -107,10 +109,15 @@ def get_random_register(op, reg_eff=None, instruction=None):
     
     if op == 3: #operando 2
         #print "operando 2"
+        #operador 2 es constante con probabilidad p_const
         if Util.random_flip_coin(Parameters.p_reg_op2_const):
-            register = random.randint(Parameters.cons_al_min, Parameters.cons_in_max)
+            #Si va a ser constante, las constantes de entrada tienen mayor probabilidad que las aleatorias.
+            if Util.random_flip_coin(Parameters.p_const_in):
+                instruction.append(random.randint(Parameters.cons_in_min, Parameters.cons_in_max))
+            else:
+                instruction.append(random.randint(Parameters.cons_al_min, Parameters.cons_al_max))
         else:
-            register = random.randint(Parameters.var_min, Parameters.var_max)
+            instruction.append(random.randint(Parameters.var_min, Parameters.var_max))
         
     return register, op
 
@@ -154,7 +161,7 @@ class Individual():
     def __init__(self, width, index, config_position):
         self.width = width
         self.genomeList = []
-        self.fitness= 0.0
+        self.fitness = 0.0
         self.index = index
         self.evaluated = False
         self.config_position = config_position
@@ -186,7 +193,8 @@ class Individual():
         Se setea un atributo con el número de instrucciones efectivas del individuo
         '''
         self.n_eff = len(eff_i)
-        eff_i.reverse()     
+        eff_i.reverse()
+        
         return eff_i
     
     
@@ -264,6 +272,11 @@ class Individual():
         
         program = ""
         for i in eff_instructions:
+            '''
+            Como los registros de entrada se encuentra en una lista separada al conjunto de registros r_all
+            Se realiza un corrimiento de Parameters.register_offset (tamaño de r_all) 
+            al registro de la instrucción para que entre en el rango de r_const
+            '''
             if (i[3] >= Parameters.register_offset):
                 program += (Parameters.operations[i[0]<<4].format(i[1], i[2], i[3] - Parameters.register_offset) + '\n')
             else:
@@ -277,12 +290,13 @@ class Individual():
         Función de evaluación de fitnes
         """     
         program = self.get_program_in_python()
-        #in_t tiene las mediciones en el instante t
-        error_a_quad = 0
-        #error_prom_quad = 0.0;
-#        print Parameters.r_const
+        
+        error_a_quad = 0.0
+        error_prom_quad = 0.0
+
         try:
             for t in range(0, Parameters.training_lines):
+                #in_t tiene las mediciones en el instante t
                 in_t = Parameters.r_const[t]
                 r_all = copy.copy(self.r_all)
                 '''
@@ -303,9 +317,8 @@ class Individual():
                 exec program
                 
                 error_a_quad += (r_all[0] - Parameters.data_samples[t][self.config_position]) ** 2
-    
-                    
-                error_prom_quad = error_a_quad / Parameters.training_lines
+                        
+            error_prom_quad = error_a_quad / Parameters.training_lines
             
             #para evitar la división por cero
             if error_prom_quad == 0.0:
@@ -331,6 +344,7 @@ class Individual():
     def evaluate(self):
         if not self.evaluated:
             self.eval_fitness()
+            
         return self.fitness
     
     

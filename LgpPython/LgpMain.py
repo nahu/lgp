@@ -55,11 +55,11 @@ def step_by_pool_size(population):
         #iter = population.pool.imap(Population.tournament_with_mutation, to_tournament, Parameters.chunk_size)
         
         
-        """
+        '''
         Se retorna una lista de la siguiente forma:
             [0] El ganador modificado
             [1] El ganador sin modificar
-        """
+        '''
         winners = []
         for i in range(2):
             result = Population.tournament_with_mutation(to_tournament[i])
@@ -100,18 +100,21 @@ def step_by_pool_size(population):
             Se setean las copias temporales en las posiciones de los perdedores del torneo
             y se actualiza el índice dentro de la población
             '''
+            #TODO: Elegir al mejor entre el modificado y el sin modificar para la reproducción en los perdedores
             for l in to_tournament_indices[i]:
                 population.internal_pop[l] = winners[i][1].clone()
                 population.internal_pop[l].index = l
         
             '''
-            Se remplaza a los ganadores del torneo por los nuevos individos operados genéticamente
+            Se reemplazan a los ganadores del torneo por los nuevos individos operados genéticamente
             '''
+            #TODO, se copiaría al no mejor
             population.internal_pop[winners[i][0].index] = winners[i][0].clone()
             
         '''
         Se selecciona el mejor de ambos ganadores para reproducir sin modificación para la migración
         '''
+        #TODO, Se podría elegir entre los modificados también
         if (Individual.compare(winners[0][1], winners[1][1]) == 1):
             migrators.append(winners[0][1])
         else:
@@ -155,6 +158,10 @@ class LGP():
         '''
         
         for pop in range(self.num_demes):
+            '''
+            Parameters.chunk_size sería la cantidad de objetos que se le pasa a un worker para que le aplique la función
+            Individual.ini_individual
+            '''
             iter = self.pool.imap(Individual.ini_individual, self.population[pop].internal_pop, Parameters.chunk_size)
         
             for individual in range(self.population[pop].pop_size):
@@ -181,6 +188,7 @@ class LGP():
             while not self.termination_criteria():
                 
                 self.generation += Parameters.pool_size
+                
                 iter = self.pool.imap(step_by_pool_size, self.population, 1)
                 
                 '''
@@ -220,7 +228,7 @@ class LGP():
                     del to_del
                     
                     '''
-                    Se seleccionan los pool_size -1 individuos que tengan menor fitness
+                    Se seleccionan los pool_size - 1 individuos que tengan menor fitness
                     entre los perdedores de los pool_size torneos, para ser
                     reemplazados por los migrators de la población adyacente
                     '''
@@ -232,12 +240,14 @@ class LGP():
                     '''
                     if len(migrators[p-1]) != Parameters.pool_size:
                         print 'numero de migrators ERROR'
-                        
-                    for l in range(Parameters.pool_size):
+                    #TODO: remplazar todos los perdedores no solo pool_size
+                    #ordenando por fitness los migradores para saber cual se reproduce mas...
+                    #en caso de tener perdedores repetidos....
+                    for l in range(Parameters.pool_size): 
                         indice = loosers[l].index
                         self.population[p].internal_pop[indice] = migrators[p-1][l].clone()
                         self.population[p].internal_pop[indice].index = indice
-                    #print "estado"
+
                 
                 '''
                 Configuración de adyacencia en anillo, los últimos migrators van
@@ -268,7 +278,7 @@ class LGP():
         
     def best_individual_in_training(self):
         deme_best = []
-        
+        #nro.demes/nro.procesadores = chunk_zise
         iter = self.pool.imap(Population.best_training_in_pop, self.population, 2)
         
         print "Los " + str(self.num_demes) + " mejores en Entrenamiento..."
@@ -350,23 +360,21 @@ if __name__ == "__main__":
     t_inicio = time.clock()
     pool = Pool(processes=Parameters.num_processors)
     
-    positions = [15,23]
-    
+    positions = []#[15,23]
     
     diff = str(datetime.now())
     dir = "resultados/"
     dir += diff[:19].replace(':', '.')
-    '''   
+    
     for i in range(Parameters.n):
         if Parameters.config[i] == '0':
             positions.append(i)
-    '''
+    
     for i in positions:
-        #i = 3
         best_individuals = []
         t1 = time.clock()
         print "Transformador " + str(i)
-        #positions.append(i)
+        
         ga = LGP(config_position=i, pool=pool, demes=Parameters.demes)
         ga.set_num_generations(Parameters.num_generations)
         ga.set_population_size(Parameters.population_size)
