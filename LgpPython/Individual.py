@@ -113,11 +113,11 @@ def get_random_register(op, reg_eff=None, instruction=None):
         if Util.random_flip_coin(Parameters.p_reg_op2_const):
             #Si va a ser constante, las constantes de entrada tienen mayor probabilidad que las aleatorias.
             if Util.random_flip_coin(Parameters.p_const_in):
-                instruction.append(random.randint(Parameters.cons_in_min, Parameters.cons_in_max))
+                register = random.randint(Parameters.cons_in_min, Parameters.cons_in_max)
             else:
-                instruction.append(random.randint(Parameters.cons_al_min, Parameters.cons_al_max))
+                register = random.randint(Parameters.cons_al_min, Parameters.cons_al_max)
         else:
-            instruction.append(random.randint(Parameters.var_min, Parameters.var_max))
+            register = random.randint(Parameters.var_min, Parameters.var_max)
         
     return register, op
 
