@@ -51,7 +51,7 @@ index_to_predict = 1
 k = config.count('1')
 
 #DATOS
-filename = "Datos60.txt"
+filename = "../data/Datos60.txt"
 lines = 248
 training_lines = 144
 validation_lines = 104

@@ -11,6 +11,8 @@ y las funciones relacionadas
 @since: 1.0
 """
 
+from multiprocessing import Pool
+
 import Individual
 import Parameters
 import Util
@@ -18,17 +20,6 @@ import Util
 import sys
 import random
 
-'''
-deprecade
-'''
-def tournament(competitors):
-    choosen = competitors[0]
-    
-    for i in range(1, len(competitors)):
-        if choosen.evaluate() < competitors[i].evaluate():
-            choosen = competitors[i]
-
-    return choosen
 
 
 def check_out_register(individual):
