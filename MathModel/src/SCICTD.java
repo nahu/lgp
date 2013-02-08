@@ -276,10 +276,11 @@ public class SCICTD {
 //            }
 
             n = 40;
-            configuracion = "1 0 1 0 1 0 1 0 1 0 "
-                    + "1 0 1 0 1 0 1 0 1 0 "
-                    + "1 0 1 0 1 0 1 0 1 0 "
-                    + "1 0 1 0 1 0 1 0 1 0 ";
+            
+            configuracion =   "1 0 1 1 1 1 1 0 1 1 " 
+				            + "1 1 1 1 1 0 1 1 1 1 " 
+				    		+ "1 1 1 0 1 1 1 1 1 1 " 
+				            + "1 1 1 1 1 1 1 1 1 0 ";
 
             SCICTD programa = new SCICTD(40, 2);
                 

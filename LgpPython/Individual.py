@@ -414,7 +414,11 @@ class Individual():
     
     def set_altered(self):
         self.fitness = 0.0
-        self.evaluated = False    
+        self.evaluated = False
+    
+    def set_index (self, index):
+        self.index = index
+        return self
 
 
 

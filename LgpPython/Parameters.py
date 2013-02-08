@@ -42,7 +42,8 @@ def read_samples():
         exit(-1)
         
     return data
-    
+
+#Solo faltan 5 transformadores. [1,7,15,23,39]
 config = "1011111011" + "1111101111" + "1110111111" + "1111111110"
 n = len(config)
 index_to_predict = 1
@@ -54,11 +55,7 @@ filename = "Datos60.txt"
 lines = 248
 training_lines = 144
 validation_lines = 104
-#r_const = None
-#data_samples = []
-#Constante máxima para inicialización de registros
-const_max = 50
-step_size_const = 5
+
 
 
 #INSTRUCCIONES
@@ -104,46 +101,6 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 r_out = [1.0]
 r_var = []
 [r_var.append(1.0) for i in range(var_min, var_max + 1)]
-
-#ALGORITMO EVOLUTIVO
-num_generations = 1000
-#migration_gen = 0.10 * num_generation
-
-population_size = 8000
-demes = 8
-
-freq_stats= 100
-pool_size = 5
-
-
-#PROBABILIDADES
-p_reg_op2_const = 0.6
-p_const_in = 0.75
-const_max = 50 #Constante máxima para inicialización de registros
-
-p_macro_mutation = 0.45
-p_ins = 0.75
-p_del = 0.25
-
-p_micro_mutation = 0.90
-p_regmut = 0.5
-p_opermut = 0.45
-p_constmut = 0.05
-step_size_const = 2 #Variacion para mutacion de constantes
-
-p_crossover = 0.05
-
-
- 
-
-"""
-Las operaciones sobre la población,
-como la inicialización y la evaluación de fitness se realiza 
-utilizando multiprocessing de Python
-"""
-#Número de procesos workers
-num_processors = cpu_count()
-chunk_size = (population_size // demes) // num_processors
 
 
 """
@@ -193,5 +150,72 @@ operations = {  1   : 'r_all[{0}] = r_all[{1}] + r_all[{2}]',
                 144 : 'r_all[{0}] = math.cos(in_t[{2}])'
                 }
 
+'''
+************************************  ALGORITMO EVOLUTIVO ***********************************
+
+    num_generations: cantidad de generaciones de individuos en el algoritmo evolutivo
+    population_size: el tamaño de la población.
+    demes: cantidad de subpoblaciones que se procesarán en paralelo.
+    freq_stats: cada cuantas generaciones se imprimirá el estado del algoritmo.
+    pool_size: cantidad de individuos qeu participaran del torneo
+    #migration_gen = 0.10 * num_generation
+'''
+num_generations = 10
+population_size = 50
+demes = 8
+freq_stats= 100
+pool_size = 5
+
+'''
+***************************************  PROBABILIDADES ***************************************
+
+    p_reg_op2_const: probabilidad de que el segundo operando de una instrucción sea constante
+    p_const_in: probabilidad de que si un operando es constante sea de entrada
+        const_max: Constante máxima para inicialización de registros
+
+    p_macro_mutation: probabilidad de que un individuo sea sometido al proceso 
+                    de macro mutación (agregacion/eliminación de instrucciones)
+        p_ins: probabilidad de agregar una instrucciòn. Segùn el libro mayor a la de eliminar.
+        p_del: probabilidad de eliminar una instrucción.    
+
+    p_micro_mutation: probabilidad de que un individuo sea sometido al 
+                      proceso de micro mutación (mutación interna de instrucciones)
+        p_regmut: probabilidad de que se aplique la micro mutación a los registros
+        p_opermut: probabilidad de que se aplique la micro mutación a las operaciones
+        p_constmut: probabilidad de que se aplique la micro mutación a las constantes 
+                    utilizando step_size_const para la variación
+        step_size_const: variacion de las constantes cuando hay una mutacion de registros
+            
+    p_crossover: probabilidad de carplia la operación de cruzamiento.
+'''
+p_reg_op2_const = 0.6
+p_const_in = 0.75
+const_max = 50
+
+p_macro_mutation = 0.45
+p_ins = 0.75
+p_del = 0.25
+
+p_micro_mutation = 0.90
+p_regmut = 0.5
+p_opermut = 0.45
+p_constmut = 0.05
+step_size_const = 2
+
+p_crossover = 0.05
+
+'''
+*************************************  MULTIPROCESAMIENTO *************************************
+Las operaciones sobre la población,como la inicialización y la evaluación de fitness se realiza 
+utilizando multiprocessing de Python
+'''
+num_processors = cpu_count() #Número de procesos workers
+chunk_size = (population_size // demes) // num_processors
+
+
+'''
+****************************************  CARGA DE DATOS ***************************************
+                Carga de datos e inicialización de registros de entrada
+'''
 data_samples = read_samples()
 r_const = init_reg_in_const()
