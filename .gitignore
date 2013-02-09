@@ -31,12 +31,18 @@ nosetests.xml
 
 # Mr Developer
 .mr.developer.cfg
-.project
-.pydevproject
+#.project
+#.pydevproject
 
 #eclipse
-.settings/*
+.settings/
+
+#netbeans
 /MathModel/MathModel/nbproject/private/
+
+#java
+bin/**
+MathModel/.classpath
 
 #resultados
 errores*
