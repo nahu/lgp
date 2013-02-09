@@ -9,28 +9,9 @@ entre otras
 
 @since: 1.0
 """
+
 import random
 
-
-def list_swap_element(lst, indexa, indexb):
-    """ Swaps elements A and B in a list.
-
-    Example:
-        >>> l = [1, 2, 3]
-        >>> Util.listSwapElement(l, 1, 2)
-        >>> l
-        [1, 3, 2]
-
-    :param lst: the list
-    :param indexa: the swap element A
-    :param indexb: the swap element B
-    :rtype: None
-
-    """
-    temp = lst[indexa]
-    lst[indexa] = lst[indexb]
-    lst[indexb] = temp
-    
     
 def get_matrix_from_file(filename):
     _file = open(filename, 'r')

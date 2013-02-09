@@ -5,6 +5,8 @@
  * @version 1.0
  */
 
+package prueba;
+
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,7 +16,10 @@ import java.util.logging.Logger;
  * Carga de Transformadores de Distribucion) problem.
  */
 public class SCICTD {
-
+	public static final String DATA_FOLDER = SCICTD.class.getResource( "/" ).getPath()  +
+            ".." + System.getProperty( "file.separator" ) +
+            "data" + System.getProperty( "file.separator" );
+	
     public static int numberOfTrafos_;
     public int numberOfMuestras_;
     private double[][] matrizConsumo_;
@@ -25,7 +30,7 @@ public class SCICTD {
     
     public SCICTD(int cantidadTrafos, int numeroDeObjetivos) throws FileNotFoundException, IOException, ClassNotFoundException {
         numberOfTrafos_ = cantidadTrafos;
-        matrizConsumo_ = readProblem("\\Datos60.txt", matrizConsumo_);
+        matrizConsumo_ = readProblem( DATA_FOLDER + "Datos60.txt", matrizConsumo_);
 //        
 //        solutionType_ = new BinarySolutionType(this);
 //        variableType_ = new Class[numberOfVariables_];
@@ -284,7 +289,7 @@ public class SCICTD {
 
             SCICTD programa = new SCICTD(40, 2);
                 
-            FileWriter fw = new FileWriter("C:\\Users\\vanecan\\Desktop\\RRR.csv");
+            FileWriter fw = new FileWriter( DATA_FOLDER + configuracion.replace(" ", "") + ".csv" );
             PrintWriter pw = new PrintWriter(fw);
             Double [][] resultados = programa.evaluate(programa.getConfiguracion(configuracion, n));
             
