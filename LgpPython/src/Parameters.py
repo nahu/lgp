@@ -162,7 +162,7 @@ operations = {  1   : 'r_all[{0}] = r_all[{1}] + r_all[{2}]',
 '''
 num_generations = 2000
 population_size = 8000
-demes = 8
+demes = 4
 freq_stats= 100
 pool_size = 5
 
@@ -211,7 +211,7 @@ utilizando multiprocessing de Python
 '''
 num_processors = cpu_count() #Número de procesos workers
 chunk_size = (population_size // demes) // num_processors
-
+chunk_size_step = demes // num_processors
 
 '''
 ****************************************  CARGA DE DATOS ***************************************

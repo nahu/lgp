@@ -190,7 +190,7 @@ class LGP():
                 
                 self.generation += Parameters.pool_size
                 
-                iter_result = self.pool.imap(step_by_pool_size, self.population, 1)
+                iter_result = self.pool.imap(step_by_pool_size, self.population, Parameters.chunk_size_step)
                 
                 '''
                 iter_result:
@@ -303,7 +303,7 @@ class LGP():
     def best_individual_in_training(self):
         deme_best = []
         #nro.demes/nro.procesadores = chunk_zise
-        iter_result = self.pool.imap(Population.best_training_in_pop, self.population, 2)
+        iter_result = self.pool.imap(Population.best_training_in_pop, self.population, Parameters.chunk_size_step)
         
         print "Los " + str(self.num_demes) + " mejores en Entrenamiento..."
         for deme in range(self.num_demes):
