@@ -9,33 +9,20 @@ Módulo que define el algoritmo LGP
 
 @since: 1.0
 """
-from itertools import imap
+
 from multiprocessing import Pool
-from multiprocessing import Manager
 from datetime import datetime
 
 import os
 import copy
 import time
 import types
+
 import Population
-
 import Util
-
 import Parameters
 import Individual
 
-
-
-def sum_errors(list_of_errors):
-    error_total = 0
-    
-    for x in list_of_errors:
-        error_total += x
-    list_of_errors.append(error_total)
-    list_of_errors.append(error_total/Parameters.validation_lines)
-    
-    return list_of_errors
 
 
 def step_by_pool_size(population):
@@ -52,7 +39,7 @@ def step_by_pool_size(population):
         to_tournament.append(population.selection_from_indices(to_tournament_indices[0]))
         to_tournament.append(population.selection_from_indices(to_tournament_indices[1]))
         
-        #iter = population.pool.imap(Population.tournament_with_mutation, to_tournament, Parameters.chunk_size)
+        #iter_result = population.pool.imap(Population.tournament_with_mutation, to_tournament, Parameters.chunk_size)
         
         
         '''
@@ -64,7 +51,7 @@ def step_by_pool_size(population):
         for i in range(2):
             result = Population.tournament_with_mutation(to_tournament[i])
             winners.append(result)
-            #winners.append(iter.next())
+            #winners.append(iter_result.next())
         
         
         if Util.random_flip_coin(Parameters.p_crossover):
@@ -176,10 +163,10 @@ class LGP():
             Parameters.chunk_size sería la cantidad de objetos que se le pasa a un worker para que le aplique la función
             Individual.ini_individual
             '''
-            iter = self.pool.imap(Individual.ini_individual, self.population[pop].internal_pop, Parameters.chunk_size)
+            iter_result = self.pool.imap(Individual.ini_individual, self.population[pop].internal_pop, Parameters.chunk_size)
         
             for individual in range(self.population[pop].pop_size):
-                self.population[pop].internal_pop[individual] = iter.next()
+                self.population[pop].internal_pop[individual] = iter_result.next()
          
          
          
@@ -203,10 +190,10 @@ class LGP():
                 
                 self.generation += Parameters.pool_size
                 
-                iter = self.pool.imap(step_by_pool_size, self.population, 1)
+                iter_result = self.pool.imap(step_by_pool_size, self.population, 1)
                 
                 '''
-                iter:
+                iter_result:
                     [0] Pool_size - 1 Migrators
                     [1] Population changed
                     [2] Indices for replace
@@ -215,7 +202,7 @@ class LGP():
                 migrators = []
                 indices = []
                 tmp_populations = []
-                result = iter.next()#step_by_pool_size(self.population[0])#
+                result = iter_result.next()#step_by_pool_size(self.population[0])#
                 last_migrators = result[0]
                 first_population = result[1]
                 firts_indices = result[2] 
@@ -229,7 +216,7 @@ class LGP():
                 indices.append(firts_indices)
                 
                 for p in range(1, self.num_demes):
-                    result = iter.next() #step_by_pool_size(self.population[p])
+                    result = iter_result.next() #step_by_pool_size(self.population[p])
                     mig = result[0]
                     pop = result[1]
                     ind = result[2] 
@@ -307,23 +294,24 @@ class LGP():
                 
                 if (freq_stats - stats) <= Parameters.pool_size:
                     print "Generación " + str(self.generation) + " ...."
-                
-        except KeyboardInterrupt:
-            print "Terminando Workers..."
-            self.terminate()
-            exit()
+        
+        except Exception as e:
+            print "EXCEPCION en generación " + str(self.generation)
+            print e
         
         
     def best_individual_in_training(self):
         deme_best = []
         #nro.demes/nro.procesadores = chunk_zise
-        iter = self.pool.imap(Population.best_training_in_pop, self.population, 2)
+        iter_result = self.pool.imap(Population.best_training_in_pop, self.population, 2)
         
         print "Los " + str(self.num_demes) + " mejores en Entrenamiento..."
         for deme in range(self.num_demes):
-            best = iter.next()
+            best = iter_result.next()
             deme_best.append(best)
-            print "Deme " + str(deme) + ", individuo " + str(best.index) + " " + str(1.0/best.fitness) 
+            print "Deme " + str(deme) + ", individuo " + str(best.index) + " " + str(1.0/best.fitness)
+            print best
+            print best.get_program_in_python()
             
         deme_best.sort(cmp=Individual.compare, reverse=True)
         
@@ -332,126 +320,102 @@ class LGP():
     def best_individual_in_validation(self):
         deme_best = []
         
-        iter = self.pool.imap(Population.best_validation_in_pop, self.population, 2)
+        iter_result = self.pool.imap(Population.best_validation_in_pop, self.population, 2)
         
         print "Los  " + str(self.num_demes) + " mejores en Validación..."
         for deme in range(self.num_demes):
-            best = iter.next()
+            best = iter_result.next()
             deme_best.append(best)
             print "Deme " + str(deme) + ", individuo " + str(best.index) + " " + str(best.validation_error)
+            print best
+            print best.get_program_in_python()
             
         deme_best.sort(cmp=Individual.compare_error)
         
         return deme_best[0]
         
         
-def errors_to_file(f_errors, final_table):
-    f = open(f_errors, "w")
-
-    for t in range(Parameters.validation_lines + 3):
-        if t == Parameters.validation_lines:
-            row = "Error total;"
-        elif t ==  Parameters.validation_lines + 1:
-            row = "Error promedio;"
-        elif t ==  Parameters.validation_lines + 2:
-            row = "Posicion;"
-        else:
-            row = str(Parameters.training_lines + t) + ";"
-        for i in range(len(final_table)):
-            row += (str(final_table[i][t]) + ";")
-        row += "\n"
-        f.write(row.replace('.', ','))
-        
-    f.close()
-
-
-
-def programs_to_file(f_programs, best_individuals):
-    g = open(f_programs, "w")
-    
-    for b in best_individuals:
-        g.write(repr(b))
-        g.write("\n")
-        g.write("#Effective Program:\n")
-        g.write(b.get_program_in_python())
-        g.write("\n\n\n")
-        
-    g.close()
-
-
-def parameters_to_file(f_param):
-    f = open(f_param, "w")
-    
-    ps =  [(a + " = " + str(Parameters.__dict__.get(a)) + "\n") for a in dir(Parameters) 
-           if (isinstance(Parameters.__dict__.get(a), types.FloatType) or 
-               isinstance(Parameters.__dict__.get(a), types.IntType))]
-    for l in ps:
-        f.write(l)
-        
-    f.close()
- 
-  
 if __name__ == "__main__":
     
     t_inicio = time.clock()
     pool = Pool(processes=Parameters.num_processors)
     
-    positions = []#[15,23]
+    try:
+        '''
+        Se crea el direcctorio de resultados si no existe'
+        '''
+        diff = str(datetime.now())
+        folder = "../resultados/"
+        folder += diff[:19].replace(':', '.')
+        
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        
+        '''
+        Se escribe en un archivo los parámetros usados
+        '''
+        f_parameters = folder + "/parameters.txt"
+        Util.parameters_to_file(f_parameters)
+        
+        
+        positions = []
     
-    diff = str(datetime.now())
-    dir = "resultados/"
-    dir += diff[:19].replace(':', '.')
-    
-    for i in range(Parameters.n):
-        if Parameters.config[i] == '0':
-            positions.append(i)
-    
-    #positions.append(1)
-    for i in positions:
-        best_individuals = []
-        t1 = time.clock()
-        print "Transformador " + str(i)
-        
-        ga = LGP(config_position=i, pool=pool, demes=Parameters.demes)
-        ga.set_num_generations(Parameters.num_generations)
-        ga.set_population_size(Parameters.population_size)
-        ga.evolve(freq_stats=Parameters.freq_stats)
-        
-        best_training = ga.best_individual_in_training()
-        best_validation = ga.best_individual_in_validation()
-        ga.terminate()
-        
-        best_individuals.append(best_training)
-        best_individuals.append(best_validation)
-        
-        t2 = time.clock()
-        print "\n"
-        print '%s Duracion %0.5f s' % ("Transf. " + str(i), (t2-t1))
-        print "\n"
-        
-        iter = pool.imap(Individual.eval_individual, best_individuals, 1)
-        
-        final_table = []
-#        final_table[0] errores de validación con el mejor individuo de entrenamiento
-#        final_table[1] errorer de validación con el mejor individuo con datos de validación
-        for j in range(2):
-            errors_j = iter.next()
-            errors_and_sum = sum_errors(errors_j)
-            errors_and_sum.append(i)
-            final_table.append(errors_and_sum)
+        for i in range(Parameters.n):
+            if Parameters.config[i] == '0':
+                positions.append(i)
+                
+        #positions = [15, 23] #comentar
+        for i in positions:
+            best_individuals = []
+            t1 = time.clock()
+            print "---- Transformador " + str(i)
             
-        if not os.path.exists(dir):
-            os.makedirs(dir)
+            ga = LGP(config_position=i, pool=pool, demes=Parameters.demes)
+            ga.set_num_generations(Parameters.num_generations)
+            ga.set_population_size(Parameters.population_size)
+            ga.evolve(freq_stats=Parameters.freq_stats)
             
-        f_errors = dir + "/errores-TRAF" + str(i) + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + ".csv"
-        errors_to_file(f_errors, final_table)
-        f_programs = dir + "/programas-TRAF" + str(i) + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + ".txt"
-        programs_to_file(f_programs, best_individuals)
-#        f_parameters = dir + "/parameters-TRAF" + str(i)
-#        parameters_to_file(f_parameters)
+            best_training = ga.best_individual_in_training()
+            best_validation = ga.best_individual_in_validation()
+            ga.terminate()
+            
+            best_individuals.append(best_training)
+            best_individuals.append(best_validation)
+            
+            t2 = time.clock()
+            print "\n"
+            print '%s Duracion %0.5f s' % ("Transf. " + str(i), (t2-t1))
+            print "\n"
+            
+            iter_result = pool.imap(Individual.eval_individual, best_individuals, 1)
+            
+            final_table = []
+            '''
+            final_table[0] errores de validación con el mejor individuo de entrenamiento
+            final_table[1] errorer de validación con el mejor individuo con datos de validación
+            '''
+            for j in range(2):
+                errors_j = iter_result.next()
+                errors_and_sum = Util.sum_errors(errors_j)
+                errors_and_sum.append(i)
+                final_table.append(errors_and_sum)
+                
+            '''
+            Se escriben a archivos los errores y los mejores programas para cada transformador
+            '''
+            f_errors = folder + "/errores-TRAF" + str(i) + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + ".csv"
+            Util.errors_to_file(f_errors, final_table)
+            f_programs = folder + "/programas-TRAF" + str(i) + "-G" + str(Parameters.num_generations) + "_P" + str(Parameters.population_size) + ".txt"
+            Util.programs_to_file(f_programs, best_individuals)
     
-    pool.close()
-    pool.join()
+        pool.close()
+        pool.join()
+    except KeyboardInterrupt:
+        print "Terminando Workers..."
+        pool.close()
+        pool.join()
+            
+    
     
     t_final = time.clock()
     print '%s Duracion %0.5f s' % ("LGPMAIN", (t_final - t_inicio))
