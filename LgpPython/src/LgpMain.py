@@ -87,23 +87,12 @@ def step_by_pool_size(population):
             [loosers.add(j) for j in to_tournament_indices[i]]
             
             '''
-            DELETE: Se setean las copias temporales en las posiciones de los perdedores del torneo
-            y se actualiza el índice dentro de la población
-            '''
-            #TODO: RESUELTO Elegir al mejor entre el modificado y el sin modificar para la reproducción en los perdedores
-            '''
             Se remplaza los perdedores por el mejor entre (ganador modificado, ganador NO modificado)
             y se actualizan los indices dentro de la población
             '''
             for l in to_tournament_indices[i]:
                 population.internal_pop[l] = winners[i][best_replace].clone()
                 population.internal_pop[l].index = l
-                
-            '''
-            DELETE: Se reemplazan a los ganadores del torneo por los nuevos individos operados genéticamente
-            '''
-            #TODO: RESUELTO se copiaría al no mejor
-            #population.internal_pop[winners[i][0].index] = winners[i][0].clone()
             '''
             Como ya se remplazo a los perdedores por el mejor, se remplaza al ganador por el peor. Hay mas copias del mejor.
             '''
@@ -112,7 +101,6 @@ def step_by_pool_size(population):
         '''
         Se selecciona el mejor de ambos ganadores para reproducir sin modificación para la migración
         '''
-        #TODO: RESULETO Se podría elegir entre los modificados también
         '''
         best_win[i] = el mejor del torneo i. El mejor de los torneos es el que migra.
         '''
@@ -181,7 +169,6 @@ class LGP():
     
 
     def evolve(self, freq_stats=-1):
-        #Se inicializan todos los demes
         self.initialize_pop()
         self.generation = 0
         
@@ -241,9 +228,7 @@ class LGP():
                     '''
                     if len(migrators[p-1]) != Parameters.pool_size:
                         print 'Error: [LgpMain.evolve] El número de migradores del deme '+ str(p-1) + ' es distinto a pool_size: ' + str(Parameters.pool_size)
-                    #TODO: remplazar todos los perdedores no solo pool_size
-                    #ordenando por fitness los migradores para saber cual se reproduce mas...
-                    #en caso de tener perdedores repetidos....
+
                     migrators[p-1].sort(cmp=Individual.compare, reverse = True)
                     looser_pos = 0
                     for mig in migrators[p-1]:
@@ -255,10 +240,7 @@ class LGP():
                                 looser_pos+=1
                             else:
                                 break
-#                    for l in range(Parameters.pool_size): 
-#                        indice = loosers[l].index
-#                        self.population[p].internal_pop[indice] = migrators[p-1][l].clone()
-#                        self.population[p].internal_pop[indice].index = indice
+
                 
                 '''
                 Configuración de adyacencia en anillo, los últimos migrators van
@@ -267,9 +249,7 @@ class LGP():
                 to_del = self.population[0]
                 self.population[0] = copy.deepcopy(tmp_populations[0])
                 del to_del
-                #TODO: remplazar todos los perdedores no solo pool_size
-                #ordenando por fitness los migradores para saber cual se reproduce mas...
-                #en caso de tener perdedores repetidos....
+
                 migrators[self.num_demes - 1].sort(cmp=Individual.compare, reverse = True)
                 looser_pos = 0
                 for mig in migrators[self.num_demes - 1]:
@@ -281,13 +261,6 @@ class LGP():
                             looser_pos+=1
                         else:
                             break
-                
-#                loosers = self.population[0].selection_from_indices(indices[0])
-#                loosers.sort(cmp=Individual.compare)
-#                for l in range(Parameters.pool_size):
-#                    indice = loosers[l].index
-#                    self.population[0].internal_pop[indice] = migrators[self.num_demes - 1][l].clone()
-#                    self.population[0].internal_pop[indice].index = indice
             
                 
                 stats = self.generation % freq_stats
@@ -335,8 +308,7 @@ class LGP():
         return deme_best[0]
         
         
-if __name__ == "__main__":
-    
+if __name__ == "__main__":    
     t_inicio = time.clock()
     pool = Pool(processes=Parameters.num_processors)
     
@@ -364,7 +336,6 @@ if __name__ == "__main__":
             if Parameters.config[i] == '0':
                 positions.append(i)
                 
-        #positions = [15, 23] #comentar
         for i in positions:
             best_individuals = []
             t1 = time.clock()
@@ -376,11 +347,11 @@ if __name__ == "__main__":
             ga.evolve(freq_stats=Parameters.freq_stats)
             
             best_training = ga.best_individual_in_training()
-            best_validation = ga.best_individual_in_validation()
+            #best_validation = ga.best_individual_in_validation()
             ga.terminate()
             
             best_individuals.append(best_training)
-            best_individuals.append(best_validation)
+            #best_individuals.append(best_validation)
             
             t2 = time.clock()
             print "\n"
@@ -394,7 +365,7 @@ if __name__ == "__main__":
             final_table[0] errores de validación con el mejor individuo de entrenamiento
             final_table[1] errorer de validación con el mejor individuo con datos de validación
             '''
-            for j in range(2):
+            for j in range(1):
                 errors_j = iter_result.next()
                 errors_and_sum = Util.sum_errors(errors_j)
                 errors_and_sum.append(i)

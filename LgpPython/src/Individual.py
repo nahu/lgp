@@ -290,41 +290,32 @@ class Individual():
         Función de evaluación de fitnes
         """     
         program = self.get_program_in_python()
-        
+        list_errors = []
         error_a_quad = 0.0
         error_prom_quad = 0.0
-
+        
         try:
             for t in range(0, Parameters.training_lines):
                 #in_t tiene las mediciones en el instante t
                 in_t = Parameters.r_const[t]
                 r_all = copy.copy(self.r_all)
-                '''
-                print "program"
-                print program
-                print "in_t"
-                print in_t
-                print "t"
-                print t
-                print "r_all"
-                
-                for i in range (0, len(r_all)):
-                    if (i< len(in_t)):
-                        print i, r_all[i], in_t[i]
-                    else:
-                        print i, r_all[i]
-                '''
                 exec program
-                
                 error_a_quad += (r_all[0] - Parameters.data_samples[t][self.config_position]) ** 2
-                        
+                list_errors.append(error_a_quad)
+                
             error_prom_quad = error_a_quad / Parameters.training_lines
+            
+            '''Se halla la desviacion tipica del error. (Sumatoria(error_medio - errorXLinea)/training_lines'''
+            error_desv = 0.0
+            for error in list_errors:
+                error_desv += (error_a_quad - error) ** 2
+            error_desv = error_desv / Parameters.training_lines
             
             #para evitar la división por cero
             if error_prom_quad == 0.0:
                 error_prom_quad = 0.000000001
                 
-            self.fitness = 1 / error_prom_quad
+            self.fitness = 1 / (error_prom_quad + error_desv)
         
         except Exception as e:
             """
@@ -423,6 +414,7 @@ class Individual():
 
 
 if __name__ == "__main__":
-    r = Individual(0, 4, 0)
+    r = Individual(4, 0, 1)
     r = ini_individual(r)
+    r.evaluate()
     print r

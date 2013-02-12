@@ -12,6 +12,7 @@ Módulo que define las funciones asociadas al algoritmo LGP
 from multiprocessing import cpu_count
 
 import Util
+import os
 
 
 #INICIALIZACION DE REGISTROS DE ENTRADA CONSTANTES
@@ -51,10 +52,10 @@ index_to_predict = 1
 k = config.count('1')
 
 #DATOS
-filename = "../data/Datos60.txt"
+filename = "..\data\Datos60.txt" #os.getcwd()  + "\data\Datos60.txt"
 lines = 248
-training_lines = 144
-validation_lines = 104
+training_lines = 200
+validation_lines = 48
 
 
 
@@ -72,12 +73,13 @@ num_max_instructions = 10*k
 num_ini_instructions = 4*k
 num_operators = 9
 
-num_registers = 5*k + 1
-num_conts_registers = 2*k
-num_var_register = k
+num_conts_registers = 10+k#2*k
+num_var_register = 10#k
 num_const_in_registers = k
 num_out_registers = 1
-num_const_random_registers = k
+num_const_random_registers = 10#k
+num_registers = num_conts_registers + num_var_register + num_const_in_registers +num_out_registers + num_const_random_registers
+
 
 #Límites en las instrucciones
 reg_out = 0
@@ -160,9 +162,9 @@ operations = {  1   : 'r_all[{0}] = r_all[{1}] + r_all[{2}]',
     pool_size: cantidad de individuos qeu participaran del torneo
     #migration_gen = 0.10 * num_generation
 '''
-num_generations = 2000
-population_size = 8000
-demes = 8
+num_generations = 1000
+population_size = 4000
+demes = 4
 freq_stats= 100
 pool_size = 5
 
@@ -190,7 +192,7 @@ pool_size = 5
 '''
 p_reg_op2_const = 0.7
 p_const_in = 0.75
-const_max = 50
+const_max = 25#50
 
 p_macro_mutation = 0.45
 p_ins = 0.75
@@ -200,7 +202,7 @@ p_micro_mutation = 0.90
 p_regmut = 0.5
 p_opermut = 0.45
 p_constmut = 0.05
-step_size_const = 2
+step_size_const = 5
 
 p_crossover = 0.05
 

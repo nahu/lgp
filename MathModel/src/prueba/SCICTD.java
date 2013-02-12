@@ -24,8 +24,8 @@ public class SCICTD {
     public int numberOfMuestras_;
     private double[][] matrizConsumo_;
     public int[] nodos = new int[numberOfTrafos_];
-    public int training_lines = 144;
-    public int validation_lines = 104;
+    public int training_lines = 200;
+    public int validation_lines = 48;
     public Double [][] resultados = null;
     
     public SCICTD(int cantidadTrafos, int numeroDeObjetivos) throws FileNotFoundException, IOException, ClassNotFoundException {
