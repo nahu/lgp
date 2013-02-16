@@ -23,94 +23,74 @@ import Util
 import Parameters
 import Individual
 
-
-
 def step_by_pool_size(population):
-    migrators = []
-    loosers = set([])
+    '''Se reinician los indices, para hacer coincidir cada individuo.index con su posicion en internal_pop'''
+    population = resetIndex(population)
     
-    for generation in range(Parameters.pool_size):
-        to_tournament = []
-        selected_indices = population.indices_selection(Parameters.pool_size * 2)
+    to_tournament = []
+    '''Se seleccionan pool_size*2 diferentes posiciones en la poblacion para el torneo'''
+    selected_indices = population.indices_selection(Parameters.pool_size * 2)
+    
+    to_tournament_indices = []
+    to_tournament_indices.append(selected_indices[:Parameters.pool_size])
+    to_tournament_indices.append(selected_indices[Parameters.pool_size:])
+    to_tournament.append(population.selection_from_indices(to_tournament_indices[0]))
+    to_tournament.append(population.selection_from_indices(to_tournament_indices[1]))
+    
+    #iter_result = population.pool.imap(Population.tournament_with_mutation, to_tournament, Parameters.chunk_size)
+    winners = []
+    ''' ********************************* MUTACION  *********************************'''
+    for i in range(2):
+        ''' Se retorna una lista de la siguiente forma: [modificado, no_modificado] '''
+        result = Population.tournament_with_mutation(to_tournament[i])
+        winners.append(result)
+        #winners.append(iter_result.next())
+    
+    ''' ********************************* CROSSOVER *********************************'''
+    if Util.random_flip_coin(Parameters.p_crossover):
+        sister, brother = Population.crossover(winners[0][0], winners[1][0])
         
-        to_tournament_indices = []
-        to_tournament_indices.append(selected_indices[:Parameters.pool_size])
-        to_tournament_indices.append(selected_indices[Parameters.pool_size:])
-        to_tournament.append(population.selection_from_indices(to_tournament_indices[0]))
-        to_tournament.append(population.selection_from_indices(to_tournament_indices[1]))
-        
-        #iter_result = population.pool.imap(Population.tournament_with_mutation, to_tournament, Parameters.chunk_size)
-        
-        
-        '''
-        Se retorna una lista de la siguiente forma:
-            [0] El ganador modificado
-            [1] El ganador sin modificar
-        '''
-        winners = []
-        for i in range(2):
-            result = Population.tournament_with_mutation(to_tournament[i])
-            winners.append(result)
-            #winners.append(iter_result.next())
-        
-        
-        if Util.random_flip_coin(Parameters.p_crossover):
-            sister, brother = Population.crossover(winners[0][0], winners[1][0])
+        if not sister.index == winners[0][0].index:
+            winners[0][0] = brother
+            winners[1][0] = sister
             
-            if not sister.index == winners[0][0].index:
-                winners[0][0] = brother
-                winners[1][0] = sister
+        if not Population.check_out_register(winners[0][0]) or not Population.check_out_register(winners[1][0]):
+            print 'ERROR: [LgpMain.step_by_pool_size]: El crossover dejo individuos sin registros de salida.'
                 
-            if not Population.check_out_register(winners[0][0]) or not Population.check_out_register(winners[1][0]):
-                print "El crossover mató"
-        best_win = [] 
-        for i in range(2):
-            '''
-            Se elimina de la lista de participantes del torneo al ganador, para remplazar a los perdedores            
-            '''
-            try:
-                to_tournament_indices[i].remove(winners[i][1].index)
-            except:                
-                print "ERROR: [LgpMain.step_by_pool_size]: Error al eliminar el indice del ganador del torneo " + str(i)
-            #return to_tournament_indices[i], to_tournament_indices[1 if i == 0 else 0], winners[i][1].index
-            '''
-            best_replace = 0 si modificado mejor a NO modificado. / . 1 si NO modificado es mejor o son iguales.
-            '''
-            best_replace = 0 if Individual.compare(winners[i][0],winners[i][1]) == 1 else 1
-            worst_replace = 1 if best_replace == 0 else 0
-            best_win.append(winners[i][best_replace].clone()) #el mejor entre modif. y no modif. Uno por torneo.
-            
-            '''
-            Se guardan los índices de los perdedores para hacer un posterior ordenamiento,
-            los peores serán reemplazados por los individuos que migren del deme adyacente
-            '''
-            [loosers.add(j) for j in to_tournament_indices[i]]
-            
-            '''
-            Se remplaza los perdedores por el mejor entre (ganador modificado, ganador NO modificado)
-            y se actualizan los indices dentro de la población
-            '''
-            for l in to_tournament_indices[i]:
-                population.internal_pop[l] = winners[i][best_replace].clone()
-                population.internal_pop[l].index = l
-            '''
-            Como ya se remplazo a los perdedores por el mejor, se remplaza al ganador por el peor. Hay mas copias del mejor.
-            '''
-            population.internal_pop[winners[i][0].index] = winners[i][worst_replace].clone().set_index(winners[i][0].index)
-            
-        '''
-        Se selecciona el mejor de ambos ganadores para reproducir sin modificación para la migración
-        '''
-        '''
-        best_win[i] = el mejor del torneo i. El mejor de los torneos es el que migra.
-        '''
-        if (Individual.compare(best_win[0], best_win[1]) == 1):
-            migrators.append(best_win[0])
-        else:
-            migrators.append(best_win[1])
-            
-    return list([migrators, population, list(loosers)])
+    for i in range(2):
+        ''' Se elimina de la lista de participantes del torneo al ganador, para remplazar a los perdedores'''
+        try:
+            del to_tournament_indices[i][to_tournament[i].index(winners[i][1])]
+        except:                
+            print "ERROR: [LgpMain.step_by_pool_size]: Error al eliminar el indice del ganador del torneo " + str(i)
         
+        ''' best_replace = index_of_best([modificado, no_modificado])'''
+        best_replace = 0 if Individual.compare(winners[i][0],winners[i][1]) == 1 else 1
+        worst_replace = 1 if best_replace == 0 else 0
+        
+        ''' Se remplaza los perdedores por el mejor entre (ganador modificado, ganador NO modificado)
+        y se actualizan los indices dentro de la población '''
+        for l in to_tournament_indices[i]:
+            indice = population.internal_pop[l].index
+            population.internal_pop[l] = winners[i][best_replace].clone()
+            population.internal_pop[l].index = indice
+        '''
+        Como ya se remplazo a los perdedores por el mejor, se remplaza al ganador por el peor. Hay mas copias del mejor.
+        '''
+        population.internal_pop[winners[i][0].index] = winners[i][worst_replace].clone().set_index(winners[i][0].index)
+
+    '''Se ordena la población de mayor a menor.'''
+    (population.internal_pop).sort(cmp=Individual.compare, reverse = True)
+    for i in population.internal_pop:
+        if not i.evaluated:
+            print "ERROR: METODO DE ORDENACION FALLO."
+    
+    return population
+
+def resetIndex(population):
+    for j in range(population.pop_size):
+        population.internal_pop[j].index = j
+    return population
        
             
 class LGP():
@@ -172,105 +152,51 @@ class LGP():
         self.initialize_pop()
         self.generation = 0
         
-        try:
-            while not self.termination_criteria():
-                
-                self.generation += Parameters.pool_size
-                
-                iter_result = self.pool.imap(step_by_pool_size, self.population, 1)
-                
-                '''
-                iter_result:
-                    [0] Pool_size - 1 Migrators
-                    [1] Population changed
-                    [2] Indices for replace
-                '''
-               
-                migrators = []
-                indices = []
-                tmp_populations = []
-                result = iter_result.next()#step_by_pool_size(self.population[0])#
-                last_migrators = result[0]
-                first_population = result[1]
-                firts_indices = result[2] 
-                '''
-                print last_migrators
-                print first_population
-                print firts_indices
-                '''
-                migrators.append(last_migrators)
-                tmp_populations.append(first_population)
-                indices.append(firts_indices)
-                
-                for p in range(1, self.num_demes):
-                    result = iter_result.next() #step_by_pool_size(self.population[p])
-                    mig = result[0]
-                    pop = result[1]
-                    ind = result[2] 
-                    migrators.append(mig)
-                    tmp_populations.append(pop)
-                    indices.append(ind)
-                    
-                    to_del = self.population[p]
-                    self.population[p] = copy.deepcopy(tmp_populations[p])
-                    del to_del
-                    
-                    '''
-                    Se seleccionan los pool_size - 1 individuos que tengan menor fitness
-                    entre los perdedores de los pool_size torneos, para ser
-                    reemplazados por los migrators de la población adyacente
-                    '''
-                    loosers = self.population[p].selection_from_indices(indices[p])
-                    loosers.sort(cmp=Individual.compare)
-                    
-                    '''
-                    Se sobreescriben los perdedores y actualizan los índices
-                    '''
-                    if len(migrators[p-1]) != Parameters.pool_size:
-                        print 'Error: [LgpMain.evolve] El número de migradores del deme '+ str(p-1) + ' es distinto a pool_size: ' + str(Parameters.pool_size)
-
-                    migrators[p-1].sort(cmp=Individual.compare, reverse = True)
-                    looser_pos = 0
-                    for mig in migrators[p-1]:
-                        for l in range(Parameters.pool_size-1): 
-                            if looser_pos < len(loosers):
-                                indice = loosers[looser_pos].index
-                                self.population[p].internal_pop[indice] = mig.clone()
-                                self.population[p].internal_pop[indice].index = indice
-                                looser_pos+=1
-                            else:
-                                break
-
-                
-                '''
-                Configuración de adyacencia en anillo, los últimos migrators van
-                a la primera población
-                '''
-                to_del = self.population[0]
-                self.population[0] = copy.deepcopy(tmp_populations[0])
-                del to_del
-
-                migrators[self.num_demes - 1].sort(cmp=Individual.compare, reverse = True)
-                looser_pos = 0
-                for mig in migrators[self.num_demes - 1]:
-                    for l in range(Parameters.pool_size-1): 
-                        if looser_pos < len(loosers):
-                            indice = loosers[looser_pos].index
-                            self.population[0].internal_pop[indice] = mig.clone()
-                            self.population[0].internal_pop[indice].index = indice
-                            looser_pos+=1
-                        else:
-                            break
+        #try:
+        while not self.termination_criteria():
+            for_replace_loosers = int(self.population[0].pop_size - Parameters.migration_rate*self.population[0].pop_size)+1
+            for_replace_migration = int(Parameters.migration_rate*self.population[0].pop_size)
+            self.generation += 1
             
+            iter_result = self.pool.imap(step_by_pool_size, self.population, 1)#step_by_pool_size(self.population[0])#
+#            result=[]
+#            for i in range(len(self.population)):
+#                result.append(step_by_pool_size(self.population[i]))
+#            iter_result = iter(result)
+#            
+            tmp_populations = []
+
+            first_population = iter_result.next()
+            tmp_populations.append(first_population)
+            
+            for p in range(1, self.num_demes):
+                tmp_populations.append(iter_result.next())
                 
-                stats = self.generation % freq_stats
+                to_del = self.population[p]
+                self.population[p] = copy.deepcopy(tmp_populations[p])
+                del to_del
                 
-                if (freq_stats - stats) <= Parameters.pool_size:
-                    print "Generación " + str(self.generation) + " ...."
+                '''Migracion:los ultimos de la poblacion actual = los primeros de la poblacion anterior'''
+                self.population[p].internal_pop[for_replace_loosers:] = copy.deepcopy(self.population[p-1].internal_pop[0:for_replace_migration])
+            '''
+            Configuración de adyacencia en anillo. Los ultimos de la primera población son remplazados por 
+            los primeros de la ultima.
+            '''
+            to_del = self.population[0]
+            self.population[0] = copy.deepcopy(tmp_populations[0])
+            del to_del
+            
+            self.population[0].internal_pop[for_replace_loosers:] = copy.deepcopy(self.population[self.num_demes - 1].internal_pop[0:for_replace_migration])
+            
+            stats = self.generation % freq_stats
+            
+            if stats == 0:
+                print "Generación " + str(self.generation) + " ...."
         
-        except Exception as e:
-            print "EXCEPCION en generación " + str(self.generation)
-            print e
+#        except Exception as e:
+#            print "EXCEPCION en generación " + str(self.generation)
+#            print e
+#            raise e
         
         
     def best_individual_in_training(self):
@@ -311,7 +237,6 @@ class LGP():
 if __name__ == "__main__":    
     t_inicio = time.clock()
     pool = Pool(processes=Parameters.num_processors)
-    
     try:
         '''
         Se crea el direcctorio de resultados si no existe'
@@ -335,7 +260,7 @@ if __name__ == "__main__":
         for i in range(Parameters.n):
             if Parameters.config[i] == '0':
                 positions.append(i)
-                
+        positions = [1]    
         for i in positions:
             best_individuals = []
             t1 = time.clock()

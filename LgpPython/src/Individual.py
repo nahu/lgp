@@ -372,28 +372,28 @@ class Individual():
 
     def __repr__(self):
         """ Return a string representation of Genome """
-        ret = "#%s - Individual\n" % (self.index)
-        ret = "#Config Position: %s\n" % (self.config_position)
+        ret = "#Index: %s\n" % (self.index)
+        ret += "#Config Position: %s\n" % (self.config_position)
         ret += "#List size:\t %s\n" % (self.height)
-        ret += "#List:\n"
+#        ret += "#List:\n"
         
 
-        ret += "genome_list = [ \n"
-        for line in range(self.height):
-            ret += ""
-            if line < (self.height - 1):
-                item = str(self.genomeList[line])
-                ret += "%s,\n" % (item)
-            elif line == (self.height - 1):
-                ret += "%s]\n\n" % (item)
-                
-        ret += "#Registers:\n"
-        for line in range(len(self.r_all)):
-            ret += "r_all[%s] = " % (line)
-            ret += str(self.r_all[line])
-            ret += "\n"
-        ret += "\n"
-        ret+= "#Fitness:\t %.6f\n\n" % (self.fitness)
+#        ret += "genome_list = [ \n"
+#        for line in range(self.height):
+#            ret += ""
+#            if line < (self.height - 1):
+#                item = str(self.genomeList[line])
+#                ret += "%s,\n" % (item)
+#            elif line == (self.height - 1):
+#                ret += "%s]\n\n" % (item)
+#                
+#        ret += "#Registers:\n"
+#        for line in range(len(self.r_all)):
+#            ret += "r_all[%s] = " % (line)
+#            ret += str(self.r_all[line])
+#            ret += "\n"
+#        ret += "\n"
+        ret+= "#Fitness:\t %.15f\n\n" % (self.fitness)
 
         return ret    
     
