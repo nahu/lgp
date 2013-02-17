@@ -43,6 +43,7 @@ nosetests.xml
 #java
 bin/**
 MathModel/.classpath
+MathModel/data/*.csv
 
 #resultados
 errores*
