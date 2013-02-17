@@ -145,7 +145,7 @@ def crossover(genome1, genome2):
     except Exception as e:
         print "oh no!"
         print e
-        print sys.exc_info()[0]
+        #print sys.exc_info()[0]
         
     
     return list([sister, brother])

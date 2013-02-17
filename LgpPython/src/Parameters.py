@@ -163,12 +163,13 @@ operations = {  1   : 'r_all[{0}] = r_all[{1}] + r_all[{2}]',
     pool_size: cantidad de individuos qeu participaran del torneo
     migration_rate: porcentaje de individuos de la subpoblacion que van a migrar.
 '''
-num_generations = 1000
-population_size = 4000
-demes = 4
-freq_stats= 100
-pool_size = 5
+num_generations = 200
+population_size = 1000
+demes = 8
+freq_stats= 5
+pool_size = 2
 migration_rate = 0.05
+gen_to_migrate = 15
 
 '''
 ***************************************  PROBABILIDADES ***************************************
@@ -196,7 +197,7 @@ p_reg_op2_const = 0.7
 p_const_in = 0.75
 const_max = 25#50
 
-p_macro_mutation = 0.45
+p_macro_mutation = 0.50
 p_ins = 0.75
 p_del = 0.25
 
@@ -206,7 +207,7 @@ p_opermut = 0.45
 p_constmut = 0.05
 step_size_const = 5
 
-p_crossover = 0.05
+p_crossover = 0.10
 
 '''
 *************************************  MULTIPROCESAMIENTO *************************************

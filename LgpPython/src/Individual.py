@@ -301,7 +301,7 @@ class Individual():
                 r_all = copy.copy(self.r_all)
                 exec program
                 error_a_quad += (r_all[0] - Parameters.data_samples[t][self.config_position]) ** 2
-                list_errors.append(error_a_quad)
+#                list_errors.append(error_a_quad)
                 
             error_prom_quad = error_a_quad / Parameters.training_lines
             
@@ -315,7 +315,7 @@ class Individual():
             if error_prom_quad == 0.0:
                 error_prom_quad = 0.000000001
                 
-            self.fitness = 1 / (error_prom_quad + error_desv)
+            self.fitness = 1 / (error_prom_quad + (2 * error_desv))
         
         except Exception as e:
             """
@@ -393,6 +393,14 @@ class Individual():
 #            ret += str(self.r_all[line])
 #            ret += "\n"
 #        ret += "\n"
+        ret += "# Constant Registers:\n"
+        offset = Parameters.num_var_register
+        for line in range(Parameters.num_const_random_registers):
+            
+            ret += "r_all[%s] = " % (offset + line)
+            ret += str(self.r_all[offset + line])
+            ret += "  -  "
+        ret += "\n"
         ret+= "#Fitness:\t %.15f\n\n" % (self.fitness)
 
         return ret    
