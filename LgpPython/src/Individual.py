@@ -140,7 +140,42 @@ def compare(x, y):
         else:
             return 0
 
-def compare_error(x, y):
+def compare_error_prom(x, y):
+    '''
+    Método para comparar dos individuos,
+    por  el error promedio en la evaluación del fitness
+    '''
+    if x.evaluate(obj=1) > y.evaluate(obj=1):
+        return -1
+    elif x.evaluate(obj=1) < y.evaluate(obj=1):
+        return 1
+    elif x.evaluate(obj=1) == y.evaluate(obj=1):
+        if x.n_eff < y.n_eff:
+            return 1
+        elif x.n_eff > y.n_eff:
+            return -1
+        else:
+            return 0
+
+def compare_deviation_in_error(x, y):
+    '''
+    Método para comparar dos individuos,
+    compara la desviación típica de los errores obtenidos
+    en la evaluación del fitness
+    '''
+    if x.evaluate(obj=2) > y.evaluate(obj=2):
+        return -1
+    elif x.evaluate(obj=2) < y.evaluate(obj=2):
+        return 1
+    elif x.evaluate(obj=2) == y.evaluate(obj=2):
+        if x.n_eff < y.n_eff:
+            return 1
+        elif x.n_eff > y.n_eff:
+            return -1
+        else:
+            return 0
+        
+def compare_validation_error(x, y):
     '''
     Método para comparar dos individuos por los errores obtenidos en validación,
     '''
@@ -162,6 +197,8 @@ class Individual():
         self.width = width
         self.genomeList = []
         self.fitness = 0.0
+        self.error = -1
+        self.dev = -1
         self.index = index
         self.evaluated = False
         self.config_position = config_position
@@ -337,11 +374,18 @@ class Individual():
         self.evaluated = True
         
         
-    def evaluate(self):
+    def evaluate(self, obj=0):
         if not self.evaluated:
             self.eval_fitness()
-            
-        return self.fitness
+        
+        if (obj == 0):
+            return self.fitness
+        elif (obj == 1):
+            return self.error
+        elif (obj == 2):
+            return self.dev
+        
+        print "ERROR, OBJETIVO NO ENCONTRADO"
     
     
     def eval_validation(self):

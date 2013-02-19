@@ -94,6 +94,7 @@ def parameters_to_file(f_param):
     
     f.write("\n--Probabilidades\n")
     f.write('p_migration\t' + str(Parameters.p_migration) + '\n')
+    f.write('p_migration_criteria\t' + str(Parameters.p_migration_criteria) + '\n')
     f.write("--Registros constantes\n")
     f.write('p_reg_op2_const\t' + str(Parameters.p_reg_op2_const) + '\n')
     f.write('p_const_in\t' + str(Parameters.p_const_in) + '\n')

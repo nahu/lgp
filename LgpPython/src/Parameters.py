@@ -57,8 +57,8 @@ lines = 248
 training_lines = 200
 validation_lines = 48
 
-w_ob1 = 2
-w_ob2 = 1
+w_ob1 = 1
+w_ob2 = 3
 
 
 #INSTRUCCIONES
@@ -165,13 +165,13 @@ operations = {  1   : 'r_all[{0}] = r_all[{1}] + r_all[{2}]',
     pool_size: cantidad de individuos qeu participaran del torneo
     migration_rate: porcentaje de individuos de la subpoblacion que van a migrar.
 '''
-num_generations = 200
+num_generations = 80
 population_size = 1000
-demes = 4
+demes = 8
 freq_stats= 10
 pool_size = 2
-migration_rate = 0.04
-gen_to_migrate = 50
+migration_rate = 0.06
+gen_to_migrate = 30
 
 '''
 ***************************************  PROBABILIDADES ***************************************
@@ -195,7 +195,8 @@ gen_to_migrate = 50
             
     p_crossover: probabilidad de carplia la operación de cruzamiento.
 '''
-p_migration = 0.35
+p_migration = 0.90
+p_migration_criteria = 0.2
 
 
 p_reg_op2_const = 0.7

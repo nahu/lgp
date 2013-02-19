@@ -80,8 +80,13 @@ def deme_evolve(population):
             '''
             population.internal_pop[winners[i][0].index] = winners[i][worst_replace].clone().set_index(winners[i][0].index)
 
-    '''Se ordena la población de mayor a menor.'''
-    (population.internal_pop).sort(cmp=Individual.compare, reverse = True)
+    '''Se ordena la población de mayor a menor, según el error promedio o la desviación típica
+    según una cierta probabilidad'''
+    if (Util.random_flip_coin(Parameters.p_migration_criteria)):
+        (population.internal_pop).sort(cmp=Individual.compare_error_prom, reverse = True)
+    else:
+        (population.internal_pop).sort(cmp=Individual.compare_deviation_in_error, reverse = True)
+        
     for i in population.internal_pop:
         if not i.evaluated:
             print "ERROR: METODO DE ORDENACION FALLO."
