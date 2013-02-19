@@ -151,7 +151,7 @@ class LGP():
 
     def evolve(self, freq_stats=-1):
         self.initialize_pop()
-        self.generation = 0
+        self.generation = -1
         
         #try:
         while not self.termination_criteria():
@@ -167,34 +167,39 @@ class LGP():
 #            
             tmp_populations = []
 
-            first_population = iter_result.next()
-            tmp_populations.append(first_population)
+#            first_population = iter_result.next()
+#            tmp_populations.append(first_population)
             
-            for p in range(1, self.num_demes):
+            for p in range(0, self.num_demes):
                 tmp_populations.append(iter_result.next())
                 
                 to_del = self.population[p]
                 self.population[p] = copy.deepcopy(tmp_populations[p])
                 del to_del
                 
-                '''Migracion:los ultimos de la poblacion actual = los primeros de la poblacion anterior'''
-                self.population[p].internal_pop[for_replace_loosers:] = copy.deepcopy(self.population[p-1].internal_pop[0:for_replace_migration])
+            for p in range(1, self.num_demes):
+                '''Migración:los últimos de la población actual = los primeros de la poblacion anterior -- Según cierta probabilidad p_migration'''
+                if Util.random_flip_coin(Parameters.p_migration):
+                    self.population[p].internal_pop[for_replace_loosers:] = copy.deepcopy(self.population[p-1].internal_pop[0:for_replace_migration])
             '''
-            Configuración de adyacencia en anillo. Los ultimos de la primera población son remplazados por 
-            los primeros de la ultima.
+            Configuración de adyacencia en anillo. Los últimos de la primera población son remplazados por 
+            los primeros de la última.
             '''
-            to_del = self.population[0]
-            self.population[0] = copy.deepcopy(tmp_populations[0])
-            del to_del
+#            to_del = self.population[0]
+#            self.population[0] = copy.deepcopy(tmp_populations[0])
+#            del to_del
             
-            self.population[0].internal_pop[for_replace_loosers:] = copy.deepcopy(self.population[self.num_demes - 1].internal_pop[0:for_replace_migration])
+            if Util.random_flip_coin(Parameters.p_migration):
+                self.population[0].internal_pop[for_replace_loosers:] = copy.deepcopy(self.population[self.num_demes - 1].internal_pop[0:for_replace_migration])
             
             stats = self.generation % freq_stats
             
             if stats == 0:
+                print "\n==================================================\n"
                 print "Generación " + str(self.generation) + ": "
+                print "\n==================================================\n"
                 self.best_individual_in_training()
-                print "\n==========================\n"
+                
         
 #        except Exception as e:
 #            print "EXCEPCION en generación " + str(self.generation)
@@ -211,13 +216,13 @@ class LGP():
         for deme in range(self.num_demes):
             best = iter_result.next()
             deme_best.append(best)
-            print "--- Deme " + str(deme) + ", individuo " + str(best.index) + " " + str(1.0/best.fitness)
+            print "--- Deme " + str(deme) + ", individuo " + str(best.index) + " " + str(best.error)
             print best
             print best.get_program_in_python()
             
         deme_best.sort(cmp=Individual.compare, reverse=True)
         
-        return deme_best[0]
+        return deme_best#[0]
     
     def best_individual_in_validation(self):
         deme_best = []
@@ -263,23 +268,26 @@ if __name__ == "__main__":
         if Parameters.config[i] == '0':
             positions.append(i)
             
-    positions = [1]    
+    #positions = [1]    
     for i in positions:
         try:
             best_individuals = []
             t1 = time.clock()
+            print "\n************************************************************************************\n"
             print "---- Transformador " + str(i)
+            print "\n************************************************************************************\n"
             
             ga = LGP(config_position=i, pool=pool, demes=Parameters.demes)
             ga.set_num_generations(Parameters.num_generations)
             ga.set_population_size(Parameters.population_size)
             ga.evolve(freq_stats=Parameters.freq_stats)
             
-            best_training = ga.best_individual_in_training()
+            #best_training = ga.best_individual_in_training()
+            best_individuals = ga.best_individual_in_training()
             #best_validation = ga.best_individual_in_validation()
             #ga.terminate()
             
-            best_individuals.append(best_training)
+            #best_individuals.append(best_training)
             #best_individuals.append(best_validation)
             
             t2 = time.clock()
@@ -287,38 +295,43 @@ if __name__ == "__main__":
             print '%s Duracion %0.5f s' % ("Transf. " + str(i), (t2-t1))
             print "\n"
             
-            #iter_result = pool.imap(Individual.eval_individual, best_individuals, 1)
-            iter_result = Individual.eval_individual(best_individuals[0])
+            iter_result = pool.imap(Individual.eval_individual, best_individuals, Parameters.chunk_size_step)
+            #iter_result = Individual.eval_individual(best_individuals[0])
             
             final_table = []
             '''
             final_table[0] errores de validación con el mejor individuo de entrenamiento
             final_table[1] errorer de validación con el mejor individuo con datos de validación
             '''
-            #for j in range(1):
-            errors_j = iter_result#iter_result.next()
-            errors_and_sum = Util.sum_errors(errors_j)
-            errors_and_sum.append(i)
-            final_table.append(errors_and_sum)
+            for j in range(len(best_individuals)):
+                errors_j = iter_result.next()#iter_result
+                errors_and_sum = Util.sum_errors(errors_j)
+                errors_and_sum.append(i)
+                final_table.append(errors_and_sum)
                 
             '''
             Se escriben a archivos los errores y los mejores programas para cada transformador
             '''
-            f_errors = folder + "/errores-TRAF" + str(i) + "-G" + str(ga.generation) + ".csv"
+            f_errors = folder + "/errores-TRAF" + str(i) + "-G" + str(ga.generation - 1) + ".csv"
             Util.errors_to_file(f_errors, final_table)
-            f_programs = folder + "/programas-TRAF" + str(i) + "-G" + str(ga.generation) + ".txt"
+            f_programs = folder + "/programas-TRAF" + str(i) + "-G" + str(ga.generation - 1) + ".txt"
             Util.programs_to_file(f_programs, best_individuals)
             
         except KeyboardInterrupt:
-            best_training = ga.best_individual_in_training()
-            errors_and_sum = Util.sum_errors(best_training)
-            errors_and_sum.append(i)
+            best_individuals = ga.best_individual_in_training()
+            for j in range(len(best_individuals)):
+                errors_j = iter_result.next()#iter_result
+                errors_and_sum = Util.sum_errors(errors_j)
+                errors_and_sum.append(i)
+                final_table.append(errors_and_sum)
+                
+
             '''
             Se escriben a archivos los errores y los mejores programas para cada transformador
             '''
-            f_errors = folder + "/errores-TRAF" + str(i) + "-G" + str(ga.generation) + ".csv"
+            f_errors = folder + "/errores-TRAF" + str(i) + "-G" + str(ga.generation - 1) + ".csv"
             Util.errors_to_file(f_errors, final_table)
-            f_programs = folder + "/programas-TRAF" + str(i) + "-G" + str(ga.generation) + ".txt"
+            f_programs = folder + "/programas-TRAF" + str(i) + "-G" + str(ga.generation - 1) + ".txt"
             Util.programs_to_file(f_programs, best_individuals)
             
             end = False
@@ -344,4 +357,4 @@ if __name__ == "__main__":
     t_final = time.clock()
     print '%s Duracion %0.5f s' % ("LGPMAIN", (t_final - t_inicio))
     print "\n"
-    raw_input()
+#    raw_input()

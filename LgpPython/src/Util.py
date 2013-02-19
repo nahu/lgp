@@ -87,8 +87,13 @@ def parameters_to_file(f_param):
     f.write('pool_size\t' + str(Parameters.pool_size) + '\n')
     f.write('population_size\t' + str(Parameters.population_size) + '\n')
     f.write('demes\t' + str(Parameters.demes) + '\n')
+    f.write('migration_rate\t' + str(Parameters.migration_rate) + '\n')
+    f.write('gen_to_migrate\t' + str(Parameters.gen_to_migrate) + '\n')
+    f.write('w_ob1\t' + str(Parameters.w_ob1) + '\n')
+    f.write('w_ob2\t' + str(Parameters.w_ob2) + '\n')
     
     f.write("\n--Probabilidades\n")
+    f.write('p_migration\t' + str(Parameters.p_migration) + '\n')
     f.write("--Registros constantes\n")
     f.write('p_reg_op2_const\t' + str(Parameters.p_reg_op2_const) + '\n')
     f.write('p_const_in\t' + str(Parameters.p_const_in) + '\n')

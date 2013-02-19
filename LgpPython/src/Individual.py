@@ -300,22 +300,27 @@ class Individual():
                 in_t = Parameters.r_const[t]
                 r_all = copy.copy(self.r_all)
                 exec program
-                error_a_quad += (r_all[0] - Parameters.data_samples[t][self.config_position]) ** 2
-#                list_errors.append(error_a_quad)
+                error_t = (r_all[0] - Parameters.data_samples[t][self.config_position]) ** 2
+                error_a_quad += error_t
+                list_errors.append(error_t)
                 
             error_prom_quad = error_a_quad / Parameters.training_lines
             
             '''Se halla la desviacion tipica del error. (Sumatoria(error_medio - errorXLinea)/training_lines'''
             error_desv = 0.0
-            for error in list_errors:
-                error_desv += (error_a_quad - error) ** 2
-            error_desv = error_desv / Parameters.training_lines
+            
+            for error_t in list_errors:
+                error_desv += (error_prom_quad - error_t) ** 2
+            error_desv /= (Parameters.training_lines - 1)
             
             #para evitar la división por cero
             if error_prom_quad == 0.0:
                 error_prom_quad = 0.000000001
                 
-            self.fitness = 1 / (error_prom_quad + (2 * error_desv))
+            self.error = error_prom_quad
+            self.dev = math.sqrt(error_desv)
+                
+            self.fitness = 1 / ((Parameters.w_ob1 * error_prom_quad) + (Parameters.w_ob2 * self.dev))
         
         except Exception as e:
             """
@@ -374,6 +379,8 @@ class Individual():
         """ Return a string representation of Genome """
         ret = "#Index: %s\n" % (self.index)
         ret += "#Config Position: %s\n" % (self.config_position)
+        ret += "#Training Error: %s\n" % (self.error)
+        ret += "#Training Deviation: %s\n" % (self.dev)
         ret += "#List size:\t %s\n" % (self.height)
 #        ret += "#List:\n"
         
@@ -397,8 +404,8 @@ class Individual():
         offset = Parameters.num_var_register
         for line in range(Parameters.num_const_random_registers):
             
-            ret += "r_all[%s] = " % (offset + line)
-            ret += str(self.r_all[offset + line])
+            ret += "r_all[%s] = " % (offset + line + 1)
+            ret += str(self.r_all[offset + line + 1])
             ret += "  -  "
         ret += "\n"
         ret+= "#Fitness:\t %.15f\n\n" % (self.fitness)

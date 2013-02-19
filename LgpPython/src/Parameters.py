@@ -57,6 +57,8 @@ lines = 248
 training_lines = 200
 validation_lines = 48
 
+w_ob1 = 2
+w_ob2 = 1
 
 
 #INSTRUCCIONES
@@ -68,9 +70,9 @@ Cada instrucción se representa como una lista de 4 enteros como sigue
 la convención para asegurar que el programa tenga una salida es que la
 última instrucción sea del tipo [operación, 0, operador1, operador2]
 """
-num_min_instructions = k
-num_max_instructions = 10*k
-num_ini_instructions = 4*k
+num_min_instructions = 3*k
+num_max_instructions = 12*k
+num_ini_instructions = 6*k
 num_operators = 9
 
 num_conts_registers = 10+k#2*k
@@ -165,11 +167,11 @@ operations = {  1   : 'r_all[{0}] = r_all[{1}] + r_all[{2}]',
 '''
 num_generations = 200
 population_size = 1000
-demes = 8
-freq_stats= 5
+demes = 4
+freq_stats= 10
 pool_size = 2
-migration_rate = 0.05
-gen_to_migrate = 15
+migration_rate = 0.04
+gen_to_migrate = 50
 
 '''
 ***************************************  PROBABILIDADES ***************************************
@@ -193,6 +195,9 @@ gen_to_migrate = 15
             
     p_crossover: probabilidad de carplia la operación de cruzamiento.
 '''
+p_migration = 0.35
+
+
 p_reg_op2_const = 0.7
 p_const_in = 0.75
 const_max = 25#50
@@ -202,7 +207,7 @@ p_ins = 0.75
 p_del = 0.25
 
 p_micro_mutation = 0.90
-p_regmut = 0.5
+p_regmut = 0.50
 p_opermut = 0.45
 p_constmut = 0.05
 step_size_const = 5
