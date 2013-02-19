@@ -253,13 +253,15 @@ if __name__ == "__main__":
     '''
     Se crea el direcctorio de resultados si no existe'
     '''
+    '''
     diff = str(datetime.now())
     folder = "../resultados/"
     folder += diff[:19].replace(':', '.')
     
     if not os.path.exists(folder):
         os.makedirs(folder)
-    
+    '''
+    folder = sys.argv[1]
     '''
     Se escribe en un archivo los parámetros usados
     '''
