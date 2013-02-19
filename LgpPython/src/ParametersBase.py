@@ -75,11 +75,12 @@ num_max_instructions = 12*k
 num_ini_instructions = 6*k
 num_operators = 9
 
-num_conts_registers = 10+k#2*k
-num_var_register = 10#k
+
+num_var_register = 9#k
 num_const_in_registers = k
 num_out_registers = 1
-num_const_random_registers = 10#k
+num_const_random_registers = 6#k
+num_conts_registers = num_const_random_registers + num_const_in_registers
 num_registers = num_conts_registers + num_var_register + num_const_in_registers +num_out_registers + num_const_random_registers
 
 
@@ -196,7 +197,7 @@ gen_to_migrate = 30
     p_crossover: probabilidad de carplia la operación de cruzamiento.
 '''
 p_migration = 0.90
-p_migration_criteria = 0.2
+p_migration_criteria = 0.3
 
 
 p_reg_op2_const = 0.7
