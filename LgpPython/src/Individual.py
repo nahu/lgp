@@ -36,7 +36,7 @@ def ini_individual(obj):
     obj.r_all += Parameters.r_out
     obj.r_all += Parameters.r_var
     
-    [obj.r_all.append(random.uniform(0, Parameters.const_max)) for i in range(Parameters.cons_al_min, Parameters.cons_al_max + 1)]
+    [obj.r_all.append(random.uniform(Parameters.const_min, Parameters.const_max)) for i in range(Parameters.cons_al_min, Parameters.cons_al_max + 1)]
     
     return obj
 

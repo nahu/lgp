@@ -248,7 +248,7 @@ class LGP():
         
         
 if __name__ == "__main__":    
-    t_inicio = time.clock()
+    t_inicio = time.time()
     pool = Pool(processes=Parameters.num_processors)
     '''
     Se crea el direcctorio de resultados si no existe'
@@ -279,7 +279,7 @@ if __name__ == "__main__":
     for i in positions:
         try:
             best_individuals = []
-            t1 = time.clock()
+            t1 = time.time()
             print "\n************************************************************************************\n"
             print "---- Transformador " + str(i)
             print "\n************************************************************************************\n"
@@ -297,7 +297,7 @@ if __name__ == "__main__":
             #best_individuals.append(best_training)
             #best_individuals.append(best_validation)
             
-            t2 = time.clock()
+            t2 = time.time()
             print "\n"
             print '%s Duracion %0.5f s' % ("Transf. " + str(i), (t2-t1))
             print "\n"
@@ -361,7 +361,7 @@ if __name__ == "__main__":
     pool.close()
     pool.join()
     
-    t_final = time.clock()
+    t_final = time.time()
     print '%s Duracion %0.5f s' % ("LGPMAIN", (t_final - t_inicio))
     print "\n"
 #    raw_input()

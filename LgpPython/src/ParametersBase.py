@@ -201,6 +201,7 @@ p_migration_criteria = 0.2
 
 p_reg_op2_const = 0.7
 p_const_in = 0.75
+const_mim = 0#50
 const_max = 25#50
 
 p_macro_mutation = 0.50
