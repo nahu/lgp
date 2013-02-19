@@ -24,7 +24,7 @@ import Util
 import Parameters
 import Individual
 
-def step_by_pool_size(population):
+def deme_evolve(population):
     '''Se reinician los indices, para hacer coincidir cada individuo.index con su posicion en internal_pop'''
     population = resetIndex(population)
     for gen in range(Parameters.gen_to_migrate):
@@ -56,14 +56,14 @@ def step_by_pool_size(population):
                 winners[1][0] = sister
                 
             if not Population.check_out_register(winners[0][0]) or not Population.check_out_register(winners[1][0]):
-                print 'ERROR: [LgpMain.step_by_pool_size]: El crossover dejo individuos sin registros de salida.'
+                print 'ERROR: [LgpMain.deme_evolve]: El crossover dejo individuos sin registros de salida.'
                     
         for i in range(2):
             ''' Se elimina de la lista de participantes del torneo al ganador, para remplazar a los perdedores'''
             try:
                 del to_tournament_indices[i][to_tournament[i].index(winners[i][1])]
             except:                
-                print "ERROR: [LgpMain.step_by_pool_size]: Error al eliminar el indice del ganador del torneo " + str(i)
+                print "ERROR: [LgpMain.deme_evolve]: Error al eliminar el indice del ganador del torneo " + str(i)
             
             ''' best_replace = index_of_best([modificado, no_modificado])'''
             best_replace = 0 if Individual.compare(winners[i][0],winners[i][1]) == 1 else 1
@@ -159,10 +159,10 @@ class LGP():
             for_replace_migration = int(Parameters.migration_rate * self.population[0].pop_size)
             self.generation += 1
             
-            iter_result = self.pool.imap(step_by_pool_size, self.population, 1)#step_by_pool_size(self.population[0])#
+            iter_result = self.pool.imap(deme_evolve, self.population, 1)#deme_evolve(self.population[0])#
 #            result=[]
 #            for i in range(len(self.population)):
-#                result.append(step_by_pool_size(self.population[i]))
+#                result.append(deme_evolve(self.population[i]))
 #            iter_result = iter(result)
 #            
             tmp_populations = []
@@ -237,7 +237,7 @@ class LGP():
             print best
             print best.get_program_in_python()
             
-        deme_best.sort(cmp=Individual.compare_error)
+        deme_best.sort(cmp=Individual.compare_validation_error)
         
         return deme_best[0]
         
@@ -268,7 +268,7 @@ if __name__ == "__main__":
         if Parameters.config[i] == '0':
             positions.append(i)
             
-    #positions = [1]    
+    positions = [1,7]    
     for i in positions:
         try:
             best_individuals = []
