@@ -49,3 +49,10 @@ MathModel/data/*.csv
 errores*
 programas*
 LgpPython/resultados/*
+
+#Salida
+LgpPython/src/salida*
+
+#Enlace simbolico y copias para varias ejecuciones con el script
+LgpPython/src/Parameters.py
+LgpPython/data/Parameters*
