@@ -75,11 +75,12 @@ num_max_instructions = 12*k
 num_ini_instructions = 6*k
 num_operators = 9
 
-num_conts_registers = 10+k#2*k
-num_var_register = 10#k
+
+num_var_register = 9#k
 num_const_in_registers = k
 num_out_registers = 1
-num_const_random_registers = 10#k
+num_const_random_registers = 6#k
+num_conts_registers = num_const_random_registers + num_const_in_registers
 num_registers = num_conts_registers + num_var_register + num_const_in_registers +num_out_registers + num_const_random_registers
 
 
@@ -165,13 +166,13 @@ operations = {  1   : 'r_all[{0}] = r_all[{1}] + r_all[{2}]',
     pool_size: cantidad de individuos qeu participaran del torneo
     migration_rate: porcentaje de individuos de la subpoblacion que van a migrar.
 '''
-num_generations = 80
-population_size = 1000
+num_generations = 128
+population_size = 1024
 demes = 8
 freq_stats= 10
 pool_size = 2
 migration_rate = 0.06
-gen_to_migrate = 30
+gen_to_migrate = 32
 
 '''
 ***************************************  PROBABILIDADES ***************************************
@@ -195,12 +196,13 @@ gen_to_migrate = 30
             
     p_crossover: probabilidad de carplia la operación de cruzamiento.
 '''
-p_migration = 0.90
-p_migration_criteria = 0.2
+p_migration = 0.80
+p_migration_criteria = 0.3
 
 
 p_reg_op2_const = 0.7
 p_const_in = 0.75
+const_min = 0#50
 const_max = 25#50
 
 p_macro_mutation = 0.50

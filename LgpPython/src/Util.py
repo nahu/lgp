@@ -140,6 +140,7 @@ def parameters_to_file(f_param):
     f.write('cons_al_max\t' + str(Parameters.cons_al_max) + '\n')
     
     f.write("\n------Valores\n")
+    f.write('const_min\t' + str(Parameters.const_min) + '\n')
     f.write('const_max\t' + str(Parameters.const_max) + '\n')
     f.write('step_size_const\t' + str(Parameters.step_size_const) + '\n')
     

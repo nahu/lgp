@@ -181,11 +181,7 @@ class LGP():
                 to_del = self.population[p]
                 self.population[p] = copy.deepcopy(tmp_populations[p])
                 del to_del
-                
-            for p in range(1, self.num_demes):
-                '''Migración:los últimos de la población actual = los primeros de la poblacion anterior -- Según cierta probabilidad p_migration'''
-                if Util.random_flip_coin(Parameters.p_migration):
-                    self.population[p].internal_pop[for_replace_loosers:] = copy.deepcopy(self.population[p-1].internal_pop[0:for_replace_migration])
+            
             '''
             Configuración de adyacencia en anillo. Los últimos de la primera población son remplazados por 
             los primeros de la última.
@@ -195,7 +191,13 @@ class LGP():
 #            del to_del
             
             if Util.random_flip_coin(Parameters.p_migration):
-                self.population[0].internal_pop[for_replace_loosers:] = copy.deepcopy(self.population[self.num_demes - 1].internal_pop[0:for_replace_migration])
+                self.population[self.num_demes - 1].internal_pop[for_replace_loosers:] = copy.deepcopy(self.population[0].internal_pop[0:for_replace_migration])
+                
+            for p in range(1, self.num_demes):
+                '''Migración:los últimos de la población actual = los primeros de la poblacion anterior -- Según cierta probabilidad p_migration'''
+                if Util.random_flip_coin(Parameters.p_migration):
+                    self.population[p-1].internal_pop[for_replace_loosers:] = copy.deepcopy(self.population[p].internal_pop[0:for_replace_migration])
+            
             
             stats = self.generation % freq_stats
             
@@ -248,10 +250,11 @@ class LGP():
         
         
 if __name__ == "__main__":    
-    t_inicio = time.clock()
+    t_inicio = time.time()
     pool = Pool(processes=Parameters.num_processors)
     '''
     Se crea el direcctorio de resultados si no existe'
+    '''
     '''
     diff = str(datetime.now())
     folder = "../resultados/"
@@ -259,7 +262,8 @@ if __name__ == "__main__":
     
     if not os.path.exists(folder):
         os.makedirs(folder)
-    
+    '''
+    folder = sys.argv[1]
     '''
     Se escribe en un archivo los parámetros usados
     '''
@@ -277,7 +281,7 @@ if __name__ == "__main__":
     for i in positions:
         try:
             best_individuals = []
-            t1 = time.clock()
+            t1 = time.time()
             print "\n************************************************************************************\n"
             print "---- Transformador " + str(i)
             print "\n************************************************************************************\n"
@@ -295,7 +299,7 @@ if __name__ == "__main__":
             #best_individuals.append(best_training)
             #best_individuals.append(best_validation)
             
-            t2 = time.clock()
+            t2 = time.time()
             print "\n"
             print '%s Duracion %0.5f s' % ("Transf. " + str(i), (t2-t1))
             print "\n"
@@ -359,7 +363,7 @@ if __name__ == "__main__":
     pool.close()
     pool.join()
     
-    t_final = time.clock()
+    t_final = time.time()
     print '%s Duracion %0.5f s' % ("LGPMAIN", (t_final - t_inicio))
     print "\n"
 #    raw_input()
