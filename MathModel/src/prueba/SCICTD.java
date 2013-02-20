@@ -6,8 +6,8 @@
  */
 
 package prueba;
-
 import java.io.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,6 +27,10 @@ public class SCICTD {
     public int training_lines = 200;
     public int validation_lines = 48;
     public Double [][] resultados = null;
+    public ArrayList<double []> aij;
+    public int k;
+    public int n;
+    public String configuracion = "";
     
     public SCICTD(int cantidadTrafos, int numeroDeObjetivos) throws FileNotFoundException, IOException, ClassNotFoundException {
         numberOfTrafos_ = cantidadTrafos;
@@ -42,13 +46,14 @@ public class SCICTD {
     public Double [][] evaluate(int[] nodos) {
         
         System.out.println("Configuracion: " + nodos.toString());
+        aij = new ArrayList(5);
         // Se crea el vector fitness de dos elementos: uno para cada objetivo.
         double[] fitness = new double[6];
 
         // CALCULO DEL FITNESS (Error promedio)
 
         // PASO 0: Obtener datos del individuo.
-        int k = 0; // Cantidad de medidores.
+        k = 0; // Cantidad de medidores.
         for (int i = 0; i < nodos.length; i++) {
             if (nodos[i] == 1) {
                 nodos[i] = 1;
@@ -56,7 +61,7 @@ public class SCICTD {
             }
         }
 
-        int n = numberOfTrafos_; // Cantidad de transformadores.
+        n = numberOfTrafos_; // Cantidad de transformadores.
         int T = numberOfMuestras_; // Cantidad de muestras.
         double[][] mediciones = matrizConsumo_;
         resultados = new Double[T+2][n];
@@ -135,7 +140,7 @@ public class SCICTD {
                     }
                     fac--;
                 }
-                
+                aij.add(factores);
                 resolverSistemaValidacion(factores, desconocido, posiciones, k);
                 /*System.out.println("\nFactores de : " + d);
                 for (double dd : factores) {
@@ -265,11 +270,57 @@ public class SCICTD {
         }
         return nodos;
     }
+    
+    
+    public void guardar_min_max_desv(){
+    	FileWriter fwf;
+		try {
+			fwf = new FileWriter( DATA_FOLDER + this.configuracion.replace(" ", "") + "-Factores.csv" );
+			PrintWriter pwf = new PrintWriter(fwf);
+			double [][] datos = new double[n-k][3];
+			int i = 0;
+	        for (double[] factores: this.aij){
+	        	double min = factores[0];
+	        	double max = 0.0;
+	        	double suma = 0.0;
+	        	for (int trans = 0; trans < this.k; trans++){
+	        		suma += factores[trans];
+	        		min = (factores[trans] > min) ? min : factores[trans];
+	        		max = (factores[trans] < max) ? max : factores[trans];
+	            }
+	        	double media = suma/factores.length;
+	        	double desv = 0.0;
+	        	for (int trans = 0; trans < this.k; trans++){
+	        		desv += Math.pow((media-factores[trans]), 2);
+	            }
+	        	desv/=factores.length;
+	        	datos[i][0] = min;
+	        	datos[i][1] = max;
+	        	datos[i][2] = desv;
+	        	i++;
+	        }
+	        for (int trans = 0; trans < 3; trans++){
+	        	for (int j = 0; j < n-k; j++) {
+	        		if (j==0 && trans==0){pwf.print("Minimo");pwf.print(";");}
+	        		if (j==0 && trans==1){pwf.print("Maximo");pwf.print(";");}
+	        		if (j==0 && trans==2){pwf.print("Desviacion");pwf.print(";");}
+                    pwf.print(String.valueOf(datos[j][trans]).replace('.', ','));pwf.print(";");
+                }
+	        	pwf.println("");
+            }
+	        
+	        pwf.flush(); pwf.close(); fwf.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+    }
 
     public static void main(String[] args) {
         try {
             int n;
-            String configuracion = "";
+            
 //            System.out.println("Ingrese n: ");
 //            Scanner sc = new Scanner(System.in);
 //            n = sc.nextInt();
@@ -281,17 +332,17 @@ public class SCICTD {
 //            }
 
             n = 40;
-            
-            configuracion =   "1 0 1 1 1 1 1 0 1 1 " 
+            SCICTD programa = new SCICTD(40, 2);
+            programa.configuracion =   "1 0 1 1 1 1 1 0 1 1 " 
 				            + "1 1 1 1 1 0 1 1 1 1 " 
 				    		+ "1 1 1 0 1 1 1 1 1 1 " 
 				            + "1 1 1 1 1 1 1 1 1 0 ";
 
-            SCICTD programa = new SCICTD(40, 2);
+            
                 
-            FileWriter fw = new FileWriter( DATA_FOLDER + configuracion.replace(" ", "") + ".csv" );
+            FileWriter fw = new FileWriter( DATA_FOLDER + programa.configuracion.replace(" ", "") + ".csv" );
             PrintWriter pw = new PrintWriter(fw);
-            Double [][] resultados = programa.evaluate(programa.getConfiguracion(configuracion, n));
+            Double [][] resultados = programa.evaluate(programa.getConfiguracion(programa.configuracion, n));
             
             
             for (int pos = 0; pos<resultados[0].length; pos++){ //transformador
@@ -305,7 +356,8 @@ public class SCICTD {
             	}
 	            
             }
-            
+            //double[] factores = new double[k];
+            //for (int i = 0; i<programa.aij.size(); i++){
             for (int muestra = programa.training_lines; muestra < programa.numberOfMuestras_+2; muestra++) {
                 for (int trans = 0; trans < n; trans++){
                     if (programa.nodos[trans] == 0){
@@ -315,14 +367,10 @@ public class SCICTD {
                 }
                 pw.println("");
             }
-            //Flush the output to the file
-            pw.flush();
-
-            //Close the Print Writer
-            pw.close();
-
-            //Close the File Writer
-            fw.close();
+            pw.flush(); pw.close(); fw.close();
+            
+            programa.guardar_min_max_desv();
+            
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(SCICTD.class.getName()).log(Level.SEVERE, null, ex);
