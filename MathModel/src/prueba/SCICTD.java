@@ -219,6 +219,7 @@ public class SCICTD {
             fitness[4] = errRelMax;
         }
     }
+    
     private double[][] readProblem(String fileName, double[][] matriz) throws FileNotFoundException, IOException {
         double min = 999999999999.00;
         double max = -999999999999.00;

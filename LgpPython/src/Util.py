@@ -226,7 +226,7 @@ if __name__ == "__main__":
     """
     La tupla retornada tiene: (columnas, filas, matriz)
     """
-    _tuple = get_matrix_from_file("Datos60.txt")
+    _tuple = get_matrix_from_file("../data/Datos60.txt")
     
     print "Transformadores> "
     print _tuple [0]
