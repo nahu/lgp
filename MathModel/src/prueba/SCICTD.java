@@ -283,7 +283,7 @@ public class SCICTD {
 	        	double min = factores[0];
 	        	double max = 0.0;
 	        	double suma = 0.0;
-	        	for (int trans = 0; trans < this.k; trans++){
+	        	for (int trans = 0; trans < factores.length; trans++){
 	        		suma += factores[trans];
 	        		min = (factores[trans] > min) ? min : factores[trans];
 	        		max = (factores[trans] < max) ? max : factores[trans];
@@ -294,6 +294,7 @@ public class SCICTD {
 	        		desv += Math.pow((media-factores[trans]), 2);
 	            }
 	        	desv/=factores.length;
+	        	desv = Math.sqrt(desv);
 	        	datos[i][0] = min;
 	        	datos[i][1] = max;
 	        	datos[i][2] = desv;
