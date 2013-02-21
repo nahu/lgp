@@ -44,9 +44,8 @@ public class SCICTD {
     } // TSP
 
     public Double [][] evaluate(int[] nodos) {
-        
-        System.out.println("Configuracion: " + nodos.toString());
-        aij = new ArrayList(5);
+    	System.out.println("Evaluando...");
+         aij = new ArrayList(5);
         // Se crea el vector fitness de dos elementos: uno para cada objetivo.
         double[] fitness = new double[6];
 
@@ -83,6 +82,8 @@ public class SCICTD {
             // Se calculan los errores para cada transformador que no tiene medidor.
 
             if (nodos[d] == 0) { //Si no hay medidor
+            	System.out.println("Transformador..." + d);
+
                 // Matriz de ecuaciones inicializada a ceros.
                 double[][] ecuaciones = new double[k][k + 1];
                 for (int i = 0; i < k; i++) {
@@ -140,48 +141,52 @@ public class SCICTD {
                     }
                     fac--;
                 }
+            	//Se guarda vector Aij del transformador d
                 aij.add(factores);
+            	//Se resuelve el sistema de ecuaciones con datos de Entrenamiento
+                resolverSistemaEntrenamiento(factores, desconocido, posiciones, k);
+                //Se resuelve el sistema de ecuaciones con datos de Validación
                 resolverSistemaValidacion(factores, desconocido, posiciones, k);
-                /*System.out.println("\nFactores de : " + d);
-                for (double dd : factores) {
-                    System.out.println(String.valueOf(dd) + ";");
-                }*/
                 
-                // FIN DEL CALCULO de Error promedio.
+                System.out.println("*****");
+
+
             }
         }
-        // Se promedia el error de todos los transformadores desconocidos.
-        fitness[0] = fitness[0] / (n - k);
-        fitness[1] = fitness[1] / (n - k);
-        fitness[2] = fitness[2] / (n - k);
-
-        // El ultimo objetivo es igual a k / n.
-        fitness[5] = (double) k / n;
-        // Almacena el Fitness del Individuo.
-        System.out.println("Fitness - Objetivo 1: " + fitness[2]);
-        System.out.println("Fitness - Objetivo 2: " + fitness[5]);
+        
         return resultados;
-        // 0 => Error Cuadratico Promedio
-        // 1 => Error Absoluto Promedio
-        // 2 => Error Relativo Promedio
-        // 3 => Error Absoluto Maximo
-        // 4 => Error Relativo Maximo
-        // 5 => n/k
-    } // evaluate
+
+    }
     
-    private void resolverSistemaValidacion(double[] factores, int desconocido, int[] posiciones,
+    private void resolverSistemaEntrenamiento(double[] factores, int desconocido, int[] posiciones, int k){
+            double errorCuad = 0;
+            double real;
+            double error;
+            //
+            double[][] mediciones = matrizConsumo_;
+            int total = matrizConsumo_.length;
+            for (int l = 0; l < training_lines; l++) {
+                real = mediciones[l][desconocido];
+                error = real;
+                for (int i = 0; i < k; i++) {
+                    error -= factores[i] * mediciones[l][posiciones[i]];
+                }
+                // Se calcula la sumatoria de los errores de cada medicion.
+                errorCuad += Math.pow(error, 2);
+                /*GUARDAR ERROR [desconocido][l]*/
+                resultados[l][desconocido] = Math.pow(error, 2);
+            }
+            // El error cuadratico se guarda al final de las lineas de entrenamiento.
+            System.out.println("Error Entrenamiento: " + String.valueOf(errorCuad / training_lines));
+            
+            resultados[training_lines][desconocido] = errorCuad / training_lines;
+        }
+    private void resolverSistemaValidacion(double[] factores, int desconocido, int[ 	] posiciones,
             int k){
-        double[] fitness = new double[6];
         double errorCuad = 0;
-        double errorAbs = 0;
-        double errorRel = 0;
-        double errorMax = 0;
-        double errRelMax = 0;
         // PASO 3: Hallar el error promedio elevado al Cuadrado.
         double real;
         double error;
-        double abs;
-        double relativo;
         //
         double[][] mediciones = matrizConsumo_;
         int total = matrizConsumo_.length;
@@ -193,31 +198,14 @@ public class SCICTD {
                 error -= factores[i] * mediciones[l][posiciones[i]];
             }
             // Se calcula la sumatoria de los errores de cada medicion.
-            errorCuad += Math.pow(error, 2.0);
+            errorCuad += Math.pow(error, 2);
             /*GUARDAR ERROR [desconocido][l]*/
-            resultados[l][desconocido] = Math.pow(error, 2.0);
+            resultados[l+1][desconocido] = Math.pow(error, 2);
 
-            abs = Math.abs(error);
-            errorAbs += abs;
-            relativo = 100 * abs / real;
-            errorRel += relativo;
-            if (abs > errorMax) {
-                errorMax = abs;
-            }
-            if (relativo > errRelMax) {
-                errRelMax = relativo;
-            }
         }
-        // Se suman los errores medios del conjunto de muestras de cada transformador desconocido.
-        fitness[0] += errorCuad / total-validation_lines;
-        fitness[1] += errorAbs / total-validation_lines;
-        fitness[2] += errorRel / total-validation_lines;
-        if (errorMax > fitness[3]) {
-            fitness[3] = errorMax;
-        }
-        if (errRelMax > fitness[4]) {
-            fitness[4] = errRelMax;
-        }
+        // El error cuadratico se guarda al final de las lineas de validacion.
+        System.out.println("Error Validacion: " + String.valueOf(errorCuad / validation_lines));
+        resultados[total+1][desconocido] = errorCuad / validation_lines;
     }
     private double[][] readProblem(String fileName, double[][] matriz) throws FileNotFoundException, IOException {
         double min = 999999999999.00;
@@ -244,19 +232,6 @@ public class SCICTD {
                 }
             }
         }
-        /*   if (min < 0 || max > 1)
-         {
-         double promedio = (max - min) / 2;
-         max = max + promedio;
-         min = min - promedio;
-         for (int i = 0; i < T; i++) 
-         {
-         for (int j = 0; j < n; j++)
-         {
-         matriz[i][j] = (matriz[i][j] - min) / (max - min);
-         }
-         }
-         } */
         bufferedReader.close();
         return matriz;
     }
@@ -317,59 +292,60 @@ public class SCICTD {
 		}
         
     }
-
+    public void guardar_errores(Double[][] resultados){
+	 try {
+		FileWriter fw = new FileWriter( DATA_FOLDER + configuracion.replace(" ", "") + ".csv" );
+		PrintWriter pw = new PrintWriter(fw);
+		
+		pw.print(";");
+		for (int trans = 0; trans < n; trans++){
+			if (nodos[trans] == 0){
+				pw.print(String.valueOf(trans) + ";");
+			}
+		}
+		pw.println("");
+		for (int muestra =  0; muestra < numberOfMuestras_+2; muestra++) {	
+		    for (int trans = 0; trans < n; trans++){
+		    	if (trans==0){
+	    			if (muestra==training_lines)
+	    			{
+	    				pw.print("Error entrenamiento: ;");
+	    			}else if (muestra==numberOfMuestras_+1)
+	    			{
+	    				pw.print("Error validación: ;");
+	    			}
+	    			else
+	    			{
+	    				pw.print("");pw.print(";");
+	    			}
+		    	}
+		    	if (nodos[trans] == 0){
+		            pw.print(String.valueOf(resultados[muestra][trans]).replace('.', ','));
+		            pw.print(";");
+		        }
+		    }
+		    pw.println("");
+		}
+		pw.flush(); pw.close();fw.close();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+    }
     public static void main(String[] args) {
         try {
             int n;
-            
-//            System.out.println("Ingrese n: ");
-//            Scanner sc = new Scanner(System.in);
-//            n = sc.nextInt();
-//            System.out.println("Ingrese la configuracion: ");
-//            configuracion = sc.nextLine();
-//            while (configuracion.length()!=n){
-//                System.out.println("Ingrese la configuracion: ");
-//                configuracion = sc.nextLine();
-//            }
-
             n = 40;
             SCICTD programa = new SCICTD(40, 2);
             programa.configuracion =   "1 0 1 1 1 1 1 0 1 1 " 
-				            + "1 1 1 1 1 0 1 1 1 1 " 
-				    		+ "1 1 1 0 1 1 1 1 1 1 " 
-				            + "1 1 1 1 1 1 1 1 1 0 ";
-
-            
-                
-            FileWriter fw = new FileWriter( DATA_FOLDER + programa.configuracion.replace(" ", "") + ".csv" );
-            PrintWriter pw = new PrintWriter(fw);
+        							 + "1 1 1 1 1 0 1 1 1 1 " 
+    							 	 + "1 1 1 0 1 1 1 1 1 1 " 
+							 		 + "1 1 1 1 1 1 1 1 1 0 ";
+                           
+            System.out.println("Ejecutando programa. Configuracion: " + programa.configuracion);
             Double [][] resultados = programa.evaluate(programa.getConfiguracion(programa.configuracion, n));
             
-            
-            for (int pos = 0; pos<resultados[0].length; pos++){ //transformador
-            	double error = 0;
-            	if (programa.nodos[pos] == 0){
-		            for (int i=programa.training_lines; i<programa.numberOfMuestras_; i++){ //muestra por trasformador.
-		            	error += resultados[i][pos];
-		            }
-		            resultados[programa.numberOfMuestras_][pos] = error;
-		            resultados[programa.numberOfMuestras_+1][pos] = error/programa.validation_lines;
-            	}
-	            
-            }
-            //double[] factores = new double[k];
-            //for (int i = 0; i<programa.aij.size(); i++){
-            for (int muestra = programa.training_lines; muestra < programa.numberOfMuestras_+2; muestra++) {
-                for (int trans = 0; trans < n; trans++){
-                    if (programa.nodos[trans] == 0){
-                        pw.print(String.valueOf(resultados[muestra][trans]).replace('.', ','));
-                        pw.print(";");
-                    }
-                }
-                pw.println("");
-            }
-            pw.flush(); pw.close(); fw.close();
-            
+            programa.guardar_errores(resultados);
             programa.guardar_min_max_desv();
             
 
