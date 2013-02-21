@@ -3,6 +3,7 @@
 PARAMETERS_DIR=../data/Parameters_
 FILE_TO_COPY=../src/ParametersBase.py
 
+rm $PARAMETERS_DIR*
 for (( i=0; i < $1; i++ )); do
 	cp $FILE_TO_COPY $PARAMETERS_DIR$i
 done
