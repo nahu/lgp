@@ -1,0 +1,8 @@
+Parameters_0: como esta en el repo
+Parameters_1: cantidad de instrucciones
+Parameters_2: numero de generaciones y poblacion duplicada.
+Parameters_3: criterio de migracion mayor .1 mas
+Parameters_4: crossover menor.
+Parameters_5: crossover mayor.
+Parameters_6: macromutacion .2 +
+
