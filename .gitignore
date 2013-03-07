@@ -57,3 +57,8 @@ LgpPython/src/salida*
 #Enlace simbolico y copias para varias ejecuciones con el script
 LgpPython/src/Parameters.py
 LgpPython/data/Parameters*
+
+#Binarios del proyecto CPP
+LgpCpp/Debug/
+LgpCpp/Release/
+
