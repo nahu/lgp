@@ -27,6 +27,7 @@ public class SCICTD {
     public int training_lines = 200;
     public int validation_lines = 48;
     public Double [][] resultados = null;
+    public Double [][] estimaciones = null;
     public ArrayList<double []> aij;
     public int k;
     public int n;
@@ -35,17 +36,11 @@ public class SCICTD {
     public SCICTD(int cantidadTrafos, int numeroDeObjetivos) throws FileNotFoundException, IOException, ClassNotFoundException {
         numberOfTrafos_ = cantidadTrafos;
         matrizConsumo_ = readProblem( DATA_FOLDER + "Datos60.txt", matrizConsumo_);
-//        
-//        solutionType_ = new BinarySolutionType(this);
-//        variableType_ = new Class[numberOfVariables_];
-//        length_ = new int[1];
-//        variableType_[0] = Class.forName("jmetal.encodings.variable.Binary");
-//        length_[0] = numberOfTrafos_;
-    } // TSP
-
+    } 
+    
     public Double [][] evaluate(int[] nodos) {
     	System.out.println("Evaluando...");
-         aij = new ArrayList(5);
+        
         // Se crea el vector fitness de dos elementos: uno para cada objetivo.
         double[] fitness = new double[6];
 
@@ -55,15 +50,19 @@ public class SCICTD {
         k = 0; // Cantidad de medidores.
         for (int i = 0; i < nodos.length; i++) {
             if (nodos[i] == 1) {
-                nodos[i] = 1;
+                nodos[i] = 1;//why?
                 k++;
             }
         }
-
-        n = numberOfTrafos_; // Cantidad de transformadores.
+        n = numberOfTrafos_;
+        
+        aij = new ArrayList(n - k);
+        
+         // Cantidad de transformadores.
         int T = numberOfMuestras_; // Cantidad de muestras.
         double[][] mediciones = matrizConsumo_;
-        resultados = new Double[T+2][n];
+        resultados = new Double[T+2][n-k];
+        estimaciones = new Double[T][n-k];
         // PASO 1: Generar derivadas de errores (Sistemas de ecuaciones).
         // Se guardan las posiciones de los medidores en el vector posiciones.
         int[] posiciones = new int[k];
@@ -78,6 +77,8 @@ public class SCICTD {
         // Se busca el valor desconocido, es decir, el Transformador que no tiene asignado medidor.
         fitness[0] = 0;
         int desconocido = 0;
+        int indice = -1;
+        
         for (int d = 0; d < n; d++) {
             // Se calculan los errores para cada transformador que no tiene medidor.
 
@@ -127,11 +128,13 @@ public class SCICTD {
                         }
                     }
                 }
+                
                 int f = k - 1;
                 factor = ecuaciones[f][f];
                 for (int j = 0; j < col; j++) {
                     ecuaciones[f][j] = ecuaciones[f][j] / factor;
                 }
+                
                 // Reemplazar los valores hallados en la matriz para encontrar los factores.
                 int fac = f;
                 for (int i = f; i >= 0; i--) {
@@ -143,10 +146,11 @@ public class SCICTD {
                 }
             	//Se guarda vector Aij del transformador d
                 aij.add(factores);
+                indice++;
             	//Se resuelve el sistema de ecuaciones con datos de Entrenamiento
-                resolverSistemaEntrenamiento(factores, desconocido, posiciones, k);
+                resolverSistemaEntrenamiento(factores, desconocido, indice, posiciones, k);
                 //Se resuelve el sistema de ecuaciones con datos de Validación
-                resolverSistemaValidacion(factores, desconocido, posiciones, k);
+                resolverSistemaValidacion(factores, desconocido, indice, posiciones, k);
                 
                 System.out.println("*****");
 
@@ -158,31 +162,38 @@ public class SCICTD {
 
     }
     
-    private void resolverSistemaEntrenamiento(double[] factores, int desconocido, int[] posiciones, int k){
+    private void resolverSistemaEntrenamiento(double[] factores, int desconocido, int indice, int[] posiciones, int k){
             double errorCuad = 0;
             double real;
             double error;
             //
             double[][] mediciones = matrizConsumo_;
-            int total = matrizConsumo_.length;
+            //int total = matrizConsumo_.length;
+            
+            System.out.println("Errores en entrenamiento");
+            System.out.println("------------------------");
             for (int l = 0; l < training_lines; l++) {
                 real = mediciones[l][desconocido];
                 error = real;
+                double valorEstimado = 0.0;
                 for (int i = 0; i < k; i++) {
-                    error -= factores[i] * mediciones[l][posiciones[i]];
+                    valorEstimado += factores[i] * mediciones[l][posiciones[i]];
                 }
+                estimaciones[l][indice] = valorEstimado;
+                error = real - valorEstimado;
                 // Se calcula la sumatoria de los errores de cada medicion.
                 errorCuad += Math.pow(error, 2);
                 /*GUARDAR ERROR [desconocido][l]*/
-                resultados[l][desconocido] = Math.pow(error, 2);
+                resultados[l][indice] = Math.pow(error, 2);
+                System.out.println(resultados[l][indice]);
             }
             // El error cuadratico se guarda al final de las lineas de entrenamiento.
-            System.out.println("Error Entrenamiento: " + String.valueOf(errorCuad / training_lines));
+            System.out.println("Error Promedio Entrenamiento: " + String.valueOf(errorCuad / training_lines));
             
-            resultados[training_lines][desconocido] = errorCuad / training_lines;
+            resultados[training_lines][indice] = errorCuad / training_lines;
         }
-    private void resolverSistemaValidacion(double[] factores, int desconocido, int[ 	] posiciones,
-            int k){
+    
+    private void resolverSistemaValidacion(double[] factores, int desconocido, int indice, int[] posiciones, int k){
         double errorCuad = 0;
         // PASO 3: Hallar el error promedio elevado al Cuadrado.
         double real;
@@ -190,22 +201,28 @@ public class SCICTD {
         //
         double[][] mediciones = matrizConsumo_;
         int total = matrizConsumo_.length;
+        
+        System.out.println("Errores en validación");
+        System.out.println("---------------------");
         /*linea 144 hasta el final*/
         for (int l = training_lines; l < matrizConsumo_.length; l++) {
             real = mediciones[l][desconocido];
             error = real;
+            double valorEstimado = 0.0;
             for (int i = 0; i < k; i++) {
-                error -= factores[i] * mediciones[l][posiciones[i]];
+                valorEstimado += factores[i] * mediciones[l][posiciones[i]];
             }
+            error = real - valorEstimado;
+            estimaciones[l][indice] = valorEstimado;
             // Se calcula la sumatoria de los errores de cada medicion.
             errorCuad += Math.pow(error, 2);
             /*GUARDAR ERROR [desconocido][l]*/
-            resultados[l+1][desconocido] = Math.pow(error, 2);
-
+            resultados[l+1][indice] = Math.pow(error, 2);
+            System.out.println(resultados[l+1][indice]);
         }
         // El error cuadratico se guarda al final de las lineas de validacion.
-        System.out.println("Error Validacion: " + String.valueOf(errorCuad / validation_lines));
-        resultados[total+1][desconocido] = errorCuad / validation_lines;
+        System.out.println("Error Promedio Validacion: " + String.valueOf(errorCuad / validation_lines));
+        resultados[total+1][indice] = errorCuad / validation_lines;
     }
     
     private double[][] readProblem(String fileName, double[][] matriz) throws FileNotFoundException, IOException {
@@ -253,9 +270,10 @@ public class SCICTD {
 		try {
 			fwf = new FileWriter( DATA_FOLDER + this.configuracion.replace(" ", "") + "-Factores.csv" );
 			PrintWriter pwf = new PrintWriter(fwf);
-			double [][] datos = new double[n-k][3];
+			double [][] datos = new double[n-k][3+k];
+			
 			int i = 0;
-	        for (double[] factores: this.aij){
+	        for (double[] factores: this.aij) {
 	        	double min = factores[0];
 	        	double max = 0.0;
 	        	double suma = 0.0;
@@ -263,6 +281,7 @@ public class SCICTD {
 	        		suma += factores[trans];
 	        		min = (factores[trans] > min) ? min : factores[trans];
 	        		max = (factores[trans] < max) ? max : factores[trans];
+	        		datos[i][trans] = factores[trans];
 	            }
 	        	double media = suma/factores.length;
 	        	double desv = 0.0;
@@ -271,17 +290,29 @@ public class SCICTD {
 	            }
 	        	desv/=factores.length;
 	        	desv = Math.sqrt(desv);
-	        	datos[i][0] = min;
-	        	datos[i][1] = max;
-	        	datos[i][2] = desv;
+	        	datos[i][k] = min;
+	        	datos[i][k+1] = max;
+	        	datos[i][k+2] = desv;
+	        	
 	        	i++;
 	        }
-	        for (int trans = 0; trans < 3; trans++){
-	        	for (int j = 0; j < n-k; j++) {
-	        		if (j==0 && trans==0){pwf.print("Minimo");pwf.print(";");}
-	        		if (j==0 && trans==1){pwf.print("Maximo");pwf.print(";");}
-	        		if (j==0 && trans==2){pwf.print("Desviacion");pwf.print(";");}
-                    pwf.print(String.valueOf(datos[j][trans]).replace('.', ','));pwf.print(";");
+	        
+	        for (int trans = 0; trans < k + 3; trans++){
+	        	for (int j = 0; j <= n-k; j++) {
+	        		if (j == 0) {
+	        			if (trans == k) {
+	        				pwf.print("Minimo");
+	        			} else if (trans == k + 1) { 
+	        				pwf.print("Maximo");
+	        			} else if (trans == k + 2) {
+	        				pwf.print("Desviacion");
+	        			} else {
+	        				pwf.print("A[" + String.valueOf(trans) + "," + String.valueOf(j) + "]");
+	        			}
+	        		} else {
+	        			pwf.print(String.valueOf(datos[j-1][trans]).replace('.', ','));
+	        		}
+	        		pwf.print(";");
                 }
 	        	pwf.println("");
             }
@@ -293,46 +324,91 @@ public class SCICTD {
 		}
         
     }
-    public void guardar_errores(Double[][] resultados){
-	 try {
-		FileWriter fw = new FileWriter( DATA_FOLDER + configuracion.replace(" ", "") + ".csv" );
-		PrintWriter pw = new PrintWriter(fw);
-		
-		pw.print(";");
-		for (int trans = 0; trans < n; trans++){
-			if (nodos[trans] == 0){
-				pw.print(String.valueOf(trans) + ";");
+    
+	
+	
+	
+	public void guardar_estimaciones(){
+		try {
+			FileWriter estFile;
+			estFile = new FileWriter( DATA_FOLDER + this.configuracion.replace(" ", "") + "-Estimaciones.csv" );
+			PrintWriter pwe = new PrintWriter(estFile);
+
+			
+			pwe.print(";");
+			for (int trans = 0; trans < n; trans++){
+				if (nodos[trans] == 0){
+					pwe.print(String.valueOf(trans) + ";");
+				}
 			}
+			pwe.println("");
+			int indice = 0;
+			for (int muestra =  0; muestra < numberOfMuestras_; muestra++) {	
+			    for (int trans = 0; trans <= n-k; trans++){
+			    	if (trans==0){
+			    		pwe.print(String.valueOf(indice));
+	    				indice++;
+			    	} else {
+				    	pwe.print(String.valueOf(estimaciones[muestra][trans-1]).replace('.', ','));
+			    	}
+			    	pwe.print(";");
+			    }
+			    pwe.println("");
+			}
+			pwe.flush();
+			pwe.close();
+			estFile.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		pw.println("");
-		for (int muestra =  0; muestra < numberOfMuestras_+2; muestra++) {	
-		    for (int trans = 0; trans < n; trans++){
-		    	if (trans==0){
-	    			if (muestra==training_lines)
-	    			{
-	    				pw.print("Error entrenamiento: ;");
-	    			}else if (muestra==numberOfMuestras_+1)
-	    			{
-	    				pw.print("Error validación: ;");
-	    			}
-	    			else
-	    			{
-	    				pw.print("");pw.print(";");
-	    			}
-		    	}
-		    	if (nodos[trans] == 0){
-		            pw.print(String.valueOf(resultados[muestra][trans]).replace('.', ','));
-		            pw.print(";");
-		        }
-		    }
-		    pw.println("");
-		}
-		pw.flush(); pw.close();fw.close();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
     }
+	
+	
+	
+    public void guardar_errores(){
+		try {
+			FileWriter fw = new FileWriter( DATA_FOLDER + configuracion.replace(" ", "") + ".csv" );
+			PrintWriter pw = new PrintWriter(fw);
+			
+			pw.print(";");
+			for (int trans = 0; trans < n; trans++){
+				if (nodos[trans] == 0){
+					pw.print(String.valueOf(trans) + ";");
+				}
+			}
+			pw.println("");
+			int indice = 0;
+			for (int muestra =  0; muestra < numberOfMuestras_+2; muestra++) {	
+			    for (int trans = 0; trans <= n-k; trans++){
+			    	if (trans==0){
+		    			if (muestra==training_lines)
+		    			{
+		    				pw.print("Error entrenamiento:;");
+		    			}else if (muestra==numberOfMuestras_+1)
+		    			{
+		    				pw.print("Error validación:;");
+		    			}
+		    			else
+		    			{
+		    				pw.print(String.valueOf(indice));pw.print(";");
+		    				indice++;
+		    			}
+			    	} else {
+		    			pw.print(String.valueOf(resultados[muestra][trans-1]).replace('.', ','));
+			            pw.print(";");
+			        }
+			    }
+			    pw.println("");
+			}
+			pw.flush(); pw.close();fw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    
     public static void main(String[] args) {
         try {
             int n;
@@ -344,9 +420,10 @@ public class SCICTD {
 							 		 + "1 1 1 1 1 1 1 1 1 0 ";
                            
             System.out.println("Ejecutando programa. Configuracion: " + programa.configuracion);
-            Double [][] resultados = programa.evaluate(programa.getConfiguracion(programa.configuracion, n));
+            programa.evaluate(programa.getConfiguracion(programa.configuracion, n));
             
-            programa.guardar_errores(resultados);
+            programa.guardar_errores();
+            programa.guardar_estimaciones();
             programa.guardar_min_max_desv();
             
 

@@ -277,7 +277,7 @@ if __name__ == "__main__":
         if Parameters.config[i] == '0':
             positions.append(i)
             
-    positions = [1,7]    
+    #positions = [15,23,39]    
     for i in positions:
         try:
             best_individuals = []

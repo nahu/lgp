@@ -354,7 +354,7 @@ class Population:
         Se busca el de menor error
         '''
         for i in range(1, self.pop_size):
-            if (Individual.compare_error(self.internal_pop[i], best) == -1):
+            if (Individual.compare_validation_error(self.internal_pop[i], best) == -1):
                 best = self.internal_pop[i]
         
         return best

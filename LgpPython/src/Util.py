@@ -44,7 +44,19 @@ def errors_to_file(f_errors, final_table):
         
     f.close()
 
+def estimations_to_file(f_estimations, final_table):
+    f = open(f_estimations, "w")
 
+    for t in range(Parameters.lines + 1):
+        if t == 0:
+            row = ";"
+        else:
+            row = str(t - 1) + ";"
+            
+        row += str(final_table[t]) + "\n"
+        f.write(row.replace('.', ','))
+        
+    f.close()
 
 def programs_to_file(f_programs, best_individuals):
     g = open(f_programs, "w")
