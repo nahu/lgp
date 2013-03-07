@@ -49,6 +49,7 @@ MathModel/data/*.csv
 errores*
 programas*
 LgpPython/resultados/*
+estimaciones*
 
 #Salida
 LgpPython/src/salida*
