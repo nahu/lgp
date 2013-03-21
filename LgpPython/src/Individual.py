@@ -36,7 +36,8 @@ def ini_individual(obj):
     obj.r_all += Parameters.r_out
     obj.r_all += Parameters.r_var
     
-    [obj.r_all.append(random.uniform(Parameters.const_min, Parameters.const_max)) for i in range(Parameters.cons_al_min, Parameters.cons_al_max + 1)]
+    [obj.r_all.append(random.uniform(Parameters.const_min, Parameters.const_max)) for i in range(Parameters.cons_al_min, Parameters.cons_al_max + 1 -4)]
+    obj.r_all.append(1); obj.r_all.append(0); obj.r_all.append(math.pi); obj.r_all.append(math.e); 
     
     return obj
 
@@ -76,7 +77,11 @@ def create_new_instruction():
     instruction = []
     instruction.append(random.randint(Parameters.op_min, Parameters.op_max)) #Instrucciones
     instruction.append(random.randint(Parameters.var_min, Parameters.var_max))  #Registros destinos - Solo los variables
-    instruction.append(random.randint(Parameters.var_min, Parameters.var_max)) #Solo puede ser variable.
+    '''Cambio: se permite al primer operando ser variable o constante de entrada'''
+    if Util.random_flip_coin(0.5):
+        instruction.append(random.randint(Parameters.var_min, Parameters.var_max)) #Solo puede ser variable.
+    else:
+        instruction.append(random.randint(Parameters.cons_in_min, Parameters.cons_in_max))
     
     #operador 2 es constante con probabilidad p_const
     if Util.random_flip_coin(Parameters.p_reg_op2_const):
@@ -104,7 +109,11 @@ def get_random_register(op, reg_eff=None, instruction=None):
             register = random.choice(reg_eff)
     
     if op == 2: #operando 1
-        #print "operando 1"
+        '''Cambio: se permite al primer operando ser variable o constante de entrada'''
+        if Util.random_flip_coin(0.5):
+            register = random.randint(Parameters.var_min, Parameters.var_max)
+        else:
+            register = random.randint(Parameters.cons_in_min, Parameters.cons_in_max)
         register = random.randint(Parameters.var_min, Parameters.var_max)
     
     if op == 3: #operando 2
@@ -186,7 +195,11 @@ def compare_validation_error(x, y):
     elif x.validation_error == y.validation_error:
         return 0
 
-
+def check_destination_register(obj):
+    for i in obj.genomeList:
+        if i[1] != 0 and (i[1]< Parameters.var_min or i[1] > Parameters.var_max):
+            print "EL REGISTRO DESTINO ES INCORRECTO -- " 
+            print i  
 
 class Individual():
     """
@@ -295,7 +308,8 @@ class Individual():
                 reg_eff.remove(i[1])
                 
                 if (i[0] < 5):# los operadores unarios tiene identificador del 5 al 9
-                    reg_eff.add(i[2])
+                    if (i[2] <= Parameters.var_max):
+                        reg_eff.add(i[2])
                 
                 if (i[3] <= Parameters.var_max): #los registros constantes no pueden ser registros efectivos
                     reg_eff.add(i[3])
@@ -306,19 +320,35 @@ class Individual():
     
     def get_program_in_python(self):
         eff_instructions = self.get_effective_instructions()
-        
         program = ""
         for i in eff_instructions:
             '''
             Como los registros de entrada se encuentra en una lista separada al conjunto de registros r_all
             Se realiza un corrimiento de Parameters.register_offset (tamaño de r_all) 
             al registro de la instrucción para que entre en el rango de r_const
+            variable  variable  - sin corrimiento
+            entrada  entrada    - << 4
+            variable entrada    - << 8
+            entrada variable    - <<11
             '''
-            if (i[3] >= Parameters.register_offset):
-                program += (Parameters.operations[i[0]<<4].format(i[1], i[2], i[3] - Parameters.register_offset) + '\n')
-            else:
-                program += (Parameters.operations[i[0]].format(i[1], i[2], i[3]) + '\n')
+            i0 = i[0]
+            i2 = i[2] - Parameters.register_offset if i[2] >= Parameters.register_offset else i[2]
+            i3 = i[3] - Parameters.register_offset if i[3] >= Parameters.register_offset else i[3]
+            ''' Para operaciones de dos operandos'''
+            if (i[0]<5):
+                if (i[2] >= Parameters.register_offset): #i2 es de entrada
+                    if (i[3] >= Parameters.register_offset): #i3 es de entrada
+                        i0 = i[0]<<4 #entrada  entrada   - << 4
+                    else:
+                        i0 = i[0]<<11 #entrada variable  - << 11
+                else:
+                    if i[3] >= Parameters.register_offset:
+                        i0 = i[0]<<8 #variable entrada    - << 8
                 
+            else:
+                if (i[3] >= Parameters.register_offset):
+                    i0 = i[0]<<4 #entrada  entrada   - << 4
+            program += (Parameters.operations[i0].format(i[1], i2, i3) + '\n')
         return program
     
     

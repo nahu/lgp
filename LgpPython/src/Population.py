@@ -44,7 +44,7 @@ def tournament_with_mutation(competitors):
     try:
         if Util.random_flip_coin(Parameters.p_macro_mutation):
             winner = macro_mutation(winner)
-    
+            Individual.check_destination_register(winner)
         if not check_out_register(winner):
             print "La macro mató"
     except:
@@ -53,6 +53,7 @@ def tournament_with_mutation(competitors):
     try:
         if Util.random_flip_coin(Parameters.p_micro_mutation):
             winner = micro_mutation(winner)
+            Individual.check_destination_register(winner)
            
         if not check_out_register(winner):
             print "La miiicro mató"
@@ -161,24 +162,20 @@ def impresiones_mutacion(ins, mutpoint, eff):
 
 
 def macro_mutation(genome):
-    """Agrega o quita instrucciones
-     -- Alg. 6.1 -- 
-     p_ins > p_del 
-     """
+    """Agrega o quita instrucciones  -- Alg. 6.1 -- p_ins > p_del """
     insertion = Util.random_flip_coin(Parameters.p_ins)
     mutation_point = random.randint(0, genome.height - 2)
         
     if genome.height < Parameters.num_max_instructions and \
     (insertion or genome.height == Parameters.num_min_instructions):
+        ''' Si no supera la max. cant. de instrucciones y es insercion o 
+        tiene el numero minimo de instrucciones'''
         new_instruction = Individual.create_new_instruction()
-        reg_eff, to_mutate = genome.get_effective_registers(mutation_point)
-        #impresiones_mutacion(insertion, mutation_point, reg_eff)
-        
+        reg_eff, to_mutate = genome.get_effective_registers(mutation_point)       
         while not reg_eff: 
             """
             se da en el caso de que el punto de mutación esté por debajo de la última
-            instrucción efectiva 
-            y ésta sea unaria con un operando constante
+            instrucción efectiva y ésta sea unaria con un operando constante
             """
             #cambiar el registro constante del operador unario por uno variable
             genome.genomeList[to_mutate][3] = random.randint(Parameters.var_min, Parameters.var_max)
@@ -191,10 +188,11 @@ def macro_mutation(genome):
         
     if genome.height > Parameters.num_min_instructions and \
     (not insertion or genome.height == Parameters.num_max_instructions):
+        ''' Si es mayor a la  min. cant. de instrucciones y  no es insercion o
+            tiene el numero maximo de instrucciones'''
         del genome.genomeList[mutation_point]
         genome.height -= 1
-        #impresiones_mutacion(insertion,mutation_point,[])
-    
+            
     genome.set_altered()
     
     if genome.height > Parameters.num_max_instructions:
@@ -213,16 +211,13 @@ def micro_mutation(genome):
     
     eff, indices = genome.get_effective_instructions_with_indices()
     index = random.randint(0, len(indices) - 1)
-    #print "index " + str(index)
     instruction = eff[index]
     mutation_point = indices[index]
-    #print "mutation point: " + str(mutation_point) + " index : " + str(index)
     
     type = select_micro_mutacion_type(random.random())
 
     if (type == "constantes"):
         constants_indices = genome.get_effective_constant_indices()
-        #print constants_indices
         if constants_indices:
             ins_with_constant_index = random.choice(constants_indices)
             register_mutation_index = genome.genomeList[ins_with_constant_index][3]

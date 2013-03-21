@@ -79,7 +79,7 @@ num_operators = 9
 num_var_register = 9#k
 num_const_in_registers = k
 num_out_registers = 1
-num_const_random_registers = 6#k
+num_const_random_registers = 6+4#k
 num_conts_registers = num_const_random_registers + num_const_in_registers
 num_registers = num_conts_registers + num_var_register + num_const_in_registers +num_out_registers + num_const_random_registers
 
@@ -137,21 +137,38 @@ El operador de potencia pasó a ser un operador de elevado al cuadrado
 """
 c_undef = 1.0
 operations = {  1   : 'r_all[{0}] = r_all[{1}] + r_all[{2}]',
-                16  : 'r_all[{0}] = r_all[{1}] + in_t[{2}]',
+                16  : 'r_all[{0}] = in_t[{1}] + in_t[{2}]', #<<4
+                256 : 'r_all[{0}] = r_all[{1}] + in_t[{2}]', #<<8
+                2048: 'r_all[{0}] = in_t[{1}] + r_all[{2}]', #<<11
+                
                 2   : 'r_all[{0}] = r_all[{1}] - r_all[{2}]',
-                32  : 'r_all[{0}] = r_all[{1}] - in_t[{2}]',
+                32  : 'r_all[{0}] = in_t[{1}] - in_t[{2}]',
+                512 : 'r_all[{0}] = r_all[{1}] - in_t[{2}]',
+                4096: 'r_all[{0}] = in_t[{1}] - r_all[{2}]',
+                
                 3   : 'r_all[{0}] = r_all[{1}] * r_all[{2}]',
-                48  : 'r_all[{0}] = r_all[{1}] * in_t[{2}]',
+                48  : 'r_all[{0}] = in_t[{1}] * in_t[{2}]',
+                768 : 'r_all[{0}] = r_all[{1}] * in_t[{2}]',
+                6144: 'r_all[{0}] = in_t[{1}] * r_all[{2}]',
+                
                 4   : 'r_all[{0}] = (r_all[{1}] / r_all[{2}]) if r_all[{2}] != 0 else r_all[{1}] + Parameters.c_undef',
-                64  : 'r_all[{0}] = (r_all[{1}] / in_t[{2}]) if in_t[{2}] != 0 else r_all[{1}] + Parameters.c_undef',
+                64  : 'r_all[{0}] = (in_t[{1}] / in_t[{2}]) if in_t[{2}] != 0 else in_t[{1}] + Parameters.c_undef',
+                1024: 'r_all[{0}] = (r_all[{1}] / in_t[{2}]) if in_t[{2}] != 0 else r_all[{1}] + Parameters.c_undef',
+                8192: 'r_all[{0}] = (in_t[{1}] / r_all[{2}]) if r_all[{2}] != 0 else in_t[{1}] + Parameters.c_undef',
+                
+                #Unarios
                 5   : 'r_all[{0}] = r_all[{2}] ** 2',
                 80  : 'r_all[{0}] = in_t[{2}] ** 2',
+                
                 6   : 'r_all[{0}] = math.log10(abs(r_all[{2}])) if r_all[{2}] != 0 else r_all[{2}] + Parameters.c_undef',
                 96  : 'r_all[{0}] = math.log10(abs(in_t[{2}])) if in_t[{2}] != 0 else in_t[{2}] + Parameters.c_undef',
+                
                 7   : 'r_all[{0}] = math.sqrt(abs(r_all[{2}]))',
                 112 : 'r_all[{0}] = math.sqrt(abs(in_t[{2}]))',
+                
                 8   : 'r_all[{0}] = math.sin(r_all[{2}])',
                 128 : 'r_all[{0}] = math.sin(in_t[{2}])',
+                
                 9   : 'r_all[{0}] = math.cos(r_all[{2}])',
                 144 : 'r_all[{0}] = math.cos(in_t[{2}])'
                 }

@@ -50,6 +50,8 @@ def deme_evolve(population):
         ''' ********************************* CROSSOVER *********************************'''
         if Util.random_flip_coin(Parameters.p_crossover):
             sister, brother = Population.crossover(winners[0][0], winners[1][0])
+            Individual.check_destination_register(sister)
+            Individual.check_destination_register(brother)
             
             if not sister.index == winners[0][0].index:
                 winners[0][0] = brother
@@ -131,7 +133,9 @@ class LGP():
         '''
         Inicializa en paralelo los demes
         '''
-        
+#        for pop in range(self.num_demes):
+#            for i in range(len(self.population[pop].internal_pop)):
+#                self.population[pop].internal_pop[i] = Individual.ini_individual(self.population[pop].internal_pop[i])
         for pop in range(self.num_demes):
             '''
             Parameters.chunk_size sería la cantidad de objetos que se le pasa a un worker para que le aplique la función
@@ -158,60 +162,56 @@ class LGP():
         self.initialize_pop()
         self.generation = -1
         
-        #try:
-        while not self.termination_criteria():
-            for_replace_loosers = int(self.population[0].pop_size - Parameters.migration_rate * self.population[0].pop_size) + 1
-            for_replace_migration = int(Parameters.migration_rate * self.population[0].pop_size)
-            self.generation += 1
-            
-            iter_result = self.pool.imap(deme_evolve, self.population, 1)#deme_evolve(self.population[0])#
-#            result=[]
-#            for i in range(len(self.population)):
-#                result.append(deme_evolve(self.population[i]))
-#            iter_result = iter(result)
-#            
-            tmp_populations = []
-
-#            first_population = iter_result.next()
-#            tmp_populations.append(first_population)
-            
-            for p in range(0, self.num_demes):
-                tmp_populations.append(iter_result.next())
+        try:
+            while not self.termination_criteria():
+                for_replace_loosers = int(self.population[0].pop_size - Parameters.migration_rate * self.population[0].pop_size) + 1
+                for_replace_migration = int(Parameters.migration_rate * self.population[0].pop_size)
+                self.generation += 1
                 
-                to_del = self.population[p]
-                self.population[p] = copy.deepcopy(tmp_populations[p])
-                del to_del
-            
-            '''
-            Configuración de adyacencia en anillo. Los últimos de la primera población son remplazados por 
-            los primeros de la última.
-            '''
-#            to_del = self.population[0]
-#            self.population[0] = copy.deepcopy(tmp_populations[0])
-#            del to_del
-            
-            if Util.random_flip_coin(Parameters.p_migration):
-                self.population[self.num_demes - 1].internal_pop[for_replace_loosers:] = copy.deepcopy(self.population[0].internal_pop[0:for_replace_migration])
+                iter_result = self.pool.imap(deme_evolve, self.population, 1)# deme_evolve(self.population[0])#
+    #            result=[]
+    #            for i in range(len(self.population)):
+    #                result.append(deme_evolve(self.population[i]))
+    #            iter_result = iter(result)
+    #            
+                tmp_populations = []
+    
+    #            first_population = iter_result.next()
+    #            tmp_populations.append(first_population)
                 
-            for p in range(1, self.num_demes):
-                '''Migración:los últimos de la población actual = los primeros de la poblacion anterior -- Según cierta probabilidad p_migration'''
+                for p in range(0, self.num_demes):
+                    tmp_populations.append(iter_result.next())
+                    
+                    to_del = self.population[p]
+                    self.population[p] = copy.deepcopy(tmp_populations[p])
+                    del to_del
+                
+                '''
+                Configuración de adyacencia en anillo. Los últimos de la primera población son remplazados por 
+                los primeros de la última.
+                '''
                 if Util.random_flip_coin(Parameters.p_migration):
-                    self.population[p-1].internal_pop[for_replace_loosers:] = copy.deepcopy(self.population[p].internal_pop[0:for_replace_migration])
-            
-            
-            stats = self.generation % freq_stats
-            
-            if stats == 0:
-                print "\n==================================================\n"
-                print "Generación " + str(self.generation) + ": "
-                print "\n==================================================\n"
-                self.best_individual_in_training()
+                    self.population[self.num_demes - 1].internal_pop[for_replace_loosers:] = copy.deepcopy(self.population[0].internal_pop[0:for_replace_migration])
+                    
+                for p in range(1, self.num_demes):
+                    '''Migración:los últimos de la población actual = los primeros de la poblacion anterior -- Según cierta probabilidad p_migration'''
+                    if Util.random_flip_coin(Parameters.p_migration):
+                        self.population[p-1].internal_pop[for_replace_loosers:] = copy.deepcopy(self.population[p].internal_pop[0:for_replace_migration])
+                
+                
+                stats = self.generation % freq_stats
+                
+                if stats == 0:
+                    print "\n==================================================\n"
+                    print "Generación " + str(self.generation) + ": "
+                    print "\n==================================================\n"
+                    self.best_individual_in_training()
                 
         
-#        except Exception as e:
-#            print "EXCEPCION en generación " + str(self.generation)
-#            print e
-#            raise e
+        except Exception as e:
+            print "EXCEPCION en generación " + str(self.generation)
+            print e
+            raise e
         
         
     def best_individual_in_training(self):
@@ -255,14 +255,14 @@ if __name__ == "__main__":
     '''
     Se crea el direcctorio de resultados si no existe'
     '''
-    '''
-    diff = str(datetime.now())
-    folder = "../resultados/"
-    folder += diff[:19].replace(':', '.')
     
-    if not os.path.exists(folder):
-        os.makedirs(folder)
-    '''
+#    diff = str(datetime.now())
+#    folder = "../resultados/"
+#    folder += diff[:19].replace(':', '.')
+    
+#    if not os.path.exists(folder):
+#        os.makedirs(folder)
+#    
     folder = sys.argv[1]
     '''
     Se escribe en un archivo los parámetros usados
