@@ -7,19 +7,37 @@
 //============================================================================
 
 #include <iostream>
+#include <fstream>
+#include <string>
 #include <ctime>
+
+//#include <time.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
 
 #include "parameters.h"
-#include "util.h"
+#include "file_util.h"
 
 using namespace std;
 
 int main() {
 	srand((unsigned)time(0));
-	init_parameters();
 
+	//Se crea la matriz -- ver si corresponde crear en parameters.
+	double ** data = new double*[LINES];
+	// Se crea una linea por muestra.
+	int current_sample = 0;
+	for (current_sample = 0; current_sample < LINES; current_sample++ )
+	{
+		data[current_sample] = new double[N];
+	}
+	//se carga la matriz desde el archivo
+	data = get_matrix_from_file();
+	//se imprime la matriz
+	imprimir_matriz(data);
 
-	cout << "!!!Hello World!!!" << endl;
 	return 0;
 }
