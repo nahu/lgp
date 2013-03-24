@@ -5,14 +5,17 @@
  *      Author: Vanessa Cañete, Nahuel Hernández
  */
 
-//poner todo en mayúsculas lo de parameters.py con defines y cambiar si algun cambio con respecto al paper
+#define _USE_MATH_DEFINES
 
 #include <string.h>
+#include <cmath>
+
+
 
 //Solo faltan 5 transformadores. [1,7,15,23,39]
 std::string CONFIG = "1011111011" + "1111101111" + "1110111111" + "1111111110";
-int N;
-int K;
+#define N 40
+#define K 35
 
 #define INDEX_TO_PREDICT 1
 
@@ -47,22 +50,23 @@ la convención para asegurar que el programa tenga una salida es que la
 #define NUM_VAR_REGISTER 9 //K
 #define NUM_CONST_IN_REGISTERS K
 #define NUM_OUT_REGISTERS 1
-#define NUM_CONST_RANDOM_REGISTERS 6 //K
-#define NUM_CONTS_REGISTERS NUM_CONST_RANDOM_REGISTERS + NUM_CONST_IN_REGISTERS
-#define NUM_REGISTERS NUM_CONTS_REGISTERS + NUM_VAR_REGISTER + NUM_CONST_IN_REGISTERS + NUM_OUT_REGISTERS + NUM_CONST_RANDOM_REGISTERS
-
+#define NUM_CONST_RANDOM_REGISTERS 6//K
+#define NUM_CONST_MATH_REGISTERS 4
+#define NUM_CONTS_REGISTERS NUM_CONST_RANDOM_REGISTERS + NUM_CONST_IN_REGISTERS + NUM_CONST_MATH_REGISTERS
+#define NUM_REGISTERS NUM_CONTS_REGISTERS + NUM_VAR_REGISTER + NUM_CONST_IN_REGISTERS + NUM_CONST_MATH_REGISTERS + NUM_OUT_REGISTERS + NUM_CONST_RANDOM_REGISTERS
+#define NUM_INDIVIDUAL_REGISTERS NUM_REGISTERS - NUM_CONST_IN_REGISTERS
 
 //Límites en las instrucciones
 #define REG_OUT 0
 #define VAR_MIN 1
 #define VAR_MAX NUM_VAR_REGISTER
-#define CONS_AL_MIN VAR_MAX + 1
-#define CONS_AL_MAX VAR_MAX + NUM_CONST_RANDOM_REGISTERS //3*K
-#define CONS_IN_MIN CONS_AL_MAX + 1
-#define CONS_IN_MAX CONS_AL_MAX + NUM_CONST_IN_REGISTERS
+#define CONST_AL_MIN VAR_MAX + 1
+#define CONST_AL_MAX VAR_MAX + NUM_CONST_RANDOM_REGISTERS //3*K
+#define CONST_IN_MIN CONST_AL_MAX + 1
+#define CONST_IN_MAX CONST_AL_MAX + NUM_CONST_IN_REGISTERS
 #define OP_MIN 1
 #define OP_MAX 9
-#define REGISTER_OFFSET CONS_AL_MAX + 1
+#define REGISTER_OFFSET CONST_AL_MAX + 1
 
 /*REGISTROS
 
@@ -74,11 +78,13 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 double R_OUT[NUM_OUT_REGISTERS];
 double R_VAR[NUM_VAR_REGISTER];
+double R_MATH_CONST[NUM_CONST_MATH_REGISTERS];
+double R_CONST[LINES][K]; //a inicializar
 
 #define INIT_VAR_VALUE 1.0 //Valor inicial de los registros variables
 
 void init_parameters() {
-
+	/*
 	N = CONFIG.size();
 	K = 0;
 	for (int i = 0; i < N; i++) {
@@ -86,6 +92,7 @@ void init_parameters() {
 			K++;
 		}
 	}
+	*/
 
 	R_OUT[0] = INIT_VAR_VALUE;
 
@@ -93,6 +100,10 @@ void init_parameters() {
 		R_VAR[i] = INIT_VAR_VALUE;
 	}
 
+	R_MATH_CONST[0] = 0.0;
+	R_MATH_CONST[1] = 1.0;
+	R_MATH_CONST[2] = M_E;
+	R_MATH_CONST[3] = M_PI;
 }
 /*
 Se arman las instrucciones usando la función string.format()
@@ -189,7 +200,7 @@ operations = {  1   : 'r_all[{0}] = r_all[{1}] + r_all[{2}]',
 #define P_MIGRATION 0.80
 #define P_MIGRATION_CRITERIA 0.3
 
-
+#define P_REG_OP1_CONST 0.5
 #define P_REG_OP2_CONST 0.7
 #define P_CONST_IN 0.75
 #define CONST_MIN 0 //50
@@ -215,7 +226,7 @@ utilizando multiprocessing de Python
 #define NUM_PROCESSORS 4 //NÚMERO DE PROCESOS WORKERS
 #define CHUNK_SIZE POPULATION_SIZE / DEMES // NUM_PROCESSORS
 
-#define CHUNK_SIZE_STEP DEMES // NUM_PROCESSORS
+#define CHUNK_SIZE_STEP DEMES / NUM_PROCESSORS
 
 
 /****************************************  CARGA DE DATOS ***************************************
@@ -256,3 +267,5 @@ def read_samples():
 data_samples = read_samples()
 r_const = init_reg_in_const()
 */
+
+

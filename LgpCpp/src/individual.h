@@ -7,7 +7,7 @@
 
 class Individual {
 public:
-	Individual(int index, int config_position);
+	Individual(int, int);
 	Program program;
 	double fitness;
 	double error;
@@ -19,3 +19,18 @@ public:
 	//pasar todo lo que esta en la clase individuo
 	//poner acá los operadores genéticos
 };
+
+Individual::Individual(int _index, int _config_position) {
+	program = new Program;
+	fitness = 0.0;
+	error = 0.0;
+	sigma = 0.0;
+	index = _index;
+	config_position = _config_position;
+	n_eff = 1;
+	evaluated = false;
+}
+
+Individual::~Individual() {
+	delete program;
+}

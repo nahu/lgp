@@ -10,13 +10,14 @@
 #include <ctime>
 #include <stdlib.h>
 
+#include "parameters.h"
 #include "util.h"
 
 using namespace std;
 
 int main() {
 	srand((unsigned)time(0));
-
+	init_parameters();
 
 
 	cout << "!!!Hello World!!!" << endl;
