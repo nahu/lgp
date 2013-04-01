@@ -10,6 +10,10 @@
 #include <fstream>
 #include <string>
 #include <ctime>
+#include <cmath>
+#include <set>
+#include <vector>
+#include <algorithm>
 
 //#include <time.h>
 #include <stdlib.h>
@@ -17,27 +21,16 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-
 #include "parameters.h"
-#include "file_util.h"
+#include "util.h"
+#include "program.h"
 
 using namespace std;
 
+
 int main() {
 	srand((unsigned)time(0));
-
-	//Se crea la matriz -- ver si corresponde crear en parameters.
-	double ** data = new double*[LINES];
-	// Se crea una linea por muestra.
-	int current_sample = 0;
-	for (current_sample = 0; current_sample < LINES; current_sample++ )
-	{
-		data[current_sample] = new double[N];
-	}
-	//se carga la matriz desde el archivo
-	data = get_matrix_from_file();
-	//se imprime la matriz
-	imprimir_matriz(data);
+	Program::init_registers();
 
 	return 0;
 }

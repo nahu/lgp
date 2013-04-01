@@ -7,8 +7,6 @@
 
 
 
-#include <stdlib.h>
-
 float _random() {
 	//This will generate a number from 0.0 to 1.0, inclusive.
 	float r = (float) rand() / (float) RAND_MAX;
@@ -55,5 +53,42 @@ bool random_flip_coin(float p) {
 	}
 }
 
+double ** get_matrix_from_file() {
+	std::string medida;
+	int current_trafo = 0;
+	int current_sample = 0;
 
+	double ** data = new double*[LINES];
+
+	for (current_sample = 0; current_sample < LINES; current_sample++ ) {
+		data[current_sample] = new double[N];
+	}
+
+	//Apertura del archivo
+	std::ifstream myfile;
+	myfile.open(FILE_NAME, std::ios::in);
+
+	if (myfile.is_open()) {
+		for (current_sample = 0; current_sample < LINES; current_sample++ ) {
+			for (current_trafo = 0; current_trafo < N; current_trafo++ ){
+				//Leer hasta el primer ";"
+				getline(myfile, medida, ';' );
+				//guardar en una posicion de la matriz
+				data[current_sample][current_trafo] = atof(medida.c_str());
+			}
+		}
+		myfile.close();
+	}
+	return data;
+}
+
+void imprimir_matriz (double ** matriz, int n, int m){
+	for (int current_sample = 0; current_sample < n; current_sample++ )	{
+		for (int current_trafo = 0; current_trafo < m; current_trafo++ ) {
+			printf("%.6f \t", matriz[current_sample][current_trafo]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
 

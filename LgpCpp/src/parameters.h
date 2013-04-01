@@ -7,13 +7,9 @@
 
 #define _USE_MATH_DEFINES
 
-#include <string.h>
-#include <cmath>
-
-
-
+#define FILE_NAME "./data/Datos60.txt"
 //Solo faltan 5 transformadores. [1,7,15,23,39]
-std::string CONFIG = "1011111011" + "1111101111" + "1110111111" + "1111111110";
+std::string CONFIG = "1011111011111110111111101111111111111110";
 #define N 40
 #define K 35
 
@@ -76,84 +72,21 @@ r[k + 1] .. r[2*k] registros aleatorios constantes
 r[2*k + 1] .. r[3*k] registros de entrada constantes
 */
 
-double R_OUT[NUM_OUT_REGISTERS];
-double R_VAR[NUM_VAR_REGISTER];
-double R_MATH_CONST[NUM_CONST_MATH_REGISTERS];
-double R_CONST[LINES][K]; //a inicializar
-
 #define INIT_VAR_VALUE 1.0 //Valor inicial de los registros variables
 
-void init_parameters() {
-	/*
-	N = CONFIG.size();
-	K = 0;
-	for (int i = 0; i < N; i++) {
-		if (CONFIG[i] == "1") {
-			K++;
-		}
-	}
-	*/
 
-	R_OUT[0] = INIT_VAR_VALUE;
+/************************************ OPERACIONES ************************************/
+#define ADD 1
+#define SUB 2
+#define MUL 3
+#define DIV 4
+#define POW2 5
+#define LOG10 6
+#define SQRT 7
+#define SIN 8
+#define COS 9
 
-	for (int i = 0; i < NUM_VAR_REGISTER; i++) {
-		R_VAR[i] = INIT_VAR_VALUE;
-	}
-
-	R_MATH_CONST[0] = 0.0;
-	R_MATH_CONST[1] = 1.0;
-	R_MATH_CONST[2] = M_E;
-	R_MATH_CONST[3] = M_PI;
-}
-/*
-Se arman las instrucciones usando la función string.format()
-Según la operación se usa:
-
-    operations[num_operation].format(id_individual, reg_dest, reg_op1, reg_op2 - reg_offset)
-
-para obtener el string con la instrucción
-
-En operaciones con dos operandos, el primero siempre es variable
-y el segundo puede ser constante
-o variable con cierta probabilidad (p_reg_op2).
-
-Para registros constantes en el segundo operador usar operations[num_operation<<4]
-
-Para operaciones ilegales como:
-    División por 0
-    logaritmo de un número negativo
-    Número negativo elevado a un fraccionario (se hacía)
-5   : 'r_all[{0}]=(r_all[{1}]**r_all[{2}]) if not (r_all[{1}] < 0 and not (r_all[{2}]).is_integer()) or (r_all[{2}] > 100) else 1.0',
-80  : 'r_all[{0}]=r_all[{1}]**in_t[{2}] if not (r_all[{1}] < 0 and not (in_t[{2}]).is_integer()) or (in_t[{2}] > 100) else 1.0',
-
-    Raíz cuadrada de un número negativo
-se hace que el resultado de la operación sea 1.0
-
-El operador de potencia pasó a ser un operador de elevado al cuadrado
-
-
-c_undef = 1.0
-operations = {  1   : 'r_all[{0}] = r_all[{1}] + r_all[{2}]',
-                16  : 'r_all[{0}] = r_all[{1}] + in_t[{2}]',
-                2   : 'r_all[{0}] = r_all[{1}] - r_all[{2}]',
-                32  : 'r_all[{0}] = r_all[{1}] - in_t[{2}]',
-                3   : 'r_all[{0}] = r_all[{1}] * r_all[{2}]',
-                48  : 'r_all[{0}] = r_all[{1}] * in_t[{2}]',
-                4   : 'r_all[{0}] = (r_all[{1}] / r_all[{2}]) if r_all[{2}] != 0 else r_all[{1}] + Parameters.c_undef',
-                64  : 'r_all[{0}] = (r_all[{1}] / in_t[{2}]) if in_t[{2}] != 0 else r_all[{1}] + Parameters.c_undef',
-                5   : 'r_all[{0}] = r_all[{2}] ** 2',
-                80  : 'r_all[{0}] = in_t[{2}] ** 2',
-                6   : 'r_all[{0}] = math.log10(abs(r_all[{2}])) if r_all[{2}] != 0 else r_all[{2}] + Parameters.c_undef',
-                96  : 'r_all[{0}] = math.log10(abs(in_t[{2}])) if in_t[{2}] != 0 else in_t[{2}] + Parameters.c_undef',
-                7   : 'r_all[{0}] = math.sqrt(abs(r_all[{2}]))',
-                112 : 'r_all[{0}] = math.sqrt(abs(in_t[{2}]))',
-                8   : 'r_all[{0}] = math.sin(r_all[{2}])',
-                128 : 'r_all[{0}] = math.sin(in_t[{2}])',
-                9   : 'r_all[{0}] = math.cos(r_all[{2}])',
-                144 : 'r_all[{0}] = math.cos(in_t[{2}])'
-                }
-*/
-
+#define C_UNDEF 1.0
 
 /************************************  ALGORITMO EVOLUTIVO ***********************************
 
@@ -227,45 +160,5 @@ utilizando multiprocessing de Python
 #define CHUNK_SIZE POPULATION_SIZE / DEMES // NUM_PROCESSORS
 
 #define CHUNK_SIZE_STEP DEMES / NUM_PROCESSORS
-
-
-/****************************************  CARGA DE DATOS ***************************************
-                Carga de datos e inicialización de registros de entrada
-*/
-
-
-
-/*
-INICIALIZACION DE REGISTROS DE ENTRADA CONSTANTES
-def init_reg_in_const():
-    """
-    Una solo lista para los registros de entrada constantes. Todos los individuos lo usan.
-    r_const lista de instantes, cada instante t tiene las medidas Xi de los transformadores en donde hay un medidor
-    X[t][i] es el entero leido del archivo, medición del transformador i en el instante t
-    """
-    #Para cada t en el periodo de entrenamiento
-    const = []
-
-    for t in range(lines):
-        instant = []
-        for i in range(n):
-            if (config[i] == '1'):
-                instant.append(data_samples[t][i])
-
-        const.append(instant)
-
-    return const
-
-def read_samples():
-    n_data, lines_data, data = Util.get_matrix_from_file(filename)
-
-    if ( n_data != n or lines_data != lines):
-        print "El archivo no coincide con los parámetros"
-        exit(-1)
-
-    return data
-data_samples = read_samples()
-r_const = init_reg_in_const()
-*/
 
 
