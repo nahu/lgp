@@ -24,6 +24,8 @@
 #include "parameters.h"
 #include "util.h"
 #include "program.h"
+#include "individual.h"
+
 
 using namespace std;
 

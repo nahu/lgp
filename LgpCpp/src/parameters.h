@@ -18,7 +18,6 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 
 /******************************* DATOS **********************************/
 
-#define FILENAME "../data/Datos60.txt"
 #define LINES 248
 #define TRAINING_LINES 200
 #define VALIDATION_LINES 48

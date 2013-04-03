@@ -8,19 +8,22 @@
 class Individual {
 public:
 	Individual(int, int);
+	~Individual();
+	void eval_fitness();
+	inline void set_altered();
 	Program program;
+
 	double fitness;
 	double error;
 	double sigma; //era dev
 	int index;
-	int config_position;//ver si hace falta
+	int config_position; //ver si hace falta
 	bool evaluated;
 	//pasar todo lo que esta en la clase individuo
 	//poner acá los operadores genéticos
 };
 
 Individual::Individual(int _index, int _config_position) {
-	program = new Program;
 	fitness = 0.0;
 	error = 0.0;
 	sigma = 0.0;
@@ -30,32 +33,47 @@ Individual::Individual(int _index, int _config_position) {
 }
 
 Individual::~Individual() {
-	delete program;
 }
 
+inline void Individual::set_altered() {
+	fitness = 0.0;
+	evaluated = false;
+}
+
+void Individual::eval_fitness() {
+	double error_quad[TRAINING_LINES];
+	double error_a_quad = 0.0;
+	double error_prom_quad = 0.0;
+	double error_dev = 0.0;
+
+	for (int t = 0; t < TRAINING_LINES; t++) {
+		double * int_t = Program::R_CONST[t];
+		double result = program.execute_program(int_t);
+		error_quad[t] = pow((result - Program::DATA[t][config_position]), 2);
+		error_a_quad += error_quad[t];
+
+	}
+
+	error_prom_quad = error_a_quad / TRAINING_LINES;
+	for (int i = 0; i < TRAINING_LINES; i++) {
+		error_dev += pow((error_prom_quad - error_quad[i]), 2);
+
+	}
+	error_dev /= (TRAINING_LINES- 1);
+
+	if (error_prom_quad == 0.0) {
+		error_prom_quad = 0.000000001;
+	}
+	error = error_prom_quad;
+	sigma = sqrt(error_dev);
+
+	fitness = 1 / ((W_OB1 * error) + (W_OB2 * sigma));
+
+	evaluated = true;
+
+
+}
 /*
-def eval_individual(individual):
-    """
-    Función de evaluación, dado un objeto con el atributo config_position
-    retorna una lista del error cuadrático
-    para cada línea del los casos de evaluación
-    """
-
-    program = individual.get_program_in_python()
-    #in_t tiene las mediciones en el instante t
-    error_a_quad = []
-#        print Parameters.r_const
-    #try:
-    for t in range(Parameters.training_lines, Parameters.lines):
-        in_t = Parameters.r_const[t]
-        r_all = copy.copy(individual.r_all)
-
-        exec program
-
-        error_a_quad.append((r_all[0] - Parameters.data_samples[t][individual.config_position]) ** 2)
-
-
-    return error_a_quad
 
 
 Individual::

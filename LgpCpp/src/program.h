@@ -75,14 +75,16 @@ public:
 	static double R_OUT[NUM_OUT_REGISTERS];
 	static double R_VAR[NUM_VAR_REGISTER];
 	static double R_MATH_CONST[NUM_CONST_MATH_REGISTERS];
-	static double R_CONST[LINES][K]; //a inicializar
+	static double ** R_CONST;//[LINES][K];
+	static double ** DATA;
 
 };
 
 double Program::R_OUT[NUM_OUT_REGISTERS] = {};
 double Program::R_VAR[NUM_VAR_REGISTER] = {};
 double Program::R_MATH_CONST[NUM_CONST_MATH_REGISTERS] = {};
-double Program::R_CONST[LINES][K] = {{}};
+double ** Program::R_CONST = new double*[LINES];
+double ** Program::DATA = 0;
 
 void Program::init_registers() {
 	R_OUT[0] = INIT_VAR_VALUE;
@@ -96,31 +98,26 @@ void Program::init_registers() {
 	R_MATH_CONST[2] = M_E;
 	R_MATH_CONST[3] = M_PI;
 
-	//Se crea la matriz
-	double ** data;
-	//se carga la matriz desde el archivo
-	data = get_matrix_from_file();
-	//se imprime la matriz
-	//imprimir_matriz(data, LINES, N);
 
+	//se carga la matriz desde el archivo
+	DATA = get_matrix_from_file();
+	//se imprime la matriz
+	//imprimir_matriz(DATA, LINES, N);
+
+	for (int t = 0; t < LINES; t++) {
+		R_CONST[t] = new double[K];
+	}
 
 	for (int t = 0; t < LINES; t++) {
 		for (int i = 0, j = 0; i < N; i++) {
 			//std::cout << "t: " << t << " i: " <<  i <<"\n";
 			if (CONFIG[i] == '1') {
-				R_CONST[t][j] = data[t][i];
+				R_CONST[t][j] = DATA[t][i];
 				j++;
 			}
 		}
 	}
-
-	for (int current_sample = 0; current_sample < LINES; current_sample++ )	{
-		for (int current_trafo = 0; current_trafo < K; current_trafo++ ) {
-			printf("%.6f \t", R_CONST[current_sample][current_trafo]);
-		}
-		printf("\n");
-	}
-	printf("\n");
+	imprimir_matriz(R_CONST, LINES, K);
 }
 
 Program::Program() {
