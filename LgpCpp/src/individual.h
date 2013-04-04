@@ -4,6 +4,10 @@
  *  Created on: Mar 16, 2013
  *      Author: Vanessa Cañete, Nahuel Hernández
  */
+#include<exception>
+
+using namespace std;
+
 
 class Individual {
 public:
@@ -11,9 +15,16 @@ public:
 	~Individual();
 	void eval_fitness();
 	inline void set_altered();
-	void print_individual();
-	Program program;
 
+	//operadores genéticos
+	static void select_mom_dad(Individual genome1, Individual genome2, Individual * mom, Individual * dad);
+	void check_max_min_instructions (string name, string place);
+	static void crossover(Individual genome1, Individual genome2, Individual sister, Individual brother);
+	void exchange(Individual * mom, Individual * dad, int * cuts_points_mom, int * cuts_points_dad);
+	Individual * clone();
+	void print_individual();
+
+	Program program;
 	double fitness;
 	double error;
 	double sigma; //era dev
@@ -110,6 +121,125 @@ void Individual::print_individual() {
 	}
 
 }
+
+Individual * Individual::clone(){
+     Individual *copy = new Individual(index, config_position);
+     *copy = (*this);
+     return copy;
+}
+void Individual::check_max_min_instructions (string name, string lugar){
+	if (program.height> NUM_MAX_INSTRUCTIONS) {
+       std::cout<< name + " - Superó el número maximo de instrucciones ->" + lugar;
+	}
+    if (program.height < NUM_MIN_INSTRUCTIONS) {
+       std::cout<< name + " - Superó el número minimo de instrucciones ->" + lugar;
+    }
+}
+void Individual::select_mom_dad(Individual genome1, Individual genome2, Individual * mom, Individual * dad) {
+    mom = genome1.program.height < genome2.program.height  ? genome1.clone() : genome2.clone();
+    dad = genome1.program.height >= genome2.program.height ? genome2.clone() : genome1.clone();
+}
+
+void Individual::exchange(Individual * g1, Individual * g2, int g1_cuts_p [2], int g2_cuts_p [2]){
+	/* Se remplaza el bloque 2 por el bloque 4.
+	 *
+	 * |----------|***|--------|  <-     |---|*****|----------------| = |----------|*****|--------|
+	 * |    1     | 2 |    3   |  <-     | 3 |  4  |        5       |   |    1     |  4  |    3   |
+	 */
+
+	//se calcula la nueva longitud = len(1) + len(4) + len(3)
+	int new_len = (g1->program.height - g1_cuts_p[0]) + (g2_cuts_p[1] - g2_cuts_p[0]) + (g1->program.height - g1_cuts_p[1]);
+	delete [] program.list_inst;
+	//Se crea una nueva lista
+	Instruction new_list [new_len];
+	//Se copia parte 1
+	int i = 0;
+	for (i = 0; i < g1_cuts_p[0]; i++){
+		new_list[i] = g1->program.list_inst[i];
+	}
+	//Se copia la parte 4
+	for (i = g2_cuts_p[0]; i < g2_cuts_p[1]; i++){
+		new_list[i] = g2->program.list_inst[i];
+	}
+	//Se copia la parte 3
+	for (i = g1_cuts_p[0] +  (g2_cuts_p[1] - g2_cuts_p[0]);
+			i < g1->program.height; i++){
+		new_list[i] = g2->program.list_inst[i];
+	}
+	program.list_inst = new_list;
+	program.height = new_len;
+	set_altered();
+
+}
+void Individual::crossover(Individual genome1, Individual genome2, Individual sister, Individual brother) {
+	Individual *mom, *dad;
+	genome1.check_max_min_instructions("genome1", "Antes Crossover");
+	genome2.check_max_min_instructions("genome2", "Antes Crossover");
+	int cuts_points_mom [2]= {0,0};
+	int cuts_points_dad [2]= {0,0};
+	/*Se clonan genome1 y 2 en mom y dad respectivamente.
+	 * se puede direccionar nomas tambièn...
+	 * ya que mom y dad son punteros
+	 */
+	select_mom_dad(genome1, genome2, mom, dad);
+	try{
+		int mom_segment_size = randint(1, mom->program.height - 1); //al menos 1 instruccion menos la penultima.
+		int max_padding_mom = mom->program.height -mom_segment_size - 1;
+
+		//desde donde se puede comenzar para que alcancen las instrucciones del segmento a cruzar
+		cuts_points_mom[0] = randint(0, max_padding_mom);
+		cuts_points_mom[1] = cuts_points_mom[0] + mom_segment_size;
+
+		//el máximo segmento a cruzar es lo que le falta al mom para completar el máximo número de instrucciones permitidas
+		int max_segment_full_mom = NUM_MAX_INSTRUCTIONS - (mom->program.height - mom_segment_size);
+		int max_segment_num_min_in_dad = (dad->program.height + mom_segment_size) - NUM_MIN_INSTRUCTIONS;
+
+		//se elije el menor de los máximos
+        int max_segment_size_dad = max_segment_full_mom < max_segment_num_min_in_dad ? max_segment_full_mom : max_segment_num_min_in_dad;
+
+        //si el maximo es mayor a la longitud del padre, se elige la longitud como máximo
+        max_segment_size_dad = (dad->program.height - 1) < max_segment_size_dad ? (dad->program.height - 1) : max_segment_size_dad;
+
+        //lo que hay que quitarle para que quede en máximo número de instrucciones
+        int min_segment_full_dad = (dad->program.height + mom_segment_size) - NUM_MAX_INSTRUCTIONS;
+
+        //lo que falta para completar el mínimo número de instrucciones al mom
+        int min_segment_size_num_min_in_mom = NUM_MIN_INSTRUCTIONS - (mom->program.height - mom_segment_size);
+
+        int min_segment_size_dad = (min_segment_full_dad > min_segment_size_num_min_in_mom) ? min_segment_full_dad : min_segment_size_num_min_in_mom;
+        min_segment_size_dad = min_segment_size_dad <= 0 ? 1 :min_segment_size_dad;
+
+        int dad_segment_size = randint(min_segment_size_dad, max_segment_size_dad);
+
+        int max_padding_dad = dad->program.height - dad_segment_size - 1;
+
+        //desde donde se puede comenzar para que alcancen las instrucciones del segmento a cruzar
+        cuts_points_dad[0] = randint(0, max_padding_dad);
+        cuts_points_dad[1] = cuts_points_dad[0] + dad_segment_size;
+
+        //Se clonan los individuos
+        sister = *mom->clone();
+        brother = *dad->clone();
+        //Se intercambian los bloques
+        sister.exchange(mom, dad, cuts_points_mom, cuts_points_dad);
+        brother.exchange(dad, mom, cuts_points_dad, cuts_points_mom);
+        //Se modifica el indice
+        sister.index = genome1.index;
+        brother.index = genome2.index;
+
+        //Checkeo de no inconsistencia
+        sister.check_max_min_instructions("sister", "Despues Crossover");
+        brother.check_max_min_instructions("brother", "Despues Crossover");
+	}catch (exception e) {
+		std::cout << "Error en Crossover";
+	}
+}
+/* TODO: FALTAN LOS SIGUIENTES METODOS
+ * def macro_mutation(genome):
+ * def micro_mutation(genome):
+ * def select_micro_mutacion_type(prob):
+ * */
+
 /*
 
 
