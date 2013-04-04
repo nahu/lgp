@@ -99,13 +99,13 @@ void Individual::print_individual() {
 	std::cout << "Fitness: " << fitness << "\n";
 	std::cout << "List Size: " << program.height << "\n";
 	std::cout << "List effective Size: " << program.n_eff << "\n";
-/*
+
 	std::cout <<  "\n";
 	std::cout << "List Instruction: " << "\n";
 	for (int i = 0; i < program.height; i++) {
 		program.list_inst[i].print_instruction();
 	}
-	*/
+
 	std::cout <<  "\n";
 	std::cout << "List Effective: " << "\n";
 	for (int i = 0; i < program.n_eff; i++) {
@@ -146,7 +146,18 @@ void Individual::exchange(Individual * g1, Individual * g2, int g1_cuts_p [2], i
 	 * |----------|***|--------|  <-     |---|*****|----------------| = |----------|*****|--------|
 	 * |    1     | 2 |    3   |  <-     | 3 |  4  |        5       |   |    1     |  4  |    3   |
 	 */
+	/* borrar desde aca*/
+	std::cout << "LISTA DE INSTRUCCIONES DE G1" << "\n";
+	g1->program.print_list_instructions();
+	std::cout << "CUTS POINTS DE G1";
+	std::cout << g1_cuts_p[0] << "  " << g1_cuts_p[1];
 
+	std::cout << "LISTA DE INSTRUCCIONES DE G2" << "\n";
+	g2->program.print_list_instructions();
+	std::cout << "CUTS POINTS DE G2";
+	std::cout << g2_cuts_p[0] << "  " << g2_cuts_p[1];
+
+	/* hasta aca*/
 	//se calcula la nueva longitud = len(1) + len(4) + len(3)
 	int new_len = (g1->program.height - g1_cuts_p[0]) + (g2_cuts_p[1] - g2_cuts_p[0]) + (g1->program.height - g1_cuts_p[1]);
 	delete [] program.list_inst;
