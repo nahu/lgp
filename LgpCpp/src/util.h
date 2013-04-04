@@ -6,7 +6,6 @@
  */
 
 
-
 float _random() {
 	//This will generate a number from 0.0 to 1.0, inclusive.
 	float r = (float) rand() / (float) RAND_MAX;
@@ -53,6 +52,16 @@ bool random_flip_coin(float p) {
 	}
 }
 
+void imprimir_matriz (double ** matriz, int n, int m){
+	for (int current_sample = 0; current_sample < n; current_sample++ )	{
+		for (int current_trafo = 0; current_trafo < m; current_trafo++ ) {
+			printf("%.6f \t", matriz[current_sample][current_trafo]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
 double ** get_matrix_from_file() {
 	std::string medida;
 	int current_trafo = 0;
@@ -67,28 +76,31 @@ double ** get_matrix_from_file() {
 	//Apertura del archivo
 	std::ifstream myfile;
 	myfile.open(FILE_NAME, std::ios::in);
-
+	getline(myfile, medida, '\n' );
+	getline(myfile, medida, '\n' );
+	char * c_medida;
 	if (myfile.is_open()) {
+		char * ptr;
+
 		for (current_sample = 0; current_sample < LINES; current_sample++ ) {
+			getline(myfile, medida);
+			c_medida = (char*) medida.c_str();
+			ptr = strtok(c_medida, ";");
 			for (current_trafo = 0; current_trafo < N; current_trafo++ ){
-				//Leer hasta el primer ";"
-				getline(myfile, medida, ';' );
 				//guardar en una posicion de la matriz
-				data[current_sample][current_trafo] = atof(medida.c_str());
+				data[current_sample][current_trafo] = atof(ptr);
+				//std::cout<<data[current_sample][current_trafo]<<"\t";
+				ptr = strtok(0, ";");
 			}
+			//std::cout<<"\n";
+
 		}
+		//imprimir_matriz(data,LINES,N);
 		myfile.close();
+
 	}
 	return data;
 }
 
-void imprimir_matriz (double ** matriz, int n, int m){
-	for (int current_sample = 0; current_sample < n; current_sample++ )	{
-		for (int current_trafo = 0; current_trafo < m; current_trafo++ ) {
-			printf("%.6f \t", matriz[current_sample][current_trafo]);
-		}
-		printf("\n");
-	}
-	printf("\n");
-}
+
 
