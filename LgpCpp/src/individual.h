@@ -11,6 +11,7 @@ public:
 	~Individual();
 	void eval_fitness();
 	inline void set_altered();
+	void print_individual();
 	Program program;
 
 	double fitness;
@@ -46,12 +47,18 @@ void Individual::eval_fitness() {
 	double error_prom_quad = 0.0;
 	double error_dev = 0.0;
 
+	program.get_effective_instructions();
+	std::cout << "Errores en entrenamiento: \n";
+
 	for (int t = 0; t < TRAINING_LINES; t++) {
 		double * int_t = Program::R_CONST[t];
 		double result = program.execute_program(int_t);
-		error_quad[t] = pow((result - Program::DATA[t][config_position]), 2);
+		error_quad[t] = pow((result - Program::DATA[t][config_position]), 2.0);
+		std::cout << "result: " << result << "   data: " << Program::DATA[t][config_position] << "\n",
+		std::cout << "error: " << error_quad[t] << "\n";
 		error_a_quad += error_quad[t];
-
+		std::cout << "********************************************************" << "\n\n";
+		std::cout << "********************************************************" << "\n\n";
 	}
 
 	error_prom_quad = error_a_quad / TRAINING_LINES;
@@ -70,7 +77,37 @@ void Individual::eval_fitness() {
 	fitness = 1 / ((W_OB1 * error) + (W_OB2 * sigma));
 
 	evaluated = true;
+}
 
+void Individual::print_individual() {
+
+	std::cout << "Index: " << index << "\n";
+	std::cout << "Config Pos: " << config_position << "\n";
+	std::cout << "Training error: " << error << "\n";
+	std::cout << "Trainig Deviation: " << sigma << "\n";
+	std::cout << "Fitness: " << fitness << "\n";
+	std::cout << "List Size: " << program.height << "\n";
+	std::cout << "List effective Size: " << program.n_eff << "\n";
+/*
+	std::cout <<  "\n";
+	std::cout << "List Instruction: " << "\n";
+	for (int i = 0; i < program.height; i++) {
+		program.list_inst[i].print_instruction();
+	}
+	*/
+	std::cout <<  "\n";
+	std::cout << "List Effective: " << "\n";
+	for (int i = 0; i < program.n_eff; i++) {
+		//std::cout << i << "- ";
+		program.effective_list_inst[i].print_instruction();
+	}
+
+	std::cout <<  "\n";
+	//std::cout.precision(15);
+	std::cout << "Registers: " << index << "\n";
+	for (int i = 0; i < NUM_INDIVIDUAL_REGISTERS; i++) {
+		std::cout <<  "r_all[" << i << "] = " << program.list_reg[i] << "\n";
+	}
 
 }
 /*

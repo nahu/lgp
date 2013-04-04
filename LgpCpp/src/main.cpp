@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <ctime>
 #include <cmath>
@@ -33,6 +34,10 @@ using namespace std;
 int main() {
 	srand((unsigned)time(0));
 	Program::init_registers();
-
+	Individual i(1, 1);
+	i.eval_fitness();
+	i.print_individual();
+	//double hola = log10(abs(-0.866767));
+	//std::cout << "hola: " << hola << "\n";
 	return 0;
 }

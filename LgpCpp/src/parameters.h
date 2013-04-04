@@ -22,8 +22,8 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 #define TRAINING_LINES 200
 #define VALIDATION_LINES 48
 
-#define W_OB1 1
-#define W_OB2 3
+#define W_OB1 1 //error
+#define W_OB2 1 //desviacion
 
 
 /*INSTRUCCIONES
@@ -36,9 +36,9 @@ la convención para asegurar que el programa tenga una salida es que la
 última instrucción sea del tipo [operación, 0, operador1, operador2]
 */
 
-#define NUM_MIN_INSTRUCTIONS 3 * K
-#define NUM_MAX_INSTRUCTIONS 12 * K
-#define NUM_INI_INSTRUCTIONS 6 * K
+#define NUM_MIN_INSTRUCTIONS (30 * K)
+#define NUM_MAX_INSTRUCTIONS (12 * K)
+#define NUM_INI_INSTRUCTIONS (6 * K)
 #define NUM_OPERATORS 9
 
 
@@ -47,21 +47,22 @@ la convención para asegurar que el programa tenga una salida es que la
 #define NUM_OUT_REGISTERS 1
 #define NUM_CONST_RANDOM_REGISTERS 6//K
 #define NUM_CONST_MATH_REGISTERS 4
-#define NUM_CONTS_REGISTERS NUM_CONST_RANDOM_REGISTERS + NUM_CONST_IN_REGISTERS + NUM_CONST_MATH_REGISTERS
-#define NUM_REGISTERS NUM_CONTS_REGISTERS + NUM_VAR_REGISTER + NUM_CONST_IN_REGISTERS + NUM_CONST_MATH_REGISTERS + NUM_OUT_REGISTERS + NUM_CONST_RANDOM_REGISTERS
-#define NUM_INDIVIDUAL_REGISTERS NUM_REGISTERS - NUM_CONST_IN_REGISTERS
+#define NUM_CONTS_REGISTERS (NUM_CONST_RANDOM_REGISTERS + NUM_CONST_IN_REGISTERS + NUM_CONST_MATH_REGISTERS)
+#define NUM_REGISTERS (NUM_CONTS_REGISTERS + NUM_VAR_REGISTER + NUM_OUT_REGISTERS)
+#define NUM_INDIVIDUAL_REGISTERS (NUM_REGISTERS - NUM_CONST_IN_REGISTERS)
 
 //Límites en las instrucciones
 #define REG_OUT 0
 #define VAR_MIN 1
 #define VAR_MAX NUM_VAR_REGISTER
-#define CONST_AL_MIN VAR_MAX + 1
-#define CONST_AL_MAX VAR_MAX + NUM_CONST_RANDOM_REGISTERS //3*K
-#define CONST_IN_MIN CONST_AL_MAX + 1
-#define CONST_IN_MAX CONST_AL_MAX + NUM_CONST_IN_REGISTERS
+#define CONST_AL_MIN (VAR_MAX + 1)
+#define CONST_AL_MAX (VAR_MAX + NUM_CONST_RANDOM_REGISTERS + NUM_CONST_MATH_REGISTERS) //3*K //aca le agrego las constantes matematicas
+#define CONST_IN_MIN (CONST_AL_MAX + 1)
+#define CONST_IN_MAX (CONST_AL_MAX + NUM_CONST_IN_REGISTERS)
 #define OP_MIN 1
 #define OP_MAX 9
-#define REGISTER_OFFSET CONST_AL_MAX + 1
+
+#define REGISTER_OFFSET (CONST_AL_MAX + 1)
 
 /*REGISTROS
 
@@ -133,10 +134,10 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define P_MIGRATION_CRITERIA 0.3
 
 #define P_REG_OP1_CONST 0.5
-#define P_REG_OP2_CONST 0.7
+#define P_REG_OP2_CONST 0.1
 #define P_CONST_IN 0.75
 #define CONST_MIN 0 //50
-#define CONST_MAX 25 //50
+#define CONST_MAX 1 //50
 
 #define P_MACRO_MUTATION 0.50
 #define P_INS 0.75
@@ -156,8 +157,8 @@ Las operaciones sobre la población,como la inicialización y la evaluación de 
 utilizando multiprocessing de Python
 */
 #define NUM_PROCESSORS 4 //NÚMERO DE PROCESOS WORKERS
-#define CHUNK_SIZE POPULATION_SIZE / DEMES // NUM_PROCESSORS
+#define CHUNK_SIZE (POPULATION_SIZE / DEMES) // NUM_PROCESSORS
 
-#define CHUNK_SIZE_STEP DEMES / NUM_PROCESSORS
+#define CHUNK_SIZE_STEP (DEMES / NUM_PROCESSORS)
 
 

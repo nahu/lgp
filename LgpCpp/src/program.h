@@ -9,6 +9,8 @@
 class Instruction {
 public:
 	Instruction (); //create_new_instruction();
+	void print_instruction();
+
 	int oper;
 	int dest;
 	int op1;
@@ -50,6 +52,79 @@ Instruction::Instruction() {
 }
 
 
+
+void Instruction::print_instruction() {
+	double operand_1, operand_2;
+	std::string operand_1s, operand_2s;
+	std::stringstream ss;
+
+	//std::cout << "[" << oper << ", " << dest << ", " << op1 <<  ", " << op2 << "]" << "\n";
+
+	ss.str("");
+	if (op1 >= REGISTER_OFFSET) {
+		//std::cout << "op1 = " << op1 << "\n";
+		operand_1 = op1 - REGISTER_OFFSET;
+		ss << "in_t[" << operand_1 << "]";
+		//operand_1 =
+		operand_1s = ss.str();
+	} else {
+		operand_1 = op1;
+		ss << "r_all[" << operand_1 << "]";
+		operand_1s = ss.str();
+	}
+
+	ss.str("");
+	if (op2 >= REGISTER_OFFSET) {
+		//std::cout << "op2 = " << op2 << "\n";
+		operand_2 = op2 - REGISTER_OFFSET;
+		ss << "in_t[" << operand_2 << "]";
+		operand_2s = ss.str();
+	} else {
+		operand_2 = op2;
+		ss << "r_all[" << operand_2 << "]";
+		operand_2s = ss.str();
+	}
+
+	switch (oper) {
+	case ADD: {
+		std::cout << "r_all[" << dest << "] = " << operand_1s << " + " << operand_2s << "\n";
+		break;
+	}
+	case SUB: {
+		std::cout << "r_all[" << dest << "] = " << operand_1s << " - " << operand_2s << "\n";
+		break;
+	}
+	case MUL: {
+		std::cout << "r_all[" << dest << "] = " << operand_1s << " * " << operand_2s << "\n";
+		break;
+	}
+	case DIV: {
+		std::cout << "r_all[" << dest << "] = " << operand_1s << " / " << operand_2s << " if " << operand_2s << " != 0 else " << operand_1s << " + 1.0" << "\n";
+		break;
+	}
+	case POW2: {
+		//std::cout << "r_all[" << dest << "] = pow(" << operand_2s << ", 2)\n";
+		std::cout << "r_all[" << dest << "] = " << operand_2s << " ** 2\n";
+		break;
+	}
+	case LOG10: {
+		std::cout << "r_all[" << dest << "] = math.log10(abs(" << operand_2s << "))" << " if " << operand_2s << " != 0 else " << operand_1s << " + 1.0" << "\n";
+		break;
+	}
+	case SQRT: {
+		std::cout << "r_all[" << dest << "] = math.sqrt(abs(" << operand_2s << "))\n";
+		break;
+	}
+	case SIN: {
+		std::cout << "r_all[" << dest << "] = math.sin(" << operand_2s << ")\n";
+		break;
+	}
+	case COS: {
+		std::cout << "r_all[" << dest << "] = math.cos(" << operand_2s << ")\n";
+		break;
+	}
+	}
+}
 
 
 class Program {
@@ -98,7 +173,6 @@ void Program::init_registers() {
 	R_MATH_CONST[2] = M_E;
 	R_MATH_CONST[3] = M_PI;
 
-
 	//se carga la matriz desde el archivo
 	DATA = get_matrix_from_file();
 	//se imprime la matriz
@@ -117,7 +191,7 @@ void Program::init_registers() {
 			}
 		}
 	}
-	imprimir_matriz(R_CONST, LINES, K);
+	//imprimir_matriz(R_CONST, LINES, K);
 }
 
 Program::Program() {
@@ -269,17 +343,40 @@ std::vector<int> Program::get_effective_registers(int * position) {
 
 double Program::execute_program(double * input) {
 	double r_all[NUM_INDIVIDUAL_REGISTERS];
-	std::copy(list_reg, list_reg + height, r_all);
+	std::copy(list_reg, list_reg + NUM_INDIVIDUAL_REGISTERS, r_all);
 	Instruction *instructions;
+	//se asume que se tienen las instrucciones efectivas
+	instructions = effective_list_inst;
+/*
+	std::cout << "==========ANTES" << "\n\n";
+	std::cout << "+++++++R_ALL" << "\n";
+	for (int i = 0; i < NUM_INDIVIDUAL_REGISTERS; i++) {
+		std::cout << i << " - " << r_all[i] << "\n";
+	}
 
-	instructions = get_effective_instructions();
+	std::cout << "+++++++List Reg" << "\n";
+	for (int i = 0; i < NUM_INDIVIDUAL_REGISTERS; i++) {
+		std::cout << i << " - " << list_reg[i] << "\n";
+	}*/
 
 	for (int i = 0; i < n_eff; i++) {
 		double operand_1, operand_2;
 
-		operand_1 = input[instructions[i].op1 - REGISTER_OFFSET] ? instructions[i].op1 > REGISTER_OFFSET : r_all[instructions[i].op1];
-		operand_2 = input[instructions[i].op2 - REGISTER_OFFSET] ? instructions[i].op2 > REGISTER_OFFSET : r_all[instructions[i].op2];
+		if (instructions[i].op1 >= REGISTER_OFFSET) {
+			operand_1 = input[instructions[i].op1 - REGISTER_OFFSET];
+		} else {
+			operand_1 = r_all[instructions[i].op1];
+		}
 
+		if (instructions[i].op2 >= REGISTER_OFFSET) {
+			operand_2 = input[instructions[i].op2 - REGISTER_OFFSET];
+		} else {
+			operand_2 = r_all[instructions[i].op2];
+		}
+
+		instructions[i].print_instruction();
+		std::cout << i << "- operando 1: " << operand_1 << "  ";
+		std::cout << "operando 2: " << operand_2 << "\n";
 
 		switch (instructions[i].oper) {
 		case ADD: {
@@ -310,8 +407,12 @@ double Program::execute_program(double * input) {
 			if (operand_2 == 0) {
 				r_all[instructions[i].dest] = operand_1 + C_UNDEF;
 			} else {
-				r_all[instructions[i].dest] = log10(abs(operand_2));
+				r_all[instructions[i].dest] = log10(std::abs(operand_2));
 			}
+			break;
+		}
+		case SQRT: {
+			r_all[instructions[i].dest] = sqrt(std::abs(operand_2));
 			break;
 		}
 		case SIN: {
@@ -323,6 +424,18 @@ double Program::execute_program(double * input) {
 			break;
 		}
 		}
+		//std::cout << i << " - result: " << r_all[instructions[i].dest] << "\n";
+
+		std::cout << "==========DESPUES" << "\n\n";
+		std::cout << "+++++++R_ALL" << "\n";
+		for (int i = 0; i < NUM_INDIVIDUAL_REGISTERS; i++) {
+			std::cout << i << " - " << r_all[i] << "\n";
+		}
+
+/*		std::cout << "+++++++List Reg" << "\n";
+		for (int i = 0; i < NUM_INDIVIDUAL_REGISTERS; i++) {
+			std::cout << i << " - " << list_reg[i] << "\n";
+		}*/
 	}
 
 	return r_all[0];
