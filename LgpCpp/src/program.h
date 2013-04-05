@@ -176,7 +176,7 @@ void Program::init_registers() {
 	//se carga la matriz desde el archivo
 	DATA = get_matrix_from_file();
 	//se imprime la matriz
-	//imprimir_matriz(DATA, LINES, N);
+	imprimir_matriz(DATA, LINES, N);
 
 	for (int t = 0; t < LINES; t++) {
 		R_CONST[t] = new double[K];
@@ -374,9 +374,9 @@ double Program::execute_program(double * input) {
 			operand_2 = r_all[instructions[i].op2];
 		}
 
-		instructions[i].print_instruction();
-		std::cout << i << "- operando 1: " << operand_1 << "  ";
-		std::cout << "operando 2: " << operand_2 << "\n";
+		//instructions[i].print_instruction();
+		//std::cout << i << "- operando 1: " << operand_1 << "  ";
+		//std::cout << "operando 2: " << operand_2 << "\n";
 
 		switch (instructions[i].oper) {
 		case ADD: {
@@ -425,17 +425,6 @@ double Program::execute_program(double * input) {
 		}
 		}
 		//std::cout << i << " - result: " << r_all[instructions[i].dest] << "\n";
-
-		std::cout << "==========DESPUES" << "\n\n";
-		std::cout << "+++++++R_ALL" << "\n";
-		for (int i = 0; i < NUM_INDIVIDUAL_REGISTERS; i++) {
-			std::cout << i << " - " << r_all[i] << "\n";
-		}
-
-/*		std::cout << "+++++++List Reg" << "\n";
-		for (int i = 0; i < NUM_INDIVIDUAL_REGISTERS; i++) {
-			std::cout << i << " - " << list_reg[i] << "\n";
-		}*/
 	}
 
 	return r_all[0];

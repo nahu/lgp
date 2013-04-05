@@ -78,14 +78,13 @@ double ** get_matrix_from_file() {
 	myfile.open(FILE_NAME, std::ios::in);
 	getline(myfile, medida, '\n' );
 	getline(myfile, medida, '\n' );
-	char * c_medida;
-	if (myfile.is_open()) {
-		char * ptr;
 
+	if (myfile.is_open()) {
 		for (current_sample = 0; current_sample < LINES; current_sample++ ) {
+			char * c_medida;
 			getline(myfile, medida);
 			c_medida = (char*) medida.c_str();
-			ptr = strtok(c_medida, ";");
+			char * ptr = strtok(c_medida, ";");
 			for (current_trafo = 0; current_trafo < N; current_trafo++ ){
 				//guardar en una posicion de la matriz
 				data[current_sample][current_trafo] = atof(ptr);

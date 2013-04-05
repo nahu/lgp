@@ -59,17 +59,17 @@ void Individual::eval_fitness() {
 	double error_dev = 0.0;
 
 	program.get_effective_instructions();
-	std::cout << "Errores en entrenamiento: \n";
+	//std::cout << "Errores en entrenamiento: \n";
 
 	for (int t = 0; t < TRAINING_LINES; t++) {
 		double * int_t = Program::R_CONST[t];
 		double result = program.execute_program(int_t);
 		error_quad[t] = pow((result - Program::DATA[t][config_position]), 2.0);
-		std::cout << "result: " << result << "   data: " << Program::DATA[t][config_position] << "\n",
-		std::cout << "error: " << error_quad[t] << "\n";
+		//std::cout << "result: " << result << "   data: " << Program::DATA[t][config_position] << "\n",
+		//std::cout << "error: " << error_quad[t] << "\n";
+		//std::cout << "********************************************************" << "\n\n";
+		//std::cout << "********************************************************" << "\n\n";
 		error_a_quad += error_quad[t];
-		std::cout << "********************************************************" << "\n\n";
-		std::cout << "********************************************************" << "\n\n";
 	}
 
 	error_prom_quad = error_a_quad / TRAINING_LINES;
@@ -91,7 +91,6 @@ void Individual::eval_fitness() {
 }
 
 void Individual::print_individual() {
-
 	std::cout << "Index: " << index << "\n";
 	std::cout << "Config Pos: " << config_position << "\n";
 	std::cout << "Training error: " << error << "\n";
@@ -127,6 +126,8 @@ Individual * Individual::clone(){
      *copy = (*this);
      return copy;
 }
+
+
 void Individual::check_max_min_instructions (string name, string lugar){
 	if (program.height> NUM_MAX_INSTRUCTIONS) {
        std::cout<< name + " - Superó el número maximo de instrucciones ->" + lugar;

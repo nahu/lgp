@@ -35,12 +35,10 @@ using namespace std;
 int main() {
 	srand((unsigned)time(0));
 	Program::init_registers();
-	Individual g1(1, 1);
-	Individual g2(2, 1);
+	Individual i(1, 1);
 
-	//i.eval_fitness();
-	//g1.print_individual();
-	//g2.print_individual();
+	i.eval_fitness();
+	i.print_individual();
 	//double hola = log10(abs(-0.866767));
 	//std::cout << "hola: " << hola << "\n";
 	return 0;
