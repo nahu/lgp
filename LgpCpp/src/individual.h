@@ -4,9 +4,7 @@
  *  Created on: Mar 16, 2013
  *      Author: Vanessa Cañete, Nahuel Hernández
  */
-#include<exception>
 
-using namespace std;
 
 
 class Individual {
@@ -20,8 +18,8 @@ public:
 
 	//operadores genéticos
 	static void select_mom_dad(Individual genome1, Individual genome2, Individual * mom, Individual * dad);
-	void check_max_min_instructions (string name, string place);
-	static void crossover(Individual genome1, Individual genome2, Individual sister, Individual brother);
+	void check_max_min_instructions (std::string name, std::string place);
+	static void crossover(Individual genome1, Individual genome2, Individual * sister, Individual * brother);
 	void exchange(Individual * mom, Individual * dad, int * cuts_points_mom, int * cuts_points_dad);
 	Individual * clone();
 	void print_individual();
@@ -47,7 +45,7 @@ Individual::Individual() {
 	evaluated = false;
 }
 
-Individual::Individual(int config_position, int index=-1) {
+Individual::Individual(int config_position, int index) {
 	fitness = 0.0;
 	error = 0.0;
 	sigma = 0.0;
@@ -151,13 +149,18 @@ void Individual::print_individual() {
 }
 
 Individual * Individual::clone(){
+     std::cout<< "Clonando individuo"<<"\n";
      Individual *copy = new Individual(index, config_position);
      *copy = (*this);
+     std::cout<< "Clonando program"<<"\n";
+     *copy->program->list_inst = (*program->list_inst);
+     std::cout<< "Despues de clonar program"<<"\n";
      return copy;
 }
 
 
-void Individual::check_max_min_instructions (string name, string lugar){
+void Individual::check_max_min_instructions (std::string name, std::string lugar) {
+	std::cout<<"check_max_min_instructions - " + name<<"  "+ lugar<<"\n";
 	if (program->height> NUM_MAX_INSTRUCTIONS) {
        std::cout<< name + " - Superó el número maximo de instrucciones ->" + lugar;
 	}
@@ -165,11 +168,17 @@ void Individual::check_max_min_instructions (string name, string lugar){
        std::cout<< name + " - Superó el número minimo de instrucciones ->" + lugar;
     }
 }
+
 void Individual::select_mom_dad(Individual genome1, Individual genome2, Individual * mom, Individual * dad) {
-    mom = genome1.program->height < genome2.program->height  ? genome1.clone() : genome2.clone();
-    dad = genome1.program->height >= genome2.program->height ? genome2.clone() : genome1.clone();
+	std::cout<< "select_mom_dad"<<"\n";
+	if(genome1.program->height >= genome2.program->height ){
+		mom = genome2.clone();
+		dad = genome1.clone();
+	}else{
+		mom = genome1.clone();
+		dad = genome2.clone();
+	}
 }
-/*
 void Individual::exchange(Individual * g1, Individual * g2, int g1_cuts_p [2], int g2_cuts_p [2]){
 	/* Se remplaza el bloque 2 por el bloque 4.
 	 *
@@ -177,24 +186,25 @@ void Individual::exchange(Individual * g1, Individual * g2, int g1_cuts_p [2], i
 	 * |    1     | 2 |    3   |  <-     | 3 |  4  |        5       |   |    1     |  4  |    3   |
 	 */
 	/* borrar desde aca*/
-/*
 	std::cout << "LISTA DE INSTRUCCIONES DE G1" << "\n";
-	g1->program->print_list_instructions();
-	std::cout << "CUTS POINTS DE G1";
-	std::cout << g1_cuts_p[0] << "  " << g1_cuts_p[1];
+	g1->program->print_list_int();
+	std::cout << "CUTS POINTS DE G1"<<"\n";
+	std::cout << g1_cuts_p[0] << "  " << g1_cuts_p[1]<<"\n";
 
 	std::cout << "LISTA DE INSTRUCCIONES DE G2" << "\n";
-	g2->program->print_list_instructions();
-	std::cout << "CUTS POINTS DE G2";
-	std::cout << g2_cuts_p[0] << "  " << g2_cuts_p[1];
-
+	g2->program->print_list_int();
+	std::cout << "CUTS POINTS DE G2"<<"\n";
+	std::cout << g2_cuts_p[0] << "  " << g2_cuts_p[1]<<"\n";
 	/* hasta aca*/
-/*
+
 	//se calcula la nueva longitud = len(1) + len(4) + len(3)
 	int new_len = (g1->program->height - g1_cuts_p[0]) + (g2_cuts_p[1] - g2_cuts_p[0]) + (g1->program->height - g1_cuts_p[1]);
 	delete [] program->list_inst;
 	//Se crea una nueva lista
-	Instruction new_list [new_len];
+	Instruction * new_list = new Instruction[new_len];
+	std::cout<<"ACTUAL"<<"\n";
+	program->print_list_int();
+
 	//Se copia parte 1
 	int i = 0;
 	for (i = 0; i < g1_cuts_p[0]; i++){
@@ -214,21 +224,24 @@ void Individual::exchange(Individual * g1, Individual * g2, int g1_cuts_p [2], i
 	set_altered();
 
 }
-
-*/
-
-void Individual::crossover(Individual genome1, Individual genome2, Individual sister, Individual brother) {
-	Individual *mom, *dad;
+void Individual::crossover(Individual genome1, Individual genome2, Individual * sister, Individual * brother) {
 	genome1.check_max_min_instructions("genome1", "Antes Crossover");
 	genome2.check_max_min_instructions("genome2", "Antes Crossover");
+	Individual  *dad, *mom;
 	int cuts_points_mom [2]= {0,0};
 	int cuts_points_dad [2]= {0,0};
-	/*Se clonan genome1 y 2 en mom y dad respectivamente.
-	 * se puede direccionar nomas tambièn...
-	 * ya que mom y dad son punteros
-	 */
-	select_mom_dad(genome1, genome2, mom, dad);
-	/*
+	//esta funcion por algùn motivo no me funca.. o sea.. hasta mom nomas anda..
+	//select_mom_dad(genome1, genome2, mom, dad);
+	/*--------------------- */
+	if(genome1.program->height >= genome2.program->height ){
+		mom = genome2.clone();
+		dad = genome1.clone();
+	}else{
+		mom = genome1.clone();
+		dad = genome2.clone();
+	}
+	std::cout<< "After select mom & dad"<<"\n";
+
 	try{
 		int mom_segment_size = randint(1, mom->program->height - 1); //al menos 1 instruccion menos la penultima.
 		int max_padding_mom = mom->program->height -mom_segment_size - 1;
@@ -240,7 +253,6 @@ void Individual::crossover(Individual genome1, Individual genome2, Individual si
 		//el máximo segmento a cruzar es lo que le falta al mom para completar el máximo número de instrucciones permitidas
 		int max_segment_full_mom = NUM_MAX_INSTRUCTIONS - (mom->program->height - mom_segment_size);
 		int max_segment_num_min_in_dad = (dad->program->height + mom_segment_size) - NUM_MIN_INSTRUCTIONS;
-
 		//se elije el menor de los máximos
         int max_segment_size_dad = max_segment_full_mom < max_segment_num_min_in_dad ? max_segment_full_mom : max_segment_num_min_in_dad;
 
@@ -263,25 +275,31 @@ void Individual::crossover(Individual genome1, Individual genome2, Individual si
         //desde donde se puede comenzar para que alcancen las instrucciones del segmento a cruzar
         cuts_points_dad[0] = randint(0, max_padding_dad);
         cuts_points_dad[1] = cuts_points_dad[0] + dad_segment_size;
-
         //Se clonan los individuos
-        sister = *mom->clone();
-        brother = *dad->clone();
+        /* ************* ACA ESTA EL PROBLEMA ***************** */
+        std::cout<< "Antes de inicializar sister y brother"<<"\n";
+        sister = mom->clone();
+        brother = dad->clone();
         //Se intercambian los bloques
-        sister.exchange(mom, dad, cuts_points_mom, cuts_points_dad);
-        brother.exchange(dad, mom, cuts_points_dad, cuts_points_mom);
+        sister->exchange(mom, dad, cuts_points_mom, cuts_points_dad);
+        brother->exchange(dad, mom, cuts_points_dad, cuts_points_mom);
         //Se modifica el indice
-        sister.index = genome1.index;
-        brother.index = genome2.index;
-
+        sister->index = genome1.index;
+        brother->index = genome2.index;
+        /* borrar desde aca*/
+        std::cout << "LISTA DE INSTRUCCIONES DE Sister" << "\n";
+        sister->program->print_list_int();
+        std::cout << "LISTA DE INSTRUCCIONES DE brother" << "\n";
+        brother->program->print_list_int();
+        /*hasta aca*/
         //Checkeo de no inconsistencia
-        sister.check_max_min_instructions("sister", "Despues Crossover");
-        brother.check_max_min_instructions("brother", "Despues Crossover");
-	}catch (exception e) {
+        sister->check_max_min_instructions("sister", "Despues Crossover");
+        brother->check_max_min_instructions("brother", "Despues Crossover");
+	}catch (std::exception e) {
 		std::cout << "Error en Crossover";
 	}
-	*/
 }
+
 /* TODO: FALTAN LOS SIGUIENTES METODOS
  * def macro_mutation(genome):
  * def micro_mutation(genome):
