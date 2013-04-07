@@ -27,19 +27,25 @@
 #include "util.h"
 #include "program.h"
 #include "individual.h"
+#include "deme.h"
 
 
-using namespace std;
+//using namespace std;
 
 
 int main() {
 	srand((unsigned)time(0));
 	Program::init_registers();
-	Individual i(1, 1);
+	//Individual i(1, 1);
+	//i.eval_fitness();
+	//i.print_individual();
 
-	i.eval_fitness();
-	i.print_individual();
-	//double hola = log10(abs(-0.866767));
-	//std::cout << "hola: " << hola << "\n";
+	Deme * d = new Deme(3, 1);
+
+	for (int i = 0; i < d->deme_size; i++) {
+		d->list_ind[i].print_individual();
+	}
+
+
 	return 0;
 }

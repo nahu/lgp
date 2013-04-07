@@ -25,6 +25,10 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 #define W_OB1 1 //error
 #define W_OB2 1 //desviacion
 
+//para la función de evaluación de individuos
+#define FITNESS 0
+#define OB1 1
+#define OB2 2
 
 /*INSTRUCCIONES
 

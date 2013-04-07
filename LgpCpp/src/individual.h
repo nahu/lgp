@@ -11,10 +11,12 @@ using namespace std;
 
 class Individual {
 public:
-	Individual(int, int);
+	Individual(int config_position, int index);
+	Individual();
 	~Individual();
 	void eval_fitness();
 	inline void set_altered();
+	double evaluate(int obj);
 
 	//operadores genéticos
 	static void select_mom_dad(Individual genome1, Individual genome2, Individual * mom, Individual * dad);
@@ -24,7 +26,7 @@ public:
 	Individual * clone();
 	void print_individual();
 
-	Program program;
+	Program * program = 0;
 	double fitness;
 	double error;
 	double sigma; //era dev
@@ -35,16 +37,28 @@ public:
 	//poner acá los operadores genéticos
 };
 
-Individual::Individual(int _index, int _config_position) {
+Individual::Individual() {
 	fitness = 0.0;
 	error = 0.0;
 	sigma = 0.0;
-	index = _index;
-	config_position = _config_position;
+	index = -1;
+	config_position = -1;
+	program = 0;
 	evaluated = false;
 }
 
+Individual::Individual(int config_position, int index=-1) {
+	fitness = 0.0;
+	error = 0.0;
+	sigma = 0.0;
+	this->index = index;
+	this->config_position = config_position;
+	evaluated = false;
+	program = new Program;
+}
+
 Individual::~Individual() {
+	delete program;
 }
 
 inline void Individual::set_altered() {
@@ -58,12 +72,12 @@ void Individual::eval_fitness() {
 	double error_prom_quad = 0.0;
 	double error_dev = 0.0;
 
-	program.get_effective_instructions();
+	program->get_effective_instructions();
 	//std::cout << "Errores en entrenamiento: \n";
 
 	for (int t = 0; t < TRAINING_LINES; t++) {
 		double * int_t = Program::R_CONST[t];
-		double result = program.execute_program(int_t);
+		double result = program->execute_program(int_t);
 		error_quad[t] = pow((result - Program::DATA[t][config_position]), 2.0);
 		//std::cout << "result: " << result << "   data: " << Program::DATA[t][config_position] << "\n",
 		//std::cout << "error: " << error_quad[t] << "\n";
@@ -90,33 +104,48 @@ void Individual::eval_fitness() {
 	evaluated = true;
 }
 
+
+double Individual::evaluate(int obj=FITNESS) {
+	if (!evaluated) {
+		eval_fitness();
+	}
+
+	if (obj == FITNESS) {
+		return fitness;
+	} else if (obj == OB1) {
+		return error;
+	} else if (obj == OB2) {
+		return sigma;
+	}
+}
+
 void Individual::print_individual() {
 	std::cout << "Index: " << index << "\n";
 	std::cout << "Config Pos: " << config_position << "\n";
 	std::cout << "Training error: " << error << "\n";
 	std::cout << "Trainig Deviation: " << sigma << "\n";
 	std::cout << "Fitness: " << fitness << "\n";
-	std::cout << "List Size: " << program.height << "\n";
-	std::cout << "List effective Size: " << program.n_eff << "\n";
+	std::cout << "List Size: " << program->height << "\n";
+	std::cout << "List effective Size: " << program->n_eff << "\n";
 
 	std::cout <<  "\n";
 	std::cout << "List Instruction: " << "\n";
-	for (int i = 0; i < program.height; i++) {
-		program.list_inst[i].print_instruction();
+	for (int i = 0; i < program->height; i++) {
+		program->list_inst[i].print_instruction();
 	}
 
 	std::cout <<  "\n";
 	std::cout << "List Effective: " << "\n";
-	for (int i = 0; i < program.n_eff; i++) {
+	for (int i = 0; i < program->n_eff; i++) {
 		//std::cout << i << "- ";
-		program.effective_list_inst[i].print_instruction();
+		program->effective_list_inst[i].print_instruction();
 	}
 
 	std::cout <<  "\n";
 	//std::cout.precision(15);
 	std::cout << "Registers: " << index << "\n";
 	for (int i = 0; i < NUM_INDIVIDUAL_REGISTERS; i++) {
-		std::cout <<  "r_all[" << i << "] = " << program.list_reg[i] << "\n";
+		std::cout <<  "r_all[" << i << "] = " << program->list_reg[i] << "\n";
 	}
 
 }
@@ -129,18 +158,18 @@ Individual * Individual::clone(){
 
 
 void Individual::check_max_min_instructions (string name, string lugar){
-	if (program.height> NUM_MAX_INSTRUCTIONS) {
+	if (program->height> NUM_MAX_INSTRUCTIONS) {
        std::cout<< name + " - Superó el número maximo de instrucciones ->" + lugar;
 	}
-    if (program.height < NUM_MIN_INSTRUCTIONS) {
+    if (program->height < NUM_MIN_INSTRUCTIONS) {
        std::cout<< name + " - Superó el número minimo de instrucciones ->" + lugar;
     }
 }
 void Individual::select_mom_dad(Individual genome1, Individual genome2, Individual * mom, Individual * dad) {
-    mom = genome1.program.height < genome2.program.height  ? genome1.clone() : genome2.clone();
-    dad = genome1.program.height >= genome2.program.height ? genome2.clone() : genome1.clone();
+    mom = genome1.program->height < genome2.program->height  ? genome1.clone() : genome2.clone();
+    dad = genome1.program->height >= genome2.program->height ? genome2.clone() : genome1.clone();
 }
-
+/*
 void Individual::exchange(Individual * g1, Individual * g2, int g1_cuts_p [2], int g2_cuts_p [2]){
 	/* Se remplaza el bloque 2 por el bloque 4.
 	 *
@@ -148,41 +177,46 @@ void Individual::exchange(Individual * g1, Individual * g2, int g1_cuts_p [2], i
 	 * |    1     | 2 |    3   |  <-     | 3 |  4  |        5       |   |    1     |  4  |    3   |
 	 */
 	/* borrar desde aca*/
+/*
 	std::cout << "LISTA DE INSTRUCCIONES DE G1" << "\n";
-	g1->program.print_list_instructions();
+	g1->program->print_list_instructions();
 	std::cout << "CUTS POINTS DE G1";
 	std::cout << g1_cuts_p[0] << "  " << g1_cuts_p[1];
 
 	std::cout << "LISTA DE INSTRUCCIONES DE G2" << "\n";
-	g2->program.print_list_instructions();
+	g2->program->print_list_instructions();
 	std::cout << "CUTS POINTS DE G2";
 	std::cout << g2_cuts_p[0] << "  " << g2_cuts_p[1];
 
 	/* hasta aca*/
+/*
 	//se calcula la nueva longitud = len(1) + len(4) + len(3)
-	int new_len = (g1->program.height - g1_cuts_p[0]) + (g2_cuts_p[1] - g2_cuts_p[0]) + (g1->program.height - g1_cuts_p[1]);
-	delete [] program.list_inst;
+	int new_len = (g1->program->height - g1_cuts_p[0]) + (g2_cuts_p[1] - g2_cuts_p[0]) + (g1->program->height - g1_cuts_p[1]);
+	delete [] program->list_inst;
 	//Se crea una nueva lista
 	Instruction new_list [new_len];
 	//Se copia parte 1
 	int i = 0;
 	for (i = 0; i < g1_cuts_p[0]; i++){
-		new_list[i] = g1->program.list_inst[i];
+		new_list[i] = g1->program->list_inst[i];
 	}
 	//Se copia la parte 4
 	for (i = g2_cuts_p[0]; i < g2_cuts_p[1]; i++){
-		new_list[i] = g2->program.list_inst[i];
+		new_list[i] = g2->program->list_inst[i];
 	}
 	//Se copia la parte 3
 	for (i = g1_cuts_p[0] +  (g2_cuts_p[1] - g2_cuts_p[0]);
-			i < g1->program.height; i++){
-		new_list[i] = g2->program.list_inst[i];
+			i < g1->program->height; i++){
+		new_list[i] = g2->program->list_inst[i];
 	}
-	program.list_inst = new_list;
-	program.height = new_len;
+	program->list_inst = new_list;
+	program->height = new_len;
 	set_altered();
 
 }
+
+*/
+
 void Individual::crossover(Individual genome1, Individual genome2, Individual sister, Individual brother) {
 	Individual *mom, *dad;
 	genome1.check_max_min_instructions("genome1", "Antes Crossover");
@@ -194,36 +228,37 @@ void Individual::crossover(Individual genome1, Individual genome2, Individual si
 	 * ya que mom y dad son punteros
 	 */
 	select_mom_dad(genome1, genome2, mom, dad);
+	/*
 	try{
-		int mom_segment_size = randint(1, mom->program.height - 1); //al menos 1 instruccion menos la penultima.
-		int max_padding_mom = mom->program.height -mom_segment_size - 1;
+		int mom_segment_size = randint(1, mom->program->height - 1); //al menos 1 instruccion menos la penultima.
+		int max_padding_mom = mom->program->height -mom_segment_size - 1;
 
 		//desde donde se puede comenzar para que alcancen las instrucciones del segmento a cruzar
 		cuts_points_mom[0] = randint(0, max_padding_mom);
 		cuts_points_mom[1] = cuts_points_mom[0] + mom_segment_size;
 
 		//el máximo segmento a cruzar es lo que le falta al mom para completar el máximo número de instrucciones permitidas
-		int max_segment_full_mom = NUM_MAX_INSTRUCTIONS - (mom->program.height - mom_segment_size);
-		int max_segment_num_min_in_dad = (dad->program.height + mom_segment_size) - NUM_MIN_INSTRUCTIONS;
+		int max_segment_full_mom = NUM_MAX_INSTRUCTIONS - (mom->program->height - mom_segment_size);
+		int max_segment_num_min_in_dad = (dad->program->height + mom_segment_size) - NUM_MIN_INSTRUCTIONS;
 
 		//se elije el menor de los máximos
         int max_segment_size_dad = max_segment_full_mom < max_segment_num_min_in_dad ? max_segment_full_mom : max_segment_num_min_in_dad;
 
         //si el maximo es mayor a la longitud del padre, se elige la longitud como máximo
-        max_segment_size_dad = (dad->program.height - 1) < max_segment_size_dad ? (dad->program.height - 1) : max_segment_size_dad;
+        max_segment_size_dad = (dad->program->height - 1) < max_segment_size_dad ? (dad->program->height - 1) : max_segment_size_dad;
 
         //lo que hay que quitarle para que quede en máximo número de instrucciones
-        int min_segment_full_dad = (dad->program.height + mom_segment_size) - NUM_MAX_INSTRUCTIONS;
+        int min_segment_full_dad = (dad->program->height + mom_segment_size) - NUM_MAX_INSTRUCTIONS;
 
         //lo que falta para completar el mínimo número de instrucciones al mom
-        int min_segment_size_num_min_in_mom = NUM_MIN_INSTRUCTIONS - (mom->program.height - mom_segment_size);
+        int min_segment_size_num_min_in_mom = NUM_MIN_INSTRUCTIONS - (mom->program->height - mom_segment_size);
 
         int min_segment_size_dad = (min_segment_full_dad > min_segment_size_num_min_in_mom) ? min_segment_full_dad : min_segment_size_num_min_in_mom;
         min_segment_size_dad = min_segment_size_dad <= 0 ? 1 :min_segment_size_dad;
 
         int dad_segment_size = randint(min_segment_size_dad, max_segment_size_dad);
 
-        int max_padding_dad = dad->program.height - dad_segment_size - 1;
+        int max_padding_dad = dad->program->height - dad_segment_size - 1;
 
         //desde donde se puede comenzar para que alcancen las instrucciones del segmento a cruzar
         cuts_points_dad[0] = randint(0, max_padding_dad);
@@ -245,6 +280,7 @@ void Individual::crossover(Individual genome1, Individual genome2, Individual si
 	}catch (exception e) {
 		std::cout << "Error en Crossover";
 	}
+	*/
 }
 /* TODO: FALTAN LOS SIGUIENTES METODOS
  * def macro_mutation(genome):
