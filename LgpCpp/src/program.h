@@ -10,7 +10,6 @@ class Instruction {
 public:
 	Instruction (); //create_new_instruction();
 	void print_instruction();
-
 	int oper;
 	int dest;
 	int op1;
@@ -136,6 +135,7 @@ public:
 	int* get_effective_instructions_with_indices();
 	std::vector<int> get_effective_constant_indices();
 	std::vector<int> get_effective_registers(int * position);
+	void print_list_int();
 	static void init_registers();
 
 	Instruction *list_inst;
@@ -429,6 +429,17 @@ double Program::execute_program(double * input) {
 
 	return r_all[0];
 
+}
+
+void Program::print_list_int(){
+	int i = 0;
+	for (i=0; i<height; i++){
+		std::cout<<i<<".\t|";
+		std::cout<<this->list_inst[i].oper<<"\t|";
+		std::cout<<this->list_inst[i].dest<<"\t|";
+		std::cout<<this->list_inst[i].op1<<"\t|";
+		std::cout<<this->list_inst[i].op2<<"\t|\n";
+	}
 }
 
 

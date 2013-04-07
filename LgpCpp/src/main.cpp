@@ -43,8 +43,8 @@ int main() {
 	//i.eval_fitness();
 	//g1.print_individual();
 	//g2.print_individual();
-	//g1.program.print_list_instructions();
-	//g2.program.print_list_instructions();
+	//g1.program.print_list_int();
+	//g2.program.print_list_int();
 	Individual::crossover(g1,g2,sister,brother);
 	return 0;
 }
