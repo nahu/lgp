@@ -35,11 +35,16 @@ using namespace std;
 int main() {
 	srand((unsigned)time(0));
 	Program::init_registers();
-	Individual i(1, 1);
+		Individual g1(1, 1);
+	Individual g2(2, 1);
+	Individual * sister;
+	Individual * brother;
 
-	i.eval_fitness();
-	i.print_individual();
-	//double hola = log10(abs(-0.866767));
-	//std::cout << "hola: " << hola << "\n";
+	//i.eval_fitness();
+	//g1.print_individual();
+	//g2.print_individual();
+	//g1.program.print_list_instructions();
+	//g2.program.print_list_instructions();
+	Individual::crossover(g1,g2,sister,brother);
 	return 0;
 }

@@ -176,7 +176,7 @@ void Program::init_registers() {
 	//se carga la matriz desde el archivo
 	DATA = get_matrix_from_file();
 	//se imprime la matriz
-	imprimir_matriz(DATA, LINES, N);
+	//imprimir_matriz(DATA, LINES, N);
 
 	for (int t = 0; t < LINES; t++) {
 		R_CONST[t] = new double[K];
