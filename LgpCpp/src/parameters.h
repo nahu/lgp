@@ -40,9 +40,9 @@ la convención para asegurar que el programa tenga una salida es que la
 última instrucción sea del tipo [operación, 0, operador1, operador2]
 */
 
-#define NUM_MIN_INSTRUCTIONS 15//(30 * K)
-#define NUM_MAX_INSTRUCTIONS 30//(12 * K)
-#define NUM_INI_INSTRUCTIONS 20//(6 * K)
+#define NUM_MIN_INSTRUCTIONS 5//(30 * K)
+#define NUM_MAX_INSTRUCTIONS 20//(12 * K)
+#define NUM_INI_INSTRUCTIONS 10//(6 * K)
 #define NUM_OPERATORS 9
 
 

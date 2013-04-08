@@ -60,6 +60,7 @@ int main() {
 	//g2.program.print_list_int();
 
 	Individual::crossover(g1,g2,sister,brother);
+	std::cout<<"Fin main"<<"\n";
 
 	return 0;
 }

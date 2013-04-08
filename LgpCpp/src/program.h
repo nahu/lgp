@@ -135,7 +135,7 @@ public:
 	int* get_effective_instructions_with_indices();
 	std::vector<int> get_effective_constant_indices();
 	std::vector<int> get_effective_registers(int * position);
-	void print_list_int();
+	static void print_list_int(Instruction * list_inst, int height);
 	static void init_registers();
 
 	Instruction *list_inst;
@@ -431,14 +431,14 @@ double Program::execute_program(double * input) {
 
 }
 
-void Program::print_list_int(){
+void Program::print_list_int(Instruction * list_inst, int height){
 	int i = 0;
 	for (i=0; i<height; i++){
 		std::cout<<i<<".\t|";
-		std::cout<<this->list_inst[i].oper<<"\t|";
-		std::cout<<this->list_inst[i].dest<<"\t|";
-		std::cout<<this->list_inst[i].op1<<"\t|";
-		std::cout<<this->list_inst[i].op2<<"\t|\n";
+		std::cout<<list_inst[i].oper<<"\t|";
+		std::cout<<list_inst[i].dest<<"\t|";
+		std::cout<<list_inst[i].op1<<"\t|";
+		std::cout<<list_inst[i].op2<<"\t|\n";
 	}
 }
 
