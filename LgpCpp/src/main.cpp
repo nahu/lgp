@@ -50,8 +50,8 @@ int main() {
 	*/
 	Individual g1(1, 1);
 	Individual g2(2, 1);
-	Individual * sister;
-	Individual * brother;
+	Individual sister;
+	Individual brother;
 
 	//i.eval_fitness();
 	//g1.print_individual();
@@ -59,7 +59,12 @@ int main() {
 	//g1.program.print_list_int();
 	//g2.program.print_list_int();
 
-	Individual::crossover(g1,g2,sister,brother);
+	Individual::crossover(g1,g2,&sister,&brother);
+	std::cout<<"Verificacion crossover sister"<<"\n"; //despues de esto da segmentation fault
+	Program::print_list_int(sister.program->list_inst, sister.program->height);
+	std::cout<<"Verificacion crossover brother"<<"\n";
+	Program::print_list_int(brother.program->list_inst, brother.program->height);
+
 	std::cout<<"Fin main"<<"\n";
 
 	return 0;

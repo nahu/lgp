@@ -301,7 +301,7 @@ void Individual::crossover(Individual genome1, Individual genome2, Individual * 
 
 		/* ************ CROSS OVER *************** */
         //Se clonan los individuos
-        sister = clone(mom);
+        sister  = clone(mom);
         brother = clone(dad);
         //Se intercambian los bloques
         sister->exchange(mom, dad, cuts_points_mom, cuts_points_dad);
@@ -314,9 +314,6 @@ void Individual::crossover(Individual genome1, Individual genome2, Individual * 
         //Checkeo de no inconsistencia
         sister->check_max_min_instructions("sister", "Despues Crossover");
         brother->check_max_min_instructions("brother", "Despues Crossover");
-        std::cout<<"Verificacion crossover"<<"\n";
-        Program::print_list_int(sister->program->list_inst, sister->program->height);
-        Program::print_list_int(brother->program->list_inst, brother->program->height);
 	}catch (std::exception e) {
 		std::cout << "Error en Crossover";
 		std::cout<< e.what();
