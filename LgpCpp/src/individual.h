@@ -19,7 +19,7 @@ public:
 	//operadores genéticos
 	static void select_mom_dad(Individual genome1, Individual genome2, Individual * mom, Individual * dad);
 	void check_max_min_instructions (std::string name, std::string place);
-	static void crossover(Individual genome1, Individual genome2, Individual * sister, Individual * brother);
+	static void crossover(Individual genome1, Individual genome2, Individual * &sister, Individual * &brother);
 	void exchange(Individual * mom, Individual * dad, int * cuts_points_mom, int * cuts_points_dad);
 	static Individual * clone(Individual * orig);
 	void print_individual();
@@ -162,6 +162,8 @@ Individual * Individual::clone(Individual * orig){
      if(copy->program->list_inst==orig->program->list_inst){
     	 std::cout<<"[Individual::clone]: Direcciones de lista de instrucciones son iguales"<<"\n";
      }
+	 std::cout<<"****** *** *** Direccion COPY \t\t"<<&copy<<"\n";
+
      return copy;
 }
 
@@ -239,7 +241,7 @@ void Individual::exchange(Individual * g1, Individual * g2, int g1_cuts_p [2], i
 	}
 	set_altered();
 }
-void Individual::crossover(Individual genome1, Individual genome2, Individual * sister, Individual * brother) {
+void Individual::crossover(Individual genome1, Individual genome2, Individual * &sister, Individual * &brother) {
 	genome1.check_max_min_instructions("genome1", "Antes Crossover");
 	genome2.check_max_min_instructions("genome2", "Antes Crossover");
 	Individual  *dad, *mom;
@@ -301,7 +303,7 @@ void Individual::crossover(Individual genome1, Individual genome2, Individual * 
 
 		/* ************ CROSS OVER *************** */
         //Se clonan los individuos
-        sister  = clone(mom);
+        sister = clone(mom);
         brother = clone(dad);
         //Se intercambian los bloques
         sister->exchange(mom, dad, cuts_points_mom, cuts_points_dad);
@@ -314,6 +316,17 @@ void Individual::crossover(Individual genome1, Individual genome2, Individual * 
         //Checkeo de no inconsistencia
         sister->check_max_min_instructions("sister", "Despues Crossover");
         brother->check_max_min_instructions("brother", "Despues Crossover");
+		std::cout<<"DESDE CROSSOVER"<<"\n";
+        std::cout<<"Verificacion crossover sister"<<"\n";
+		Program::print_list_int(sister->program->list_inst, sister->program->height);
+		std::cout<<"Verificacion crossover brother"<<"\n";
+		Program::print_list_int(brother->program->list_inst, brother->program->height);
+        std::cout<<"Direccion &G1 \t\t"<<&genome1<<"\n";
+        std::cout<<"Direccion &G2 \t\t"<<&genome2<<"\n";
+        std::cout<<"Direccion mom \t\t"<<&mom<<"\n";
+        std::cout<<"Direccion dad \t\t"<<&dad<<"\n";
+        std::cout<<"Direccion sister \t"<<&sister<<"\n";
+        std::cout<<"Direccion brother \t"<<&brother<<"\n";
 	}catch (std::exception e) {
 		std::cout << "Error en Crossover";
 		std::cout<< e.what();
