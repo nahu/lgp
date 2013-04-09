@@ -48,22 +48,26 @@ int main() {
 		d->list_ind[i].print_individual();
 	}
 	*/
-	Individual g1(1, 1);
 	Individual g2(2, 1);
-	Individual * sister;
-	Individual * brother;
+	Individual g1(1, 1);
+	Individual * sister, * brother;
 
 	//i.eval_fitness();
 	//g1.print_individual();
 	//g2.print_individual();
 	//g1.program.print_list_int();
 	//g2.program.print_list_int();
-
+	std::cout<<"**Direccion sister main \t"<<&sister<<"\n";
+	std::cout<<"Direccion sister.program main \t"<<&(sister->program)<<"\n";
+	std::cout<<"Direccion brother main \t"<<&brother<<"\n";
+	std::cout<<"Direccion brother.program main \t"<<&(brother->program)<<"\n";
 	Individual::crossover(g1,g2,sister,brother);
 
 	std::cout<<"DESDE MAIN"<<"\n";
 	std::cout<<"Direccion sister main \t"<<&sister<<"\n";
+	std::cout<<"Direccion sister.program main \t"<<&(sister->program)<<"\n";
 	std::cout<<"Direccion brother main \t"<<&brother<<"\n";
+	std::cout<<"Direccion brother.program main \t"<<&(brother->program)<<"\n";
 	std::cout<<"Verificacion crossover sister"<<"\n"; //despues de esto da segmentation fault
 	Program::print_list_int(sister->program->list_inst, sister->program->height);
 	std::cout<<"Verificacion crossover brother"<<"\n";
