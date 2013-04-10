@@ -8,12 +8,13 @@
 
 class Instruction {
 public:
-	Instruction (); //create_new_instruction();
-	void print_instruction();
 	int oper;
 	int dest;
 	int op1;
 	int op2;
+
+	Instruction (); //create_new_instruction();
+	void print_instruction();
 };
 
 
@@ -137,6 +138,8 @@ public:
 	std::vector<int> get_effective_registers(int * position);
 	static void print_list_int(Instruction * list_inst, int height);
 	static void init_registers();
+	Program& operator=(const Program& source);
+	Program(const Program& source);
 
 	Instruction *list_inst;
 	Instruction *effective_list_inst; //puntero dentro de la lista de abajo
@@ -192,6 +195,26 @@ void Program::init_registers() {
 		}
 	}
 	//imprimir_matriz(R_CONST, LINES, K);
+}
+
+Program::Program(const Program& source) :
+	height(source.height),
+	n_eff(source.n_eff),
+	height_eff_space(source.height_eff_space) {
+
+	//list_inst
+
+}
+
+Program& Program::operator=(const Program& source) {
+
+
+	Instruction *list_inst;
+	Instruction *effective_list_inst; //puntero dentro de la lista de abajo
+	Instruction *effective_memory_space;
+	int *effective_indices;
+	double *list_reg;
+
 }
 
 Program::Program() {
