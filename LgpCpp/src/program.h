@@ -149,6 +149,7 @@ public:
 	int height_eff_space;
 	int n_eff;
 	double *list_reg;
+	int name;
 
 	static double R_OUT[NUM_OUT_REGISTERS];
 	static double R_VAR[NUM_VAR_REGISTER];
@@ -255,8 +256,12 @@ Program::Program() {
 Program::~Program() {
 	delete [] list_inst;
 	delete [] list_reg;
-	delete [] effective_memory_space;
-	delete [] effective_indices;
+	if (effective_memory_space){
+		delete [] effective_memory_space;
+	}
+	if (effective_indices){
+		delete [] effective_indices;
+	}
 }
 
 

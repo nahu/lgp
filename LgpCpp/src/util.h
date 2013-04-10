@@ -29,6 +29,9 @@ float randfloat(float HI, float LO) {
 }
 
 int randint(int HI, int LO) {
+	if (HI==LO){
+		return HI;
+	}
 	int r = LO + rand() / (RAND_MAX / (HI - LO));
 
 	return r;
