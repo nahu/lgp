@@ -17,7 +17,6 @@ public:
 	double evaluate(int obj);
 
 	//operadores genéticos
-	static void select_mom_dad(Individual genome1, Individual genome2, Individual * mom, Individual * dad);
 	void check_max_min_instructions (std::string name, std::string place);
 	static void crossover(Individual &genome1, Individual &genome2, Individual * &sister, Individual * &brother);
 	void exchange(Individual * mom, Individual * dad, int * cuts_points_mom, int * cuts_points_dad);
@@ -158,13 +157,6 @@ void Individual::clone(Individual * orig, Individual * &copy){
      copy->program->list_reg = new double [NUM_INDIVIDUAL_REGISTERS];
      std::copy(orig->program->list_inst, orig->program->list_inst + orig->program->height, copy->program->list_inst );
      std::copy(orig->program->list_reg, orig->program->list_reg + NUM_INDIVIDUAL_REGISTERS, copy->program->list_reg);
-     if(copy->program==orig->program){
-    	 std::cout<<"[Individual::clone]: Direcciones de program son iguales"<<"\n";
-     }
-     if(copy->program->list_inst==orig->program->list_inst){
-    	 std::cout<<"[Individual::clone]: Direcciones de lista de instrucciones son iguales"<<"\n";
-     }
-	 std::cout<<"****** *** *** Direccion COPY \t\t"<<&copy<<"\n";
 }
 
 
@@ -247,34 +239,25 @@ void Individual::crossover(Individual &genome1, Individual &genome2, Individual 
 	Individual  *dad, *mom;
 	int cuts_points_mom [2]= {0,0};
 	int cuts_points_dad [2]= {0,0};
-	//esta funcion por algùn motivo no me funca.. o sea.. hasta mom nomas anda..
-	//select_mom_dad(genome1, genome2, mom, dad);
-	/*--------------------- */
+
 	if(genome1.program->height >= genome2.program->height ){
-		//mom = clone(&genome2);
-		//dad = clone(&genome1);
 		clone(&genome2, mom);
 		clone(&genome1, dad);
 	}else{
-		//mom = clone(&genome1);
-		//dad = clone(&genome2);
 		clone(&genome1, mom);
 		clone(&genome2, dad);
-
 	}
-	//std::cout<< "After select mom & dad"<<"\n";
-
 	try{
 		int max_segment_size_mom = mom->program->height - 1;
-		int mom_segment_size = randint(1, max_segment_size_mom); //al menos 1 instruccion menos la ultima.
+		//al menos 1 instruccion menos la ultima.
+		int mom_segment_size = randint(1, max_segment_size_mom);
 		int max_padding_mom = mom->program->height - mom_segment_size - 1;
 		//desde donde se puede comenzar para que alcancen las instrucciones del segmento a cruzar
 		cuts_points_mom[0] = randint(0, max_padding_mom);
 		cuts_points_mom[1] = cuts_points_mom[0] + mom_segment_size;
+
 		//para que no incluya a la ultima instruccion.
-		if (cuts_points_mom[1] == mom->program->height-1){
-			cuts_points_mom[1] = cuts_points_mom[1] - 1;
-		}
+		cuts_points_mom[1] = (cuts_points_mom[1] == mom->program->height-1)? cuts_points_mom[1] - 1 :cuts_points_mom[1] ;
 
 		//el máximo segmento a cruzar es lo que le falta al mom para completar el máximo número de instrucciones permitidas
 		int max_segment_full_mom = NUM_MAX_INSTRUCTIONS - (mom->program->height - mom_segment_size);
@@ -302,43 +285,21 @@ void Individual::crossover(Individual &genome1, Individual &genome2, Individual 
 		cuts_points_dad[0] = randint(0, max_padding_dad);
 		cuts_points_dad[1] = cuts_points_dad[0] + dad_segment_size - 2;
 		//para que no incluya a la ultima instruccion.
-		if (cuts_points_dad[1] == dad->program->height-1){
-			cuts_points_dad[1] = cuts_points_dad[1] - 1;
-        }
+		cuts_points_dad[1] = (cuts_points_dad[1] == dad->program->height-1) ?cuts_points_dad[1] - 1 : cuts_points_dad[1];
 
-		/* ************ CROSS OVER *************** */
-        //Se clonan los individuos
+		//Se clonan los individuos
         clone(mom, sister);
         clone(dad, brother);
         //Se intercambian los bloques
         sister->exchange(mom, dad, cuts_points_mom, cuts_points_dad);
-        std::cout<<"Fin del intercambio sister"<<"\n";
         brother->exchange(dad, mom, cuts_points_dad, cuts_points_mom);
-        std::cout<<"Fin del intercambio brother"<<"\n";
-        //Se modifica el indice
+
         sister->index = genome1.index;
         brother->index = genome2.index;
-        //Checkeo de no inconsistencia
+
         sister->check_max_min_instructions("sister", "Despues Crossover");
         brother->check_max_min_instructions("brother", "Despues Crossover");
-		std::cout<<"DESDE CROSSOVER"<<"\n";
-        /*std::cout<<"Verificacion crossover sister"<<"\n";
-		Program::print_list_int(sister->program->list_inst, sister->program->height);
-		std::cout<<"Verificacion crossover brother"<<"\n";
-		Program::print_list_int(brother->program->list_inst, brother->program->height);
-        */
-        std::cout<<"Direccion &G1 \t\t"<<&genome1<<"\n";
-        std::cout<<"Direccion &G2 \t\t"<<&genome2<<"\n";
-        std::cout<<"Direccion mom \t\t"<<&mom<<"\n";
-        std::cout<<"Direccion mom.program \t\t"<<&(mom->program)<<"\n";
-        std::cout<<"Direccion dad \t\t"<<&dad<<"\n";
-        std::cout<<"Direccion dad.program \t\t"<<&(dad->program)<<"\n";
-        std::cout<<"Direccion sister \t"<<&sister<<"\n";
-        std::cout<<"Direccion sister.program \t"<<&(sister->program)<<"\n";
-        std::cout<<"Direccion brother \t"<<&brother<<"\n";
-        std::cout<<"Direccion brother.program \t"<<&(brother->program)<<"\n";
 		delete mom; delete dad;
-
 	}catch (std::exception e) {
 		std::cout << "Error en Crossover";
 		std::cout<< e.what();
