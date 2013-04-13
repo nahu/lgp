@@ -12,12 +12,12 @@ public:
 	Individual(int config_position);
 	Individual();
 	~Individual();
+	//Evaluacion de fitness
 	void eval_fitness();
 	void set_altered();
 	double evaluate(int obj);
 
 	//operadores genéticos
-	static void select_mom_dad(Individual genome1, Individual genome2, Individual * mom, Individual * dad);
 	void check_max_min_instructions (std::string name, std::string place);
 	static void crossover(Individual &genome1, Individual &genome2, Individual * &sister, Individual * &brother);
 	void exchange(Individual * mom, Individual * dad, int * cuts_points_mom, int * cuts_points_dad);
@@ -28,6 +28,8 @@ public:
 	static bool compare_error_prom(Individual &x, Individual &y);
 	static bool compare_sigma(Individual &x, Individual &y);
 	static bool compare_validation_error(Individual &x, Individual &y);
+
+	void macro_mutation ();
 
 	Program * program = 0;
 	double fitness;
@@ -227,13 +229,6 @@ void Individual::clone(Individual * orig, Individual * &copy){
      copy->program->list_reg = new double [NUM_INDIVIDUAL_REGISTERS];
      std::copy(orig->program->list_inst, orig->program->list_inst + orig->program->height, copy->program->list_inst );
      std::copy(orig->program->list_reg, orig->program->list_reg + NUM_INDIVIDUAL_REGISTERS, copy->program->list_reg);
-     if(copy->program==orig->program){
-    	 std::cout<<"[Individual::clone]: Direcciones de program son iguales"<<"\n";
-     }
-     if(copy->program->list_inst==orig->program->list_inst){
-    	 std::cout<<"[Individual::clone]: Direcciones de lista de instrucciones son iguales"<<"\n";
-     }
-	 std::cout<<"****** *** *** Direccion COPY \t\t"<<&copy<<"\n";
 }
 
 
@@ -316,34 +311,25 @@ void Individual::crossover(Individual &genome1, Individual &genome2, Individual 
 	Individual  *dad, *mom;
 	int cuts_points_mom [2]= {0,0};
 	int cuts_points_dad [2]= {0,0};
-	//esta funcion por algùn motivo no me funca.. o sea.. hasta mom nomas anda..
-	//select_mom_dad(genome1, genome2, mom, dad);
-	/*--------------------- */
+
 	if(genome1.program->height >= genome2.program->height ){
-		//mom = clone(&genome2);
-		//dad = clone(&genome1);
 		clone(&genome2, mom);
 		clone(&genome1, dad);
 	}else{
-		//mom = clone(&genome1);
-		//dad = clone(&genome2);
 		clone(&genome1, mom);
 		clone(&genome2, dad);
-
 	}
-	//std::cout<< "After select mom & dad"<<"\n";
-
 	try{
 		int max_segment_size_mom = mom->program->height - 1;
-		int mom_segment_size = randint(1, max_segment_size_mom); //al menos 1 instruccion menos la ultima.
+		//al menos 1 instruccion menos la ultima.
+		int mom_segment_size = randint(1, max_segment_size_mom);
 		int max_padding_mom = mom->program->height - mom_segment_size - 1;
 		//desde donde se puede comenzar para que alcancen las instrucciones del segmento a cruzar
 		cuts_points_mom[0] = randint(0, max_padding_mom);
 		cuts_points_mom[1] = cuts_points_mom[0] + mom_segment_size;
+
 		//para que no incluya a la ultima instruccion.
-		if (cuts_points_mom[1] == mom->program->height-1){
-			cuts_points_mom[1] = cuts_points_mom[1] - 1;
-		}
+		cuts_points_mom[1] = (cuts_points_mom[1] == mom->program->height-1)? cuts_points_mom[1] - 1 :cuts_points_mom[1] ;
 
 		//el máximo segmento a cruzar es lo que le falta al mom para completar el máximo número de instrucciones permitidas
 		int max_segment_full_mom = NUM_MAX_INSTRUCTIONS - (mom->program->height - mom_segment_size);
@@ -371,48 +357,84 @@ void Individual::crossover(Individual &genome1, Individual &genome2, Individual 
 		cuts_points_dad[0] = randint(0, max_padding_dad);
 		cuts_points_dad[1] = cuts_points_dad[0] + dad_segment_size - 2;
 		//para que no incluya a la ultima instruccion.
-		if (cuts_points_dad[1] == dad->program->height-1){
-			cuts_points_dad[1] = cuts_points_dad[1] - 1;
-        }
+		cuts_points_dad[1] = (cuts_points_dad[1] == dad->program->height-1) ?cuts_points_dad[1] - 1 : cuts_points_dad[1];
 
-		/* ************ CROSS OVER *************** */
-        //Se clonan los individuos
+		//Se clonan los individuos
         clone(mom, sister);
         clone(dad, brother);
         //Se intercambian los bloques
         sister->exchange(mom, dad, cuts_points_mom, cuts_points_dad);
-        std::cout<<"Fin del intercambio sister"<<"\n";
         brother->exchange(dad, mom, cuts_points_dad, cuts_points_mom);
-        std::cout<<"Fin del intercambio brother"<<"\n";
-        //Se modifica el indice
+
         sister->index = genome1.index;
         brother->index = genome2.index;
-        //Checkeo de no inconsistencia
+
         sister->check_max_min_instructions("sister", "Despues Crossover");
         brother->check_max_min_instructions("brother", "Despues Crossover");
-		std::cout<<"DESDE CROSSOVER"<<"\n";
-        /*std::cout<<"Verificacion crossover sister"<<"\n";
-		Program::print_list_int(sister->program->list_inst, sister->program->height);
-		std::cout<<"Verificacion crossover brother"<<"\n";
-		Program::print_list_int(brother->program->list_inst, brother->program->height);
-        */
-        std::cout<<"Direccion &G1 \t\t"<<&genome1<<"\n";
-        std::cout<<"Direccion &G2 \t\t"<<&genome2<<"\n";
-        std::cout<<"Direccion mom \t\t"<<&mom<<"\n";
-        std::cout<<"Direccion mom.program \t\t"<<&(mom->program)<<"\n";
-        std::cout<<"Direccion dad \t\t"<<&dad<<"\n";
-        std::cout<<"Direccion dad.program \t\t"<<&(dad->program)<<"\n";
-        std::cout<<"Direccion sister \t"<<&sister<<"\n";
-        std::cout<<"Direccion sister.program \t"<<&(sister->program)<<"\n";
-        std::cout<<"Direccion brother \t"<<&brother<<"\n";
-        std::cout<<"Direccion brother.program \t"<<&(brother->program)<<"\n";
 		delete mom; delete dad;
-
 	}catch (std::exception e) {
 		std::cout << "Error en Crossover";
 		std::cout<< e.what();
 
 	}
+}
+
+void Individual::macro_mutation (){
+	//Agrega o quita instrucciones  -- Alg. 6.1 -- p_ins > p_del //
+    int insertion = random_flip_coin(P_INS);
+    int mutation_point = randint(0, program->height - 2);
+    if (program->height < NUM_MAX_INSTRUCTIONS && (insertion || program->height == NUM_MIN_INSTRUCTIONS)){
+        // Si no supera la max. cant. de instrucciones y es insercion o tiene el numero minimo de instrucciones
+        Instruction new_instruction;
+        std::vector<int> reg_eff;
+        int to_mutate = program->get_effective_registers(mutation_point,reg_eff);
+        while (reg_eff.empty()) {
+        	 /* se da en el caso de que el punto de mutación esté por debajo de la última
+             * instrucción efectiva y ésta sea unaria con un operando constante
+             * cambiar el registro constante del operador unario por uno variable
+             */
+            program->list_inst[to_mutate].op2 = randint(VAR_MIN, VAR_MAX);
+            to_mutate  = program->get_effective_registers(mutation_point, reg_eff);
+        }
+
+        new_instruction.oper = reg_eff.at(randint(0, reg_eff.size() - 1));
+        Instruction * new_list = new Instruction[program->height + 1];
+
+        /*
+         * Insertar la nueva instrucciòn en la posición mutation_point
+         */
+		int pos = 0;
+		int i = 0;
+		//se copia parte 1
+		for (i = 0; i < mutation_point; i++){
+			new_list[pos] = program->list_inst[i];
+			pos++;
+		}
+		//Se copia la parte 4 - incluye ambos limites
+		new_list[pos] = new_instruction;
+		pos++;
+		//Se copia la parte 2 - se corre uno ya que se remplazo el punto de corte
+		for (i = mutation_point; i < program->height; i++){
+			new_list[pos] = program->list_inst[i];
+			pos++;
+		}
+		set_altered();
+        program->height += 1;
+        program->list_inst = new_list;
+	}
+    if (program->height > NUM_MIN_INSTRUCTIONS && (!insertion || program->height == NUM_MAX_INSTRUCTIONS)){
+    	//Si es mayor a la  min. cant. de instrucciones y  no es insercion o tiene el numero maximo de instrucciones
+    	int i = 0;
+        for (i = mutation_point; i < program->height - 1; i++){
+			program->list_inst[i] = program->list_inst[i+1];
+		}
+    	program->height -= 1;
+    	set_altered();
+    }
+    if (program->height > NUM_MAX_INSTRUCTIONS){
+    	std::cout<< "superado el número maximo de instrucciones MACRO";
+        std::cout<< "genome.height > Parameters.num_max_instructions";
+    }
 }
 
 /* TODO: FALTAN LOS SIGUIENTES METODOS
