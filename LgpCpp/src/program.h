@@ -134,7 +134,7 @@ public:
 	double execute_program(double * input);
 	int* get_effective_instructions_with_indices();
 	std::vector<int> get_effective_constant_indices();
-	std::vector<int> get_effective_registers(int * position);
+	int get_effective_registers(int position, std::vector<int> &indices);
 	static void print_list_int(Instruction * list_inst, int height);
 	static void init_registers();
 
@@ -311,38 +311,32 @@ std::vector<int> Program::get_effective_constant_indices() {
 
 }
 
-std::vector<int> Program::get_effective_registers(int * position) {
-	std::vector<int> indices;
+int Program::get_effective_registers(int position, std::vector<int> &indices) {
 	std::set<int> reg_eff;
 	std::set<int>::iterator it;
-
-
 	reg_eff.insert(0);
-	for (int i = n_eff - 1; i >= 0 ; i--) {
-		it = reg_eff.find(effective_list_inst[i].dest);
+	for (int i = height - 1; i >= 0 ; i--) {
+		it = reg_eff.find(list_inst[i].dest);
 		if (it != reg_eff.end()) {
 			reg_eff.erase(it);
 
-			if (effective_list_inst[i].oper < 5) { //los operadores unarios tiene identificador del 5 al 9
-				if (effective_list_inst[i].op1 <= VAR_MAX) { //los registros constantes de entrada no pueden ser registros efectivos
-					reg_eff.insert(effective_list_inst[i].op1);
+			if (list_inst[i].oper < 5) { //los operadores unarios tiene identificador del 5 al 9
+				if (list_inst[i].op1 <= VAR_MAX) { //los registros constantes de entrada no pueden ser registros efectivos
+					reg_eff.insert(list_inst[i].op1);
 				}
 			}
 
-			if (effective_list_inst[i].op2 <= VAR_MAX) {
-				reg_eff.insert(effective_list_inst[i].op2);
+			if (list_inst[i].op2 <= VAR_MAX) {
+				reg_eff.insert(list_inst[i].op2);
 			}
 		}
-		if (effective_indices[i] == *position || reg_eff.empty()) {
+		if (i == position || reg_eff.empty()) {
 			std::copy(reg_eff.begin(), reg_eff.end(), std::back_inserter(indices));
-			//se pasa por referencia se copia en position el valor de la posición, en python se devolvían dos cosas
-			*position = effective_indices[i];
-
-			return indices; //return list(reg_eff), current_pos
+			return i; //return list(reg_eff), current_pos
 		}
 	}
 
-	return indices;//al pedo
+	return 0;
 }
 
 

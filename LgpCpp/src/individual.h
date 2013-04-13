@@ -12,6 +12,7 @@ public:
 	Individual(int config_position, int index);
 	Individual();
 	~Individual();
+	//Evaluacion de fitness
 	void eval_fitness();
 	inline void set_altered();
 	double evaluate(int obj);
@@ -22,6 +23,8 @@ public:
 	void exchange(Individual * mom, Individual * dad, int * cuts_points_mom, int * cuts_points_dad);
 	static void clone(Individual * orig, Individual * &sister);
 	void print_individual();
+
+	void macro_mutation ();
 
 	Program * program = 0;
 	double fitness;
@@ -307,6 +310,64 @@ void Individual::crossover(Individual &genome1, Individual &genome2, Individual 
 	}
 }
 
+void Individual::macro_mutation (){
+	//Agrega o quita instrucciones  -- Alg. 6.1 -- p_ins > p_del //
+    int insertion = random_flip_coin(P_INS);
+    int mutation_point = randint(0, program->height - 2);
+    if (program->height < NUM_MAX_INSTRUCTIONS && (insertion || program->height == NUM_MIN_INSTRUCTIONS)){
+        // Si no supera la max. cant. de instrucciones y es insercion o tiene el numero minimo de instrucciones
+        Instruction new_instruction;
+        std::vector<int> reg_eff;
+        int to_mutate = program->get_effective_registers(mutation_point,reg_eff);
+        while (reg_eff.empty()) {
+        	 /* se da en el caso de que el punto de mutación esté por debajo de la última
+             * instrucción efectiva y ésta sea unaria con un operando constante
+             * cambiar el registro constante del operador unario por uno variable
+             */
+            program->list_inst[to_mutate].op2 = randint(VAR_MIN, VAR_MAX);
+            to_mutate  = program->get_effective_registers(mutation_point, reg_eff);
+        }
+
+        new_instruction.oper = reg_eff.at(randint(0, reg_eff.size() - 1));
+        Instruction * new_list = new Instruction[program->height + 1];
+
+        /*
+         * Insertar la nueva instrucciòn en la posición mutation_point
+         */
+		int pos = 0;
+		int i = 0;
+		//se copia parte 1
+		for (i = 0; i < mutation_point; i++){
+			new_list[pos] = program->list_inst[i];
+			pos++;
+		}
+		//Se copia la parte 4 - incluye ambos limites
+		new_list[pos] = new_instruction;
+		pos++;
+		//Se copia la parte 2 - se corre uno ya que se remplazo el punto de corte
+		for (i = mutation_point; i < program->height; i++){
+			new_list[pos] = program->list_inst[i];
+			pos++;
+		}
+		set_altered();
+        program->height += 1;
+        program->list_inst = new_list;
+	}
+    if (program->height > NUM_MIN_INSTRUCTIONS && (!insertion || program->height == NUM_MAX_INSTRUCTIONS)){
+    	//Si es mayor a la  min. cant. de instrucciones y  no es insercion o tiene el numero maximo de instrucciones
+    	int i = 0;
+        for (i = mutation_point; i < program->height - 1; i++){
+			program->list_inst[i] = program->list_inst[i+1];
+		}
+    	program->height -= 1;
+    	set_altered();
+    }
+    if (program->height > NUM_MAX_INSTRUCTIONS){
+    	std::cout<< "superado el número maximo de instrucciones MACRO";
+        std::cout<< "genome.height > Parameters.num_max_instructions";
+    }
+}
+
 /* TODO: FALTAN LOS SIGUIENTES METODOS
  * def macro_mutation(genome):
  * def micro_mutation(genome):
@@ -318,12 +379,12 @@ void Individual::crossover(Individual &genome1, Individual &genome2, Individual 
 
 Individual::
 def get_effective_instructions(self):
-        """
+        //
         intructions[i][0] = identificador de instucción
         intructions[i][1] = registro destino
         intructions[i][2] = registro operando 1
         intructions[i][3] = registro operando 2
-        """
+        //
         reg_eff = set([0])
         eff_i = []
         for i in reversed(self.genomeList):
@@ -393,12 +454,12 @@ def get_effective_instructions(self):
 
 
     def get_effective_registers(self, position):
-        """
+        //
         intructions[i][0] = identificador de instucción
         intructions[i][1] = registro destino
         intructions[i][2] = registro operando 1
         intructions[i][3] = registro operando 2
-        """
+        //
         reg_eff = set([0])
         current_pos = len(self.genomeList)
         for i in reversed(self.genomeList):
@@ -452,9 +513,9 @@ def get_effective_instructions(self):
 
 
     def eval_fitness(self):
-        """
+        //
         Función de evaluación de fitnes
-        """
+        //
         program = self.get_program_in_python()
         list_errors = []
         error_a_quad = 0.0
@@ -489,9 +550,9 @@ def get_effective_instructions(self):
             self.fitness = 1 / ((Parameters.w_ob1 * error_prom_quad) + (Parameters.w_ob2 * self.dev))
 
         except Exception as e:
-            """
+            //
             Si ocurre una excepción el fitness se iguala a cero (Overflow muy probablemente)
-            """
+            //
             print "EXCEPCION"
             print e
             print program
@@ -518,11 +579,11 @@ def get_effective_instructions(self):
 
 
     def eval_validation(self):
-        """
+        //
         Función de evaluación, dado un objeto con el atributo config_position
         retorna una lista del error cuadrático
         para cada línea del los casos de evaluación
-        """
+        //
 
         program = self.get_program_in_python()
         #in_t tiene las mediciones en el instante t
@@ -549,7 +610,7 @@ def get_effective_instructions(self):
 
 
     def __repr__(self):
-        """ Return a string representation of Genome """
+        // Return a string representation of Genome //
         ret = "#Index: %s\n" % (self.index)
         ret += "#Config Position: %s\n" % (self.config_position)
         ret += "#Training Error: %s\n" % (self.error)

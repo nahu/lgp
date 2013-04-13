@@ -53,6 +53,11 @@ int main() {
 	Individual * sister, * brother;
 
 	//i.eval_fitness();
-	Individual::crossover(g1,g2,sister,brother);
+	//Individual::crossover(g1,g2,sister,brother);
+	std::cout<<"*** Main: Lista original.\n";
+	Program::print_list_int(g2.program->list_inst, g2.program->height);
+	g2.macro_mutation();
+	std::cout<<"*** Main: Lista mutada.\n";
+	Program::print_list_int(g2.program->list_inst, g2.program->height);
 	return 0;
 }
