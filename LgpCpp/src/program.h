@@ -203,8 +203,11 @@ Program::Program(const Program& source) :
 	n_eff(source.n_eff),
 	height_eff_space(source.height_eff_space) {
 
-	//list_inst
+	list_inst = new Instruction[source.height];
+	list_reg = new double[NUM_INDIVIDUAL_REGISTERS];
 
+	std::copy(source.list_inst, source.list_inst + source.height, list_inst);
+	std::copy(source.list_reg, source.list_reg + NUM_INDIVIDUAL_REGISTERS, list_reg);
 }
 
 Program& Program::operator=(const Program& source) {
