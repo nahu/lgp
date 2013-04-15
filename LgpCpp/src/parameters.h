@@ -151,7 +151,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define P_REGMUT 0.50
 #define P_OPERMUT 0.45
 #define P_CONSTMUT 0.05
-#define STEP_SIZE_CONST 5
+#define STEP_SIZE_CONST 5.0
 
 #define P_CROSSOVER 0.10
 

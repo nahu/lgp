@@ -25,6 +25,9 @@ public:
 	void print_individual();
 
 	void macro_mutation ();
+	void micro_mutation ();
+	std::string select_micro_mutacion_type(float prob);
+	int get_random_register(int &op, std::vector<int> * reg_eff, Instruction * instruction);
 
 	Program * program = 0;
 	double fitness;
@@ -368,8 +371,140 @@ void Individual::macro_mutation (){
     }
 }
 
+int Individual::get_random_register(int &pos_to_replace, std::vector<int> * reg_eff = 0, Instruction * instruction = 0){
+    int _register = 0;
+    if (pos_to_replace == 1){ //destino
+        if (reg_eff->empty()){
+            if (instruction->oper < 5){
+            	//se hace que se mute uno de los registros operandos
+            	pos_to_replace = random_flip_coin(0.5) ? 2 : 3;
+            }else{
+            	//#operación unaria, se muta el operando 2 para que sea efectiva
+            	pos_to_replace = 3;
+            }
+        }else{
+            _register = reg_eff->at((randint(0, reg_eff->size())));
+        }
+    }
+    if (pos_to_replace == 2){ //operando 1
+        //Cambio: se permite al primer operando ser variable o constante de entrada
+        if (random_flip_coin(0.5))
+            _register = randint(VAR_MIN, VAR_MAX);
+        else
+            _register = randint(CONST_IN_MIN, CONST_IN_MAX);
+        _register = randint(VAR_MIN, VAR_MAX);
+    }
+    if (pos_to_replace == 3) {//operando 2
+        //operador 2 es constante con probabilidad p_const
+        if (random_flip_coin(P_REG_OP2_CONST)){
+            //Si va a ser constante, las constantes de entrada tienen mayor
+            //probabilidad que las aleatorias.
+            if (random_flip_coin(P_CONST_IN))
+                _register = randint(CONST_IN_MIN, CONST_IN_MAX);
+            else
+                _register = randint(CONST_AL_MIN, CONST_AL_MAX);
+        }else{
+            _register = randint(VAR_MIN, VAR_MAX);
+        }
+    }
+    return _register;
+}
+
+void Individual::micro_mutation (){
+    /* Muta las instrucciones efectivas internamente
+     * p_regmut = probabilidad de mutar un registro
+     * p_opermut = probabilidad de mutar una operación
+     * p_constmut = probabilidad de mutar una constante efectiva
+     */
+    Instruction * eff = program->get_effective_instructions();
+    int * indices = program->get_effective_instructions_with_indices();
+    std::vector<int> v_indices;
+    int index = randint(0, program->n_eff - 1);
+    Instruction * instruction = &program->effective_list_inst[index];
+    int mutation_point = indices[index];
+    int pos_to_replace = 0 ;
+    std::string type = select_micro_mutacion_type(_random());
+    int to_mutate = 0;
+    std::vector<int> * reg_eff;
+    int op = -1;
+    if (type == "constantes"){
+        std::vector<int> constants_indices = program->get_effective_constant_indices();
+        if (!constants_indices.empty()){
+            int ins_with_constant_index = randint(0,constants_indices.size());
+            int register_mutation_index = program->list_inst[ins_with_constant_index].op2;
+            program->list_reg[register_mutation_index] += pow((-1),(randint(0, 1)) * randfloat(0.0, STEP_SIZE_CONST));
+        }else{ //no hay instrucciones efectivas con registros constantes variables
+            type = select_micro_mutacion_type(_random());
+            //si vuelve a salir constante, se elige mutación de registro o operaciones con igual probabilidad
+            if (type == "constantes"){
+                type = random_flip_coin(0.5) ? "registros" :"operaciones";
+            }
+        }
+    }
+
+    if (type == "registros"){
+        if (program->n_eff== 1){
+        	//una sola instrucción efectiva, no se puede cambiar r[0]
+            if (instruction->oper< 5)
+                pos_to_replace = randint(2, 3);
+            else //operación unaria, cambiar el segundo operando
+                pos_to_replace = 3;
+        }else{
+            if (instruction->oper < 5)
+                pos_to_replace = randint(1, 3);
+            else //operación unaria, cambiar el segundo operando o el destino
+                pos_to_replace = random_flip_coin(0.5) ? 1 : 3;
+        }
+        if (pos_to_replace == 1){
+            //si no es el último índice, la última
+            if ((index + 1) < program->n_eff){
+                /*Se obtiene la lista de registros efectivos en esa posición, para reemplazar
+                 * en la instrucción y permitir que siga siendo efectiva                 *
+                 */
+                to_mutate = program->get_effective_registers(indices[index + 1], *reg_eff);
+                if (!reg_eff->empty()){
+                	std::vector<int>::iterator i = std::find(reg_eff->begin(), reg_eff->end(), instruction->dest);
+                	if (i!=reg_eff->end()){
+                		reg_eff->erase(i); //remover el registro destino de los registros efectivos
+                		op = get_random_register(pos_to_replace, reg_eff, instruction);
+                	}
+                }
+            }else { //el punto de mutación es la última instrucción con el r[0]
+            	if (instruction->oper < 5)
+                    pos_to_replace = randint(2, 3);
+                else //operación unaria, cambiar el segundo operando
+                    pos_to_replace = 3;
+                op = get_random_register(pos_to_replace);
+            }
+        }else{//para los casos de operandos 1 y 2
+        	op = get_random_register(pos_to_replace);
+        }
+        if(pos_to_replace == 2) instruction->op1=op;
+        if(pos_to_replace == 3) instruction->op2=op;
+        program->list_inst[mutation_point] = *instruction;
+    }
+    if (type == "operaciones"){
+        int diff_op = randint(OP_MIN, OP_MAX);
+        while (instruction->oper == diff_op)
+            diff_op = randint(OP_MIN, OP_MAX);
+        instruction->oper = diff_op;
+        program->list_inst[mutation_point] = *instruction;
+
+    set_altered();
+    }
+}
+std::string Individual::select_micro_mutacion_type(float prob){
+    if (prob <= P_REGMUT){
+        return "registros";
+    }else{
+    	if (prob > P_REGMUT && prob <= P_OPERMUT + P_REGMUT){
+    		return "operaciones";
+    	}else if (prob > (P_OPERMUT + P_REGMUT) && prob <= (P_OPERMUT+ P_REGMUT + P_CONSTMUT)){
+    		return "constantes";
+    	}
+    }
+}
 /* TODO: FALTAN LOS SIGUIENTES METODOS
- * def macro_mutation(genome):
  * def micro_mutation(genome):
  * def select_micro_mutacion_type(prob):
  * */
