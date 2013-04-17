@@ -142,6 +142,7 @@ public:
 	Instruction *effective_list_inst; //puntero dentro de la lista de abajo
 	Instruction *effective_memory_space;
 	int *effective_indices;
+	int *effective_indices_memory_space;
 	int height;
 	int height_eff_space;
 	int n_eff;
@@ -236,8 +237,8 @@ Program::~Program() {
 	if (effective_memory_space){
 		delete [] effective_memory_space;
 	}
-	if (effective_indices){
-		delete [] effective_indices;
+	if (effective_indices_memory_space){
+		delete [] effective_indices_memory_space;
 	}
 }
 
@@ -247,15 +248,14 @@ Instruction* Program::get_effective_instructions() {
 	std::set<int>::iterator it;
 
 	int indice = height;
-	int indice_indice = 0;
 
 	if (height_eff_space < height) {
 		if (effective_memory_space) {
 			delete [] effective_memory_space;
-			delete [] effective_indices;
+			delete [] effective_indices_memory_space;
 		}
 		effective_memory_space = new Instruction[height];
-		effective_indices = new int[height];
+		effective_indices_memory_space = new int[height];
 		height_eff_space = height;
 	}
 
@@ -280,8 +280,7 @@ Instruction* Program::get_effective_instructions() {
 			//eff_i.push_back(list_inst[i]);
 			indice--;
 			effective_memory_space[indice] = list_inst[i];
-			effective_indices[indice_indice] = i;
-			indice_indice++;
+			effective_indices_memory_space[indice] = i;
 		}
 	}
 
@@ -290,6 +289,7 @@ Instruction* Program::get_effective_instructions() {
 	//eff_i.reverse()
 	n_eff = height - indice;
 	effective_list_inst = &(effective_memory_space[indice]);
+	effective_indices = &(effective_indices_memory_space[indice]);
 
 	return effective_list_inst;
 }
