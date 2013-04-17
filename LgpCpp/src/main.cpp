@@ -13,6 +13,7 @@
 #include <ctime>
 #include <cmath>
 #include <set>
+//#include <new>
 #include <vector>
 #include <algorithm>
 #include <exception>
@@ -29,6 +30,7 @@
 #include "program.h"
 #include "individual.h"
 #include "deme.h"
+#include "lgp.h"
 
 
 //using namespace std;
@@ -48,16 +50,19 @@ int main() {
 		d->list_ind[i].print_individual();
 	}
 	*/
+	/*
 	Individual g2(2, 1);
 	Individual g1(1, 1);
 	Individual * sister, * brother;
-
+	*/
 	//i.eval_fitness();
 	//Individual::crossover(g1,g2,sister,brother);
+	/*
 	std::cout<<"*** Main: Lista original.\n";
 	Program::print_list_int(g2.program->list_inst, g2.program->height);
 	g2.macro_mutation();
 	std::cout<<"*** Main: Lista mutada.\n";
 	Program::print_list_int(g2.program->list_inst, g2.program->height);
+	*/
 	return 0;
 }

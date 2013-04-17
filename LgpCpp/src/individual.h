@@ -9,9 +9,12 @@
 
 class Individual {
 public:
-	Individual(int config_position);
 	Individual();
 	~Individual();
+	Individual(const Individual& source);
+	Individual& operator=(const Individual& source);
+	void create_new_individual(int _config_position);
+
 	//Evaluacion de fitness
 	void eval_fitness();
 	void set_altered();
@@ -31,7 +34,7 @@ public:
 
 	void macro_mutation ();
 
-	Program * program = 0;
+	Program * program;
 	double fitness;
 	double error;
 	double validation_error;
@@ -52,19 +55,46 @@ Individual::Individual() {
 	evaluated = false;
 }
 
-Individual::Individual(int config_position) {
-	fitness = 0.0;
-	error = 0.0;
-	sigma = 0.0;
-	validation_error = -1;
-	this->config_position = config_position;
-	evaluated = false;
+void Individual::create_new_individual(int _config_position) {
+	config_position = _config_position;
 	program = new Program;
+	//program->create_new_program();
 }
 
 Individual::~Individual() {
 	delete program;
 }
+
+
+Individual::Individual(const Individual& source) :
+	fitness(source.fitness),
+	error(source.error),
+	sigma(source.sigma),
+	validation_error(source.validation_error),
+	config_position(source.config_position),
+	evaluated(source.evaluated) {
+	program = new Program(*source.program);
+}
+
+Individual& Individual::operator=(const Individual& source) {
+	// check for self-assignment
+	if (this == &source)
+		return *this;
+
+	fitness = source.fitness;
+	error = source.error;
+	sigma = source.sigma;
+	validation_error = source.validation_error;
+	config_position = source.config_position;
+	evaluated = source.evaluated;
+
+	delete program;
+	program = new Program(*source.program);
+
+	return *this;
+}
+
+
 
 inline void Individual::set_altered() {
 	fitness = 0.0;
@@ -72,6 +102,11 @@ inline void Individual::set_altered() {
 }
 
 void Individual::eval_fitness() {
+	if (evaluated) {
+		//ya está evaluado
+		return;
+	}
+
 	double error_quad[TRAINING_LINES];
 	double error_a_quad = 0.0;
 	double error_prom_quad = 0.0;
@@ -110,9 +145,9 @@ void Individual::eval_fitness() {
 }
 
 
-double Individual::evaluate(int obj=FITNESS) {
+inline double Individual::evaluate(int obj=FITNESS) {
 	if (!evaluated) {
-		eval_fitness();
+		std::cout << "EVALUAR FITNESS ANTES DE USAR ESTA FUNCION!!!!";
 	}
 
 	if (obj == FITNESS) {
@@ -176,7 +211,7 @@ inline bool Individual::compare_sigma(Individual &x, Individual &y) {
 
 
 //devuelve true si x es mejor que y, es decir, x tiene menor error en validacion.
-inline bool compare_validation_error(Individual &x, Individual &y) {
+inline bool Individual::compare_validation_error(Individual &x, Individual &y) {
 	if (x.validation_error > y.validation_error) {
 		return false;
 	} else if (x.validation_error < y.validation_error) {
@@ -212,7 +247,7 @@ void Individual::print_individual() {
 
 	std::cout <<  "\n";
 	//std::cout.precision(15);
-	std::cout << "Registers: " << index << "\n";
+	std::cout << "Registers: " << "\n";
 	for (int i = 0; i < NUM_INDIVIDUAL_REGISTERS; i++) {
 		std::cout <<  "r_all[" << i << "] = " << program->list_reg[i] << "\n";
 	}
@@ -365,10 +400,10 @@ void Individual::crossover(Individual &genome1, Individual &genome2, Individual 
         //Se intercambian los bloques
         sister->exchange(mom, dad, cuts_points_mom, cuts_points_dad);
         brother->exchange(dad, mom, cuts_points_dad, cuts_points_mom);
-
+        /*
         sister->index = genome1.index;
         brother->index = genome2.index;
-
+		*/
         sister->check_max_min_instructions("sister", "Despues Crossover");
         brother->check_max_min_instructions("brother", "Despues Crossover");
 		delete mom; delete dad;

@@ -13,12 +13,12 @@ public:
 	int op1;
 	int op2;
 
-	Instruction (); //create_new_instruction();
+	void create_new_instruction();
 	void print_instruction();
 };
 
 
-Instruction::Instruction() {
+void Instruction::create_new_instruction() {
 	/*
 	reg_sal                      -> registro de salida
 	op_min, op_max               -> instrucciones
@@ -129,8 +129,11 @@ void Instruction::print_instruction() {
 
 class Program {
 public:
-	Program (); // sería ini_individual()
+	Program ();
 	~Program();
+	Program(const Program& source);
+	Program& operator=(const Program& source);
+	//void create_new_program();
 	Instruction* get_effective_instructions();
 	double execute_program(double * input);
 	int* get_effective_instructions_with_indices();
@@ -138,8 +141,8 @@ public:
 	int get_effective_registers(int position, std::vector<int> &indices);
 	static void print_list_int(Instruction * list_inst, int height);
 	static void init_registers();
-	Program& operator=(const Program& source);
-	Program(const Program& source);
+
+
 
 	Instruction *list_inst;
 	Instruction *effective_list_inst; //puntero dentro de la lista de abajo
@@ -204,27 +207,69 @@ Program::Program(const Program& source) :
 	height_eff_space(source.height_eff_space) {
 
 	list_inst = new Instruction[source.height];
-	list_reg = new double[NUM_INDIVIDUAL_REGISTERS];
-
 	std::copy(source.list_inst, source.list_inst + source.height, list_inst);
+
+	list_reg = new double[NUM_INDIVIDUAL_REGISTERS];
 	std::copy(source.list_reg, source.list_reg + NUM_INDIVIDUAL_REGISTERS, list_reg);
+
+	effective_memory_space = new Instruction[source.height];
+	std::copy(source.effective_memory_space, source.effective_memory_space + source.height, effective_memory_space);
+
+	effective_indices = new int[source.height];
+	std::copy(source.effective_indices, source.effective_indices + source.height, effective_indices);
+
+	effective_list_inst = &(effective_memory_space[source.height - source.n_eff]);
 }
 
 Program& Program::operator=(const Program& source) {
+	// check for self-assignment
+	if (this == &source)
+		return *this;
 
+	height = source.height;
+	n_eff = source.n_eff;
+	height_eff_space = source.height_eff_space;
 
-	Instruction *list_inst;
-	Instruction *effective_list_inst; //puntero dentro de la lista de abajo
-	Instruction *effective_memory_space;
-	int *effective_indices;
-	double *list_reg;
+	if (list_inst) {
+		delete [] list_inst;
+	}
+	list_inst = new Instruction[source.height];
+	std::copy(source.list_inst, source.list_inst + source.height, list_inst);
 
+	if (list_reg) {
+		delete [] list_reg;
+	}
+	list_reg = new double[NUM_INDIVIDUAL_REGISTERS];
+	std::copy(source.list_reg, source.list_reg + NUM_INDIVIDUAL_REGISTERS, list_reg);
+
+	if (effective_memory_space){
+		delete [] effective_memory_space;
+	}
+	effective_memory_space = new Instruction[height];
+	std::copy(source.effective_memory_space, source.effective_memory_space + height, effective_memory_space);
+
+	if (effective_indices){
+		delete [] effective_indices;
+	}
+	effective_indices = new int[height];
+	std::copy(source.effective_indices, source.effective_indices + height, effective_indices);
+
+	effective_list_inst = &(effective_memory_space[height - n_eff]);
+
+	return *this;
 }
 
+
+//void Program::create_new_program() {
 Program::Program() {
 	height = randint(NUM_MIN_INSTRUCTIONS, NUM_INI_INSTRUCTIONS);
 	n_eff = -1;
 	list_inst = new Instruction[height];
+
+	for (int i = 0; i < height; i++) {
+		list_inst[i].create_new_instruction();
+	}
+
 	effective_list_inst = 0;
 	effective_memory_space = 0;
 	effective_indices = 0;
@@ -320,9 +365,11 @@ Instruction* Program::get_effective_instructions() {
 	return effective_list_inst;
 }
 
+
 int* Program::get_effective_instructions_with_indices() {
 	return effective_indices;
 }
+
 
 std::vector<int> Program::get_effective_constant_indices() {
 	std::vector<int> indices;
@@ -336,6 +383,7 @@ std::vector<int> Program::get_effective_constant_indices() {
 	return indices;
 
 }
+
 
 int Program::get_effective_registers(int position, std::vector<int> &indices) {
 	std::set<int> reg_eff;
@@ -458,7 +506,7 @@ double Program::execute_program(double * input) {
 
 void Program::print_list_int(Instruction * list_inst, int height){
 	int i = 0;
-	for (i=0; i<height; i++){
+	for (i = 0; i < height; i++) {
 		std::cout<<i<<".\t|";
 		std::cout<<list_inst[i].oper<<"\t|";
 		std::cout<<list_inst[i].dest<<"\t|";
