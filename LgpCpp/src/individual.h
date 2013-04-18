@@ -42,10 +42,8 @@ public:
 	double error;
 	double validation_error;
 	double sigma; //era dev
-	int config_position; //ver si hace falta
+	int config_position;
 	bool evaluated;
-	//pasar todo lo que esta en la clase individuo
-	//poner acá los operadores genéticos
 };
 
 Individual::Individual() {

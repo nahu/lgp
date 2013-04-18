@@ -15,6 +15,7 @@ public:
 	Individual * best_individual_in_training();
 	bool termination_criteria();
 	void deme_evolve(int deme_index);
+	void evolve();
 
 	unsigned int generation;
 	unsigned int num_generation;
@@ -35,7 +36,7 @@ Lgp::Lgp(int config_position, int demes, int population_size, int num_generation
 	num_demes = demes;
 	population = new Deme[num_demes];
 
-	//paralelizar
+	//se podría paralelizar, create_new_deme también.. ver si es factible hacerlo en ambos lugares
 	for (int i = 0; i < num_demes; i++) {
 		population[i].create_new_deme(pop_size_per_deme, config_position);
 	}
@@ -67,12 +68,12 @@ Individual* Lgp::best_individual_in_training() {
 	return best;
 }
 
+
 inline bool Lgp::termination_criteria() {
 	return (generation > num_generation);
 }
 
-
-
+//se podría llevar a deme
 void Lgp::deme_evolve(int deme_index) {
 	std::vector<Participant> selected_indices;
 	//Individual ** to_tournament[2];
@@ -119,75 +120,51 @@ void Lgp::deme_evolve(int deme_index) {
 }
 
 
-/*
- * def deme_evolve(population):
-    '''Se reinician los indices, para hacer coincidir cada individuo.index con su posicion en internal_pop'''
-    population = resetIndex(population)
-    for gen in range(Parameters.gen_to_migrate):
-        to_tournament = []
-        '''Se seleccionan pool_size*2 diferentes posiciones en la poblacion para el torneo'''
-        selected_indices = population.indices_selection(Parameters.pool_size * 2)
+void Lgp::evolve() {
+	int for_replace;
+	int stats;
+	std::vector<Individual>::iterator ini, end, it;
 
-        to_tournament_indices = []
-        to_tournament_indices.append(selected_indices[:Parameters.pool_size])
-        to_tournament_indices.append(selected_indices[Parameters.pool_size:])
-        to_tournament.append(population.selection_from_indices(to_tournament_indices[0]))
-        to_tournament.append(population.selection_from_indices(to_tournament_indices[1]))
+	while(!termination_criteria()) {
+		generation++;
 
-        #iter_result = population.pool.imap(Population.tournament_with_mutation, to_tournament, Parameters.chunk_size)
-        winners = []
-        ''' ********************************* MUTACION  *********************************'''
-        for i in range(2):
-            ''' Se retorna una lista de la siguiente forma: [modificado, no_modificado] '''
-            result = Population.tournament_with_mutation(to_tournament[i])
-            winners.append(result)
-            #winners.append(iter_result.next())
+		for_replace = MIGRATION_RATE * population[0].deme_size;
+		std::cout << "for replace " << for_replace << "\n";
+		//for_replace_loosers = population[0].deme_size - for_replace_migration + 1;
 
-        ''' ********************************* CROSSOVER *********************************'''
-        if Util.random_flip_coin(Parameters.p_crossover):
-            sister, brother = Population.crossover(winners[0][0], winners[1][0])
-            Individual.check_destination_register(sister)
-            Individual.check_destination_register(brother)
+		//paralelizar
+		for (int i = 0; i < num_demes; i++) {
+			deme_evolve(i);
+		}
 
-            if not sister.index == winners[0][0].index:
-                winners[0][0] = brother
-                winners[1][0] = sister
+		for (int i = 0; i < num_demes; i++) {
+			if (random_flip_coin(P_MIGRATION)) {
+				ini = population[num_demes - 1].list_ind->end() - for_replace;
+				end = population[num_demes - 1].list_ind->end();
+				it = population[0].list_ind->begin();
 
-            if not Population.check_out_register(winners[0][0]) or not Population.check_out_register(winners[1][0]):
-                print 'ERROR: [LgpMain.deme_evolve]: El crossover dejo individuos sin registros de salida.'
+				int cont = 0;
 
-        for i in range(2):
-            ''' Se elimina de la lista de participantes del torneo al ganador, para remplazar a los perdedores'''
-            try:
-                del to_tournament_indices[i][to_tournament[i].index(winners[i][1])]
-            except:
-                print "ERROR: [LgpMain.deme_evolve]: Error al eliminar el indice del ganador del torneo " + str(i)
+				for ( ; ini != end; ++ini) {
+					*ini = *it;
+					it++;
+					cont++;
+				}
+				if (cont != for_replace) {
+					std::cout << "no se copio todo " << cont << "\n";
+				}
+			}
+		}
 
-            ''' best_replace = index_of_best([modificado, no_modificado])'''
-            best_replace = 0 if Individual.compare(winners[i][0],winners[i][1]) == 1 else 1
-            worst_replace = 1 if best_replace == 0 else 0
+		if ((generation % FREQ_STATS) == 0) {
+			std::cout << "\n==================================================\n";
+			std::cout << "Generación #" << generation;
+			std::cout << "\n==================================================\n";
+			best_individual_in_training();
+		}
 
-            ''' Se remplaza los perdedores por el mejor entre (ganador modificado, ganador NO modificado)
-            y se actualizan los indices dentro de la población '''
-            for l in to_tournament_indices[i]:
-                indice = population.internal_pop[l].index
-                population.internal_pop[l] = winners[i][best_replace].clone()
-                population.internal_pop[l].index = indice
-            '''
-            Como ya se remplazo a los perdedores por el mejor, se remplaza al ganador por el peor. Hay mas copias del mejor.
-            '''
-            population.internal_pop[winners[i][0].index] = winners[i][worst_replace].clone().set_index(winners[i][0].index)
 
-    '''Se ordena la población de mayor a menor, según el error promedio o la desviación típica
-    según una cierta probabilidad'''
-    if (Util.random_flip_coin(Parameters.p_migration_criteria)):
-        (population.internal_pop).sort(cmp=Individual.compare_error_prom, reverse = True)
-    else:
-        (population.internal_pop).sort(cmp=Individual.compare_deviation_in_error, reverse = True)
 
-    for i in population.internal_pop:
-        if not i.evaluated:
-            print "ERROR: METODO DE ORDENACION FALLO."
+	}
+}
 
-    return population
- */

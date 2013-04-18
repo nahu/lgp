@@ -153,7 +153,7 @@ public:
 	int height_eff_space;
 	int n_eff;
 	double *list_reg;
-	int name;
+	//int name;
 
 	static double R_OUT[NUM_OUT_REGISTERS];
 	static double R_VAR[NUM_VAR_REGISTER];
@@ -216,10 +216,11 @@ Program::Program(const Program& source) :
 	effective_memory_space = new Instruction[source.height];
 	std::copy(source.effective_memory_space, source.effective_memory_space + source.height, effective_memory_space);
 
-	effective_indices = new int[source.height];
-	std::copy(source.effective_indices, source.effective_indices + source.height, effective_indices);
+	effective_indices_memory_space = new int[source.height];
+	std::copy(source.effective_indices_memory_space, source.effective_indices_memory_space + source.height, effective_indices_memory_space);
 
 	effective_list_inst = &(effective_memory_space[source.height - source.n_eff]);
+	effective_indices = &(effective_indices_memory_space[source.height - source.n_eff]);
 }
 
 Program& Program::operator=(const Program& source) {
@@ -249,13 +250,14 @@ Program& Program::operator=(const Program& source) {
 	effective_memory_space = new Instruction[height];
 	std::copy(source.effective_memory_space, source.effective_memory_space + height, effective_memory_space);
 
-	if (effective_indices){
-		delete [] effective_indices;
+	if (effective_indices_memory_space){
+		delete [] effective_indices_memory_space;
 	}
-	effective_indices = new int[height];
-	std::copy(source.effective_indices, source.effective_indices + height, effective_indices);
+	effective_indices_memory_space = new int[height];
+	std::copy(source.effective_indices_memory_space, source.effective_indices_memory_space + height, effective_indices_memory_space);
 
 	effective_list_inst = &(effective_memory_space[height - n_eff]);
+	effective_indices = &(effective_indices_memory_space[height - n_eff]);
 
 	return *this;
 }
