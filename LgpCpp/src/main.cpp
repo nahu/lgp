@@ -13,6 +13,7 @@
 #include <ctime>
 #include <cmath>
 #include <set>
+//#include <new>
 #include <vector>
 #include <algorithm>
 #include <exception>
@@ -29,6 +30,7 @@
 #include "program.h"
 #include "individual.h"
 #include "deme.h"
+#include "lgp.h"
 
 
 //using namespace std;
@@ -48,18 +50,35 @@ int main() {
 		d->list_ind[i].print_individual();
 	}
 	*/
-	Individual g2(2, 1);
-	Individual g1(1, 1);
-	Individual sister, brother;
+
+	Individual g2;
+	Individual g1;
+	g1.create_new_individual(1);
+	g2.create_new_individual(1);
+
+	Individual * sister, * brother;
+	sister = new Individual;
+	brother = new Individual;
+
+	std::cout<<"Antes del crossover \n";
+	std::cout<<"*** Main: Lista g1.\n";
+	Program::print_list_int(g1.program->list_inst, g1.program->height);
+
+	std::cout<<"*** Main: Lista g2.\n";
+	Program::print_list_int(g2.program->list_inst, g2.program->height);
 
 	//i.eval_fitness();
-	Individual::crossover(g1,g2,sister,brother);
+	Individual::crossover(g1,g2, sister, brother);
 	std::cout<<"Despues crossover \n";
 	std::cout<<"*** Main: Lista sister.\n";
-	Program::print_list_int(sister.program->list_inst, sister.program->height);
+	Program::print_list_int(sister->program->list_inst, sister->program->height);
 
 	std::cout<<"*** Main: Lista brother.\n";
-	Program::print_list_int(brother.program->list_inst, brother.program->height);/*while(1){
+	Program::print_list_int(brother->program->list_inst, brother->program->height);
+
+	/*
+	while(1){
+
 	std::cout<<"*** Main: Lista original.\n";
 	Program::print_list_int(g2.program->list_inst, g2.program->height);
 	g2.micro_mutation();
@@ -69,6 +88,7 @@ int main() {
 	std::cout<<"*** Main: Lista mutada 2.\n";
 	Program::print_list_int(g2.program->list_inst, g2.program->height);
 
-	}*/
+	*/
+
 	return 0;
 }
