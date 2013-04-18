@@ -61,4 +61,5 @@ LgpPython/data/Parameters*
 #Binarios del proyecto CPP
 LgpCpp/Debug/
 LgpCpp/Release/
+LgpCpp/results
 
