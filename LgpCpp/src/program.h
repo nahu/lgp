@@ -130,6 +130,7 @@ void Instruction::print_instruction() {
 class Program {
 public:
 	Program ();
+	Program (int new_height);
 	~Program();
 	Program(const Program& source);
 	Program& operator=(const Program& source);
@@ -141,7 +142,6 @@ public:
 	int get_effective_registers(int position, std::vector<int> &indices);
 	static void print_list_int(Instruction * list_inst, int height);
 	static void init_registers();
-
 
 
 	Instruction *list_inst;
@@ -316,6 +316,18 @@ Program::~Program() {
 	}
 }
 
+Program::Program(int new_height) {
+	height = new_height;
+	n_eff = -1;
+	list_inst = new Instruction[height];
+	list_reg = new double[NUM_INDIVIDUAL_REGISTERS];
+
+	effective_list_inst = 0;
+	effective_memory_space = 0;
+	effective_indices = 0;
+	effective_indices_memory_space = 0;
+	height_eff_space = 0;
+}
 
 Instruction* Program::get_effective_instructions() {
 	std::set<int> reg_eff;
