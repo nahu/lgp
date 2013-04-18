@@ -203,6 +203,7 @@ Program::Program() {
 	effective_list_inst = 0;
 	effective_memory_space = 0;
 	effective_indices = 0;
+	effective_indices_memory_space = 0;
 	height_eff_space = 0;
 
 	//Asegurar que la última instrucción tenga como registro destino al registro de salida
@@ -306,7 +307,6 @@ std::vector<int> Program::get_effective_constant_indices() {
 			indices.push_back(effective_indices[n_eff - i]);
 		}
 	}
-
 	return indices;
 
 }

@@ -19,9 +19,9 @@ public:
 
 	//operadores genéticos
 	void check_max_min_instructions (std::string name, std::string place);
-	static void crossover(Individual &genome1, Individual &genome2, Individual * &sister, Individual * &brother);
+	static void crossover(Individual &genome1, Individual &genome2, Individual &sister, Individual &brother);
 	void exchange(Individual * mom, Individual * dad, int * cuts_points_mom, int * cuts_points_dad);
-	static void clone(Individual * orig, Individual * &sister);
+	void clone(Individual * orig);
 	void print_individual();
 
 	void macro_mutation ();
@@ -153,16 +153,20 @@ void Individual::print_individual() {
 
 }
 
-void Individual::clone(Individual * orig, Individual * &copy){
-     copy = new Individual();
-     *copy = *orig;
-     copy->program = new Program;
-     *copy->program = *orig->program;
-     copy->program->list_inst = 0;
-     copy->program->list_inst = new Instruction [orig->program->height];
-     copy->program->list_reg = new double [NUM_INDIVIDUAL_REGISTERS];
-     std::copy(orig->program->list_inst, orig->program->list_inst + orig->program->height, copy->program->list_inst );
-     std::copy(orig->program->list_reg, orig->program->list_reg + NUM_INDIVIDUAL_REGISTERS, copy->program->list_reg);
+void Individual::clone(Individual * orig){
+	fitness = orig->fitness;
+	error = orig->error;
+	sigma = orig->sigma;
+	index = orig->index;
+	config_position = orig->config_position; //ver si hace falta
+	evaluated = 0;
+	program = new Program;
+	*program = *orig->program;
+	program->list_inst = 0;
+	program->list_inst = new Instruction [orig->program->height];
+	program->list_reg = new double [NUM_INDIVIDUAL_REGISTERS];
+	std::copy(orig->program->list_inst, orig->program->list_inst + orig->program->height, program->list_inst );
+	std::copy(orig->program->list_reg, orig->program->list_reg + NUM_INDIVIDUAL_REGISTERS, program->list_reg);
 }
 
 
@@ -218,8 +222,8 @@ void Individual::exchange(Individual * g1, Individual * g2, int g1_cuts_p [2], i
 	std::cout<<"Tamanhos:"<<new_len<<"\n parte 1="<<g1_cuts_p[0]<<
 		"\n parte 2 = "<< g2_cuts_p[1] - g2_cuts_p[0] + 1<<
 		"\n parte 3= " << (g1->program->height - g1_cuts_p[1] - 1)<<"\n";
-	std::cout << "***************************************"<<"\n";
-	*//* hasta aca*/
+	std::cout << "***************************************"<<"\n";*/
+	/* hasta aca*/
 
 	int pos = 0;
 	//se copia parte 1
@@ -239,73 +243,71 @@ void Individual::exchange(Individual * g1, Individual * g2, int g1_cuts_p [2], i
 	}
 	set_altered();
 }
-void Individual::crossover(Individual &genome1, Individual &genome2, Individual * &sister, Individual * &brother) {
+void Individual::crossover(Individual &genome1, Individual &genome2, Individual &sister, Individual &brother) {
 	genome1.check_max_min_instructions("genome1", "Antes Crossover");
 	genome2.check_max_min_instructions("genome2", "Antes Crossover");
-	Individual  *dad, *mom;
+	Individual  dad, mom;
 	int cuts_points_mom [2]= {0,0};
 	int cuts_points_dad [2]= {0,0};
 
 	if(genome1.program->height >= genome2.program->height ){
-		clone(&genome2, mom);
-		clone(&genome1, dad);
+		mom.clone(&genome2);
+		dad.clone(&genome1);
 	}else{
-		clone(&genome1, mom);
-		clone(&genome2, dad);
+		mom.clone(&genome1);
+		dad.clone(&genome2);
 	}
 	try{
-		int max_segment_size_mom = mom->program->height - 1;
+		int max_segment_size_mom = mom.program->height - 1;
 		//al menos 1 instruccion menos la ultima.
 		int mom_segment_size = randint(1, max_segment_size_mom);
-		int max_padding_mom = mom->program->height - mom_segment_size - 1;
+		int max_padding_mom = mom.program->height - mom_segment_size - 1;
 		//desde donde se puede comenzar para que alcancen las instrucciones del segmento a cruzar
 		cuts_points_mom[0] = randint(0, max_padding_mom);
 		cuts_points_mom[1] = cuts_points_mom[0] + mom_segment_size;
 
 		//para que no incluya a la ultima instruccion.
-		cuts_points_mom[1] = (cuts_points_mom[1] == mom->program->height-1)? cuts_points_mom[1] - 1 :cuts_points_mom[1] ;
+		cuts_points_mom[1] = (cuts_points_mom[1] == mom.program->height-1)? cuts_points_mom[1] - 1 :cuts_points_mom[1] ;
 
 		//el máximo segmento a cruzar es lo que le falta al mom para completar el máximo número de instrucciones permitidas
-		int max_segment_full_mom = NUM_MAX_INSTRUCTIONS - (mom->program->height - mom_segment_size);
-		int max_segment_num_min_in_dad = (dad->program->height + mom_segment_size) - NUM_MIN_INSTRUCTIONS;
+		int max_segment_full_mom = NUM_MAX_INSTRUCTIONS - (mom.program->height - mom_segment_size);
+		int max_segment_num_min_in_dad = (dad.program->height + mom_segment_size) - NUM_MIN_INSTRUCTIONS;
 		//se elije el menor de los máximos
         int max_segment_size_dad = max_segment_full_mom < max_segment_num_min_in_dad ? max_segment_full_mom : max_segment_num_min_in_dad;
 
         //si el maximo es mayor a la longitud del padre, se elige la longitud como máximo
-        max_segment_size_dad = (dad->program->height - 1) < max_segment_size_dad ? (dad->program->height - 1) : max_segment_size_dad;
+        max_segment_size_dad = (dad.program->height - 1) < max_segment_size_dad ? (dad.program->height - 1) : max_segment_size_dad;
 
         //lo que hay que quitarle para que quede en máximo número de instrucciones
-        int min_segment_full_dad = (dad->program->height + mom_segment_size) - NUM_MAX_INSTRUCTIONS;
+        int min_segment_full_dad = (dad.program->height + mom_segment_size) - NUM_MAX_INSTRUCTIONS;
 
         //lo que falta para completar el mínimo número de instrucciones al mom
-        int min_segment_size_num_min_in_mom = NUM_MIN_INSTRUCTIONS - (mom->program->height - mom_segment_size);
+        int min_segment_size_num_min_in_mom = NUM_MIN_INSTRUCTIONS - (mom.program->height - mom_segment_size);
 
         int min_segment_size_dad = (min_segment_full_dad > min_segment_size_num_min_in_mom) ? min_segment_full_dad : min_segment_size_num_min_in_mom;
         min_segment_size_dad = min_segment_size_dad <= 0 ? 1 :min_segment_size_dad;
 
         int dad_segment_size = randint(min_segment_size_dad, max_segment_size_dad);
-        int max_padding_dad = dad->program->height - dad_segment_size - 1;
+        int max_padding_dad = dad.program->height - dad_segment_size - 1;
 
         //desde donde se puede comenzar para que alcancen las instrucciones del segmento a cruzar
 
 		cuts_points_dad[0] = randint(0, max_padding_dad);
 		cuts_points_dad[1] = cuts_points_dad[0] + dad_segment_size - 2;
 		//para que no incluya a la ultima instruccion.
-		cuts_points_dad[1] = (cuts_points_dad[1] == dad->program->height-1) ?cuts_points_dad[1] - 1 : cuts_points_dad[1];
+		cuts_points_dad[1] = (cuts_points_dad[1] == dad.program->height-1) ?cuts_points_dad[1] - 1 : cuts_points_dad[1];
 
 		//Se clonan los individuos
-        clone(mom, sister);
-        clone(dad, brother);
+        sister.clone(&mom);
+        brother.clone(&dad);
         //Se intercambian los bloques
-        sister->exchange(mom, dad, cuts_points_mom, cuts_points_dad);
-        brother->exchange(dad, mom, cuts_points_dad, cuts_points_mom);
+        sister.exchange(&mom, &dad, cuts_points_mom, cuts_points_dad);
+        brother.exchange(&dad, &mom, cuts_points_dad, cuts_points_mom);
+        sister.index = genome1.index;
+        brother.index = genome2.index;
 
-        sister->index = genome1.index;
-        brother->index = genome2.index;
-
-        sister->check_max_min_instructions("sister", "Despues Crossover");
-        brother->check_max_min_instructions("brother", "Despues Crossover");
-		delete mom; delete dad;
+        sister.check_max_min_instructions("sister", "Despues Crossover");
+        brother.check_max_min_instructions("brother", "Despues Crossover");
 	}catch (std::exception e) {
 		std::cout << "Error en Crossover";
 		std::cout<< e.what();
@@ -420,17 +422,29 @@ void Individual::micro_mutation (){
      * p_constmut = probabilidad de mutar una constante efectiva
      */
     Instruction * eff = program->get_effective_instructions();
-
+    std::cout<<"Lista de registros efectivos"<<"\n";
     Program::print_list_int(eff, program->n_eff);
+    std::cout<<"Antes de get_effectiv_inst_with_ind"<<"\n";
     int * indices = program->get_effective_instructions_with_indices();
+    std::cout<<"Despues de get_effect.withindices"<<"\n";
     std::vector<int> v_indices;
+    std::cout<<"randint"<<"\n";
     int index = randint(0, program->n_eff - 1);
+    std::cout<<"mutationpoint "<<indices[index]<<"\n";
     int mutation_point = indices[index];
     int pos_to_replace = 0 ;
+    std::cout<<"antes de select_micro_mutacion_type"<<"\n";
     std::string type = select_micro_mutacion_type(_random());
+    std::cout<<"despues de select_micro_mutacion_type"<<"\n";
     int op = -1;
+    std::cout<<"Tipo de mutacion: "<<type<<"\n";
+    type = "constantes";
     if (type == "constantes"){
+    	std::cout<<"Constantes> program->get_effective_constant_indices()"<<"\n";
         std::vector<int> constants_indices = program->get_effective_constant_indices();
+        std::cout<<"Constantes despues > program->get_effective_constant_indices()"<<"\n";
+        //todo: No guarda en constants_indices los indices *aveces
+        std::cout<<"size "<<constants_indices.size();
         if (!constants_indices.empty()){
             int ins_with_constant_index = constants_indices.at(randint(0,constants_indices.size()-1));
             int register_mutation_index = program->list_inst[ins_with_constant_index].op2;
@@ -438,25 +452,33 @@ void Individual::micro_mutation (){
         }else{ //no hay instrucciones efectivas con registros constantes variables
             type = select_micro_mutacion_type(_random());
             //si vuelve a salir constante, se elige mutación de registro o operaciones con igual probabilidad
+            std::cout<<"si vuelve a salir constante, se elige mutación de registro o operaciones con igual probabilidad\n";
             if (type == "constantes"){
                 type = random_flip_coin(0.5) ? "registros" :"operaciones";
+                std::cout<<"NUEVO TIPO DE MUTACCION> "<<type<<"\n";
             }
         }
     }
 
     if (type == "registros"){
         if (program->n_eff== 1){
+        	std::cout<<"registros > n_eff ==1 > una sola instrucción efectiva, no se puede cambiar r[0] \n";
         	//una sola instrucción efectiva, no se puede cambiar r[0]
-            if (program->list_inst[mutation_point].oper< 5)
+            if (program->list_inst[mutation_point].oper< 5){
                 pos_to_replace = randint(2, 3);
-            else //operación unaria, cambiar el segundo operando
+                std::cout<<"No es unaria \n	";
+            }
+            else{ //operación unaria, cambiar el segundo operando
+            	std::cout<<"operación unaria, cambiar el segundo operando\n";
                 pos_to_replace = 3;
+            }
         }else{
             if (program->list_inst[mutation_point].oper < 5)
                 pos_to_replace = randint(1, 3);
             else //operación unaria, cambiar el segundo operando o el destino
                 pos_to_replace = random_flip_coin(0.5) ? 1 : 3;
         }
+        std::cout<<"registros> pos_to_replace> "<<pos_to_replace<<"\n";
         if (pos_to_replace == 1){ //destino
             //si no es el último índice, la última
 
