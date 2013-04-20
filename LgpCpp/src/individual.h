@@ -636,14 +636,17 @@ void Individual::micro_mutation() {
 	int pos_to_replace = 0;
 	std::string type = select_micro_mutacion_type(_random());
 	int op = -1;
+	int ins_with_constant_index, register_mutation_index;
+	std::vector<int> constants_indices;
 	if (type == "constantes") {
-		std::vector<int> constants_indices =
+		constants_indices =
 				program->get_effective_constant_indices();
 		if (!constants_indices.empty()) {
-			int ins_with_constant_index = constants_indices.at(
+			ins_with_constant_index = constants_indices.at(
 					randint(0, constants_indices.size() - 1));
-			int register_mutation_index =
+			register_mutation_index =
 					program->list_inst[ins_with_constant_index].op2;
+			std::cout<<"\nprogram->list_reg["<< register_mutation_index<<"] = "<<program->list_reg[register_mutation_index]<<"\n";
 			program->list_reg[register_mutation_index] += pow((-1),
 					(randint(0, 1)) * randfloat(0.0, STEP_SIZE_CONST));
 		} else {
@@ -718,11 +721,20 @@ void Individual::micro_mutation() {
 	}
 	set_altered();
 	//para borrar desde aca
+	std::cout<<"##Info de control: "<<"\n";
+	std::cout<<"Instrucciones efectivas:\n";
+	Program::print_list_int(eff, program->n_eff);
 	std::cout<<"Mutation type = "<<type<<"\nMutation_point = "<<mutation_point<< "\npos_to_replace = "<<pos_to_replace<<"\n";
 	if (type=="operaciones"){
 		std::cout<<"Nueva operacion = " << diff_op <<"\n";
-	}else{
+	}else if (type == "registros"){
 		std::cout<<"Nuevo Registro = " << op<<"\n";
+	}else{
+		std::cout<<"Constantes efectivas: \n";
+		for (int i = 0; i<constants_indices.size(); i++){
+			std::cout<<constants_indices.at(i)<<"  ";
+		}
+		std::cout<<"\nNuevo valor de program->list_reg["<< register_mutation_index<<"] = "<<program->list_reg[register_mutation_index]<<"\n";
 	}
 	//hasta aca
 }
