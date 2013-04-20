@@ -22,7 +22,7 @@ public:
 
 	//operadores genéticos
 	void check_max_min_instructions (std::string name, std::string place);
-	static void crossover(Individual &genome1, Individual &genome2, Individual * &sister, Individual * &brother);
+	static void crossover(Individual * &genome1, Individual * &genome2);
 	//void exchange(Individual &mom, Individual &dad, int * cuts_points_mom, int * cuts_points_dad);
 	void clone(Individual * orig);
 	void print_individual();
@@ -47,6 +47,46 @@ public:
 	int config_position;
 	bool evaluated;
 };
+
+//para la función de comparación de std::sort
+struct compare_ob1 {
+	inline bool operator() (const Individual &x, const Individual &y) {
+		if (x.error > y.error) {
+			return false;
+		} else if (x.error < y.error) {
+			return true;
+		} else if (x.error == y.error) {
+			if (x.program->n_eff < y.program->n_eff) {
+				return true;
+			} else if (x.program->n_eff > y.program->n_eff) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+};
+
+
+struct compare_ob2 {
+	inline bool operator() (const Individual &x, const Individual &y) {
+		if (x.sigma > y.sigma) {
+			return false;
+		} else if (x.sigma < y.sigma) {
+			return true;
+		} else if (x.sigma == y.sigma) {
+			if (x.program->n_eff < y.program->n_eff) {
+				return true;
+			} else if (x.program->n_eff > y.program->n_eff) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+};
+
+
 
 Individual::Individual() {
 	fitness = 0.0;
@@ -354,9 +394,9 @@ void Individual::exchange(Individual& g1, Individual& g2, int * g1_cuts_p, int *
 
 */
 
-void Individual::crossover(Individual &genome1, Individual &genome2, Individual * &child1, Individual * &child2) {
-	genome1.check_max_min_instructions("genome1", "Antes Crossover");
-	genome2.check_max_min_instructions("genome2", "Antes Crossover");
+void Individual::crossover(Individual * &genome1, Individual * &genome2) {//, Individual * &child1, Individual * &child2
+	genome1->check_max_min_instructions("genome1", "Antes Crossover");
+	genome2->check_max_min_instructions("genome2", "Antes Crossover");
 	Individual * mom, * sister;
 	Individual * dad, * brother;
 
@@ -375,17 +415,17 @@ void Individual::crossover(Individual &genome1, Individual &genome2, Individual 
 	int max_padding_dad;
 	bool change = false;
 
-	if (genome1.program->height >= genome2.program->height) {
-		mom = &genome2;
-		dad = &genome1;
+	if (genome1->program->height >= genome2->program->height) {
+		mom = genome2;
+		dad = genome1;
 		change = true;
-		sister = child2;
-		brother = child1;
+		//sister = dad;
+		//brother = child1;
 	} else {
-		mom = &genome1;
-		dad = &genome2;
-		sister = child1;
-		brother = child2;
+		mom = genome1;
+		dad = genome2;
+		//sister = child1;
+		//brother = child2;
 	}
 
 	try {
@@ -445,24 +485,27 @@ void Individual::crossover(Individual &genome1, Individual &genome2, Individual 
 		cuts_points_dad[0] = randint(0, max_padding_dad);
 		cuts_points_dad[1] = cuts_points_dad[0] + dad_segment_size;
 
-		//Se clonan los individuos
-		//sister = *mom;
-		//brother = *dad;
+		//Se crean nuevos temporales
+		sister = new Individual;
+		brother = new Individual;
+
 		std::cout << "cp mon : " << cuts_points_mom[0] << " , " << cuts_points_mom[1] << "\n";
 		std::cout << "cp dad : " << cuts_points_dad[0] << " , " << cuts_points_dad[1] << "\n";
 
+		//Se intercambian los bloques en los nuevos creados
 		sister->exchange(mom, dad, cuts_points_mom, cuts_points_dad);
 		brother->exchange(dad, mom, cuts_points_dad, cuts_points_mom);
-		//Se intercambian los bloques
 
-		//sister.exchange(&mom, &dad, cuts_points_mom, cuts_points_dad);
-		//brother.exchange(&dad, &mom, cuts_points_dad, cuts_points_mom);
-		//sister.index = genome1.index;
-		//brother.index = genome2.index;
+		//se borran las copias creadas para la macro y micro
+		delete genome1;
+		delete genome2;
 
 		if (change) {
-			child1 = sister;
-			child2 = brother;
+			genome2 = sister;
+			genome1 = brother;
+		} else {
+			genome1 = sister;
+			genome2 = brother;
 		}
 
 		sister->check_max_min_instructions("sister", "Despues Crossover");
@@ -475,223 +518,245 @@ void Individual::crossover(Individual &genome1, Individual &genome2, Individual 
 	}
 }
 
-void Individual::macro_mutation (){
+void Individual::macro_mutation() {
 	//Agrega o quita instrucciones  -- Alg. 6.1 -- p_ins > p_del //
-    int insertion = random_flip_coin(P_INS);
-    int mutation_point = randint(0, program->height - 2);
-    if (program->height < NUM_MAX_INSTRUCTIONS && (insertion || program->height == NUM_MIN_INSTRUCTIONS)){
-        // Si no supera la max. cant. de instrucciones y es insercion o tiene el numero minimo de instrucciones
-        Instruction new_instruction;
-        std::vector<int> reg_eff;
-        int to_mutate = program->get_effective_registers(mutation_point,reg_eff);
-        while (reg_eff.empty()) {
-        	 /* se da en el caso de que el punto de mutación esté por debajo de la última
-             * instrucción efectiva y ésta sea unaria con un operando constante
-             * cambiar el registro constante del operador unario por uno variable
-             */
-            program->list_inst[to_mutate].op2 = randint(VAR_MIN, VAR_MAX);
-            to_mutate  = program->get_effective_registers(mutation_point, reg_eff);
-        }
+	int insertion = random_flip_coin(P_INS);
+	int mutation_point = randint(0, program->height - 2);
+	if (program->height < NUM_MAX_INSTRUCTIONS
+			&& (insertion || program->height == NUM_MIN_INSTRUCTIONS)) {
+		// Si no supera la max. cant. de instrucciones y es insercion o tiene el numero minimo de instrucciones
+		Instruction new_instruction;
+		std::vector<int> reg_eff;
+		int to_mutate = program->get_effective_registers(mutation_point,
+				reg_eff);
+		while (reg_eff.empty()) {
+			/* se da en el caso de que el punto de mutación esté por debajo de la última
+			 * instrucción efectiva y ésta sea unaria con un operando constante
+			 * cambiar el registro constante del operador unario por uno variable
+			 */
+			program->list_inst[to_mutate].op2 = randint(VAR_MIN, VAR_MAX);
+			to_mutate = program->get_effective_registers(mutation_point,
+					reg_eff);
+		}
 
-        new_instruction.oper = reg_eff.at(randint(0, reg_eff.size() - 1));
-        Instruction * new_list = new Instruction[program->height + 1];
+		new_instruction.oper = reg_eff.at(randint(0, reg_eff.size() - 1));
+		Instruction * new_list = new Instruction[program->height + 1];
 
-        /*
-         * Insertar la nueva instrucciòn en la posición mutation_point
-         */
+		/*
+		 * Insertar la nueva instrucciòn en la posición mutation_point
+		 */
 		int pos = 0;
 		int i = 0;
 		//se copia parte 1
-		for (i = 0; i < mutation_point; i++){
+		for (i = 0; i < mutation_point; i++) {
 			new_list[pos] = program->list_inst[i];
 			pos++;
 		}
+
 		//Se copia la parte 4 - incluye ambos limites
 		new_list[pos] = new_instruction;
 		pos++;
 		//Se copia la parte 2 - se corre uno ya que se remplazo el punto de corte
-		for (i = mutation_point; i < program->height; i++){
+		for (i = mutation_point; i < program->height; i++) {
 			new_list[pos] = program->list_inst[i];
 			pos++;
 		}
 		set_altered();
-        program->height += 1;
-        program->list_inst = new_list;
+		program->height += 1;
+		program->list_inst = new_list;
 	}
-    if (program->height > NUM_MIN_INSTRUCTIONS && (!insertion || program->height == NUM_MAX_INSTRUCTIONS)){
-    	//Si es mayor a la  min. cant. de instrucciones y  no es insercion o tiene el numero maximo de instrucciones
-    	int i = 0;
-        for (i = mutation_point; i < program->height - 1; i++){
-			program->list_inst[i] = program->list_inst[i+1];
+	if (program->height > NUM_MIN_INSTRUCTIONS
+			&& (!insertion || program->height == NUM_MAX_INSTRUCTIONS)) {
+		//Si es mayor a la  min. cant. de instrucciones y  no es insercion o tiene el numero maximo de instrucciones
+		int i = 0;
+		for (i = mutation_point; i < program->height - 1; i++) {
+			program->list_inst[i] = program->list_inst[i + 1];
 		}
-    	program->height -= 1;
-    	set_altered();
-    }
-    if (program->height > NUM_MAX_INSTRUCTIONS){
-    	std::cout<< "superado el número maximo de instrucciones MACRO";
-        std::cout<< "genome.height > Parameters.num_max_instructions";
-    }
+		program->height -= 1;
+		set_altered();
+	}
+	if (program->height > NUM_MAX_INSTRUCTIONS) {
+		std::cout << "superado el número maximo de instrucciones MACRO";
+		std::cout << "genome.height > Parameters.num_max_instructions";
+	}
 }
 
-int Individual::get_random_register(int &pos_to_replace, std::vector<int> reg_eff = {}, Instruction * instruction = 0){
-    int _register = 0;
-    std::cout<<"##PROBAR!!!! \nget_random_register: pos to replace "<<pos_to_replace<<"\n";
-    if (pos_to_replace == 1){ //destino
-    	std::cout<<"***************** SE CAMBIA OPERADOR *******************\n\n";
-        if (reg_eff.empty()){
-            if (instruction->oper < 5){
-            	//se hace que se mute uno de los registros operandos
-            	pos_to_replace = random_flip_coin(0.5) ? 2 : 3;
-            }else{
-            	//#operación unaria, se muta el operando 2 para que sea efectiva
-            	pos_to_replace = 3;
-            }
-        }else{
-        	int n = randint(0, reg_eff.size()-1);
-            _register = reg_eff.at(n);
-        }
-    }
-    if (pos_to_replace == 2){ //operando 1
-        //Cambio: se permite al primer operando ser variable o constante de entrada
-        if (random_flip_coin(0.5))
-            _register = randint(VAR_MIN, VAR_MAX);
-        else
-            _register = randint(CONST_IN_MIN, CONST_IN_MAX);
-        _register = randint(VAR_MIN, VAR_MAX);
-    }
-    if (pos_to_replace == 3) {//operando 2
-        //operador 2 es constante con probabilidad p_const
-        if (random_flip_coin(P_REG_OP2_CONST)){
-            //Si va a ser constante, las constantes de entrada tienen mayor
-            //probabilidad que las aleatorias.
-            if (random_flip_coin(P_CONST_IN))
-                _register = randint(CONST_IN_MIN, CONST_IN_MAX);
-            else
-                _register = randint(CONST_AL_MIN, CONST_AL_MAX);
-        }else{
-            _register = randint(VAR_MIN, VAR_MAX);
-        }
-    }
-    return _register;
+int Individual::get_random_register(int &pos_to_replace,
+		std::vector<int> reg_eff = { }, Instruction * instruction = 0) {
+	int _register = 0;
+	std::cout << "##PROBAR!!!! \nget_random_register: pos to replace "
+			<< pos_to_replace << "\n";
+	if (pos_to_replace == 1) { //destino
+		std::cout
+				<< "***************** SE CAMBIA OPERADOR *******************\n\n";
+		if (reg_eff.empty()) {
+			if (instruction->oper < 5) {
+				//se hace que se mute uno de los registros operandos
+				pos_to_replace = random_flip_coin(0.5) ? 2 : 3;
+			} else {
+				//#operación unaria, se muta el operando 2 para que sea efectiva
+				pos_to_replace = 3;
+			}
+		} else {
+			int n = randint(0, reg_eff.size() - 1);
+			_register = reg_eff.at(n);
+		}
+	}
+	if (pos_to_replace == 2) { //operando 1
+		//Cambio: se permite al primer operando ser variable o constante de entrada
+		if (random_flip_coin(0.5))
+			_register = randint(VAR_MIN, VAR_MAX);
+		else
+			_register = randint(CONST_IN_MIN, CONST_IN_MAX);
+		_register = randint(VAR_MIN, VAR_MAX);
+	}
+	if (pos_to_replace == 3) {        //operando 2
+		//operador 2 es constante con probabilidad p_const
+		if (random_flip_coin (P_REG_OP2_CONST)) {
+			//Si va a ser constante, las constantes de entrada tienen mayor
+			//probabilidad que las aleatorias.
+			if (random_flip_coin (P_CONST_IN))
+				_register = randint(CONST_IN_MIN, CONST_IN_MAX);
+			else
+				_register = randint(CONST_AL_MIN, CONST_AL_MAX);
+		} else {
+			_register = randint(VAR_MIN, VAR_MAX);
+		}
+	}
+	return _register;
 }
 
-void Individual::micro_mutation (){
-    /* Muta las instrucciones efectivas internamente
-     * p_regmut = probabilidad de mutar un registro
-     * p_opermut = probabilidad de mutar una operación
-     * p_constmut = probabilidad de mutar una constante efectiva
-     */
-    Instruction * eff = program->get_effective_instructions();
-    std::cout<<"Lista de registros efectivos"<<"\n";
-    Program::print_list_int(eff, program->n_eff);
-    std::cout<<"Antes de get_effectiv_inst_with_ind"<<"\n";
-    int * indices = program->get_effective_instructions_with_indices();
-    std::cout<<"Despues de get_effect.withindices"<<"\n";
-    std::vector<int> v_indices;
-    std::cout<<"randint"<<"\n";
-    int index = randint(0, program->n_eff - 1);
-    std::cout<<"mutationpoint "<<indices[index]<<"\n";
-    int mutation_point = indices[index];
-    int pos_to_replace = 0 ;
-    std::cout<<"antes de select_micro_mutacion_type"<<"\n";
-    std::string type = select_micro_mutacion_type(_random());
-    std::cout<<"despues de select_micro_mutacion_type"<<"\n";
-    int op = -1;
-    std::cout<<"Tipo de mutacion: "<<type<<"\n";
-    type = "constantes";
-    if (type == "constantes"){
-    	std::cout<<"Constantes> program->get_effective_constant_indices()"<<"\n";
-        std::vector<int> constants_indices = program->get_effective_constant_indices();
-        std::cout<<"Constantes despues > program->get_effective_constant_indices()"<<"\n";
-        //todo: No guarda en constants_indices los indices *aveces
-        std::cout<<"size "<<constants_indices.size();
-        if (!constants_indices.empty()){
-            int ins_with_constant_index = constants_indices.at(randint(0,constants_indices.size()-1));
-            int register_mutation_index = program->list_inst[ins_with_constant_index].op2;
-            program->list_reg[register_mutation_index] += pow((-1),(randint(0, 1)) * randfloat(0.0, STEP_SIZE_CONST));
-        }else{ //no hay instrucciones efectivas con registros constantes variables
-            type = select_micro_mutacion_type(_random());
-            //si vuelve a salir constante, se elige mutación de registro o operaciones con igual probabilidad
-            std::cout<<"si vuelve a salir constante, se elige mutación de registro o operaciones con igual probabilidad\n";
-            if (type == "constantes"){
-                type = random_flip_coin(0.5) ? "registros" :"operaciones";
-                std::cout<<"NUEVO TIPO DE MUTACCION> "<<type<<"\n";
-            }
-        }
-    }
+void Individual::micro_mutation() {
+	/* Muta las instrucciones efectivas internamente
+	 * p_regmut = probabilidad de mutar un registro
+	 * p_opermut = probabilidad de mutar una operación
+	 * p_constmut = probabilidad de mutar una constante efectiva
+	 */
+	Instruction * eff = program->get_effective_instructions();
+	std::cout << "Lista de registros efectivos" << "\n";
+	Program::print_list_int(eff, program->n_eff);
+	std::cout << "Antes de get_effectiv_inst_with_ind" << "\n";
+	int * indices = program->get_effective_instructions_with_indices();
+	std::cout << "Despues de get_effect.withindices" << "\n";
+	std::vector<int> v_indices;
+	std::cout << "randint" << "\n";
+	int index = randint(0, program->n_eff - 1);
+	std::cout << "mutationpoint " << indices[index] << "\n";
+	int mutation_point = indices[index];
+	int pos_to_replace = 0;
+	std::cout << "antes de select_micro_mutacion_type" << "\n";
+	std::string type = select_micro_mutacion_type(_random());
+	std::cout << "despues de select_micro_mutacion_type" << "\n";
+	int op = -1;
+	std::cout << "Tipo de mutacion: " << type << "\n";
+	type = "constantes";
+	if (type == "constantes") {
+		std::cout << "Constantes> program->get_effective_constant_indices()"
+				<< "\n";
+		std::vector<int> constants_indices =
+				program->get_effective_constant_indices();
+		std::cout
+				<< "Constantes despues > program->get_effective_constant_indices()"
+				<< "\n";
+		//todo: No guarda en constants_indices los indices *aveces
+		std::cout << "size " << constants_indices.size();
+		if (!constants_indices.empty()) {
+			int ins_with_constant_index = constants_indices.at(
+					randint(0, constants_indices.size() - 1));
+			int register_mutation_index =
+					program->list_inst[ins_with_constant_index].op2;
+			program->list_reg[register_mutation_index] += pow((-1),
+					(randint(0, 1)) * randfloat(0.0, STEP_SIZE_CONST));
+		} else { //no hay instrucciones efectivas con registros constantes variables
+			type = select_micro_mutacion_type(_random());
+			//si vuelve a salir constante, se elige mutación de registro o operaciones con igual probabilidad
+			std::cout
+					<< "si vuelve a salir constante, se elige mutación de registro o operaciones con igual probabilidad\n";
+			if (type == "constantes") {
+				type = random_flip_coin(0.5) ? "registros" : "operaciones";
+				std::cout << "NUEVO TIPO DE MUTACCION> " << type << "\n";
+			}
+		}
+	}
 
-    if (type == "registros"){
-        if (program->n_eff== 1){
-        	std::cout<<"registros > n_eff ==1 > una sola instrucción efectiva, no se puede cambiar r[0] \n";
-        	//una sola instrucción efectiva, no se puede cambiar r[0]
-            if (program->list_inst[mutation_point].oper< 5){
-                pos_to_replace = randint(2, 3);
-                std::cout<<"No es unaria \n	";
-            }
-            else{ //operación unaria, cambiar el segundo operando
-            	std::cout<<"operación unaria, cambiar el segundo operando\n";
-                pos_to_replace = 3;
-            }
-        }else{
-            if (program->list_inst[mutation_point].oper < 5)
-                pos_to_replace = randint(1, 3);
-            else //operación unaria, cambiar el segundo operando o el destino
-                pos_to_replace = random_flip_coin(0.5) ? 1 : 3;
-        }
-        std::cout<<"registros> pos_to_replace> "<<pos_to_replace<<"\n";
-        if (pos_to_replace == 1){ //destino
-            //si no es el último índice, la última
+	if (type == "registros") {
+		if (program->n_eff == 1) {
+			std::cout
+					<< "registros > n_eff ==1 > una sola instrucción efectiva, no se puede cambiar r[0] \n";
+			//una sola instrucción efectiva, no se puede cambiar r[0]
+			if (program->list_inst[mutation_point].oper < 5) {
+				pos_to_replace = randint(2, 3);
+				std::cout << "No es unaria \n	";
+			} else { //operación unaria, cambiar el segundo operando
+				std::cout << "operación unaria, cambiar el segundo operando\n";
+				pos_to_replace = 3;
+			}
+		} else {
+			if (program->list_inst[mutation_point].oper < 5)
+				pos_to_replace = randint(1, 3);
+			else
+				//operación unaria, cambiar el segundo operando o el destino
+				pos_to_replace = random_flip_coin(0.5) ? 1 : 3;
+		}
+		std::cout << "registros> pos_to_replace> " << pos_to_replace << "\n";
+		if (pos_to_replace == 1) { //destino
+			//si no es el último índice, la última
 
-            if ((index + 1) < program->n_eff){
-                /*Se obtiene la lista de registros efectivos en esa posición, para reemplazar
-                 * en la instrucción y permitir que siga siendo efectiva                 *
-                 */
-            	std::vector<int> reg_eff;
-            	int to_mutate = program->get_effective_registers(indices[index + 1], reg_eff);
-                if (!reg_eff.empty()){
-                	std::vector<int>::iterator i = std::find(reg_eff.begin(), reg_eff.end(), program->list_inst[mutation_point].dest);
-                	if (i!=reg_eff.end()){
-                		reg_eff.erase(i); //remover el registro destino de los registros efectivos
-                		op = get_random_register(pos_to_replace, reg_eff, &program->list_inst[mutation_point]);
-                	}
-                }
-            }else { //el punto de mutación es la última instrucción con el r[0]
-            	if (program->list_inst[mutation_point].oper < 5)
-                    pos_to_replace = randint(2, 3);
-                else //operación unaria, cambiar el segundo operando
-                    pos_to_replace = 3;
-                op = get_random_register(pos_to_replace);
-            }
-        }else{//para los casos de operandos op1 y op2
-        	op = get_random_register(pos_to_replace);
-        }
-        if(pos_to_replace == 1) program->list_inst[mutation_point].dest = op;
-        if(pos_to_replace == 2) program->list_inst[mutation_point].op1  = op;
-        if(pos_to_replace == 3) program->list_inst[mutation_point].op2  = op;
-    }
-    if (type == "operaciones"){
-        int diff_op = randint(OP_MIN, OP_MAX);
-        while (program->list_inst[mutation_point].oper == diff_op)
-            diff_op = randint(OP_MIN, OP_MAX);
-        program->list_inst[mutation_point].oper = diff_op;
-    }
-    set_altered();
+			if ((index + 1) < program->n_eff) {
+				/*Se obtiene la lista de registros efectivos en esa posición, para reemplazar
+				 * en la instrucción y permitir que siga siendo efectiva                 *
+				 */
+				std::vector<int> reg_eff;
+				int to_mutate = program->get_effective_registers(
+						indices[index + 1], reg_eff);
+				if (!reg_eff.empty()) {
+					std::vector<int>::iterator i = std::find(reg_eff.begin(),
+							reg_eff.end(),
+							program->list_inst[mutation_point].dest);
+					if (i != reg_eff.end()) {
+						reg_eff.erase(i); //remover el registro destino de los registros efectivos
+						op = get_random_register(pos_to_replace, reg_eff,
+								&program->list_inst[mutation_point]);
+					}
+				}
+			} else { //el punto de mutación es la última instrucción con el r[0]
+				if (program->list_inst[mutation_point].oper < 5)
+					pos_to_replace = randint(2, 3);
+				else
+					//operación unaria, cambiar el segundo operando
+					pos_to_replace = 3;
+				op = get_random_register(pos_to_replace);
+			}
+		} else { //para los casos de operandos op1 y op2
+			op = get_random_register(pos_to_replace);
+		}
+		if (pos_to_replace == 1)
+			program->list_inst[mutation_point].dest = op;
+		if (pos_to_replace == 2)
+			program->list_inst[mutation_point].op1 = op;
+		if (pos_to_replace == 3)
+			program->list_inst[mutation_point].op2 = op;
+	}
+	if (type == "operaciones") {
+		int diff_op = randint(OP_MIN, OP_MAX);
+		while (program->list_inst[mutation_point].oper == diff_op)
+			diff_op = randint(OP_MIN, OP_MAX);
+		program->list_inst[mutation_point].oper = diff_op;
+	}
+	set_altered();
 }
 
-std::string Individual::select_micro_mutacion_type(float prob){
-    if (prob <= P_REGMUT){
-        return "registros";
-    }else{
-    	if (prob > P_REGMUT && prob <= P_OPERMUT + P_REGMUT){
-    		return "operaciones";
-    	}else if (prob > (P_OPERMUT + P_REGMUT) && prob <= (P_OPERMUT+ P_REGMUT + P_CONSTMUT)){
-    		return "constantes";
-    	}
-    }
-    return "";
+std::string Individual::select_micro_mutacion_type(float prob) {
+	if (prob <= P_REGMUT) {
+		return "registros";
+	} else {
+		if (prob > P_REGMUT && prob <= P_OPERMUT + P_REGMUT) {
+			return "operaciones";
+		} else if (prob > (P_OPERMUT + P_REGMUT)
+				&& prob <= (P_OPERMUT + P_REGMUT + P_CONSTMUT)) {
+			return "constantes";
+		}
+	}
+	return "";
 }
-/* TODO: FALTAN LOS SIGUIENTES METODOS
- * def micro_mutation(genome):
- * def select_micro_mutacion_type(prob):
- * */
 

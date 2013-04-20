@@ -24,6 +24,7 @@ public:
 	Deme * population;
 };
 
+
 Lgp::Lgp(int config_position, int demes, int population_size, int num_generation) {
 	generation = 0;
 	this->num_generation = num_generation;
@@ -41,6 +42,7 @@ Lgp::Lgp(int config_position, int demes, int population_size, int num_generation
 		population[i].create_new_deme(pop_size_per_deme, config_position);
 	}
 }
+
 
 Individual* Lgp::best_individual_in_training() {
 	Individual ** deme_best = new Individual * [num_demes];
@@ -73,6 +75,7 @@ inline bool Lgp::termination_criteria() {
 	return (generation > num_generation);
 }
 
+
 //se podría llevar a deme
 void Lgp::deme_evolve(int deme_index) {
 	std::vector<Participant> selected_indices;
@@ -92,15 +95,11 @@ void Lgp::deme_evolve(int deme_index) {
 			winners[i] = population[deme_index].tournament_with_mutation(selected_indices, ini[i], end[i]);
 		}
 
-		if (random_flip_coin(P_CROSSOVER)) {
-			;//Individual::crossover(winners[0][0], winners[1][0]);
-		}
 
-		/*
-		if not sister.index == winners[0][0].index:
-		winners[0][0] = brother
-		winners[1][0] = sister
-		*/
+		if (random_flip_coin(P_CROSSOVER)) {
+			//los que pudieron ser modificados por la macro y micro mutación
+			Individual::crossover(winners[0][0], winners[1][0]);
+		}
 
 
 		for (int i = 0; i < 2; i++) {
@@ -111,18 +110,25 @@ void Lgp::deme_evolve(int deme_index) {
 		}
 	}
 
+	population[deme_index].evaluate_individuals();
+
 	if (random_flip_coin(P_MIGRATION_CRITERIA)) {
-		//(population.internal_pop).sort(cmp=Individual.compare_error_prom, reverse = True)
+		std::sort(population[deme_index].list_ind->begin(), population[deme_index].list_ind->end(), compare_ob1());
 	} else {
-		//(population.internal_pop).sort(cmp=Individual.compare_deviation_in_error, reverse = True)
+		std::sort(population[deme_index].list_ind->begin(), population[deme_index].list_ind->end(), compare_ob2());
 	}
 
 }
 
+/* any function that takes two values and returns true if the first is strictly less than the other
+ * struct greater {
+    bool operator()(int lhs, int rhs) { return lhs > rhs; }
+};
+std::sort(container.begin(), container.end(), greater());
+ */
 
 void Lgp::evolve() {
 	int for_replace;
-	int stats;
 	std::vector<Individual>::iterator ini, end, it;
 
 	while(!termination_criteria()) {

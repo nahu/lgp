@@ -86,6 +86,7 @@ Individual* Deme::best_validation() {
 	return &(*best);
 }
 
+
 void Deme::evaluate_individuals() {
 	//paralelizar
 	for (std::vector<Individual>::iterator it = list_ind->begin(); it != list_ind->end(); ++it) {
@@ -116,12 +117,6 @@ std::vector<Participant> Deme::indices_selection(unsigned int pool_size) {
 }
 
 
-/* any function that takes two values and returns true if the first is strictly less than the other
- * struct greater {
-    bool operator()(int lhs, int rhs) { return lhs > rhs; }
-};
-std::sort(container.begin(), container.end(), greater());
- */
 
 Individual** Deme::tournament_with_mutation(std::vector<Participant> &indices, participant_iter ini, participant_iter end) {
 	Individual ** competitors = new Individual*[POOL_SIZE];
@@ -144,11 +139,11 @@ Individual** Deme::tournament_with_mutation(std::vector<Participant> &indices, p
 
 	//faltan las mutaciones
 	if (random_flip_coin(P_MACRO_MUTATION)) {
-		//macro_mutation(winner);
+		winner->macro_mutation();
 	}
 
 	if (random_flip_coin(P_MICRO_MUTATION)) {
-		//micro_mutation(winner);
+		winner->micro_mutation();
 	}
 
 
