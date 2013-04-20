@@ -36,7 +36,7 @@ public:
 
 	void macro_mutation ();
 	void micro_mutation ();
-	std::string select_micro_mutacion_type(float prob);
+	int select_micro_mutacion_type(float prob);
 	int get_random_register(int &op, std::vector<int> reg_eff, Instruction * instruction);
 
 	Program * program;
@@ -526,9 +526,9 @@ void Individual::macro_mutation() {
 			&& (insertion || program->height == NUM_MIN_INSTRUCTIONS)) {
 		// Si no supera la max. cant. de instrucciones y es insercion o tiene el numero minimo de instrucciones
 		Instruction new_instruction;
+		new_instruction.create_new_instruction();
 		std::vector<int> reg_eff;
-		int to_mutate = program->get_effective_registers(mutation_point,
-				reg_eff);
+		int to_mutate = program->get_effective_registers(mutation_point, reg_eff);
 		while (reg_eff.empty()) {
 			/* se da en el caso de que el punto de mutación esté por debajo de la última
 			 * instrucción efectiva y ésta sea unaria con un operando constante
@@ -539,7 +539,7 @@ void Individual::macro_mutation() {
 					reg_eff);
 		}
 
-		new_instruction.oper = reg_eff.at(randint(0, reg_eff.size() - 1));
+		new_instruction.dest = reg_eff.at(randint(0, reg_eff.size() - 1));
 		Instruction * new_list = new Instruction[program->height + 1];
 
 		/*
@@ -581,8 +581,7 @@ void Individual::macro_mutation() {
 	}
 }
 
-int Individual::get_random_register(int &pos_to_replace,
-		std::vector<int> reg_eff = { }, Instruction * instruction = 0) {
+int Individual::get_random_register(int &pos_to_replace, std::vector<int> reg_eff = { }, Instruction * instruction = 0) {
 	int _register = 0;
 	if (pos_to_replace == 1) { //destino
 		if (reg_eff.empty()) {
@@ -634,29 +633,30 @@ void Individual::micro_mutation() {
 	int index = randint(0, program->n_eff - 1);
 	int mutation_point = indices[index];
 	int pos_to_replace = 0;
-	std::string type = select_micro_mutacion_type(_random());
+	int type = select_micro_mutacion_type(_random());
 	int op = -1;
-	if (type == "constantes") {
-		std::vector<int> constants_indices =
-				program->get_effective_constant_indices();
+	int ins_with_constant_index, register_mutation_index;
+	std::vector<int> constants_indices;
+	type = CONSTANTES;
+	if (type == CONSTANTES) {
+		constants_indices = program->get_effective_constant_indices();
+
 		if (!constants_indices.empty()) {
-			int ins_with_constant_index = constants_indices.at(
-					randint(0, constants_indices.size() - 1));
-			int register_mutation_index =
-					program->list_inst[ins_with_constant_index].op2;
-			program->list_reg[register_mutation_index] += pow((-1),
-					(randint(0, 1)) * randfloat(0.0, STEP_SIZE_CONST));
+			ins_with_constant_index = constants_indices.at(randint(0, constants_indices.size() - 1));
+			register_mutation_index = program->list_inst[ins_with_constant_index].op2;
+			std::cout<<"\nprogram->list_reg["<< register_mutation_index<<"] = "<<program->list_reg[register_mutation_index]<<"\n";
+			program->list_reg[register_mutation_index] += (pow((-1),(randint(0, 1))) * randfloat(0.0, STEP_SIZE_CONST));
 		} else {
 			//no hay instrucciones efectivas con registros constantes variables
 			type = select_micro_mutacion_type(_random());
 			//si vuelve a salir constante, se elige mutación de registro o operaciones con igual probabilidad
-			if (type == "constantes") {
-				type = random_flip_coin(0.5) ? "registros" : "operaciones";
+			if (type == CONSTANTES) {
+				type = random_flip_coin(0.5) ? REGISTROS : OPERACIONES;
 			}
 		}
 	}
 
-	if (type == "registros") {
+	if (type == REGISTROS) {
 		if (program->n_eff == 1) {
 			//una sola instrucción efectiva, no se puede cambiar r[0]
 			if (program->list_inst[mutation_point].oper < 5) {
@@ -710,7 +710,7 @@ void Individual::micro_mutation() {
 			program->list_inst[mutation_point].op2 = op;
 	}
 	int diff_op = 0;
-	if (type == "operaciones") {
+	if (type == OPERACIONES) {
 		diff_op = randint(OP_MIN, OP_MAX);
 		while (program->list_inst[mutation_point].oper == diff_op)
 			diff_op = randint(OP_MIN, OP_MAX);
@@ -718,26 +718,35 @@ void Individual::micro_mutation() {
 	}
 	set_altered();
 	//para borrar desde aca
+	std::cout<<"##Info de control: "<<"\n";
+	std::cout<<"Instrucciones efectivas:\n";
+	Program::print_list_int(eff, program->n_eff);
 	std::cout<<"Mutation type = "<<type<<"\nMutation_point = "<<mutation_point<< "\npos_to_replace = "<<pos_to_replace<<"\n";
-	if (type=="operaciones"){
+	if (type==OPERACIONES){
 		std::cout<<"Nueva operacion = " << diff_op <<"\n";
-	}else{
+	}else if (type == REGISTROS){
 		std::cout<<"Nuevo Registro = " << op<<"\n";
+	}else{
+		std::cout<<"Constantes efectivas: \n";
+		for (int i = 0; i<constants_indices.size(); i++){
+			std::cout<<constants_indices.at(i)<<"  ";
+		}
+		std::cout<<"\nNuevo valor de program->list_reg["<< register_mutation_index<<"] = "<<program->list_reg[register_mutation_index]<<"\n";
 	}
 	//hasta aca
 }
 
-std::string Individual::select_micro_mutacion_type(float prob) {
+int Individual::select_micro_mutacion_type(float prob) {
 	if (prob <= P_REGMUT) {
-		return "registros";
+		return REGISTROS;
 	} else {
 		if (prob > P_REGMUT && prob <= P_OPERMUT + P_REGMUT) {
-			return "operaciones";
+			return OPERACIONES;
 		} else if (prob > (P_OPERMUT + P_REGMUT)
 				&& prob <= (P_OPERMUT + P_REGMUT + P_CONSTMUT)) {
-			return "constantes";
+			return CONSTANTES;
 		}
 	}
-	return "";
+	return -1;
 }
 
