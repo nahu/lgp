@@ -21,6 +21,8 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 #define LINES 248
 #define TRAINING_LINES 200
 #define VALIDATION_LINES 48
+#define TRAINING 0
+#define VALIDATION 1
 
 #define W_OB1 1 //error
 #define W_OB2 1 //desviacion
@@ -115,7 +117,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define FREQ_STATS 10
 #define POOL_SIZE 2
 #define MIGRATION_RATE 0.06
-#define GEN_TO_MIGRATE 32
+#define GEN_TO_MIGRATE 1
 
 
 /***************************************  PROBABILIDADES **************************************
@@ -141,7 +143,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 *************************************************************************************************/
 
 #define P_MIGRATION 0.80
-#define P_MIGRATION_CRITERIA 0.3
+#define P_MIGRATION_CRITERIA 1
 
 #define P_REG_OP1_CONST 0.5
 #define P_REG_OP2_CONST 0.1

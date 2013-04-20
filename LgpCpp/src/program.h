@@ -202,25 +202,32 @@ void Program::init_registers() {
 	//imprimir_matriz(R_CONST, LINES, K);
 }
 
-Program::Program(const Program& source) :
-	height(source.height),
-	n_eff(source.n_eff),
-	height_eff_space(source.height_eff_space) {
-
+Program::Program(const Program& source) {
+	height = source.height;
 	list_inst = new Instruction[source.height];
 	std::copy(source.list_inst, source.list_inst + source.height, list_inst);
 
 	list_reg = new double[NUM_INDIVIDUAL_REGISTERS];
 	std::copy(source.list_reg, source.list_reg + NUM_INDIVIDUAL_REGISTERS, list_reg);
 
-	effective_memory_space = new Instruction[source.height];
-	std::copy(source.effective_memory_space, source.effective_memory_space + source.height, effective_memory_space);
+	if (source.effective_memory_space) {
+		n_eff = source.n_eff;
+		height_eff_space = source.height_eff_space;
+		effective_memory_space = new Instruction[source.height];
+		std::copy(source.effective_memory_space, source.effective_memory_space + source.height, effective_memory_space);
+		effective_list_inst = &(effective_memory_space[source.height - source.n_eff]);
+	} else {
+		effective_memory_space = 0;
+	}
 
-	effective_indices_memory_space = new int[source.height];
-	std::copy(source.effective_indices_memory_space, source.effective_indices_memory_space + source.height, effective_indices_memory_space);
+	if (source.effective_indices_memory_space) {
+		effective_indices_memory_space = new int[source.height];
+		std::copy(source.effective_indices_memory_space, source.effective_indices_memory_space + source.height, effective_indices_memory_space);
+		effective_indices = &(effective_indices_memory_space[source.height - source.n_eff]);
+	} else {
+		effective_indices_memory_space = 0;
+	}
 
-	effective_list_inst = &(effective_memory_space[source.height - source.n_eff]);
-	effective_indices = &(effective_indices_memory_space[source.height - source.n_eff]);
 }
 
 Program& Program::operator=(const Program& source) {
@@ -283,7 +290,6 @@ Program::Program() {
 	list_inst[height - 1].dest = REG_OUT;
 
 	list_reg = new double[NUM_INDIVIDUAL_REGISTERS];
-
 	int offset = 0;
 	for (int i = 0; i < NUM_OUT_REGISTERS; i++) {
 		list_reg[offset + i] = R_OUT[i];
