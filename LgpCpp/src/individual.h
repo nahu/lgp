@@ -526,9 +526,9 @@ void Individual::macro_mutation() {
 			&& (insertion || program->height == NUM_MIN_INSTRUCTIONS)) {
 		// Si no supera la max. cant. de instrucciones y es insercion o tiene el numero minimo de instrucciones
 		Instruction new_instruction;
+		new_instruction.create_new_instruction();
 		std::vector<int> reg_eff;
-		int to_mutate = program->get_effective_registers(mutation_point,
-				reg_eff);
+		int to_mutate = program->get_effective_registers(mutation_point, reg_eff);
 		while (reg_eff.empty()) {
 			/* se da en el caso de que el punto de mutación esté por debajo de la última
 			 * instrucción efectiva y ésta sea unaria con un operando constante
@@ -539,7 +539,7 @@ void Individual::macro_mutation() {
 					reg_eff);
 		}
 
-		new_instruction.oper = reg_eff.at(randint(0, reg_eff.size() - 1));
+		new_instruction.dest = reg_eff.at(randint(0, reg_eff.size() - 1));
 		Instruction * new_list = new Instruction[program->height + 1];
 
 		/*
