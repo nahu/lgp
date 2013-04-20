@@ -50,13 +50,13 @@ int main() {
 		d->list_ind[i].print_individual();
 	}
 	*/
-	/*
+
 
 	Individual * g2 = new Individual;
 	Individual * g1 = new Individual;
 	g1->create_new_individual(1);
 	g2->create_new_individual(1);
-
+	/*
 	Individual * sister, * brother;
 	sister = new Individual();
 	brother = new Individual;
@@ -77,19 +77,20 @@ int main() {
 	std::cout<<"*** Main: Lista g2.\n";
 	Program::print_list_int(g2->program->list_inst, g2->program->height);
 	*/
-	/*
+
 	while(1){
 
 	std::cout<<"*** Main: Lista original.\n";
-	Program::print_list_int(g2.program->list_inst, g2.program->height);
-	g2.micro_mutation();
+	Program::print_list_int(g2->program->list_inst, g2->program->height);
+	g2->micro_mutation();
 	std::cout<<"*** Main: Lista mutada 1.\n";
-	Program::print_list_int(g2.program->list_inst, g2.program->height);*/
+	Program::print_list_int(g2->program->list_inst, g2->program->height);
+	}
 	/*g2.micro_mutation();
 	std::cout<<"*** Main: Lista mutada 2.\n";
 	Program::print_list_int(g2.program->list_inst, g2.program->height);
-
 	*/
+
 
 	return 0;
 }
