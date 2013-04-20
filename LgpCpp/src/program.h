@@ -390,8 +390,8 @@ std::vector<int> Program::get_effective_constant_indices() {
 	std::vector<int> indices;
 
 	for (int i = 0; i < n_eff; i++) {
-		if (effective_list_inst[i].op2 > CONST_AL_MIN && effective_list_inst[i].op2 < CONST_AL_MAX) {
-			indices.push_back(effective_indices[n_eff - i]);
+		if (effective_list_inst[i].op2 > CONST_AL_MIN && effective_list_inst[i].op2 < (CONST_AL_MAX - NUM_CONST_MATH_REGISTERS)) {
+			indices.push_back(effective_indices[i]);
 		}
 	}
 	return indices;

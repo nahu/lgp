@@ -30,6 +30,7 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 #define OB1 1
 #define OB2 2
 
+
 /*INSTRUCCIONES
 
 Cada individuo posee una lista de instrucciones
@@ -91,6 +92,11 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define COS 9
 
 #define C_UNDEF 1.0
+
+
+#define CONSTANTES 0
+#define REGISTROS 1
+#define OPERACIONES 2
 
 /************************************  ALGORITMO EVOLUTIVO ***********************************
 
