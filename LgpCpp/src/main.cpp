@@ -24,6 +24,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <string.h>
+#include <omp.h>
 
 #include "parameters.h"
 #include "util.h"
@@ -38,6 +39,7 @@
 
 int main() {
 	srand((unsigned)time(0));
+	omp_set_num_threads(NUM_PROCESSORS);
 	Program::init_registers();
 
 	//Individual i(1, 1);
@@ -56,6 +58,7 @@ int main() {
 	Individual * g1 = new Individual;
 	g1->create_new_individual(1);
 	g2->create_new_individual(1);
+
 	/*
 	Individual * sister, * brother;
 	sister = new Individual();
@@ -78,14 +81,14 @@ int main() {
 	Program::print_list_int(g2->program->list_inst, g2->program->height);
 	*/
 
-	while(1){
+	//while(1){
 
 	std::cout<<"*** Main: Lista original.\n";
 	Program::print_list_int(g2->program->list_inst, g2->program->height);
-	g2->micro_mutation();
+	g2->macro_mutation();
 	std::cout<<"*** Main: Lista mutada 1.\n";
 	Program::print_list_int(g2->program->list_inst, g2->program->height);
-	}
+	//}
 	/*g2.micro_mutation();
 	std::cout<<"*** Main: Lista mutada 2.\n";
 	Program::print_list_int(g2.program->list_inst, g2.program->height);

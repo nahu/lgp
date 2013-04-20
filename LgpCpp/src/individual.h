@@ -628,7 +628,7 @@ void Individual::micro_mutation() {
 	 * p_opermut = probabilidad de mutar una operación
 	 * p_constmut = probabilidad de mutar una constante efectiva
 	 */
-	Instruction * eff = program->get_effective_instructions();
+	program->get_effective_instructions();
 	int * indices = program->get_effective_instructions_with_indices();
 	std::vector<int> v_indices;
 	int index = randint(0, program->n_eff - 1);
