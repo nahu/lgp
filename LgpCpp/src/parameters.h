@@ -93,10 +93,16 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 #define C_UNDEF 1.0
 
-
+//Tipos de micromutaciones
 #define CONSTANTES 0
 #define REGISTROS 1
 #define OPERACIONES 2
+
+//Posiciones en una instruccion
+#define OPERATION 0
+#define DEST 1
+#define OPERAND_1 2
+#define OPERAND_2 3
 
 /************************************  ALGORITMO EVOLUTIVO ***********************************
 
