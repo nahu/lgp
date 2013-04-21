@@ -199,3 +199,34 @@ void parameters_to_file(std::string f_param) {
 	f.close();
 }
 
+void errors_to_file(std::string file, std::vector<std::vector<double> > error_list) {
+	/*
+	 * Se recibe una lista que contiene por cada "mejor individio" una lista de errores
+	 * por muestra. Entonces, se debe imprimir en columnas los errores por individuo.
+	 * Las ultimas 3 posiciones de cada lista tiene: sumatoria de errores, promedio, y transf.
+	 */
+	std::stringstream to_str;
+	std::ofstream f;
+	f.open(file.c_str());
+	std::string row;
+	for (int t = 0; t < error_list.size(); t++) {
+		if (t == error_list.at(t).size() - 2) {
+			row = "Error total;";
+		} else if (t == error_list.at(t).size() - 1) {
+			row = "Error promedio;";
+		} else if (t == error_list.at(t).size()) {
+			row = "Posicion;";
+		} else {
+			to_str << t;
+			row = to_str.str(); //str(Parameters.training_lines + t) + ";"
+		}
+		for (int i = 0; i < error_list.at(t).size(); i++) {
+			to_str<<error_list.at(i).at(t);
+			row += ( to_str.str() + ";");
+		}
+		row += "\n";
+		f<<row;
+	}
+	f.close();
+}
+
