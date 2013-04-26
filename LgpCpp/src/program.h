@@ -202,8 +202,10 @@ void Program::init_registers() {
 	//imprimir_matriz(R_CONST, LINES, K);
 }
 
-Program::Program(const Program& source) {
-	height = source.height;
+Program::Program(const Program& source) :
+	height(source.height),
+	n_eff(source.n_eff) {
+
 	list_inst = new Instruction[source.height];
 	std::copy(source.list_inst, source.list_inst + source.height, list_inst);
 
@@ -211,7 +213,6 @@ Program::Program(const Program& source) {
 	std::copy(source.list_reg, source.list_reg + NUM_INDIVIDUAL_REGISTERS, list_reg);
 
 	if (source.effective_memory_space) {
-		n_eff = source.n_eff;
 		height_eff_space = source.height_eff_space;
 		effective_memory_space = new Instruction[source.height];
 		std::copy(source.effective_memory_space, source.effective_memory_space + source.height, effective_memory_space);
@@ -231,9 +232,10 @@ Program::Program(const Program& source) {
 }
 
 Program& Program::operator=(const Program& source) {
-	// check for self-assignment
-	if (this == &source)
+	//auto-asignación
+	if (this == &source) {
 		return *this;
+	}
 
 	height = source.height;
 	n_eff = source.n_eff;
@@ -242,29 +244,36 @@ Program& Program::operator=(const Program& source) {
 	if (list_inst) {
 		delete [] list_inst;
 	}
+
 	list_inst = new Instruction[source.height];
 	std::copy(source.list_inst, source.list_inst + source.height, list_inst);
 
 	if (list_reg) {
 		delete [] list_reg;
 	}
+
 	list_reg = new double[NUM_INDIVIDUAL_REGISTERS];
 	std::copy(source.list_reg, source.list_reg + NUM_INDIVIDUAL_REGISTERS, list_reg);
 
 	if (effective_memory_space){
 		delete [] effective_memory_space;
 	}
-	effective_memory_space = new Instruction[height];
-	std::copy(source.effective_memory_space, source.effective_memory_space + height, effective_memory_space);
+
+	if (source.effective_memory_space) {
+		effective_memory_space = new Instruction[height];
+		std::copy(source.effective_memory_space, source.effective_memory_space + height, effective_memory_space);
+		effective_list_inst = &(effective_memory_space[height - n_eff]);
+	}
 
 	if (effective_indices_memory_space){
 		delete [] effective_indices_memory_space;
 	}
-	effective_indices_memory_space = new int[height];
-	std::copy(source.effective_indices_memory_space, source.effective_indices_memory_space + height, effective_indices_memory_space);
 
-	effective_list_inst = &(effective_memory_space[height - n_eff]);
-	effective_indices = &(effective_indices_memory_space[height - n_eff]);
+	if (source.effective_indices_memory_space) {
+		effective_indices_memory_space = new int[height];
+		std::copy(source.effective_indices_memory_space, source.effective_indices_memory_space + height, effective_indices_memory_space);
+		effective_indices = &(effective_indices_memory_space[height - n_eff]);
+	}
 
 	return *this;
 }
@@ -314,9 +323,11 @@ Program::Program() {
 Program::~Program() {
 	delete [] list_inst;
 	delete [] list_reg;
+
 	if (effective_memory_space){
 		delete [] effective_memory_space;
 	}
+
 	if (effective_indices_memory_space){
 		delete [] effective_indices_memory_space;
 	}

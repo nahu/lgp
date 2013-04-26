@@ -148,7 +148,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
     p_crossover: probabilidad de carplia la operación de cruzamiento.
 *************************************************************************************************/
 
-#define P_MIGRATION 0.80
+#define P_MIGRATION 1
 #define P_MIGRATION_CRITERIA 1
 
 #define P_REG_OP1_CONST 0.5
@@ -167,7 +167,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define P_CONSTMUT 0.05
 #define STEP_SIZE_CONST 5.0
 
-#define P_CROSSOVER 1//0.10
+#define P_CROSSOVER 0//0.10
 
 
 /*************************************  MULTIPROCESAMIENTO *************************************

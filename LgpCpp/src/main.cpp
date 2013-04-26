@@ -38,7 +38,7 @@
 
 int main() {
 
-	srand((unsigned)time(0));
+	//srand((unsigned)time(0));
 	//omp_set_num_threads(NUM_PROCESSORS);
 
 	Program::init_registers();
@@ -127,7 +127,7 @@ int main() {
 
 		t2 = time(NULL);
 
-		std::cout << "\++++++++Transf. " << i << "Duracion: " << (t2 - t1) << "\n";
+		std::cout << "++++++++Transf. " << i << "Duracion: " << (t2 - t1) << "\n";
 		/****************************** Obtener lista de errores ***************************** */
 
 		for (int j = 0; j < best_individuals_training.size(); j++) {

@@ -12,6 +12,7 @@ public:
 	Individual(const Individual& source);
 	Individual& operator=(const Individual& source);
 	void create_new_individual(int _config_position);
+	void check(int deme, int index);
 
 	//Evaluacion de fitness
 	void eval_fitness();
@@ -53,7 +54,14 @@ public:
 struct compare_ob1 {
 	inline bool operator()(const Individual &x, const Individual &y) {
 	if (!x.evaluated || !y.evaluated ) {
-		std::cout << "EVALUAR FITNESS ANTES DE USAR ESTA FUNCION!!!!";
+		std::cout << "compare_ob1 EVALUAR FITNESS ANTES DE USAR ESTA FUNCION!!!!\n";
+		std::cout << "x fitness y n_eff \n";
+		std::cout <<  x.fitness << ", ";
+		std::cout << x.program->n_eff << "\n";
+
+		std::cout << "y fitness y n_eff \n";
+		std::cout <<  y.fitness << ", ";
+		std::cout << y.program->n_eff << "\n";
 	}
 		if (x.error > y.error) {
 			return false;
@@ -62,14 +70,14 @@ struct compare_ob1 {
 		} else if (x.error == y.error) {
 			if (x.program->n_eff < y.program->n_eff) {
 				return true;
-			} else if (x.program->n_eff > y.program->n_eff) {
-				return true;
 			} else {
 				return false;
 			}
 		}
 	}
 };
+
+
 
 struct compare_ob2 {
 	inline bool operator()(const Individual &x, const Individual &y) {
@@ -79,8 +87,6 @@ struct compare_ob2 {
 			return true;
 		} else if (x.sigma == y.sigma) {
 			if (x.program->n_eff < y.program->n_eff) {
-				return true;
-			} else if (x.program->n_eff > y.program->n_eff) {
 				return true;
 			} else {
 				return false;
@@ -106,7 +112,9 @@ void Individual::create_new_individual(int _config_position) {
 }
 
 Individual::~Individual() {
-	delete program;
+	if (program) {
+		delete program;
+	}
 }
 
 Individual::Individual(const Individual& source) :
@@ -116,6 +124,7 @@ Individual::Individual(const Individual& source) :
 		validation_error(source.validation_error),
 		config_position(source.config_position),
 		evaluated(source.evaluated) {
+
 	if (source.program) {
 		program = new Program(*source.program);
 	} else {
@@ -124,9 +133,11 @@ Individual::Individual(const Individual& source) :
 }
 
 Individual& Individual::operator=(const Individual& source) {
-	// check for self-assignment
-	if (this == &source)
+	//auto-asingación
+	if (this == &source) {
+		std::cout << "error: AUTOASIGNACION\n";
 		return *this;
+	}
 
 	fitness = source.fitness;
 	error = source.error;
@@ -135,8 +146,15 @@ Individual& Individual::operator=(const Individual& source) {
 	config_position = source.config_position;
 	evaluated = source.evaluated;
 
-	delete program;
-	program = new Program(*source.program);
+	if (program) {
+		delete program;
+	}
+
+	if (source.program) {
+		program = new Program(*source.program);
+	} else {
+		program = 0;
+	}
 
 	return *this;
 }
@@ -297,6 +315,19 @@ inline bool Individual::compare_validation_error(Individual &x, Individual &y) {
 		return false;
 	}
 }
+
+
+void Individual::check(int deme, int index) {
+	if (deme > 10) {
+		std::cout << "deme: " << deme << " ";
+	}
+
+	std::cout << "From deme: " << deme << " ";
+	std::cout << "individidual: " << index << " ";
+	std::cout << "error: " << error << " ";
+	std::cout << "Program n_eff: " << program->n_eff << "\n";
+}
+
 
 void Individual::print_individual() {
 	std::cout << "Config Pos: " << config_position << "\n";
