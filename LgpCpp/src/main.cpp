@@ -73,16 +73,27 @@ int main() {
 		best_individuals_training = lgp->best_individuals_of_demes(TRAINING);
 		best_individuals_validation = lgp->best_individuals_of_demes(VALIDATION);
 		t2 = time(NULL);
-		std::cout << "\nTransf. " << i << "Duracion: " << (t2 - t1) << "\n";
+		std::cout << "\nTransf. " << i << " Duracion: " << (t2 - t1) << "\n";
+
 		/* ***************************** Obtener lista de errores ***************************** */
 		for (int j = 0; j < best_individuals_training.size(); j++) {
 			list_training_errors.push_back(best_individuals_training.at(j).eval_individual(TRAINING));
 		}
-
 		for (int j = 0; j < best_individuals_validation.size(); j++) {
 			list_validation_errors.push_back(best_individuals_validation.at(j).eval_individual(VALIDATION));
 		}
 		/* ***************************** CALCULAR SUMA & PROM ***************************** */
+		for (int j = 0; j < list_training_errors.size(); j++){
+			double sum, prom = 0.0;
+			for (int k = 0; k < list_training_errors.at(j).size(); k++){
+				sum += list_training_errors.at(j).at(k);
+			}
+			prom = sum / list_training_errors.at(j).size();
+			list_training_errors.at(j).push_back(sum); //sumatoria
+			list_training_errors.at(j).push_back(prom); //error_promedio
+
+		}
+
 		for (int j = 0; j < list_validation_errors.size(); j++){
 			double sum, prom = 0.0;
 			for (int k = 0; k < list_validation_errors.at(j).size(); k++){
@@ -96,6 +107,7 @@ int main() {
 		}
 
 		/* ***************************** ESCRIBIR EN ARCHIVOS ***************************** */
+		std::cout<<"Antes de escribir en archivos. ";
 		std::stringstream transf, gen; transf<<i; gen<<lgp->generation;
 		std::string f_errors_training = folder + "/TRAINING-errores-TRAF" + transf.str() + "-G" + gen.str() + ".csv";
 		errors_to_file(f_errors_training, list_training_errors);
