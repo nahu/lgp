@@ -9,8 +9,8 @@
 
 class Lgp {
 public:
-	Lgp(int config_position, int demes, int population_size,
-			int num_generations);
+	Lgp(int config_position, int demes, int population_size, int num_generations);
+	~Lgp();
 	Individual * best_individual_in_training();
 	std::vector<Individual> best_individuals_of_demes(int tipo);
 	bool termination_criteria();
@@ -24,18 +24,22 @@ public:
 	Deme * population;
 };
 
-Lgp::Lgp(int config_position, int demes, int population_size,
-		int num_generation) {
+Lgp::Lgp(int config_position, int demes, int population_size, int num_generation) {
 	std::cout<<"Const. LGP\n";
 	generation = 0;
 	this->num_generation = num_generation;
 	int div, pop_size_per_deme;
 	div = population_size / demes;
+
 	std::cout<<"div"<<div<<"\n";
+
 	pop_size_per_deme = div;
+	//pop_size_per_deme = 200;
+
 	if (div < 0) {
 		pop_size_per_deme = 1;
 	}
+
 	num_demes = demes;
 	population = new Deme[num_demes];
 
@@ -44,6 +48,12 @@ Lgp::Lgp(int config_position, int demes, int population_size,
 		population[i].create_new_deme(pop_size_per_deme, config_position);
 	}
 }
+
+
+Lgp::~Lgp() {
+	delete [] population;
+}
+
 
 Individual* Lgp::best_individual_in_training() {
 	Individual ** deme_best = new Individual *[num_demes];
@@ -70,8 +80,11 @@ Individual* Lgp::best_individual_in_training() {
 
 	return best;
 }
+
+
 std::vector<Individual> Lgp::best_individuals_of_demes(int tipo) {
 	std::vector<Individual> demes_best;
+
 	//todo: paralelizar
 	if (tipo == TRAINING) {
 		for (int i = 0; i < num_demes; i++) {
@@ -85,9 +98,11 @@ std::vector<Individual> Lgp::best_individuals_of_demes(int tipo) {
 	return demes_best;
 }
 
+
 inline bool Lgp::termination_criteria() {
 	return (generation > num_generation);
 }
+
 
 //se podría llevar a deme
 void Lgp::deme_evolve(int deme_index) {
@@ -96,41 +111,66 @@ void Lgp::deme_evolve(int deme_index) {
 	Individual ** winners[2];
 	participant_iter ini[2], end[2];
 
+	/*
 	for (int gen = 0; gen < GEN_TO_MIGRATE; gen++) {
-		selected_indices = population[deme_index].indices_selection(
-				POOL_SIZE * 2);
+		selected_indices = population[deme_index].indices_selection(POOL_SIZE * 2);
+
 		ini[0] = selected_indices.begin();
 		end[0] = selected_indices.begin() + POOL_SIZE;
-		ini[1] = selected_indices.begin() + POOL_SIZE + 1;
+		ini[1] = selected_indices.begin() + POOL_SIZE;
 		end[1] = selected_indices.end();
+
 		for (int i = 0; i < 2; i++) {
 			winners[i] = population[deme_index].tournament_with_mutation(selected_indices, ini[i], end[i]);
 		}
+
 		if (random_flip_coin (P_CROSSOVER)) {
 			//los que pudieron ser modificados por la macro y micro mutación
 			Individual::crossover(winners[0][0], winners[1][0]);
 		}
 
 		for (int i = 0; i < 2; i++) {
-			population[deme_index].override_loosers(selected_indices, ini[i],
-					end[i], winners[i]);
+			population[deme_index].override_loosers(selected_indices, ini[i], end[i], winners[i]);
 			//eliminar la copia del ganador de cada torneo, se creó en tournament_with_mutation
 			delete winners[i][0];
-			delete[] winners[i];
+			delete [] winners[i];
 		}
 	}
 
-	population[deme_index].evaluate_individuals();
-	std::cout<<"antes del sort\n";
-	if (random_flip_coin (P_MIGRATION_CRITERIA)) {
-		std::sort(population[deme_index].list_ind->begin(),
-				population[deme_index].list_ind->end(), compare_ob1());
-		std::cout<<"Despues del sort\n";
-	} else {
-		std::sort(population[deme_index].list_ind->begin(),
-				population[deme_index].list_ind->end(), compare_ob2());
-	}
+	*/
 
+	population[deme_index].evaluate_individuals();
+
+	int index = 0;
+	/*
+	std::cout<<"antes del sort\n";
+
+
+	for (std::vector<Individual>::iterator it = population[deme_index].list_ind->begin(); it != population[deme_index].list_ind->end(); ++it) {
+
+		(*it).check(deme_index, index);
+		index++;
+	}
+	*/
+
+	if (random_flip_coin(P_MIGRATION_CRITERIA)) {
+		std::sort(population[deme_index].list_ind->begin(), population[deme_index].list_ind->end(), compare_ob1());
+
+	} else {
+		std::sort(population[deme_index].list_ind->begin(),	population[deme_index].list_ind->end(), compare_ob2());
+	}
+	/*
+	std::cout<<"Despues del sort\n";
+
+	index = 0;
+
+	for (std::vector<Individual>::iterator it = population[deme_index].list_ind->begin(); it != population[deme_index].list_ind->end(); ++it) {
+		//if (index % 3 == 0)
+			(*it).check(deme_index, index);
+
+		index++;
+	}
+	*/
 }
 
 /* any function that takes two values and returns true if the first is strictly less than the other
@@ -145,45 +185,103 @@ void Lgp::evolve() {
 	int for_replace;
 	std::vector<Individual>::iterator ini, end, it;
 
+	//std::cout << "hola\n";
+
+/*
+	int deme_index = 0;
+	Individual *nuevo = new Individual;
+	nuevo->create_new_individual(1);
+	nuevo->fitness = 666.666;
+
+	std::vector<Individual>::iterator iter = population[2].list_ind->begin();
+	(*iter).fitness = 12345;
+	for (std::vector<Individual>::iterator it = population[deme_index].list_ind->begin(); it != population[deme_index].list_ind->end(); ++it) {
+		*it = *iter;
+	}
+*/
 	while (!termination_criteria()) {
 		generation++;
-		std::cout<< "\n==================================================\n";
+		std::cout << "\n==================================================\n";
 		std::cout << "Generación #" << generation;
-		std::cout<< "\n==================================================\n";
+		std::cout << "\n==================================================\n";
 
-		for_replace = MIGRATION_RATE * (float) population[0].deme_size;
+		//for_replace = MIGRATION_RATE * (float) population[0].deme_size;
+		//for_replace = 7;
 		std::cout << "for replace " << for_replace << "\n";
-		//for_replace_loosers = population[0].deme_size - for_replace_migration + 1;
 
 		//paralelizar
+
 		for (int i = 0; i < num_demes; i++) {
+			//std::cout << "``````````DEME " << i << "````````\n";
 			deme_evolve(i);
+			/*
+			int index = 0;
+
+			for (std::vector<Individual>::iterator it = population[i].list_ind->begin(); it != population[i].list_ind->end(); ++it) {
+
+				(*it).check(i, index);
+				index++;
+			}
+			*/
 		}
 
-		for (int i = 0; i < num_demes; i++) {
-			if (random_flip_coin (P_MIGRATION)) {
-				ini = population[num_demes - 1].list_ind->end() - for_replace;
-				end = population[num_demes - 1].list_ind->end();
-				it = population[0].list_ind->begin();
+/*
+		int index = 0;
 
-				int cont = 0;
+		for (std::vector<Individual>::iterator it = population[deme_index].list_ind->begin(); it != population[deme_index].list_ind->end(); ++it) {
 
-				for (; ini != end; ++ini) {
-					*ini = *it;
-					it++;
-					cont++;
-				}
-				if (cont != for_replace) {
-					std::cout << "no se copio todo " << cont << "\n";
+			(*it).check(deme_index, index);
+			index++;
+		}
+*/
+
+
+
+		if (random_flip_coin (P_MIGRATION)) {
+			ini = population[num_demes - 1].list_ind->end() - for_replace;
+			end = population[num_demes - 1].list_ind->end();
+			it = population[0].list_ind->begin();
+
+			int cont = 0;
+
+			for ( ; ini != end; ++ini) {
+				(*ini) = (*it);
+				it++;
+				cont++;
+			}
+			//std::cout << "migrados: " << cont << "\n";
+			if (cont != for_replace) {
+				std::cout << "no se copio todo " << cont << "\n";
+			}
+
+
+			for (int i = 1; i < num_demes; i++) {
+				if (random_flip_coin (P_MIGRATION)) {
+					ini = population[i - 1].list_ind->end() - for_replace;
+					end = population[i - 1].list_ind->end();
+					it = population[i].list_ind->begin();
+
+					int cont = 0;
+
+					for ( ; ini != end; ++ini) {
+						(*ini) = (*it);
+						it++;
+						cont++;
+					}
+					//std::cout << "migrados: " << cont << "\n";
+					if (cont != for_replace) {
+						std::cout << "no se copio todo " << cont << "\n";
+					}
 				}
 			}
 		}
 
+
 		if ((generation % FREQ_STATS) == 0) {
-			std::cout<< "\n==================================================\n";
+			std::cout << "\n==================================================\n";
 			std::cout << "Generación #" << generation;
-			std::cout<< "\n==================================================\n";
-			best_individual_in_training();
+			std::cout << "\n==================================================\n";
+			//best_individual_in_training();
 		}
 
 	}

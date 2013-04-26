@@ -17,6 +17,7 @@
 #include <vector>
 #include <algorithm>
 #include <exception>
+#include <sstream>
 
 //#include <time.h>
 #include <stdlib.h>
@@ -24,8 +25,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <string.h>
+#include <omp.h>
 #include <sys/time.h>
-#include <sstream>
 
 #include "parameters.h"
 #include "util.h"
@@ -36,20 +37,21 @@
 //using namespace std;
 
 int main() {
-	srand((unsigned) time(0));
+
+	//srand((unsigned)time(0));
+	//omp_set_num_threads(NUM_PROCESSORS);
+
 	Program::init_registers();
 
 	//Declaraciones
 	std::vector<Individual> best_individuals_training, best_individuals_validation;
 	clock_t t_inicio, t_final, t1, t2;
+
 	t_inicio = time(NULL);
-	int i;
+
 	std::string folder = "./resultados";
 	std::vector<int> positions;
 	std::vector<std::vector<double> > list_training_errors, list_validation_errors;
-
-	//todo
-	//pool = Pool(processes=Parameters.num_processors)
 
 	//Se escriben los parametros
 	parameters_to_file("./resultados/parametros.txt");
@@ -59,23 +61,27 @@ int main() {
 			positions.push_back(i);
 	}
 
+
+
 	for (int p = 0; p < positions.size(); p++) {
-		i = positions.at(p);
+		int i = positions.at(p);
 		t1 = time(NULL);
 
-		std::cout<< "************************************************************************************\n";
-		std::cout<< "---- Transformador " << i << "\n";
-		std::cout<< "************************************************************************************\n";
+		std::cout << "************************************************************************************\n";
+		std::cout << "---- Transformador " << i << "\n";
+		std::cout << "************************************************************************************\n";
 
 		Lgp * lgp = new Lgp(i, DEMES, POPULATION_SIZE, NUM_GENERATIONS);
 		lgp->evolve();
-		std::cout<<"Despues de evolve\n";
+		std::cout << "Despues de evolve\n";
+
 		best_individuals_training = lgp->best_individuals_of_demes(TRAINING);
 		best_individuals_validation = lgp->best_individuals_of_demes(VALIDATION);
-		t2 = time(NULL);
-		std::cout << "\nTransf. " << i << " Duracion: " << (t2 - t1) << "\n";
 
-		/* ***************************** Obtener lista de errores ***************************** */
+		t2 = time(NULL);
+		std::cout << "++++++++Transf. " << i << "Duracion: " << (t2 - t1) << "\n";
+		/****************************** Obtener lista de errores ***************************** */
+
 		for (int j = 0; j < best_individuals_training.size(); j++) {
 			list_training_errors.push_back(best_individuals_training.at(j).eval_individual(TRAINING));
 		}
@@ -114,11 +120,13 @@ int main() {
 		std::string f_errors_val = folder + "/VALIDATION-errores-TRAF" + transf.str() + "-G" + gen.str() + ".csv";
 		errors_to_file(f_errors_val, list_validation_errors);
 
-        std::string f_programs = folder + "/programas-TRAF" + transf.str() + "-G" + gen.str() + ".txt";
-        //todo programs_to_file(f_programs, best_individuals)
+		std::string f_programs = folder + "/programas-TRAF" + transf.str() + "-G" + gen.str() + ".txt";
+		//todo programs_to_file(f_programs, best_individuals)
 	}
+
 	t_final = time(NULL);
 
-	std::cout<<"\n\n Duracion LGP/main : "<<(t_final-t_inicio)<<"\n";
+	std::cout<<"\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Duracion LGP/main : " << (t_final - t_inicio) << "\n";
+
 	return 0;
 }

@@ -13,7 +13,7 @@ public:
 
 typedef std::vector<Participant>::iterator participant_iter;
 
-class Deme { //esto es population
+class Deme {
 public:
 	Deme();
 	~Deme();
@@ -48,7 +48,9 @@ void Deme::create_new_deme(int size, int config_position) {
 	//paralelizar
 	for (std::vector<Individual>::iterator it = list_ind->begin(); it != list_ind->end(); ++it) {
 		(*it).create_new_individual(config_position);
+
 	}
+
 	//std::fill(deme_size, deme_size + size, Individual(config_position));
 }
 
@@ -58,7 +60,7 @@ Deme::~Deme() {
 
 
 Individual* Deme::best_training() {
-	std::vector<Individual>::iterator best = list_ind[0].begin();
+	std::vector<Individual>::iterator best = list_ind->begin();
 
 	evaluate_individuals();
 
@@ -72,7 +74,7 @@ Individual* Deme::best_training() {
 }
 
 Individual* Deme::best_validation() {
-	std::vector<Individual>::iterator best = list_ind[0].begin();
+	std::vector<Individual>::iterator best = list_ind->begin();
 
 	evaluate_individuals();
 
@@ -88,8 +90,21 @@ Individual* Deme::best_validation() {
 
 void Deme::evaluate_individuals() {
 	//paralelizar
+	//int fit = deme_size;
 	for (std::vector<Individual>::iterator it = list_ind->begin(); it != list_ind->end(); ++it) {
 		(*it).eval_fitness();
+
+		if (!(*it).evaluated ) {
+			std::cout << "evaluate_individuals EVALUAR FITNESS ANTES DE USAR ESTA FUNCION!!!!\n";
+			std::cout << "ind fitness y n_eff \n";
+			std::cout <<  (*it).fitness << ", ";
+			std::cout << (*it).program->n_eff << "\n";
+		}
+
+		//(*it).error = fit;
+		//(*it).evaluated = true;
+		//fit--;
+
 	}
 }
 
@@ -125,6 +140,7 @@ Individual** Deme::tournament_with_mutation(std::vector<Participant> &indices, p
 	int i = 0;
 	participant_iter it, choosen = ini;
 	list_ind->at((*choosen).pop_position).eval_fitness();
+
 	for (it = ini + 1; it != end; ++it) {
 		list_ind->at((*it).pop_position).eval_fitness();
 		std::cout<<"(*it).pop_position "<<(*it).pop_position<<"\n";
@@ -139,7 +155,6 @@ Individual** Deme::tournament_with_mutation(std::vector<Participant> &indices, p
 	winner = new Individual(list_ind->at((*choosen).pop_position));
 
 
-	//faltan las mutaciones
 	if (random_flip_coin(P_MACRO_MUTATION)) {
 		winner->macro_mutation();
 	}
@@ -159,7 +174,8 @@ Individual** Deme::tournament_with_mutation(std::vector<Participant> &indices, p
 
 //Se remplaza los perdedores por el mejor entre (ganador modificado, ganador NO modificado) y se actualizan los indices dentro de la población
 void Deme::override_loosers(std::vector<Participant> &indices, participant_iter ini, participant_iter end, Individual ** winners) {
-	std::cout<<"override_loosers 162\n";
+	//std::cout<<"override_loosers 162\n";
+
 	int best_replace, worst_replace;
 	int win_pos;
 	winners[0]->eval_fitness();
@@ -169,7 +185,9 @@ void Deme::override_loosers(std::vector<Participant> &indices, participant_iter 
 	if (Individual::compare_fitness(*(winners[0]), *(winners[1]))) {
 		best_replace = 0;
 	}
-	std::cout<<"override_loosers 172\n";
+
+	//std::cout<<"override_loosers 172\n";
+
 	worst_replace = 0;
 	if (best_replace == 0) {
 		worst_replace = 1;
@@ -184,5 +202,5 @@ void Deme::override_loosers(std::vector<Participant> &indices, participant_iter 
 	}
 
 	list_ind->at(win_pos) = *(winners[worst_replace]);
-	std::cout<<"override_loosers final\n";
+	//std::cout<<"override_loosers final\n";
 }

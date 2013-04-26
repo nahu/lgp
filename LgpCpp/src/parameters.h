@@ -95,10 +95,16 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 #define C_UNDEF 1.0
 
-
+//Tipos de micromutaciones
 #define CONSTANTES 0
 #define REGISTROS 1
 #define OPERACIONES 2
+
+//Posiciones en una instruccion
+#define OPERATION 0
+#define DEST 1
+#define OPERAND_1 2
+#define OPERAND_2 3
 
 /************************************  ALGORITMO EVOLUTIVO ***********************************
 
@@ -142,7 +148,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
     p_crossover: probabilidad de carplia la operación de cruzamiento.
 *************************************************************************************************/
 
-#define P_MIGRATION 0.80
+#define P_MIGRATION 1
 #define P_MIGRATION_CRITERIA 1
 
 #define P_REG_OP1_CONST 0.5
@@ -151,17 +157,17 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define CONST_MIN 0 //50
 #define CONST_MAX 1 //50
 
-#define P_MACRO_MUTATION 0.50
+#define P_MACRO_MUTATION 0//0.50
 #define P_INS 0.75
 #define P_DEL 0.25
 
-#define P_MICRO_MUTATION 0.90
+#define P_MICRO_MUTATION 0//0.90
 #define P_REGMUT 0.50
 #define P_OPERMUT 0.45
 #define P_CONSTMUT 0.05
 #define STEP_SIZE_CONST 5.0
 
-#define P_CROSSOVER 0.10
+#define P_CROSSOVER 0//0.10
 
 
 /*************************************  MULTIPROCESAMIENTO *************************************
