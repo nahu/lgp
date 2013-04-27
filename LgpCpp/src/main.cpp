@@ -51,7 +51,7 @@ int main() {
 	std::vector<Individual> best_individuals_training (DEMES), best_individuals_validation(DEMES);
 	std::string folder = "./resultados";
 	std::vector<int> posiciones (N - K);
-	std::vector<std::vector<double> > list_training_errors, list_validation_errors;
+	std::vector<std::vector<double> > list_training_errors(DEMES), list_validation_errors(DEMES);
 	double duration;
 
 /*
@@ -127,17 +127,17 @@ int main() {
 
 		//****************************** Obtener listas de errores *****************************
 		for (int j = 0; j < best_individuals_training.size(); j++) {
-			list_training_errors.push_back(best_individuals_training.at(j).eval_individual(TRAINING));
+			list_training_errors[j] = best_individuals_training.at(j).eval_individual(TRAINING);
 		}
 		for (int j = 0; j < best_individuals_validation.size(); j++) {
-			list_validation_errors.push_back(best_individuals_validation.at(j).eval_individual(VALIDATION));
+			list_validation_errors[j] = best_individuals_validation.at(j).eval_individual(VALIDATION);
 		}
 
 		//****************************** CALCULAR SUMA & PROM ***************************** *
 		for (int j = 0; j < list_training_errors.size(); j++){
 			double sum, prom = 0.0;
 			for (int k = 0; k < list_training_errors.at(j).size(); k++){
-				sum += list_training_errors.at(j).at(k);
+				sum += list_training_errors[j][k];
 			}
 			prom = sum / list_training_errors.at(j).size();
 			list_training_errors.at(j).push_back(sum); //sumatoria
@@ -149,7 +149,7 @@ int main() {
 		for (int j = 0; j < list_validation_errors.size(); j++){
 			double sum, prom = 0.0;
 			for (int k = 0; k < list_validation_errors.at(j).size(); k++){
-				sum += list_validation_errors.at(j).at(k);
+				sum += list_validation_errors[j][k];
 			}
 			prom = sum / list_validation_errors.at(j).size();
 			list_validation_errors.at(j).push_back(sum); //sumatoria
