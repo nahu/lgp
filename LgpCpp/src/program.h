@@ -15,6 +15,7 @@ public:
 
 	void create_new_instruction();
 	void print_instruction();
+	std::string get_str_instruction();
 };
 
 
@@ -126,7 +127,79 @@ void Instruction::print_instruction() {
 	}
 }
 
+std::string Instruction::get_str_instruction() {
+	double operand_1, operand_2;
+	std::string operand_1s, operand_2s;
+	std::stringstream ss;
 
+	//std::cout << "[" << oper << ", " << dest << ", " << op1 <<  ", " << op2 << "]" << "\n";
+
+	ss.str("");
+	if (op1 >= REGISTER_OFFSET) {
+		//std::cout << "op1 = " << op1 << "\n";
+		operand_1 = op1 - REGISTER_OFFSET;
+		ss << "in_t[" << operand_1 << "]";
+		//operand_1 =
+		operand_1s = ss.str();
+	} else {
+		operand_1 = op1;
+		ss << "r_all[" << operand_1 << "]";
+		operand_1s = ss.str();
+	}
+
+	ss.str("");
+	if (op2 >= REGISTER_OFFSET) {
+		//std::cout << "op2 = " << op2 << "\n";
+		operand_2 = op2 - REGISTER_OFFSET;
+		ss << "in_t[" << operand_2 << "]";
+		operand_2s = ss.str();
+	} else {
+		operand_2 = op2;
+		ss << "r_all[" << operand_2 << "]";
+		operand_2s = ss.str();
+	}
+	std::stringstream final;
+	switch (oper) {
+		case ADD: {
+			final << "r_all[" << dest << "] = " << operand_1s << " + " << operand_2s << "\n";
+			break;
+		}
+		case SUB: {
+			final << "r_all[" << dest << "] = " << operand_1s << " - " << operand_2s << "\n";
+			break;
+		}
+		case MUL: {
+			final << "r_all[" << dest << "] = " << operand_1s << " * " << operand_2s << "\n";
+			break;
+		}
+		case DIV: {
+			final << "r_all[" << dest << "] = " << operand_1s << " / " << operand_2s << " if " << operand_2s << " != 0 else " << operand_1s << " + 1.0" << "\n";
+			break;
+		}
+		case POW2: {
+			//std::cout << "r_all[" << dest << "] = pow(" << operand_2s << ", 2)\n";
+			final << "r_all[" << dest << "] = " << operand_2s << " ** 2\n";
+			break;
+		}
+		case LOG10: {
+			final<< "r_all[" << dest << "] = math.log10(abs(" << operand_2s << "))" << " if " << operand_2s << " != 0 else " << operand_1s << " + 1.0" << "\n";
+			break;
+		}
+		case SQRT: {
+			final << "r_all[" << dest << "] = math.sqrt(abs(" << operand_2s << "))\n";
+			break;
+		}
+		case SIN: {
+			final << "r_all[" << dest << "] = math.sin(" << operand_2s << ")\n";
+			break;
+		}
+		case COS: {
+			final << "r_all[" << dest << "] = math.cos(" << operand_2s << ")\n";
+			break;
+		}
+	}
+	return final.str();
+}
 class Program {
 public:
 	Program ();
@@ -531,7 +604,6 @@ double Program::execute_program(double * input) {
 		}
 		//std::cout << i << " - result: " << r_all[instructions[i].dest] << "\n";
 	}
-
 	return r_all[0];
 
 }
@@ -546,5 +618,4 @@ void Program::print_list_int(Instruction * list_inst, int height){
 		std::cout<<list_inst[i].op2<<"\t|\n";
 	}
 }
-
 
