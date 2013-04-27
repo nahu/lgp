@@ -354,14 +354,13 @@ void Individual::print_individual() {
 	std::cout << "\n";
 	std::cout << "List Instruction: " << "\n";
 	for (int i = 0; i < program->height; i++) {
-		program->list_inst[i].print_instruction();
+		std::cout << program->list_inst[i].get_str_instruction();
 	}
-
 	std::cout << "\n";
 	std::cout << "List Effective: " << "\n";
 	for (int i = 0; i < program->n_eff; i++) {
 		//std::cout << i << "- ";
-		program->effective_list_inst[i].print_instruction();
+		std::cout << program->effective_list_inst[i].get_str_instruction();
 	}
 
 	std::cout << "\n";
