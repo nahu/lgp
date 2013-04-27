@@ -419,6 +419,7 @@ std::vector<int> Program::get_effective_constant_indices() {
 int Program::get_effective_registers(int position, std::vector<int> &indices) {
 	std::set<int> reg_eff;
 	std::set<int>::iterator it;
+	std::cout << "ACA\n";
 	reg_eff.insert(0);
 	for (int i = height - 1; i >= 0 ; i--) {
 		it = reg_eff.find(list_inst[i].dest);

@@ -43,7 +43,7 @@ la convención para asegurar que el programa tenga una salida es que la
 última instrucción sea del tipo [operación, 0, operador1, operador2]
 */
 
-#define NUM_MIN_INSTRUCTIONS 5//(30 * K)
+#define NUM_MIN_INSTRUCTIONS 4//(30 * K)
 #define NUM_MAX_INSTRUCTIONS 20//(12 * K)
 #define NUM_INI_INSTRUCTIONS 10//(6 * K)
 #define NUM_OPERATORS 9
@@ -117,13 +117,13 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 **********************************************************************************************/
 
-#define NUM_GENERATIONS 128
+#define NUM_GENERATIONS 500
 #define POPULATION_SIZE 1024
 #define DEMES 8
 #define FREQ_STATS 10
 #define POOL_SIZE 2
 #define MIGRATION_RATE 0.06
-#define GEN_TO_MIGRATE 1
+#define GEN_TO_MIGRATE 10
 
 
 /***************************************  PROBABILIDADES **************************************
@@ -157,7 +157,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define CONST_MIN 0 //50
 #define CONST_MAX 1 //50
 
-#define P_MACRO_MUTATION 0//0.50
+#define P_MACRO_MUTATION 1//0.50
 #define P_INS 0.75
 #define P_DEL 0.25
 

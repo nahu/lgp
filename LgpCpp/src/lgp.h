@@ -157,7 +157,7 @@ void Lgp::deme_evolve(int deme_index) {
 		std::sort(population[deme_index].list_ind->begin(), population[deme_index].list_ind->end(), compare_ob1());
 
 	} else {
-		std::sort(population[deme_index].list_ind->begin(),	population[deme_index].list_ind->end(), compare_ob2());
+		std::sort(population[deme_index].list_ind->begin(), population[deme_index].list_ind->end(), compare_ob2());
 	}
 	/*
 	std::cout<<"Despues del sort\n";
@@ -205,11 +205,11 @@ void Lgp::evolve() {
 		std::cout << "Generación #" << generation;
 		std::cout << "\n==================================================\n";
 
-		//for_replace = MIGRATION_RATE * (float) population[0].deme_size;
+		for_replace = MIGRATION_RATE * (float) population[0].deme_size;
 		//for_replace = 7;
 		std::cout << "for replace " << for_replace << "\n";
 
-		//paralelizar
+		//todo paralelizar
 
 		for (int i = 0; i < num_demes; i++) {
 			//std::cout << "``````````DEME " << i << "````````\n";
@@ -281,7 +281,8 @@ void Lgp::evolve() {
 			std::cout << "\n==================================================\n";
 			std::cout << "Generación #" << generation;
 			std::cout << "\n==================================================\n";
-			//best_individual_in_training();
+
+			best_individual_in_training();
 		}
 
 	}
