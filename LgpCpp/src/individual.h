@@ -796,7 +796,7 @@ std::vector<double> Individual::eval_individual(int tipo) {
 			error_quad.push_back(pow((result - Program::DATA[t][config_position]), 2.0));
 		}
 	} else if(tipo == VALIDATION) {
-		for (int t = VALIDATION_LINES; t < LINES; t++) {
+		for (int t = TRAINING_LINES; t < LINES; t++) {
 			double * int_t = Program::R_CONST[t];
 			double result = program->execute_program(int_t);
 			error_quad.push_back(pow((result - Program::DATA[t][config_position]), 2.0));
