@@ -385,6 +385,7 @@ void Individual::print_individual() {
 /*	std::cout << "\n";
 	std::cout << "List Instruction: " << "\n";
 	for (int i = 0; i < program->height; i++) {
+		std::cout << program->list_inst[i].get_str_instruction();
 		program->list_inst[i].print_instruction();
 	}*/
 
@@ -392,7 +393,7 @@ void Individual::print_individual() {
 	std::cout << "List Effective: " << "\n";
 	for (int i = 0; i < program->n_eff; i++) {
 		//std::cout << i << "- ";
-		program->effective_list_inst[i].print_instruction();
+		std::cout << program->effective_list_inst[i].get_str_instruction();
 	}
 
 	std::cout << "\n";
@@ -404,6 +405,7 @@ void Individual::print_individual() {
 
 }
 
+/*
 void Individual::clone(Individual * orig) {
 	fitness = orig->fitness;
 	error = orig->error;
@@ -423,6 +425,8 @@ void Individual::clone(Individual * orig) {
 			orig->program->list_reg + NUM_INDIVIDUAL_REGISTERS,
 			program->list_reg);
 }
+*/
+
 
 void Individual::check_max_min_instructions(std::string name,
 		std::string lugar) {
@@ -829,7 +833,7 @@ std::vector<double> Individual::eval_individual(int tipo) {
 			error_quad.push_back(pow((result - Program::DATA[t][config_position]), 2.0));
 		}
 	} else if(tipo == VALIDATION) {
-		for (int t = VALIDATION_LINES; t < LINES; t++) {
+		for (int t = TRAINING_LINES; t < LINES; t++) {
 			double * int_t = Program::R_CONST[t];
 			double result = program->execute_program(int_t);
 			error_quad.push_back(pow((result - Program::DATA[t][config_position]), 2.0));
