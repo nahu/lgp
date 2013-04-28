@@ -352,15 +352,15 @@ Instruction* Program::get_effective_instructions() {
 
 	int indice = height;
 
-	if (height_eff_space < height) {
-		if (effective_memory_space) {
-			delete [] effective_memory_space;
-			delete [] effective_indices_memory_space;
-		}
-		effective_memory_space = new Instruction[height];
-		effective_indices_memory_space = new int[height];
-		height_eff_space = height;
+	//if (height_eff_space < height) {
+	if (effective_memory_space) {
+		delete [] effective_memory_space;
+		delete [] effective_indices_memory_space;
 	}
+	effective_memory_space = new Instruction[height];
+	effective_indices_memory_space = new int[height];
+	height_eff_space = height;
+	//}
 
 	//std::vector<Instruction> eff_i;
 
@@ -419,7 +419,7 @@ std::vector<int> Program::get_effective_constant_indices() {
 int Program::get_effective_registers(int position, std::vector<int> &indices) {
 	std::set<int> reg_eff;
 	std::set<int>::iterator it;
-	std::cout << "ACA\n";
+	//std::cout << "ACA\n";
 	reg_eff.insert(0);
 	for (int i = height - 1; i >= 0 ; i--) {
 		it = reg_eff.find(list_inst[i].dest);
@@ -452,21 +452,11 @@ double Program::execute_program(double * input) {
 	Instruction *instructions;
 	//se asume que se tienen las instrucciones efectivas
 	instructions = effective_list_inst;
-/*
-	std::cout << "==========ANTES" << "\n\n";
-	std::cout << "+++++++R_ALL" << "\n";
-	for (int i = 0; i < NUM_INDIVIDUAL_REGISTERS; i++) {
-		std::cout << i << " - " << r_all[i] << "\n";
-	}
-
-	std::cout << "+++++++List Reg" << "\n";
-	for (int i = 0; i < NUM_INDIVIDUAL_REGISTERS; i++) {
-		std::cout << i << " - " << list_reg[i] << "\n";
-	}*/
+	int c_undef_nan;
+	//bool ban = false;
+	double operand_1, operand_2;
 
 	for (int i = 0; i < n_eff; i++) {
-		double operand_1, operand_2;
-
 		if (instructions[i].op1 >= REGISTER_OFFSET) {
 			operand_1 = input[instructions[i].op1 - REGISTER_OFFSET];
 		} else {
@@ -529,11 +519,34 @@ double Program::execute_program(double * input) {
 			break;
 		}
 		}
+
+		//tratar los underflow y overflow de registros
+		c_undef_nan = 1;
+		while (!finite(r_all[instructions[i].dest])) {
+/*			instructions[i].print_instruction();
+			std::cout << "c_undef_nan: " << c_undef_nan << "\n";
+			std::cout << i << "- operando 1: " << operand_1 << "  ";
+			std::cout << "operando 2: " << operand_2 << "\n";
+			std::cout << i << " - result: " << r_all[instructions[i].dest] << "\n";*/
+			r_all[instructions[i].dest] = (operand_1/c_undef_nan) + (operand_2/c_undef_nan);
+			c_undef_nan++;
+			//ban = true;
+		}
+
 		//std::cout << i << " - result: " << r_all[instructions[i].dest] << "\n";
 	}
 
-	return r_all[0];
+/*
+	if (instructions[n_eff - 1].dest != 0) {
+		std::cout << "----BBBBBBBB----- " << r_all[0] << "\n";
+	}
 
+	if (ban) {
+		std::cout << "%%%%%%%%%%%%%%%%%%%%% Final " << r_all[0] << "\n";
+	}
+*/
+
+	return r_all[0];
 }
 
 void Program::print_list_int(Instruction * list_inst, int height){

@@ -23,7 +23,6 @@ public:
 	//operadores genéticos
 	void check_max_min_instructions(std::string name, std::string place);
 	static void crossover(Individual * &genome1, Individual * &genome2);
-	//void exchange(Individual &mom, Individual &dad, int * cuts_points_mom, int * cuts_points_dad);
 	void clone(Individual * orig);
 	void print_individual();
 	void exchange(const Individual * dest, const Individual * origin, int * cp_dest, int * cp_origin);
@@ -70,11 +69,7 @@ struct compare_ob1 {
 		} else if (x.error < y.error) {
 			return true;
 		} else if (x.error == y.error) {
-			if (x.program->n_eff < y.program->n_eff) {
-				return true;
-			} else {
-				return false;
-			}
+			return false;
 		}
 	}
 };
@@ -83,16 +78,24 @@ struct compare_ob1 {
 
 struct compare_ob2 {
 	inline bool operator()(const Individual &x, const Individual &y) {
+		//borrar despues
+		if (!x.evaluated || !y.evaluated ) {
+			std::cout << "compare_ob1 EVALUAR FITNESS ANTES DE USAR ESTA FUNCION!!!!\n";
+			std::cout << "x fitness y n_eff \n";
+			std::cout <<  x.fitness << ", ";
+			std::cout << x.program->n_eff << "\n";
+
+			std::cout << "y fitness y n_eff \n";
+			std::cout <<  y.fitness << ", ";
+			std::cout << y.program->n_eff << "\n";
+		}
+		//hasta aca
 		if (x.sigma > y.sigma) {
 			return false;
 		} else if (x.sigma < y.sigma) {
 			return true;
 		} else if (x.sigma == y.sigma) {
-			if (x.program->n_eff < y.program->n_eff) {
-				return true;
-			} else {
-				return false;
-			}
+			return false;
 		}
 	}
 };
@@ -138,10 +141,12 @@ Individual::Individual(const Individual& source) :
 	}
 }
 
+
+
 Individual& Individual::operator=(const Individual& source) {
 	//auto-asingación
 	if (this == &source) {
-		std::cout << "error: AUTOASIGNACION\n";
+		//std::cout << "AUTOASIGNACION\n";
 		return *this;
 	}
 
@@ -165,8 +170,7 @@ Individual& Individual::operator=(const Individual& source) {
 	return *this;
 }
 
-void Individual::exchange(const Individual * dest, const Individual * origin,
-		int * cp_dest, int * cp_origin) {
+void Individual::exchange(const Individual * dest, const Individual * origin, int * cp_dest, int * cp_origin) {
 	config_position = dest->config_position;
 	evaluated = false;
 	int segment_out = cp_dest[1] - cp_dest[0];
@@ -180,9 +184,7 @@ void Individual::exchange(const Individual * dest, const Individual * origin,
 	}
 
 	program = new Program(new_height);
-	std::copy(dest->program->list_reg,
-			dest->program->list_reg + NUM_INDIVIDUAL_REGISTERS,
-			program->list_reg);
+	std::copy(dest->program->list_reg, dest->program->list_reg + NUM_INDIVIDUAL_REGISTERS, program->list_reg);
 
 	Instruction * cp_dest_inst = dest->program->list_inst + cp_dest[0];
 	Instruction * cp_orig_inst = origin->program->list_inst + cp_origin[0];
@@ -194,8 +196,7 @@ void Individual::exchange(const Individual * dest, const Individual * origin,
 
 	std::copy(dest->program->list_inst, cp_dest_inst, points[0]);
 	std::copy(cp_orig_inst, cp_orig_inst + segment_in, points[1]);
-	std::copy(dest->program->list_inst + cp_dest[1],
-			dest->program->list_inst + old_height, points[2]);
+	std::copy(dest->program->list_inst + cp_dest[1], dest->program->list_inst + old_height, points[2]);
 
 }
 
@@ -216,14 +217,21 @@ void Individual::eval_fitness() {
 	double error_a_quad = 0.0;
 	double error_prom_quad = 0.0;
 	double error_dev = 0.0;
+	double * int_t;
+	double result;
 
 	program->get_effective_instructions();
 	//std::cout << "Errores en entrenamiento: \n";
 
 	for (int t = 0; t < TRAINING_LINES; t++) {
-		double * int_t = Program::R_CONST[t];
-		double result = program->execute_program(int_t);
-		error_quad[t] = pow((result - Program::DATA[t][config_position]), 2.0);
+		int_t = Program::R_CONST[t];
+		result = program->execute_program(int_t);
+		if (!finite(result)) {
+			//std::cout << "El resultado del programa salio mal " << result << "\n";
+			error_quad[t] = HUGE_NUMBER;
+		} else {
+			error_quad[t] = pow((result - Program::DATA[t][config_position]), 2.0);
+		}
 		//std::cout << "result: " << result << "   data: " << Program::DATA[t][config_position] << "\n",
 		//std::cout << "error: " << error_quad[t] << "\n";
 		//std::cout << "********************************************************" << "\n\n";
@@ -234,8 +242,12 @@ void Individual::eval_fitness() {
 	error_prom_quad = error_a_quad / TRAINING_LINES;
 	for (int i = 0; i < TRAINING_LINES; i++) {
 		error_dev += pow((error_prom_quad - error_quad[i]), 2);
-
+		if (!finite(error_dev)) {
+			//std::cout << "Overflow al calcular la desviacion\n";
+			error_dev = HUGE_NUMBER;
+		}
 	}
+
 	error_dev /= (TRAINING_LINES - 1);
 
 	if (error_prom_quad == 0.0) {
@@ -245,6 +257,24 @@ void Individual::eval_fitness() {
 	sigma = sqrt(error_dev);
 
 	fitness = 1 / ((W_OB1 * error) + (W_OB2 * sigma));
+
+
+	if (!finite(fitness)) {
+		//std::cout << "********************************************************" << "\n\n";
+		if (isnan(fitness)) {
+			std::cout << "Fitness NaN" << "\n\n";
+			//std::cout << "error: " << error << "\n",
+			//std::cout << "sigma: " << sigma << "\n";
+			//std::cout << "********************************************************" << "\n\n";
+		} else {
+			std::cout << "Fitness Inf" << "\n\n";
+		}
+		//std::cout << "error: " << error << "\n",
+		//std::cout << "sigma: " << sigma << "\n";
+		//print_individual();
+		//std::cout << "********************************************************" << "\n\n";
+		fitness = 0.0;
+	}
 
 	evaluated = true;
 }
@@ -266,55 +296,56 @@ inline double Individual::evaluate(int obj = FITNESS) const {
 
 
 inline bool Individual::compare_fitness(Individual &x, Individual &y) {
-	//std::cout<<"compare_fitness x.evaluate()"<<x.evaluate()<<"\n";
-	//std::cout<<"compare_fitness y.evaluate()"<<y.evaluate()<<"\n";
+
+	//borrar despues
+	if (!x.evaluated || !y.evaluated ) {
+		std::cout << "compare_ob1 EVALUAR FITNESS ANTES DE USAR ESTA FUNCION!!!!\n";
+		std::cout << "x fitness y n_eff \n";
+		std::cout <<  x.fitness << ", ";
+		std::cout << x.program->n_eff << "\n";
+
+		std::cout << "y fitness y n_eff \n";
+		std::cout <<  y.fitness << ", ";
+		std::cout << y.program->n_eff << "\n";
+	}
+	//hasta aca
 	if (x.evaluate() > y.evaluate()) {
 		return false;
 	} else if (x.evaluate() < y.evaluate()) {
 		return true;
 	} else if (x.evaluate() == y.evaluate()) {
-		if (x.program->n_eff < y.program->n_eff) {
-			return true;
-		} else if (x.program->n_eff > y.program->n_eff) {
-			return false;
-		} else {
-			return false;
-		}
+		return false;
 	}
+	/*
 	std::cout<<"compare_fitness FIN\n";
+	std::cout<<"X\n";
+	x.print_individual();
+
+	std::cout<<"Y\n";
+	y.print_individual();
+	*/
+
 }
 
 
 inline bool Individual::compare_error_prom(Individual &x, Individual &y) {
-	if (x.evaluate() > y.evaluate()) {
+	if (x.evaluate(OB1) > y.evaluate(OB1)) {
 		return false;
 	} else if (x.evaluate(OB1) < y.evaluate(OB1)) {
 		return true;
 	} else if (x.evaluate(OB1) == y.evaluate(OB1)) {
-		if (x.program->n_eff < y.program->n_eff) {
-			return true;
-		} else if (x.program->n_eff > y.program->n_eff) {
-			return false;
-		} else {
-			return false;
-		}
+		return false;
 	}
 }
 
 
 inline bool Individual::compare_sigma(Individual &x, Individual &y) {
-	if (x.evaluate() > y.evaluate()) {
+	if (x.evaluate(OB2) > y.evaluate(OB2)) {
 		return false;
 	} else if (x.evaluate(OB2) < y.evaluate(OB2)) {
 		return true;
 	} else if (x.evaluate(OB2) == y.evaluate(OB2)) {
-		if (x.program->n_eff < y.program->n_eff) {
-			return true;
-		} else if (x.program->n_eff > y.program->n_eff) {
-			return true;
-		} else {
-			return false;
-		}
+		return false;
 	}
 }
 
@@ -351,11 +382,11 @@ void Individual::print_individual() {
 	std::cout << "List Size: " << program->height << "\n";
 	std::cout << "List effective Size: " << program->n_eff << "\n";
 
-	std::cout << "\n";
+/*	std::cout << "\n";
 	std::cout << "List Instruction: " << "\n";
 	for (int i = 0; i < program->height; i++) {
 		program->list_inst[i].print_instruction();
-	}
+	}*/
 
 	std::cout << "\n";
 	std::cout << "List Effective: " << "\n";
@@ -411,7 +442,6 @@ void Individual::check_max_min_instructions(std::string name,
 void Individual::crossover(Individual * &genome1, Individual * &genome2) { //, Individual * &child1, Individual * &child2
 	genome1->check_max_min_instructions("genome1", "Antes Crossover");
 	genome2->check_max_min_instructions("genome2", "Antes Crossover");
-	std::cout<<"CROSSOVER 408\n";
 	Individual * mom, *sister;
 	Individual * dad, *brother;
 
@@ -497,8 +527,8 @@ void Individual::crossover(Individual * &genome1, Individual * &genome2) { //, I
 		sister = new Individual;
 		brother = new Individual;
 
-		std::cout << "cp mon : " << cuts_points_mom[0] << " , " << cuts_points_mom[1] << "\n";
-		std::cout << "cp dad : " << cuts_points_dad[0] << " , " << cuts_points_dad[1] << "\n";
+		//std::cout << "cp mon : " << cuts_points_mom[0] << " , " << cuts_points_mom[1] << "\n";
+		//std::cout << "cp dad : " << cuts_points_dad[0] << " , " << cuts_points_dad[1] << "\n";
 
 		//Se intercambian los bloques en los nuevos creados
 		sister->exchange(mom, dad, cuts_points_mom, cuts_points_dad);
@@ -527,11 +557,12 @@ void Individual::crossover(Individual * &genome1, Individual * &genome2) { //, I
 
 void Individual::macro_mutation() {
 	//Agrega o quita instrucciones  -- Alg. 6.1 -- p_ins > p_del //
-	bool insertion = false;//random_flip_coin(P_INS);
+	bool insertion = random_flip_coin(P_INS);
 	int mutation_point = randint(0, program->height - 2);
 
 	//std::cout << "mutation_point: " << mutation_point << "\n";
 	if (program->height < NUM_MAX_INSTRUCTIONS && (insertion || program->height == NUM_MIN_INSTRUCTIONS)) {
+
 		//std::cout << "agrega instruccion\n";
 		// Si no supera la max. cant. de instrucciones y es insercion o tiene el numero minimo de instrucciones
 		Instruction new_instruction;
@@ -570,14 +601,15 @@ void Individual::macro_mutation() {
 	} else if (program->height > NUM_MIN_INSTRUCTIONS && (!insertion || program->height == NUM_MAX_INSTRUCTIONS)) {
 		//Si es mayor a la  min. cant. de instrucciones y  no es insercion o tiene el numero maximo de instrucciones
 		//std::cout << "elimina instruccion\n";
+		Instruction * new_list = new Instruction[program->height - 1];
 		if (mutation_point != 0) {
-			std::copy(program->list_inst + mutation_point, program->list_inst + program->height, program->list_inst + mutation_point - 1);
+			std::copy(program->list_inst, program->list_inst + mutation_point, new_list);
+			std::copy(program->list_inst + mutation_point + 1, program->list_inst + program->height, new_list + mutation_point);
 		} else {
-			Instruction * new_list = new Instruction[program->height - 1];
 			std::copy(program->list_inst + 1, program->list_inst + program->height, new_list);
-			delete [] program->list_inst;
-			program->list_inst = new_list;
 		}
+		delete [] program->list_inst;
+		program->list_inst = new_list;
 		program->height--;
 		set_altered();
 	}
@@ -586,6 +618,7 @@ void Individual::macro_mutation() {
 		std::cout << "superado el número maximo de instrucciones MACRO";
 		std::cout << "genome.height > Parameters.num_max_instructions";
 	}
+	//std::cout << "ya esta\n";
 }
 
 

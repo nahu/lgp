@@ -25,13 +25,15 @@ public:
 };
 
 Lgp::Lgp(int config_position, int demes, int population_size, int num_generation) {
-	std::cout<<"Const. LGP\n";
+	//std::cout<<"Const. LGP\n";
+
 	generation = 0;
 	this->num_generation = num_generation;
 	int div, pop_size_per_deme;
+
 	div = population_size / demes;
 
-	std::cout<<"div"<<div<<"\n";
+	//std::cout<<"div"<<div<<"\n";
 
 	pop_size_per_deme = div;
 	//pop_size_per_deme = 200;
@@ -111,7 +113,7 @@ void Lgp::deme_evolve(int deme_index) {
 	Individual ** winners[2];
 	participant_iter ini[2], end[2];
 
-	/*
+
 	for (int gen = 0; gen < GEN_TO_MIGRATE; gen++) {
 		selected_indices = population[deme_index].indices_selection(POOL_SIZE * 2);
 
@@ -132,12 +134,12 @@ void Lgp::deme_evolve(int deme_index) {
 		for (int i = 0; i < 2; i++) {
 			population[deme_index].override_loosers(selected_indices, ini[i], end[i], winners[i]);
 			//eliminar la copia del ganador de cada torneo, se creó en tournament_with_mutation
-			delete winners[i][0];
+			//delete winners[i][0];
 			delete [] winners[i];
 		}
 	}
 
-	*/
+
 
 	population[deme_index].evaluate_individuals();
 
@@ -181,36 +183,20 @@ void Lgp::deme_evolve(int deme_index) {
  */
 
 void Lgp::evolve() {
-	std::cout<<"evolve\n";
+	//std::cout<<"evolve\n";
 	int for_replace;
 	std::vector<Individual>::iterator ini, end, it;
 
-	//std::cout << "hola\n";
-
-/*
-	int deme_index = 0;
-	Individual *nuevo = new Individual;
-	nuevo->create_new_individual(1);
-	nuevo->fitness = 666.666;
-
-	std::vector<Individual>::iterator iter = population[2].list_ind->begin();
-	(*iter).fitness = 12345;
-	for (std::vector<Individual>::iterator it = population[deme_index].list_ind->begin(); it != population[deme_index].list_ind->end(); ++it) {
-		*it = *iter;
-	}
-*/
 	while (!termination_criteria()) {
 		generation++;
-		std::cout << "\n==================================================\n";
-		std::cout << "Generación #" << generation;
-		std::cout << "\n==================================================\n";
-
+		//std::cout << "Generación #" << generation << "\n";
 		for_replace = MIGRATION_RATE * (float) population[0].deme_size;
 		//for_replace = 7;
-		std::cout << "for replace " << for_replace << "\n";
+		//std::cout << "for replace " << for_replace << "\n";
 
 		//todo paralelizar
-
+		int chunks = num_demes / (NUM_PROCESSORS);
+		//#pragma omp parallel for schedule(static, chunks)
 		for (int i = 0; i < num_demes; i++) {
 			//std::cout << "``````````DEME " << i << "````````\n";
 			deme_evolve(i);
@@ -224,18 +210,6 @@ void Lgp::evolve() {
 			}
 			*/
 		}
-
-/*
-		int index = 0;
-
-		for (std::vector<Individual>::iterator it = population[deme_index].list_ind->begin(); it != population[deme_index].list_ind->end(); ++it) {
-
-			(*it).check(deme_index, index);
-			index++;
-		}
-*/
-
-
 
 		if (random_flip_coin (P_MIGRATION)) {
 			ini = population[num_demes - 1].list_ind->end() - for_replace;
@@ -276,15 +250,14 @@ void Lgp::evolve() {
 			}
 		}
 
-
 		if ((generation % FREQ_STATS) == 0) {
 			std::cout << "\n==================================================\n";
 			std::cout << "Generación #" << generation;
 			std::cout << "\n==================================================\n";
 
-			best_individual_in_training();
+			//best_individual_in_training();
 		}
-
 	}
+	best_individual_in_training();
 }
 

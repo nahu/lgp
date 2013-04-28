@@ -36,13 +36,28 @@
 #include "lgp.h"
 //using namespace std;
 
+
+
 int main() {
+
 	clock_t main_begin, main_end, t_begin, t_end;
 	main_begin = clock();
+	srand((unsigned)time(0));
+	//srand(7);
 
-	//srand((unsigned)time(0));
-	//omp_set_num_threads(NUM_PROCESSORS);
 
+/*
+	omp_set_num_threads(NUM_PROCESSORS);
+
+	int threads = omp_get_num_threads();
+	std::cout << "threads out: " << threads << "\n";
+
+	#pragma omp parallel
+	{
+		threads = omp_get_num_threads();
+		std::cout << "threads in: " << threads << "\n";
+	}
+*/
 	Program::init_registers();
 
 	//Declaraciones
@@ -52,42 +67,46 @@ int main() {
 	std::vector<std::vector<double> > list_training_errors, list_validation_errors;
 	double duration;
 
-/*
+
+	/*
 	Individual * g2 = new Individual;
 	Individual * g1 = new Individual;
 	g1->create_new_individual(1);
 	g2->create_new_individual(1);
 
-	Individual * sister, * brother;
-	sister = new Individual();
-	brother = new Individual;
+	if (false) {
+		Individual * sister, * brother;
+		sister = new Individual();
+		brother = new Individual;
 
-	std::cout<<"Antes del crossover \n";
-	std::cout<<"*** Main: Lista g1.\n";
-	Program::print_list_int(g1->program->list_inst, g1->program->height);
+		std::cout<<"Antes del crossover \n";
+		std::cout<<"*** Main: Lista g1.\n";
+		Program::print_list_int(g1->program->list_inst, g1->program->height);
 
-	std::cout<<"*** Main: Lista g2.\n";
-	Program::print_list_int(g2->program->list_inst, g2->program->height);
-
+		std::cout<<"*** Main: Lista g2.\n";
+		Program::print_list_int(g2->program->list_inst, g2->program->height);
+	}
 	//i.eval_fitness();
 
 
-	//while(1){
+	while(true){
 
-	std::cout<<"\n\n*** Main: Lista original.\n";
-	Program::print_list_int(g2->program->list_inst, g2->program->height);
-	g2->micro_mutation();
-	std::cout<<"*** Main: Lista mutada 1.\n";
-	Program::print_list_int(g2->program->list_inst, g2->program->height);
+		std::cout<<"\n\n*** Main: Lista original.\n";
+		Program::print_list_int(g2->program->list_inst, g2->program->height);
+		g2->micro_mutation();
+		std::cout<<"*** Main: Lista mutada 1.\n";
+		Program::print_list_int(g2->program->list_inst, g2->program->height);
+		g2->eval_fitness();
 
-	//}
+	}
+	*/
 
 	//g2.micro_mutation();
 	//std::cout<<"*** Main: Lista mutada 2.\n";
 	//Program::print_list_int(g2.program->list_inst, g2.program->height);
 
 
-*/
+
 
 	//Se escriben los parametros
 
@@ -97,7 +116,7 @@ int main() {
 	for (int i = 0; i < N; i++) {
 		if (CONFIG[i] == '0') {
 			posiciones[index] = i;
-			std::cout << "i: " <<  posiciones[index] << "\n";
+			//std::cout << "i: " <<  posiciones[index] << "\n";
 			index++;
 		}
 	}
@@ -173,6 +192,7 @@ int main() {
 		 */
 		delete lgp;
 	//}
+
 
 	main_end = clock();
 	duration = (double) (main_end - main_begin) / CLOCKS_PER_SEC;
