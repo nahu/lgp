@@ -196,7 +196,7 @@ void Lgp::evolve() {
 
 		//todo paralelizar
 		int chunks = num_demes / (NUM_PROCESSORS);
-		//#pragma omp parallel for schedule(static, chunks)
+		#pragma omp parallel for schedule(static, chunks)
 		for (int i = 0; i < num_demes; i++) {
 			//std::cout << "``````````DEME " << i << "````````\n";
 			deme_evolve(i);

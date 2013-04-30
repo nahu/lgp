@@ -129,6 +129,12 @@ void programs_to_file (std::string file, std::vector<Individual> best_individual
 		f << "*********************************************************************************"<< std::endl;
 		f << "Best Individual: "<< i << std::endl;
 		f << "*********************************************************************************"<< std::endl;
+		f << "Config Pos: " << best_individuals.at(i).config_position << "\n";
+		f << "Training error: " << best_individuals.at(i).error << "\n";
+		f << "Trainig Deviation: " << best_individuals.at(i).sigma << "\n";
+		f << "Fitness: " << best_individuals.at(i).fitness << "\n";
+		f << "List Size: " << best_individuals.at(i).program->height << "\n";
+		f << "List effective Size: " << best_individuals.at(i).program->n_eff << "\n";
 
 		f << "-----------------------"<< std::endl;
 		f << "Lista de instrucciones: "<< std::endl;

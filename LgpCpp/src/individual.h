@@ -695,11 +695,10 @@ void Individual::micro_mutation() {
 					randint(0, constants_indices.size() - 1));
 			register_mutation_index =
 					program->list_inst[ins_with_constant_index].op2;
-			std::cout << "\nprogram->list_reg[" << register_mutation_index
+			/*std::cout << "\nprogram->list_reg[" << register_mutation_index
 					<< "] = " << program->list_reg[register_mutation_index]
-					<< "\n";
-			program->list_reg[register_mutation_index] += (pow((-1),
-					(randint(0, 1))) * randfloat(0.0, STEP_SIZE_CONST));
+					<< "\n";*/
+			//program->list_reg[register_mutation_index] += (pow((-1),(randint(0, 1))) * randfloat(0.0, STEP_SIZE_CONST));
 		} else {
 			//no hay instrucciones efectivas con registros constantes variables
 			type = select_micro_mutacion_type(_random());
@@ -782,7 +781,7 @@ void Individual::micro_mutation() {
 	set_altered();
 
 	//para borrar desde aca
-
+	/*
 	std::cout << "##Info de control: " << "\n";
 	std::cout << "Instrucciones efectivas:\n";
 	Program::print_list_int(program->effective_list_inst, program->n_eff);
@@ -802,7 +801,7 @@ void Individual::micro_mutation() {
 				<< register_mutation_index << "] = "
 				<< program->list_reg[register_mutation_index] << "\n";
 	}
-	//hasta aca
+	//hasta aca*/
 }
 
 

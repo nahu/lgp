@@ -39,14 +39,14 @@
 
 
 int main() {
-
+	std::cout<<"Prueba Pragma de deme_evolve "<< std::endl;
 	clock_t main_begin, main_end, t_begin, t_end;
 	main_begin = clock();
 	srand((unsigned)time(0));
 	//srand(7);
 
 
-/*
+
 	omp_set_num_threads(NUM_PROCESSORS);
 
 	int threads = omp_get_num_threads();
@@ -57,7 +57,7 @@ int main() {
 		threads = omp_get_num_threads();
 		std::cout << "threads in: " << threads << "\n";
 	}
-*/
+
 	Program::init_registers();
 
 	//Declaraciones
@@ -69,7 +69,7 @@ int main() {
 
 
 	/*
-	Individual * g2 = new Individual;
+	Individual * g2 = new Individual;.04
 	Individual * g1 = new Individual;
 	g1->create_new_individual(1);
 	g2->create_new_individual(1);

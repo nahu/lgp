@@ -608,7 +608,6 @@ double Program::execute_program(double * input) {
 
 		//std::cout << i << " - result: " << r_all[instructions[i].dest] << "\n";
 	}
-<<<<<<< HEAD
 
 /*
 	if (instructions[n_eff - 1].dest != 0) {
@@ -619,11 +618,7 @@ double Program::execute_program(double * input) {
 		std::cout << "%%%%%%%%%%%%%%%%%%%%% Final " << r_all[0] << "\n";
 	}
 */
-=======
-	return r_all[0];
->>>>>>> 7ce65a134dcbbeb9af835f4b5219e91217eb3d34
-
-	return r_all[0];
+		return r_all[0];
 }
 
 void Program::print_list_int(Instruction * list_inst, int height){
