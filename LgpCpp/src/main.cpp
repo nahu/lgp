@@ -38,25 +38,28 @@
 //using namespace std;
 
 
+
 int main() {
 	std::cout<<"Prueba Pragma de deme_evolve "<< std::endl;
 	clock_t main_begin, main_end, t_begin, t_end;
 	main_begin = clock();
 	srand((unsigned)time(0));
+
 	//srand(7);
 
-
+	int threads;
 
 	omp_set_num_threads(NUM_PROCESSORS);
-
-	int threads = omp_get_num_threads();
+	threads = omp_get_num_threads();
 	std::cout << "threads out: " << threads << "\n";
 
+/*
 	#pragma omp parallel
 	{
 		threads = omp_get_num_threads();
 		std::cout << "threads in: " << threads << "\n";
 	}
+*/
 
 	Program::init_registers();
 
@@ -121,8 +124,8 @@ int main() {
 		}
 	}
 
-	//for (std::vector<int>::iterator it = positions.begin(); it != positions.end(); ++it) {
-		int i = 1;//*it;
+	for (std::vector<int>::iterator it = posiciones.begin(); it != posiciones.end(); ++it) {
+		int i = *it;
 		t_begin = clock();
 
 		std::cout << "************************************************************************************\n";
@@ -146,16 +149,21 @@ int main() {
 		for (int j = 0; j < best_individuals_training.size(); j++) {
 			list_training_errors[j] = best_individuals_training.at(j).eval_individual(TRAINING);
 		}
+
 		for (int j = 0; j < best_individuals_validation.size(); j++) {
 			list_validation_errors[j] = best_individuals_validation.at(j).eval_individual(VALIDATION);
 		}
 
 		//****************************** CALCULAR SUMA & PROM ***************************** *
-		for (int j = 0; j < list_training_errors.size(); j++){
-			double sum, prom = 0.0;
-			for (int k = 0; k < list_training_errors.at(j).size(); k++){
+
+		for (int j = 0; j < list_training_errors.size(); j++) {
+			double sum, prom;
+			sum = 0.0;
+
+			for (int k = 0; k < list_training_errors.at(j).size(); k++) {
 				sum += list_training_errors[j][k];
 			}
+
 			prom = sum / list_training_errors.at(j).size();
 			list_training_errors.at(j).push_back(sum); //sumatoria
 			list_training_errors.at(j).push_back(prom); //error_promedio
@@ -163,12 +171,16 @@ int main() {
 		}
 		//****************************** CALCULAR SUMA & PROM *****************************
 
-		for (int j = 0; j < list_validation_errors.size(); j++){
-			double sum, prom = 0.0;
-			for (int k = 0; k < list_validation_errors.at(j).size(); k++){
+		for (int j = 0; j < list_validation_errors.size(); j++) {
+			double sum, prom;
+			sum = 0.0;
+
+			for (int k = 0; k < list_validation_errors.at(j).size(); k++) {
 				sum += list_validation_errors[j][k];
 			}
+
 			prom = sum / list_validation_errors.at(j).size();
+
 			list_validation_errors.at(j).push_back(sum); //sumatoria
 			list_validation_errors.at(j).push_back(prom); //error_promedio
 			list_validation_errors.at(j).push_back(i);//posicion
@@ -176,22 +188,26 @@ int main() {
 
 
 		//****************************** ESCRIBIR EN ARCHIVOS *****************************
-		std::stringstream transf, gen; transf<<i; gen<<lgp->generation;
+		std::stringstream transf, gen;
+		transf << i;
+		gen << lgp->generation;
 
 		std::string f_errors_training = folder + "/TRAINING-errores-TRAF" + transf.str() + "-G" + gen.str() + ".csv";
 		errors_to_file(f_errors_training, list_training_errors);
+
 		std::string f_errors_val = folder + "/VALIDATION-errores-TRAF" + transf.str() + "-G" + gen.str() + ".csv";
 		errors_to_file(f_errors_val, list_validation_errors);
 
-		std::string f_programs = folder + "/TRAINING-programas -TRAF" + transf.str() + "-G" + gen.str() + ".txt";
+		std::string f_programs = folder + "/TRAINING-programas-TRAF" + transf.str() + "-G" + gen.str() + ".txt";
 		programs_to_file(f_programs, best_individuals_training);
-		f_programs = folder + "/VALIDATION-programas -TRAF" + transf.str() + "-G" + gen.str() + ".txt";
+
+		f_programs = folder + "/VALIDATION-programas-TRAF" + transf.str() + "-G" + gen.str() + ".txt";
 		programs_to_file(f_programs, best_individuals_validation);
 
 
 
 		delete lgp;
-	//}
+	}
 
 
 	main_end = clock();

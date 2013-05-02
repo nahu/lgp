@@ -137,15 +137,22 @@ std::vector<Participant> Deme::indices_selection(unsigned int pool_size) {
 
 
 Individual** Deme::tournament_with_mutation(std::vector<Participant> &indices, participant_iter ini, participant_iter end) {
-	Individual ** competitors = new Individual*[POOL_SIZE];
 	Individual** r = new Individual*[2];
 	Individual * winner;
-	int win_pos = 0;
-	int i = 0;
 	participant_iter it, choosen = ini;
-	list_ind->at((*choosen).pop_position).eval_fitness();
+
+	int pos = (*choosen).pop_position;
+
+
+	int tamanho = list_ind->size();
+	if ((tamanho != deme_size) || (deme_size < pos)) {
+		std::cout<<"Problemas deme_size "<< deme_size << ", tamanho " << tamanho << ", pos " << pos <<"\n";
+	}
+
+	list_ind->at(pos).eval_fitness();
 
 	for (it = ini + 1; it != end; ++it) {
+
 		list_ind->at((*it).pop_position).eval_fitness();
 		//std::cout<<"(*it).pop_position "<<(*it).pop_position<<"\n";
 		//std::cout<<"(*chosen).pop_position "<<(*choosen).pop_position<<"\n";

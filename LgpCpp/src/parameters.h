@@ -43,13 +43,13 @@ la convención para asegurar que el programa tenga una salida es que la
 última instrucción sea del tipo [operación, 0, operador1, operador2]
 */
 
-#define NUM_MIN_INSTRUCTIONS (6 * K)
-#define NUM_MAX_INSTRUCTIONS (30 * K)
-#define NUM_INI_INSTRUCTIONS (10 * K)
+#define NUM_MIN_INSTRUCTIONS (5 * K)
+#define NUM_MAX_INSTRUCTIONS (20 * K)
+#define NUM_INI_INSTRUCTIONS (9 * K)
 #define NUM_OPERATORS 9
 
 
-#define NUM_VAR_REGISTER 9 //K
+#define NUM_VAR_REGISTER 9//K
 #define NUM_CONST_IN_REGISTERS K
 #define NUM_OUT_REGISTERS 1
 #define NUM_CONST_RANDOM_REGISTERS 6//K
@@ -118,13 +118,13 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 **********************************************************************************************/
 
-#define NUM_GENERATIONS 500
-#define POPULATION_SIZE 1024
+#define NUM_GENERATIONS 300
+#define POPULATION_SIZE 20000
 #define DEMES 8
 #define FREQ_STATS 100
-#define POOL_SIZE 2
-#define MIGRATION_RATE 0.06
-#define GEN_TO_MIGRATE 10
+#define POOL_SIZE 3
+#define MIGRATION_RATE 0.03
+#define GEN_TO_MIGRATE 200
 
 
 /***************************************  PROBABILIDADES **************************************
@@ -149,26 +149,26 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
     p_crossover: probabilidad de carplia la operación de cruzamiento.
 *************************************************************************************************/
 
-#define P_MIGRATION 1
-#define P_MIGRATION_CRITERIA 1
+#define P_MIGRATION 0.25
+#define P_MIGRATION_CRITERIA 0.4
 
-#define P_REG_OP1_CONST 0.5
+#define P_REG_OP1_CONST 0.6
 #define P_REG_OP2_CONST 0.1
 #define P_CONST_IN 0.75
 #define CONST_MIN 0 //50
 #define CONST_MAX 1 //50
 
-#define P_MACRO_MUTATION 1//0.50
+#define P_MACRO_MUTATION 0.5//0.50
 #define P_INS 0.75
 #define P_DEL 0.25
 
-#define P_MICRO_MUTATION 0//0.90
+#define P_MICRO_MUTATION 0.90//0.90
 #define P_REGMUT 0.50
 #define P_OPERMUT 0.45
 #define P_CONSTMUT 0.05
 #define STEP_SIZE_CONST 5.0
 
-#define P_CROSSOVER 0//0.10
+#define P_CROSSOVER 0.1//0.10
 
 
 /*************************************  MULTIPROCESAMIENTO *************************************

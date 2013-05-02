@@ -231,6 +231,19 @@ void Individual::eval_fitness() {
 			error_quad[t] = HUGE_NUMBER;
 		} else {
 			error_quad[t] = pow((result - Program::DATA[t][config_position]), 2.0);
+			if (!finite(error_quad[t])) {
+				error_quad[t] = HUGE_NUMBER;
+			}
+		}
+
+		if (error_quad[t] == 0) {
+			/*std::cout << "error_quad[t] Cero\n";
+			std::cout << "result " << result << "\n";
+			std::cout << "Program::DATA[t][config_position] " << Program::DATA[t][config_position] << "\n";*/
+
+			if (result == 0) {
+				print_individual();
+			}
 		}
 		//std::cout << "result: " << result << "   data: " << Program::DATA[t][config_position] << "\n",
 		//std::cout << "error: " << error_quad[t] << "\n";
@@ -240,6 +253,19 @@ void Individual::eval_fitness() {
 	}
 
 	error_prom_quad = error_a_quad / TRAINING_LINES;
+
+	if (!finite(error_prom_quad)) {
+		error_prom_quad = HUGE_NUMBER;
+	} else if (error_prom_quad == 0.0) {
+		std::cout << "Error Cero\n";
+		std::cout << "error_a_quad " << error_a_quad << "\n";
+		std::cout << "///Errores\n";
+		for (int t = 0; t < TRAINING_LINES; t++) {
+			std::cout << "error_quad[" << t << "] " << error_quad[t] << "\n";
+		}
+		error_prom_quad = 0.000000001;
+	}
+
 	for (int i = 0; i < TRAINING_LINES; i++) {
 		error_dev += pow((error_prom_quad - error_quad[i]), 2);
 		if (!finite(error_dev)) {
@@ -250,9 +276,7 @@ void Individual::eval_fitness() {
 
 	error_dev /= (TRAINING_LINES - 1);
 
-	if (error_prom_quad == 0.0) {
-		error_prom_quad = 0.000000001;
-	}
+
 	error = error_prom_quad;
 	sigma = sqrt(error_dev);
 
@@ -363,14 +387,15 @@ inline bool Individual::compare_validation_error(Individual &x, Individual &y) {
 
 
 void Individual::check(int deme, int index) {
-	if (deme > 10) {
-		std::cout << "deme: " << deme << " ";
+	if (fitness > 1) {
+		std::cout << "From deme: " << deme << " ";
+		std::cout << "individidual: " << index << " ";
+		std::cout << "fitness: " << fitness << " ";
+		std::cout << "error: " << error << " ";
+		std::cout << "Program n_eff: " << program->n_eff << "\n";
 	}
 
-	std::cout << "From deme: " << deme << " ";
-	std::cout << "individidual: " << index << " ";
-	std::cout << "error: " << error << " ";
-	std::cout << "Program n_eff: " << program->n_eff << "\n";
+
 }
 
 
@@ -405,27 +430,6 @@ void Individual::print_individual() {
 
 }
 
-/*
-void Individual::clone(Individual * orig) {
-	fitness = orig->fitness;
-	error = orig->error;
-	sigma = orig->sigma;
-	//index = orig->index;
-	config_position = orig->config_position; //ver si hace falta
-	evaluated = 0;
-	program = new Program;
-	*program = *orig->program;
-	program->list_inst = 0;
-	program->list_inst = new Instruction[orig->program->height];
-	program->list_reg = new double[NUM_INDIVIDUAL_REGISTERS];
-	std::copy(orig->program->list_inst,
-			orig->program->list_inst + orig->program->height,
-			program->list_inst);
-	std::copy(orig->program->list_reg,
-			orig->program->list_reg + NUM_INDIVIDUAL_REGISTERS,
-			program->list_reg);
-}
-*/
 
 
 void Individual::check_max_min_instructions(std::string name,

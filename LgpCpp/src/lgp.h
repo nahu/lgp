@@ -134,7 +134,7 @@ void Lgp::deme_evolve(int deme_index) {
 		for (int i = 0; i < 2; i++) {
 			population[deme_index].override_loosers(selected_indices, ini[i], end[i], winners[i]);
 			//eliminar la copia del ganador de cada torneo, se creó en tournament_with_mutation
-			//delete winners[i][0];
+			delete winners[i][0];
 			delete [] winners[i];
 		}
 	}
@@ -175,12 +175,7 @@ void Lgp::deme_evolve(int deme_index) {
 	*/
 }
 
-/* any function that takes two values and returns true if the first is strictly less than the other
- * struct greater {
- bool operator()(int lhs, int rhs) { return lhs > rhs; }
- };
- std::sort(container.begin(), container.end(), greater());
- */
+
 
 void Lgp::evolve() {
 	//std::cout<<"evolve\n";
@@ -189,7 +184,7 @@ void Lgp::evolve() {
 
 	while (!termination_criteria()) {
 		generation++;
-		//std::cout << "Generación #" << generation << "\n";
+		std::cout << "Generación #" << generation << "\n";
 		for_replace = MIGRATION_RATE * (float) population[0].deme_size;
 		//for_replace = 7;
 		//std::cout << "for replace " << for_replace << "\n";
@@ -198,9 +193,8 @@ void Lgp::evolve() {
 		int chunks = num_demes / (NUM_PROCESSORS);
 		#pragma omp parallel for schedule(static, chunks)
 		for (int i = 0; i < num_demes; i++) {
-			//std::cout << "``````````DEME " << i << "````````\n";
 			deme_evolve(i);
-			/*
+
 			int index = 0;
 
 			for (std::vector<Individual>::iterator it = population[i].list_ind->begin(); it != population[i].list_ind->end(); ++it) {
@@ -208,7 +202,7 @@ void Lgp::evolve() {
 				(*it).check(i, index);
 				index++;
 			}
-			*/
+
 		}
 
 		if (random_flip_coin (P_MIGRATION)) {
