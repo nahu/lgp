@@ -67,6 +67,10 @@ LgpCpp/src/a.out
 LgpCpp/gdb/
 LgpCpp/src/main.o
 LgpCpp/src/main.d
-LgpCpp/src/OpenMP
+LgpCpp/OpenMP
+
+
+LgpCpp/gmon.out
+LgpCpp/resultados*
 
 
