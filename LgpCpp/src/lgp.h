@@ -108,19 +108,19 @@ inline bool Lgp::termination_criteria() {
 
 //se podría llevar a deme
 void Lgp::deme_evolve(int deme_index) {
-	std::vector<Participant> selected_indices;
+	Participant * selected_indices;
 	//Individual ** to_tournament[2];
 	Individual ** winners[2];
-	participant_iter ini[2], end[2];
+	int ini[2], end[2];
 
 
 	for (int gen = 0; gen < GEN_TO_MIGRATE; gen++) {
 		selected_indices = population[deme_index].indices_selection(POOL_SIZE * 2);
 
-		ini[0] = selected_indices.begin();
-		end[0] = selected_indices.begin() + POOL_SIZE;
-		ini[1] = selected_indices.begin() + POOL_SIZE;
-		end[1] = selected_indices.end();
+		ini[0] = 0;
+		end[0] = POOL_SIZE;
+		ini[1] = POOL_SIZE;
+		end[1] = POOL_SIZE * 2;
 
 		for (int i = 0; i < 2; i++) {
 			winners[i] = population[deme_index].tournament_with_mutation(selected_indices, ini[i], end[i]);
@@ -137,9 +137,9 @@ void Lgp::deme_evolve(int deme_index) {
 			delete winners[i][0];
 			delete [] winners[i];
 		}
+
+		delete [] selected_indices;
 	}
-
-
 
 	population[deme_index].evaluate_individuals();
 
@@ -184,7 +184,7 @@ void Lgp::evolve() {
 
 	while (!termination_criteria()) {
 		generation++;
-		std::cout << "Generación #" << generation << "\n";
+		//std::cout << "Generación #" << generation << "\n";
 		for_replace = MIGRATION_RATE * (float) population[0].deme_size;
 		//for_replace = 7;
 		//std::cout << "for replace " << for_replace << "\n";
@@ -196,13 +196,10 @@ void Lgp::evolve() {
 			deme_evolve(i);
 
 			int index = 0;
-
-			for (std::vector<Individual>::iterator it = population[i].list_ind->begin(); it != population[i].list_ind->end(); ++it) {
-
+/*			for (std::vector<Individual>::iterator it = population[i].list_ind->begin(); it != population[i].list_ind->end(); ++it) {
 				(*it).check(i, index);
 				index++;
-			}
-
+			}*/
 		}
 
 		if (random_flip_coin (P_MIGRATION)) {
@@ -217,11 +214,11 @@ void Lgp::evolve() {
 				it++;
 				cont++;
 			}
+
 			//std::cout << "migrados: " << cont << "\n";
 			if (cont != for_replace) {
 				std::cout << "no se copio todo " << cont << "\n";
 			}
-
 
 			for (int i = 1; i < num_demes; i++) {
 				if (random_flip_coin (P_MIGRATION)) {

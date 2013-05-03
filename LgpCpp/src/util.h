@@ -34,7 +34,8 @@ int randint(int LO, int HI) {
 		return HI;
 	}
 
-	int r = LO + rand() / (RAND_MAX / (HI - LO + 1));
+
+	int r = LO + (rand() % (HI - LO + 1) );
 
 	return r;
 }

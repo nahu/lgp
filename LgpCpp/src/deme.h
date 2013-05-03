@@ -5,13 +5,11 @@
  *      Author: Vanessa Cañete, Nahuel Hernández
  */
 
-class Participant {
-public:
+struct Participant {
 	int pop_position;
-	bool win;
+	int win;
 };
 
-typedef std::vector<Participant>::iterator participant_iter;
 
 class Deme {
 public:
@@ -25,9 +23,9 @@ public:
 
 	//los métodos relacionados a population
 	//void deme_evolve();
-	std::vector<Participant> indices_selection(unsigned int pool_size);
-	Individual ** tournament_with_mutation(std::vector<Participant> &indices, participant_iter ini, participant_iter end);
-	void override_loosers(std::vector<Participant> &indices, participant_iter ini, participant_iter end, Individual ** winners);
+	Participant * indices_selection(unsigned int pool_size);
+	Individual ** tournament_with_mutation(Participant * indices, int ini, int end);
+	void override_loosers(Participant * indices, int ini, int end, Individual ** winners);
 
 	std::vector<Individual> *list_ind;
 	int deme_size;
@@ -108,24 +106,24 @@ void Deme::evaluate_individuals() {
 	for (std::vector<Individual>::iterator it = list_ind->begin(); it < list_ind->end(); ++it) {
 		(*it).eval_fitness();
 	}
-
-
 }
 
-
-std::vector<Participant> Deme::indices_selection(unsigned int pool_size) {
-	std::vector<Participant> index_pool(pool_size);
+Participant * Deme::indices_selection(unsigned int pool_size) {
+	Participant * index_pool = new Participant[pool_size];
 	std::set<int> pool_set;
 	int i = 0, index;
 
 	while (pool_set.size() < pool_size) {
 		index = randint(0, deme_size - 1);
+		if (index == deme_size) {
+			std::cout<<"Problemas deme_size = index "<<"\n";
+		}
 		pool_set.insert(index);
 	}
 
 	for (std::set<int>::iterator it = pool_set.begin(); it != pool_set.end(); ++it) {
 		index_pool[i].pop_position = *it;
-		index_pool[i].win = false;
+		index_pool[i].win = 0;
 		i++;
 	}
 
@@ -136,12 +134,12 @@ std::vector<Participant> Deme::indices_selection(unsigned int pool_size) {
 
 
 
-Individual** Deme::tournament_with_mutation(std::vector<Participant> &indices, participant_iter ini, participant_iter end) {
+Individual** Deme::tournament_with_mutation(Participant * indices, int ini, int end) {
 	Individual** r = new Individual*[2];
 	Individual * winner;
-	participant_iter it, choosen = ini;
+	int choosen = ini;
 
-	int pos = (*choosen).pop_position;
+	int pos = indices[choosen].pop_position;
 
 
 	int tamanho = list_ind->size();
@@ -149,21 +147,23 @@ Individual** Deme::tournament_with_mutation(std::vector<Participant> &indices, p
 		std::cout<<"Problemas deme_size "<< deme_size << ", tamanho " << tamanho << ", pos " << pos <<"\n";
 	}
 
+
+	//std::cout<<"Problemas deme_size "<< deme_size << ", tamanho " << tamanho << ", pos " << pos <<"\n";
 	list_ind->at(pos).eval_fitness();
 
-	for (it = ini + 1; it != end; ++it) {
+	for (++ini; ini < end; ++ini) {
 
-		list_ind->at((*it).pop_position).eval_fitness();
+		list_ind->at(indices[ini].pop_position).eval_fitness();
 		//std::cout<<"(*it).pop_position "<<(*it).pop_position<<"\n";
 		//std::cout<<"(*chosen).pop_position "<<(*choosen).pop_position<<"\n";
-		if (Individual::compare_fitness(list_ind->at((*it).pop_position), list_ind->at((*choosen).pop_position))) {
-			choosen = it;
+		if (Individual::compare_fitness(list_ind->at(indices[ini].pop_position), list_ind->at(indices[choosen].pop_position))) {
+			choosen = ini;
 		}
 	}
 
-	(*choosen).win = true;
+	indices[choosen].win = 1;
 
-	winner = new Individual(list_ind->at((*choosen).pop_position));
+	winner = new Individual(list_ind->at(indices[choosen].pop_position));
 
 
 	if (random_flip_coin(P_MACRO_MUTATION)) {
@@ -176,7 +176,7 @@ Individual** Deme::tournament_with_mutation(std::vector<Participant> &indices, p
 
 
 	r[0] = winner;
-	r[1] = &list_ind->at((*choosen).pop_position);
+	r[1] = &list_ind->at(indices[choosen].pop_position);
 
 	return r;
 }
@@ -184,7 +184,7 @@ Individual** Deme::tournament_with_mutation(std::vector<Participant> &indices, p
 
 
 //Se remplaza los perdedores por el mejor entre (ganador modificado, ganador NO modificado) y se actualizan los indices dentro de la población
-void Deme::override_loosers(std::vector<Participant> &indices, participant_iter ini, participant_iter end, Individual ** winners) {
+void Deme::override_loosers(Participant * indices, int ini, int end, Individual ** winners) {
 	int best_replace, worst_replace;
 	int win_pos;
 	//std::cout<<"modificado\n";
@@ -205,11 +205,11 @@ void Deme::override_loosers(std::vector<Participant> &indices, participant_iter 
 		worst_replace = 1;
 	}
 
-	for ( ;ini != end; ++ini) {
-		if ((*ini).win) {
-			win_pos = (*ini).pop_position;
+	for ( ;ini < end; ++ini) {
+		if (indices[ini].win) {
+			win_pos = indices[ini].pop_position;
 		} else {
-			list_ind->at((*ini).pop_position) = *(winners[best_replace]);
+			list_ind->at(indices[ini].pop_position) = *(winners[best_replace]);
 		}
 	}
 

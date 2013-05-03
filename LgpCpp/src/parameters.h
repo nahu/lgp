@@ -49,7 +49,7 @@ la convención para asegurar que el programa tenga una salida es que la
 #define NUM_OPERATORS 9
 
 
-#define NUM_VAR_REGISTER 9//K
+#define NUM_VAR_REGISTER 8//K
 #define NUM_CONST_IN_REGISTERS K
 #define NUM_OUT_REGISTERS 1
 #define NUM_CONST_RANDOM_REGISTERS 6//K
@@ -119,7 +119,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 **********************************************************************************************/
 
 #define NUM_GENERATIONS 300
-#define POPULATION_SIZE 20000
+#define POPULATION_SIZE 20000//1000
 #define DEMES 8
 #define FREQ_STATS 100
 #define POOL_SIZE 3
@@ -162,13 +162,13 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define P_INS 0.75
 #define P_DEL 0.25
 
-#define P_MICRO_MUTATION 0.90//0.90
+#define P_MICRO_MUTATION 0.8//0.90
 #define P_REGMUT 0.50
 #define P_OPERMUT 0.45
 #define P_CONSTMUT 0.05
 #define STEP_SIZE_CONST 5.0
 
-#define P_CROSSOVER 0.1//0.10
+#define P_CROSSOVER 1//0.1//0.10
 
 
 /*************************************  MULTIPROCESAMIENTO *************************************

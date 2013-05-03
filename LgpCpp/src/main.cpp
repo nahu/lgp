@@ -40,26 +40,36 @@
 
 
 int main() {
-	std::cout<<"Prueba Pragma de deme_evolve "<< std::endl;
+	/*int count = 0;
+	while(true) {
+		int hola = randint(0,5 - 1);
+		count++;
+		//std::cout<< " " << hola << std::endl;
+		if (hola == 5) {
+			std::cout<< "************************** count " << count << std::endl;
+		}
+	}*/
+	//std::cout<<"Prueba Pragma de deme_evolve "<< std::endl;
 	clock_t main_begin, main_end, t_begin, t_end;
 	main_begin = clock();
 	srand((unsigned)time(0));
 
 	//srand(7);
 
-	int threads;
+	//int threads;
 
-	omp_set_num_threads(NUM_PROCESSORS);
-	threads = omp_get_num_threads();
-	std::cout << "threads out: " << threads << "\n";
+	//omp_set_num_threads(NUM_PROCESSORS);
+	//threads = omp_get_num_threads();
+	//std::cout << "threads out: " << threads << "\n";
 
-/*
+
+	/*
 	#pragma omp parallel
 	{
 		threads = omp_get_num_threads();
 		std::cout << "threads in: " << threads << "\n";
-	}
-*/
+	}*/
+
 
 	Program::init_registers();
 
@@ -71,8 +81,8 @@ int main() {
 	double duration;
 
 
-	/*
-	Individual * g2 = new Individual;.04
+
+	/*Individual * g2 = new Individual;.04
 	Individual * g1 = new Individual;
 	g1->create_new_individual(1);
 	g2->create_new_individual(1);
@@ -101,8 +111,7 @@ int main() {
 		Program::print_list_int(g2->program->list_inst, g2->program->height);
 		g2->eval_fitness();
 
-	}
-	*/
+	}*/
 
 	//g2.micro_mutation();
 	//std::cout<<"*** Main: Lista mutada 2.\n";
@@ -213,6 +222,6 @@ int main() {
 	main_end = clock();
 	duration = (double) (main_end - main_begin) / CLOCKS_PER_SEC;
 	std::cout<<"\n\n--Duracion LGP/main : " << duration << "\n";
-
+	//days = time / 86400 hours = (time / 3600) - (days * 24) minutes = (time / 60) - (days * 1440) - (hours * 60) seconds = time mod 60
 	return 0;
 }
