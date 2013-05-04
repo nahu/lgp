@@ -826,22 +826,65 @@ int Individual::select_micro_mutacion_type(float prob) {
 
 
 std::vector<double> Individual::eval_individual(int tipo) {
-	std::vector<double> error_quad;
+
+	print_individual();
 	program->get_effective_instructions();
 
+	double result;
+	double * int_t;
+	double error_a_quad, error_prom_quad;
+	int size;
+	int ini, end;
+
 	if (tipo == TRAINING) {
-		for (int t = 0; t < TRAINING_LINES; t++) {
-			double * int_t = Program::R_CONST[t];
-			double result = program->execute_program(int_t);
-			error_quad.push_back(pow((result - Program::DATA[t][config_position]), 2.0));
-		}
+		size = TRAINING_LINES;
+		ini = 0;
+		end = TRAINING_LINES;
 	} else if(tipo == VALIDATION) {
-		for (int t = TRAINING_LINES; t < LINES; t++) {
-			double * int_t = Program::R_CONST[t];
-			double result = program->execute_program(int_t);
-			error_quad.push_back(pow((result - Program::DATA[t][config_position]), 2.0));
-		}
+		size = VALIDATION_LINES;
+		ini = TRAINING_LINES;
+		end = LINES;
 	}
+
+	std::vector<double> error_quad(size+3);
+	for (int t = ini; t < end; t++) {
+		int_t = Program::R_CONST[t];
+		result = program->execute_program(int_t);
+		if (!finite(result)) {
+		 	error_quad[t] = HUGE_NUMBER;
+		} else {
+			error_quad[t] = pow((result - Program::DATA[t][config_position]), 2.0);
+			if (!finite(error_quad[t])) {
+				error_quad[t] = HUGE_NUMBER;
+			}
+		}
+
+		//****************************** CALCULAR SUMA & PROM *****************************
+		error_a_quad += error_quad[t];
+	}
+
+
+	if (!finite(error_a_quad)) {
+		error_a_quad = HUGE_NUMBER;
+	} else if (error_a_quad == 0.0) {
+		std::cout << "Error Cero\n";
+		std::cout << "error_a_quad " << error_a_quad << "\n";
+		std::cout << "///Errores\n";
+		for (int t = ini; t < end; t++) {
+			std::cout << "error_quad[" << t << "] " << error_quad[t] << "\n";
+		}
+		error_a_quad = 0.000000001;
+	}
+
+	error_prom_quad = error_a_quad / size;
+
+	error_quad[size + 1] = error_a_quad;
+	error_quad[size + 2] = error_prom_quad;
+	error_quad[size + 3] = config_position;
+
 
 	return error_quad;
 }
+
+
+

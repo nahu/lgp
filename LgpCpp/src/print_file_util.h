@@ -1,3 +1,10 @@
+/*
+ * print_file_util.h
+ *
+ *  Created on: April 25, 2013
+ *      Author: Vanessa Cañete, Nahuel Hernández
+ */
+
 void parameters_to_file(std::string f_param) {
 	std::ofstream f;
 	f.open(f_param.c_str());
@@ -93,7 +100,7 @@ void parameters_to_file(std::string f_param) {
 	f.close();
 }
 
-void errors_to_file(std::string file, std::vector<std::vector<double> > error_list) {
+void errors_to_file(std::string file, std::vector<std::vector<double> > error_list, int size) {
 	/*
 	 * Se recibe una lista que contiene por cada "mejor individio" una lista de errores
 	 * por muestra. Entonces, se debe imprimir en columnas los errores por individuo.
@@ -103,18 +110,19 @@ void errors_to_file(std::string file, std::vector<std::vector<double> > error_li
 	f.open(file.c_str());
 	f.precision(6);
 	std::string row;
-	for (int t = 0; t < error_list.at(0).size(); t++) {
-		if (t == error_list.at(0).size() - 3) {
+	for (int t = 0; t < size; t++) {
+		if (t == size - 3) {
 			f<<"Error total;";
-		} else if (t == error_list.at(0).size() - 2) {
+		} else if (t == size - 2) {
 			f<<"Error promedio;";
-		} else if (t == error_list.at(0).size()-1) {
+		} else if (t == size - 1) {
 			f<<"Posicion;";
 		} else {
 			f<<t<<";";
 		}
+
 		for (int i = 0; i < error_list.size(); i++) {
-			f << "" << std::fixed << error_list.at(i).at(t) << ";";
+			f << "" << std::fixed << error_list.at(i)[t] << ";";
 		}
 		f << "\n";
 	}
