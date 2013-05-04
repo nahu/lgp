@@ -108,8 +108,9 @@ double ** get_matrix_from_file() {
 std::string get_current_time(){
 	std::stringstream timestream;
 	time_t t = time(0);
-	struct tm * now = localtime( & t );
-	timestream << (now->tm_year + 1900) << '-' << (now->tm_mon + 1) << '-' <<  now->tm_mday<<'-'
-			<< now->tm_hour << ':' << now->tm_min << ':' << now->tm_sec << std::endl;
+	struct tm * now = localtime(&t);
+	timestream << now->tm_mday << '-' << (now->tm_mon + 1) << '-'
+			<< (now->tm_year + 1900) << '_' << now->tm_hour << ':'
+			<< now->tm_min << ':' << now->tm_sec;
 	return timestream.str();
 }

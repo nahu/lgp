@@ -12,7 +12,7 @@ public:
 	Lgp(int config_position, int demes, int population_size, int num_generations);
 	~Lgp();
 	Individual * best_individual_in_training();
-	std::vector<Individual> best_individuals_of_demes(int tipo);
+	Individual ** best_individuals_of_demes(int tipo);
 	bool termination_criteria();
 	void deme_evolve(int deme_index);
 	void evolve();
@@ -84,19 +84,20 @@ Individual* Lgp::best_individual_in_training() {
 }
 
 
-std::vector<Individual> Lgp::best_individuals_of_demes(int tipo) {
-	std::vector<Individual> demes_best;
+Individual** Lgp::best_individuals_of_demes(int tipo) {
+	Individual** demes_best = new Individual*[num_demes];
 
 	//todo: paralelizar
 	if (tipo == TRAINING) {
 		for (int i = 0; i < num_demes; i++) {
-			demes_best.push_back(*population[i].best_training());
+			demes_best[i] = population[i].best_training();
 		}
 	} else if (tipo == VALIDATION) {
 		for (int i = 0; i < num_demes; i++) {
-			demes_best.push_back(*population[i].best_validation());
+			demes_best[i] = population[i].best_validation();
 		}
 	}
+
 	return demes_best;
 }
 
@@ -143,7 +144,7 @@ void Lgp::deme_evolve(int deme_index) {
 
 	population[deme_index].evaluate_individuals();
 
-	int index = 0;
+	//int index = 0;
 	/*
 	std::cout<<"antes del sort\n";
 
@@ -184,7 +185,7 @@ void Lgp::evolve() {
 
 	while (!termination_criteria()) {
 		generation++;
-		std::cout << "Generación #" << generation << "\n";
+		//std::cout << "Generación #" << generation << "\n";
 		for_replace = MIGRATION_RATE * (float) population[0].deme_size;
 		//for_replace = 7;
 		//std::cout << "for replace " << for_replace << "\n";
@@ -195,7 +196,7 @@ void Lgp::evolve() {
 		for (int i = 0; i < num_demes; i++) {
 			deme_evolve(i);
 
-			int index = 0;
+			//int index = 0;
 /*			for (std::vector<Individual>::iterator it = population[i].list_ind->begin(); it != population[i].list_ind->end(); ++it) {
 				(*it).check(i, index);
 				index++;

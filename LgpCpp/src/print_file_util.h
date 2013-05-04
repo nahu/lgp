@@ -100,7 +100,7 @@ void parameters_to_file(std::string f_param) {
 	f.close();
 }
 
-void errors_to_file(std::string file, std::vector<std::vector<double> > error_list, int size) {
+void errors_to_file(std::string file, std::vector<double *> error_list, int size) {
 	/*
 	 * Se recibe una lista que contiene por cada "mejor individio" una lista de errores
 	 * por muestra. Entonces, se debe imprimir en columnas los errores por individuo.
@@ -121,7 +121,7 @@ void errors_to_file(std::string file, std::vector<std::vector<double> > error_li
 			f<<t<<";";
 		}
 
-		for (int i = 0; i < error_list.size(); i++) {
+		for (unsigned i = 0; i < error_list.size(); i++) {
 			f << "" << std::fixed << error_list.at(i)[t] << ";";
 		}
 		f << "\n";
@@ -129,42 +129,42 @@ void errors_to_file(std::string file, std::vector<std::vector<double> > error_li
 	f.close();
 }
 
-void programs_to_file (std::string file, std::vector<Individual> best_individuals) {
+void programs_to_file (std::string file, Individual ** best_individuals) {
 	std::ofstream f;
 	f.open(file.c_str());
 	f.precision(6);
-	for (int i = 0; i < best_individuals.size(); i++) {
+	for (int i = 0; i < DEMES; i++) {
 		f << "*********************************************************************************"<< std::endl;
 		f << "Best Individual: "<< i << std::endl;
 		f << "*********************************************************************************"<< std::endl;
-		f << "Config Pos: " << best_individuals.at(i).config_position << "\n";
-		f << "Training error: " << best_individuals.at(i).error << "\n";
-		f << "Trainig Deviation: " << best_individuals.at(i).sigma << "\n";
-		f << "Fitness: " << best_individuals.at(i).fitness << "\n";
-		f << "List Size: " << best_individuals.at(i).program->height << "\n";
-		f << "List effective Size: " << best_individuals.at(i).program->n_eff << "\n";
+		f << "Config Pos: " << best_individuals[i]->config_position << "\n";
+		f << "Training error: " << best_individuals[i]->error << "\n";
+		f << "Trainig Deviation: " << best_individuals[i]->sigma << "\n";
+		f << "Fitness: " << best_individuals[i]->fitness << "\n";
+		f << "List Size: " << best_individuals[i]->program->height << "\n";
+		f << "List effective Size: " << best_individuals[i]->program->n_eff << "\n";
 
 		f << "-----------------------"<< std::endl;
 		f << "Lista de instrucciones: "<< std::endl;
 		f << "-----------------------"<< std::endl;
 
-		for (int j = 0; j<best_individuals.at(i).program->height ; j++){
-			f << best_individuals.at(i).program->list_inst[j].get_str_instruction();
+		for (int j = 0; j<best_individuals[i]->program->height ; j++){
+			f << best_individuals[i]->program->list_inst[j].get_str_instruction();
 		}
 
 		f << "------------------------"<< std::endl;
 		f << "Instrucciones efectivas: "<< std::endl;
 		f << "------------------------"<< std::endl;
 
-		for (int j = 0; j<best_individuals.at(i).program->n_eff ; j++){
-			f << best_individuals.at(i).program->effective_list_inst[j].get_str_instruction();
+		for (int j = 0; j<best_individuals[i]->program->n_eff ; j++){
+			f << best_individuals[i]->program->effective_list_inst[j].get_str_instruction();
 		}
 
 		f << "-----------"<< std::endl;
 		f << "Registros: "<< std::endl;
 		f << "-----------"<< std::endl;
 		for (int j = 0; j < NUM_INDIVIDUAL_REGISTERS; j++) {
-			f << "r_all[" << j << "] = " << best_individuals.at(i).program->list_reg[j]<< "\n";
+			f << "r_all[" << j << "] = " << best_individuals[i]->program->list_reg[j]<< "\n";
 		}
 	}
 	f.close();

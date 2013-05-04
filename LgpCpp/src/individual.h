@@ -16,7 +16,7 @@ public:
 
 	//Evaluacion de fitness
 	void eval_fitness();
-	std::vector<double> eval_individual(int tipo);
+	double * eval_individual(int tipo);
 	void set_altered();
 	double evaluate(int obj) const;
 
@@ -825,9 +825,7 @@ int Individual::select_micro_mutacion_type(float prob) {
 }
 
 
-std::vector<double> Individual::eval_individual(int tipo) {
-
-	print_individual();
+double * Individual::eval_individual(int tipo) {
 	program->get_effective_instructions();
 
 	double result;
@@ -846,23 +844,25 @@ std::vector<double> Individual::eval_individual(int tipo) {
 		end = LINES;
 	}
 
-	std::vector<double> error_quad(size+3);
+	double * error_quad = new double[size+3];
+
+	int index = 0;
 	for (int t = ini; t < end; t++) {
 		int_t = Program::R_CONST[t];
 		result = program->execute_program(int_t);
 		if (!finite(result)) {
-		 	error_quad[t] = HUGE_NUMBER;
+		 	error_quad[index] = HUGE_NUMBER;
 		} else {
-			error_quad[t] = pow((result - Program::DATA[t][config_position]), 2.0);
-			if (!finite(error_quad[t])) {
-				error_quad[t] = HUGE_NUMBER;
+			error_quad[index] = pow((result - Program::DATA[t][config_position]), 2.0);
+			if (!finite(error_quad[index])) {
+				error_quad[index] = HUGE_NUMBER;
 			}
 		}
 
 		//****************************** CALCULAR SUMA & PROM *****************************
-		error_a_quad += error_quad[t];
+		error_a_quad += error_quad[index];
+		index++;
 	}
-
 
 	if (!finite(error_a_quad)) {
 		error_a_quad = HUGE_NUMBER;
@@ -878,10 +878,9 @@ std::vector<double> Individual::eval_individual(int tipo) {
 
 	error_prom_quad = error_a_quad / size;
 
-	error_quad[size + 1] = error_a_quad;
-	error_quad[size + 2] = error_prom_quad;
-	error_quad[size + 3] = config_position;
-
+	error_quad[size] = error_a_quad;
+	error_quad[size + 1] = error_prom_quad;
+	error_quad[size + 2] = config_position;
 
 	return error_quad;
 }

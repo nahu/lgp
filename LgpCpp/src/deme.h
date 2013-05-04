@@ -52,7 +52,7 @@ void Deme::create_new_deme(int size, int config_position) {
 	*/
 
 	int chunks = deme_size / (NUM_PROCESSORS);
-	//#pragma omp parallel for schedule(static, chunks)
+	#pragma omp parallel for schedule(static, chunks)
 	for (std::vector<Individual>::iterator it = list_ind->begin(); it < list_ind->end(); ++it) {
 		(*it).create_new_individual(config_position);
 	}
