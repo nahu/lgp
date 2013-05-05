@@ -246,8 +246,7 @@ void Lgp::evolve() {
 			std::cout << "\n==================================================\n";
 			std::cout << "Generación #" << generation;
 			std::cout << "\n==================================================\n";
-
-			//best_individual_in_training();
+			best_individual_in_training();
 		}
 	}
 	best_individual_in_training();

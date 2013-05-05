@@ -847,6 +847,7 @@ double * Individual::eval_individual(int tipo) {
 	double * error_quad = new double[size+3];
 
 	int index = 0;
+	error_a_quad = 0.0;
 	for (int t = ini; t < end; t++) {
 		int_t = Program::R_CONST[t];
 		result = program->execute_program(int_t);

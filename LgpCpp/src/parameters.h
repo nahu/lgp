@@ -13,8 +13,6 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 #define N 40
 #define K 35
 
-#define INDEX_TO_PREDICT 1
-
 
 /******************************* DATOS **********************************/
 
@@ -118,13 +116,13 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 **********************************************************************************************/
 
-#define NUM_GENERATIONS 50
-#define POPULATION_SIZE 1024//1000
+#define NUM_GENERATIONS 1000
+#define POPULATION_SIZE 20000//1000
 #define DEMES 8
-#define FREQ_STATS 100
+#define FREQ_STATS 50
 #define POOL_SIZE 3
-#define MIGRATION_RATE 0.03
-#define GEN_TO_MIGRATE 10
+#define MIGRATION_RATE 0.05
+#define GEN_TO_MIGRATE 500
 
 
 /***************************************  PROBABILIDADES **************************************
@@ -158,17 +156,17 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define CONST_MIN 0 //50
 #define CONST_MAX 1 //50
 
-#define P_MACRO_MUTATION 0//0.50
+#define P_MACRO_MUTATION 0.5//0.50
 #define P_INS 0.75
 #define P_DEL 0.25
 
-#define P_MICRO_MUTATION 0//0.90
+#define P_MICRO_MUTATION 0.9//0.90
 #define P_REGMUT 0.50
 #define P_OPERMUT 0.45
 #define P_CONSTMUT 0.05
 #define STEP_SIZE_CONST 5.0
 
-#define P_CROSSOVER 0//0.10
+#define P_CROSSOVER 0.15//0.10
 
 
 /*************************************  MULTIPROCESAMIENTO *************************************
@@ -177,7 +175,6 @@ utilizando multiprocessing de Python
 */
 #define NUM_PROCESSORS 4 //NÚMERO DE PROCESOS WORKERS
 #define CHUNK_SIZE (POPULATION_SIZE / DEMES) // NUM_PROCESSORS
-
 #define CHUNK_SIZE_STEP (DEMES / NUM_PROCESSORS)
 
 
