@@ -220,27 +220,28 @@ void Lgp::evolve() {
 			if (cont != for_replace) {
 				std::cout << "no se copio todo " << cont << "\n";
 			}
+		}
 
-			for (int i = 1; i < num_demes; i++) {
-				if (random_flip_coin (P_MIGRATION)) {
-					ini = population[i - 1].list_ind->end() - for_replace;
-					end = population[i - 1].list_ind->end();
-					it = population[i].list_ind->begin();
+		for (int i = 1; i < num_demes; i++) {
+			if (random_flip_coin (P_MIGRATION)) {
+				ini = population[i - 1].list_ind->end() - for_replace;
+				end = population[i - 1].list_ind->end();
+				it = population[i].list_ind->begin();
 
-					int cont = 0;
+				int cont = 0;
 
-					for ( ; ini != end; ++ini) {
-						(*ini) = (*it);
-						it++;
-						cont++;
-					}
-					//std::cout << "migrados: " << cont << "\n";
-					if (cont != for_replace) {
-						std::cout << "no se copio todo " << cont << "\n";
-					}
+				for ( ; ini != end; ++ini) {
+					(*ini) = (*it);
+					it++;
+					cont++;
+				}
+				//std::cout << "migrados: " << cont << "\n";
+				if (cont != for_replace) {
+					std::cout << "no se copio todo " << cont << "\n";
 				}
 			}
 		}
+
 
 		if ((generation % FREQ_STATS) == 0) {
 			std::cout << "\n==================================================\n";
