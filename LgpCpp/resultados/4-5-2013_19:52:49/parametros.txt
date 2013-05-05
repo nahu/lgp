@@ -1,0 +1,89 @@
+PARÁMETROS
+----------------------------------------------------------------
+--Problema
+config	1011111011111110111111101111111111111110
+n	40
+k	35
+
+----Muestra de datos
+lines	248
+training_lines	200
+validation_lines	48
+
+--Algoritmo Evolutivo
+num_generations	2000
+pool_size	3
+population_size	800
+demes	8
+migration_rate	0.06
+gen_to_migrate	80
+w_ob1	1
+w_ob2	1
+
+--Probabilidades
+p_migration	0.25
+p_migration_criteria	0.4
+--Registros constantes
+p_reg_op1_const	0.3
+p_reg_op2_const	0.8
+p_const_in	0.75
+
+----Crossover
+p_crossover	0.1
+
+----Mutación Macro
+p_macro_mutation	0.5
+p_del	0.25
+p_ins	0.75
+
+----Mutación Micro
+p_micro_mutation	0.9
+p_opermut	0.45
+p_regmut	0.5
+p_constmut	0.05
+
+--Registros
+
+----Cantidades
+num_registers	54
+   num_out_registers	1
+num_var_register	8
+num_conts_registers	45
+   num_const_random_registers	6
+   num_const_in_registers	35
+
+--Valores en vector instrucción
+
+----Operaciones
+num_operators	9
+op_min	1
+op_max	9
+
+----Salida
+reg_out	0
+
+----Variables
+var_min	1
+var_max	8
+
+----Constantes aleatorias
+cons_al_min	9
+cons_al_max	18
+
+------Valores
+const_min	0
+const_max	1
+step_size_const	5
+
+----Constantes de entrada
+cons_in_min	19
+cons_in_max	53
+
+--Instrucciones
+num_ini_instructions	245
+num_max_instructions	525
+num_min_instructions	175
+
+--Procesos
+chunk_size	100
+num_processors	4
