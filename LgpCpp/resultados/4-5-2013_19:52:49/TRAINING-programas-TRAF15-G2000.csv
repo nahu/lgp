@@ -1,0 +1,3874 @@
+*********************************************************************************
+Best Individual: 0
+*********************************************************************************
+Config Pos: 15
+Training error: 1e+10
+Trainig Deviation: 0
+Fitness: 1e-10
+List Size: 298
+List effective Size: 137
+-----------------------
+Lista de instrucciones: 
+-----------------------
+r_all[2] = math.cos(in_t[12])
+r_all[8] = in_t[25] ** 2
+r_all[4] = math.sqrt(abs(in_t[4]))
+r_all[4] = math.sqrt(abs(in_t[4]))
+r_all[3] = r_all[8] + in_t[32]
+r_all[3] = math.sin(r_all[18])
+r_all[4] = math.sqrt(abs(in_t[4]))
+r_all[6] = r_all[2] - in_t[32]
+r_all[1] = in_t[5] * r_all[2]
+r_all[6] = math.cos(r_all[3])
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[4] = math.sqrt(abs(in_t[4]))
+r_all[3] = r_all[6] ** 2
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[1] ** 2
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[3] = math.cos(in_t[24])
+r_all[4] = in_t[19] * in_t[17]
+r_all[7] = in_t[32] ** 2
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[8] = math.sqrt(abs(r_all[3]))
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = r_all[5] / in_t[22] if in_t[22] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[3] = math.sqrt(abs(in_t[8]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[6] + 1.0
+r_all[3] = math.cos(r_all[6])
+r_all[6] = r_all[7] / r_all[18] if r_all[18] != 0 else r_all[7] + 1.0
+r_all[8] = math.log10(abs(in_t[12])) if in_t[12] != 0 else r_all[2] + 1.0
+r_all[6] = r_all[3] / in_t[10] if in_t[10] != 0 else r_all[3] + 1.0
+r_all[6] = math.sin(r_all[6])
+r_all[1] = r_all[5] - r_all[7]
+r_all[5] = math.sin(r_all[6])
+r_all[4] = in_t[19] * in_t[17]
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = in_t[15] + r_all[1]
+r_all[2] = r_all[4] - in_t[19]
+r_all[1] = r_all[5] - in_t[4]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[4] = r_all[8] * r_all[17]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[5] = in_t[7] ** 2
+r_all[2] = r_all[6] * in_t[12]
+r_all[6] = r_all[6] / r_all[16] if r_all[16] != 0 else r_all[6] + 1.0
+r_all[1] = in_t[3] + r_all[1]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[5] = r_all[5] - r_all[11]
+r_all[1] = math.sqrt(abs(in_t[28]))
+r_all[1] = in_t[10] ** 2
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[8] = math.sin(r_all[8])
+r_all[1] = r_all[8] - in_t[10]
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[3] = math.cos(in_t[24])
+r_all[4] = r_all[1] * r_all[16]
+r_all[7] = in_t[32] ** 2
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[1] = math.sqrt(abs(in_t[28]))
+r_all[8] = r_all[7] * in_t[9]
+r_all[1] = in_t[10] ** 2
+r_all[5] = in_t[22] + r_all[8]
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = math.sin(r_all[18])
+r_all[3] = r_all[8] + in_t[32]
+r_all[5] = math.cos(r_all[3])
+r_all[1] = r_all[5] - r_all[7]
+r_all[2] = in_t[11] - r_all[3]
+r_all[4] = r_all[1] + r_all[2]
+r_all[8] = in_t[6] ** 2
+r_all[4] = r_all[8] * r_all[17]
+r_all[5] = r_all[2] ** 2
+r_all[4] = in_t[4] + r_all[5]
+r_all[8] = r_all[5] * in_t[3]
+r_all[6] = r_all[1] * in_t[11]
+r_all[7] = in_t[16] * r_all[4]
+r_all[8] = r_all[8] + in_t[13]
+r_all[8] = r_all[8] / r_all[15] if r_all[15] != 0 else r_all[8] + 1.0
+r_all[4] = in_t[31] * r_all[7]
+r_all[4] = r_all[8] + r_all[4]
+r_all[1] = r_all[5] + r_all[18]
+r_all[3] = math.cos(in_t[34])
+r_all[6] = r_all[4] ** 2
+r_all[3] = r_all[6] + in_t[8]
+r_all[3] = r_all[3] + r_all[13]
+r_all[7] = in_t[14] * in_t[16]
+r_all[2] = in_t[3] * r_all[11]
+r_all[3] = r_all[3] + r_all[7]
+r_all[3] = r_all[3] + r_all[17]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[2] = in_t[3] * r_all[11]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[3] = r_all[3] + r_all[9]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[5] = math.cos(r_all[13])
+r_all[4] = r_all[7] + in_t[3]
+r_all[4] = r_all[4] + in_t[14]
+r_all[3] = r_all[3] + in_t[30]
+r_all[7] = r_all[8] ** 2
+r_all[5] = r_all[6] - in_t[1]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[1] = in_t[18] * r_all[13]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[21] ** 2
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[9]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[5] = r_all[6] - in_t[1]
+r_all[3] = r_all[1] + r_all[3]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[5] = math.cos(r_all[13])
+r_all[4] = r_all[4] + in_t[14]
+r_all[3] = r_all[3] + in_t[30]
+r_all[7] = r_all[8] ** 2
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[3] = r_all[3] + r_all[16]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[21] ** 2
+r_all[3] = in_t[15] + r_all[3]
+r_all[5] = r_all[6] - in_t[1]
+r_all[3] = r_all[3] + in_t[12]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[13]
+r_all[1] = r_all[18] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = in_t[15] + r_all[3]
+r_all[5] = r_all[6] - in_t[1]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[5] = r_all[6] - in_t[1]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[4] + r_all[3]
+r_all[3] = r_all[2] + r_all[3]
+r_all[3] = r_all[3] + in_t[21]
+r_all[1] = in_t[5] ** 2
+r_all[4] = r_all[4] + in_t[14]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[5] = math.cos(r_all[13])
+r_all[3] = in_t[26] + r_all[3]
+r_all[5] = math.log10(abs(in_t[8])) if in_t[8] != 0 else r_all[7] + 1.0
+r_all[4] = r_all[7] + in_t[3]
+r_all[4] = r_all[4] + in_t[14]
+r_all[6] = r_all[1] ** 2
+r_all[2] = math.sin(in_t[2])
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[3] = r_all[5] + r_all[3]
+r_all[1] = in_t[31] + in_t[4]
+r_all[2] = in_t[21] ** 2
+r_all[3] = r_all[3] + r_all[1]
+r_all[6] = in_t[31] - in_t[12]
+r_all[6] = math.sqrt(abs(in_t[33]))
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + in_t[10]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[6] = in_t[23] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[2] = in_t[3] * r_all[11]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[7] = r_all[8] ** 2
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[21] ** 2
+r_all[6] = math.cos(in_t[31])
+r_all[7] = r_all[7] - r_all[12]
+r_all[3] = math.sin(in_t[25])
+r_all[8] = r_all[1] ** 2
+r_all[1] = math.cos(in_t[19])
+r_all[7] = r_all[1] - r_all[7]
+r_all[7] = r_all[7] - r_all[15]
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[2] = r_all[2] * r_all[12]
+r_all[5] = math.sqrt(abs(in_t[13]))
+r_all[5] = math.sin(in_t[25])
+r_all[6] = math.log10(abs(in_t[28])) if in_t[28] != 0 else r_all[3] + 1.0
+r_all[5] = math.cos(r_all[5])
+r_all[2] = r_all[7] - in_t[30]
+r_all[1] = r_all[4] - r_all[4]
+r_all[8] = in_t[3] ** 2
+r_all[8] = r_all[8] + in_t[10]
+r_all[5] = in_t[32] - in_t[33]
+r_all[8] = math.sin(in_t[5])
+r_all[8] = in_t[11] + r_all[15]
+r_all[6] = r_all[5] ** 2
+r_all[8] = math.sqrt(abs(in_t[31]))
+r_all[4] = r_all[4] + r_all[8]
+r_all[6] = math.log10(abs(r_all[12])) if r_all[12] != 0 else in_t[20] + 1.0
+r_all[2] = in_t[12] + in_t[30]
+r_all[3] = r_all[6] - r_all[4]
+r_all[5] = r_all[2] / r_all[3] if r_all[3] != 0 else r_all[2] + 1.0
+r_all[5] = r_all[5] / in_t[31] if in_t[31] != 0 else r_all[5] + 1.0
+r_all[2] = r_all[5] / in_t[25] if in_t[25] != 0 else r_all[5] + 1.0
+r_all[8] = r_all[2] * r_all[12]
+r_all[6] = r_all[4] / r_all[2] if r_all[2] != 0 else r_all[4] + 1.0
+r_all[4] = r_all[8] / in_t[13] if in_t[13] != 0 else r_all[8] + 1.0
+r_all[8] = in_t[9] / r_all[4] if r_all[4] != 0 else in_t[9] + 1.0
+r_all[5] = r_all[7] + in_t[27]
+r_all[2] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[6] = math.sqrt(abs(in_t[12]))
+r_all[4] = in_t[33] + r_all[8]
+r_all[4] = r_all[6] + in_t[3]
+r_all[5] = r_all[7] + in_t[27]
+r_all[5] = math.cos(r_all[4])
+r_all[1] = r_all[8] - r_all[5]
+r_all[1] = r_all[1] + r_all[13]
+r_all[7] = in_t[22] - r_all[1]
+r_all[1] = math.cos(in_t[8])
+r_all[8] = r_all[7] ** 2
+r_all[4] = r_all[8] + r_all[11]
+r_all[6] = r_all[4] ** 2
+r_all[3] = math.sin(in_t[12])
+r_all[1] = math.sin(in_t[21])
+r_all[3] = math.log10(abs(in_t[6])) if in_t[6] != 0 else r_all[3] + 1.0
+r_all[3] = math.cos(in_t[14])
+r_all[4] = r_all[7] ** 2
+r_all[6] = r_all[4] ** 2
+r_all[5] = r_all[6] + in_t[33]
+r_all[3] = r_all[17] ** 2
+r_all[1] = math.sin(in_t[21])
+r_all[0] = r_all[5] + r_all[3]
+------------------------
+Instrucciones efectivas: 
+------------------------
+r_all[7] = in_t[32] ** 2
+r_all[8] = r_all[7] * in_t[9]
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = r_all[8] + in_t[32]
+r_all[2] = in_t[11] - r_all[3]
+r_all[5] = r_all[2] ** 2
+r_all[4] = in_t[4] + r_all[5]
+r_all[8] = r_all[5] * in_t[3]
+r_all[7] = in_t[16] * r_all[4]
+r_all[8] = r_all[8] + in_t[13]
+r_all[8] = r_all[8] / r_all[15] if r_all[15] != 0 else r_all[8] + 1.0
+r_all[4] = in_t[31] * r_all[7]
+r_all[4] = r_all[8] + r_all[4]
+r_all[6] = r_all[4] ** 2
+r_all[3] = r_all[6] + in_t[8]
+r_all[3] = r_all[3] + r_all[13]
+r_all[7] = in_t[14] * in_t[16]
+r_all[3] = r_all[3] + r_all[7]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[30]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[1] = in_t[18] * r_all[13]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[30]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[3] = r_all[3] + r_all[16]
+r_all[2] = in_t[21] ** 2
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[1] = r_all[18] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[3] = in_t[15] + r_all[3]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[4] + r_all[3]
+r_all[3] = r_all[2] + r_all[3]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = in_t[26] + r_all[3]
+r_all[5] = math.log10(abs(in_t[8])) if in_t[8] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[5] + r_all[3]
+r_all[1] = in_t[31] + in_t[4]
+r_all[3] = r_all[3] + r_all[1]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[7] = r_all[8] ** 2
+r_all[7] = r_all[7] - r_all[12]
+r_all[1] = math.cos(in_t[19])
+r_all[7] = r_all[1] - r_all[7]
+r_all[7] = r_all[7] - r_all[15]
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[8] = math.sqrt(abs(in_t[31]))
+r_all[4] = r_all[4] + r_all[8]
+r_all[6] = math.log10(abs(r_all[12])) if r_all[12] != 0 else in_t[20] + 1.0
+r_all[2] = in_t[12] + in_t[30]
+r_all[3] = r_all[6] - r_all[4]
+r_all[5] = r_all[2] / r_all[3] if r_all[3] != 0 else r_all[2] + 1.0
+r_all[5] = r_all[5] / in_t[31] if in_t[31] != 0 else r_all[5] + 1.0
+r_all[2] = r_all[5] / in_t[25] if in_t[25] != 0 else r_all[5] + 1.0
+r_all[8] = r_all[2] * r_all[12]
+r_all[4] = r_all[8] / in_t[13] if in_t[13] != 0 else r_all[8] + 1.0
+r_all[8] = in_t[9] / r_all[4] if r_all[4] != 0 else in_t[9] + 1.0
+r_all[6] = math.sqrt(abs(in_t[12]))
+r_all[4] = r_all[6] + in_t[3]
+r_all[5] = math.cos(r_all[4])
+r_all[1] = r_all[8] - r_all[5]
+r_all[1] = r_all[1] + r_all[13]
+r_all[7] = in_t[22] - r_all[1]
+r_all[4] = r_all[7] ** 2
+r_all[6] = r_all[4] ** 2
+r_all[5] = r_all[6] + in_t[33]
+r_all[3] = r_all[17] ** 2
+r_all[0] = r_all[5] + r_all[3]
+-----------
+Registros: 
+-----------
+r_all[0] = 1
+r_all[1] = 1
+r_all[2] = 1
+r_all[3] = 1
+r_all[4] = 1
+r_all[5] = 1
+r_all[6] = 1
+r_all[7] = 1
+r_all[8] = 1
+r_all[9] = 0.200662
+r_all[10] = 0.685821
+r_all[11] = 0.947061
+r_all[12] = 0.287343
+r_all[13] = 0.282278
+r_all[14] = 0.104658
+r_all[15] = 0
+r_all[16] = 1
+r_all[17] = 2.71828
+r_all[18] = 3.14159
+*********************************************************************************
+Best Individual: 1
+*********************************************************************************
+Config Pos: 15
+Training error: 9209.76
+Trainig Deviation: 4274.84
+Fitness: 7.41587e-05
+List Size: 326
+List effective Size: 4
+-----------------------
+Lista de instrucciones: 
+-----------------------
+r_all[2] = math.cos(in_t[12])
+r_all[4] = math.sqrt(abs(in_t[4]))
+r_all[4] = math.sqrt(abs(in_t[4]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = math.sqrt(abs(in_t[16]))
+r_all[6] = math.sin(r_all[1])
+r_all[4] = math.sqrt(abs(in_t[4]))
+r_all[1] = in_t[5] * r_all[2]
+r_all[7] = r_all[3] - in_t[25]
+r_all[3] = r_all[6] ** 2
+r_all[6] = math.cos(r_all[3])
+r_all[3] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[18] + 1.0
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[1] ** 2
+r_all[5] = math.sin(r_all[6])
+r_all[8] = math.log10(abs(in_t[12])) if in_t[12] != 0 else r_all[2] + 1.0
+r_all[4] = in_t[19] * in_t[17]
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = in_t[11] - r_all[4]
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[5] = in_t[15] + r_all[1]
+r_all[5] = r_all[5] * r_all[10]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[4] = r_all[8] * r_all[17]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[2] = math.cos(r_all[7])
+r_all[6] = math.cos(r_all[8])
+r_all[5] = r_all[3] ** 2
+r_all[1] = in_t[3] + r_all[1]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[6] + 1.0
+r_all[7] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[2] + 1.0
+r_all[3] = math.cos(r_all[6])
+r_all[6] = r_all[7] / r_all[18] if r_all[18] != 0 else r_all[7] + 1.0
+r_all[8] = math.log10(abs(in_t[12])) if in_t[12] != 0 else r_all[2] + 1.0
+r_all[4] = r_all[1] * r_all[16]
+r_all[4] = in_t[19] * in_t[17]
+r_all[1] = r_all[5] - r_all[7]
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[6] = r_all[3] / in_t[10] if in_t[10] != 0 else r_all[3] + 1.0
+r_all[6] = math.sin(r_all[6])
+r_all[1] = r_all[5] - r_all[7]
+r_all[6] = r_all[2] * r_all[6]
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[5] = math.sin(r_all[6])
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = in_t[15] + r_all[1]
+r_all[6] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[2] = r_all[4] - in_t[19]
+r_all[1] = r_all[5] - in_t[4]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[4] = r_all[8] * r_all[17]
+r_all[7] = r_all[3] * r_all[8]
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[2] = r_all[6] * in_t[12]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[8] = math.sin(r_all[8])
+r_all[4] = r_all[2] - in_t[18]
+r_all[3] = math.sin(r_all[18])
+r_all[5] = math.cos(r_all[3])
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[4] = r_all[1] * r_all[16]
+r_all[4] = in_t[19] * in_t[17]
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[6] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[1] = in_t[3] + r_all[1]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[1] = in_t[10] ** 2
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = math.sin(r_all[18])
+r_all[3] = r_all[8] + in_t[32]
+r_all[5] = math.cos(r_all[3])
+r_all[4] = in_t[19] * in_t[17]
+r_all[2] = in_t[11] - r_all[3]
+r_all[8] = in_t[6] ** 2
+r_all[5] = r_all[2] ** 2
+r_all[2] = r_all[2] - r_all[14]
+r_all[4] = in_t[4] + r_all[5]
+r_all[8] = r_all[5] * in_t[3]
+r_all[6] = r_all[1] * in_t[11]
+r_all[7] = in_t[16] * r_all[4]
+r_all[8] = r_all[8] + in_t[13]
+r_all[8] = r_all[8] / r_all[15] if r_all[15] != 0 else r_all[8] + 1.0
+r_all[4] = in_t[31] * r_all[7]
+r_all[4] = r_all[8] + r_all[4]
+r_all[6] = r_all[4] ** 2
+r_all[3] = math.cos(in_t[34])
+r_all[7] = in_t[19] * in_t[33]
+r_all[3] = r_all[6] + in_t[8]
+r_all[3] = r_all[3] + r_all[13]
+r_all[7] = in_t[14] * in_t[16]
+r_all[3] = r_all[3] + r_all[7]
+r_all[3] = r_all[3] + r_all[17]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[2] = in_t[3] * r_all[11]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[10] + in_t[23]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[8] = r_all[3] * in_t[33]
+r_all[3] = r_all[3] + in_t[30]
+r_all[7] = r_all[8] ** 2
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[4] = r_all[8] + r_all[2]
+r_all[8] = r_all[1] ** 2
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[1] = in_t[18] * r_all[13]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[7] = r_all[8] ** 2
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[10] + in_t[23]
+r_all[4] = r_all[8] + r_all[2]
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[5] = r_all[6] - in_t[1]
+r_all[3] = r_all[1] + r_all[3]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[8] = r_all[3] * in_t[33]
+r_all[3] = r_all[3] + in_t[30]
+r_all[2] = in_t[10] + in_t[23]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[21] ** 2
+r_all[4] = r_all[8] + r_all[2]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[3] = r_all[3] + r_all[16]
+r_all[2] = in_t[21] ** 2
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[1] = r_all[18] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[5] = r_all[6] - in_t[1]
+r_all[3] = r_all[3] + in_t[12]
+r_all[7] = r_all[8] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[2] = in_t[3] * r_all[11]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[3] = in_t[15] + r_all[3]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[2] = in_t[21] ** 2
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[5] = r_all[6] - in_t[1]
+r_all[8] = r_all[1] ** 2
+r_all[4] = r_all[4] / r_all[16] if r_all[16] != 0 else r_all[4] + 1.0
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[4] + r_all[3]
+r_all[3] = r_all[2] + r_all[3]
+r_all[3] = r_all[3] + in_t[21]
+r_all[8] = r_all[3] * in_t[33]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[4] = r_all[7] + in_t[3]
+r_all[3] = in_t[26] + r_all[3]
+r_all[8] = r_all[3] * in_t[33]
+r_all[4] = r_all[4] + in_t[14]
+r_all[5] = math.log10(abs(in_t[8])) if in_t[8] != 0 else in_t[34] + 1.0
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[4] = r_all[7] + in_t[3]
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[2] = math.sin(in_t[2])
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[5] + r_all[3]
+r_all[1] = in_t[31] + in_t[4]
+r_all[3] = r_all[3] + r_all[1]
+r_all[4] = in_t[31] + in_t[10]
+r_all[8] = r_all[3] * in_t[33]
+r_all[2] = math.sin(in_t[2])
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[2] = r_all[2] * r_all[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[2] = in_t[3] * r_all[11]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[7] = r_all[8] ** 2
+r_all[2] = in_t[10] + in_t[23]
+r_all[7] = math.cos(in_t[22])
+r_all[3] = r_all[3] + in_t[10]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[21] ** 2
+r_all[4] = r_all[7] - in_t[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[1] = r_all[4] ** 2
+r_all[2] = in_t[3] * r_all[11]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[7] = r_all[8] ** 2
+r_all[2] = in_t[21] ** 2
+r_all[2] = r_all[1] ** 2
+r_all[5] = r_all[6] - in_t[1]
+r_all[7] = r_all[7] + in_t[8]
+r_all[8] = r_all[1] ** 2
+r_all[4] = in_t[31] + in_t[10]
+r_all[4] = r_all[7] + in_t[3]
+r_all[4] = r_all[4] + in_t[14]
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[2] = r_all[4] * in_t[14]
+r_all[1] = math.cos(r_all[2])
+r_all[5] = math.sin(in_t[25])
+r_all[1] = math.sqrt(abs(in_t[25]))
+r_all[2] = math.sqrt(abs(in_t[7]))
+r_all[8] = math.sin(in_t[20])
+r_all[7] = r_all[8] * in_t[21]
+r_all[7] = r_all[7] ** 2
+r_all[2] = math.cos(in_t[2])
+r_all[6] = r_all[7] * in_t[7]
+r_all[5] = math.sqrt(abs(r_all[17]))
+r_all[7] = in_t[17] - r_all[6]
+r_all[5] = math.cos(in_t[2])
+r_all[3] = r_all[1] + r_all[9]
+r_all[1] = math.sin(r_all[7])
+r_all[8] = math.cos(in_t[11])
+r_all[5] = r_all[3] / in_t[12] if in_t[12] != 0 else r_all[3] + 1.0
+r_all[5] = r_all[8] + in_t[5]
+r_all[5] = r_all[5] / r_all[8] if r_all[8] != 0 else r_all[5] + 1.0
+r_all[7] = r_all[4] + r_all[4]
+r_all[1] = r_all[1] / r_all[5] if r_all[5] != 0 else r_all[1] + 1.0
+r_all[2] = in_t[12] + in_t[30]
+r_all[5] = in_t[2] ** 2
+r_all[5] = math.sin(r_all[4])
+r_all[4] = r_all[4] - r_all[1]
+r_all[6] = math.sqrt(abs(r_all[5]))
+r_all[3] = r_all[6] - r_all[4]
+r_all[5] = r_all[2] / r_all[3] if r_all[3] != 0 else r_all[2] + 1.0
+r_all[8] = in_t[2] ** 2
+r_all[4] = in_t[31] - in_t[0]
+r_all[1] = r_all[1] / r_all[18] if r_all[18] != 0 else r_all[1] + 1.0
+r_all[5] = r_all[5] / in_t[31] if in_t[31] != 0 else r_all[5] + 1.0
+r_all[2] = r_all[5] / in_t[25] if in_t[25] != 0 else r_all[5] + 1.0
+r_all[8] = r_all[2] * r_all[12]
+r_all[6] = in_t[2] ** 2
+r_all[4] = r_all[8] / in_t[13] if in_t[13] != 0 else r_all[8] + 1.0
+r_all[1] = r_all[8] - in_t[18]
+r_all[5] = math.sin(in_t[15])
+r_all[8] = in_t[9] / r_all[4] if r_all[4] != 0 else in_t[9] + 1.0
+r_all[2] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[1] = r_all[8] + r_all[14]
+r_all[7] = in_t[22] - r_all[1]
+r_all[1] = r_all[1] / in_t[33] if in_t[33] != 0 else r_all[1] + 1.0
+r_all[7] = r_all[7] - in_t[0]
+r_all[6] = math.log10(abs(in_t[5])) if in_t[5] != 0 else in_t[17] + 1.0
+r_all[8] = r_all[7] ** 2
+r_all[4] = r_all[8] + r_all[11]
+r_all[2] = r_all[4] + r_all[4]
+r_all[6] = r_all[4] ** 2
+r_all[2] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[1] + 1.0
+r_all[5] = r_all[6] + in_t[33]
+r_all[6] = r_all[6] + in_t[28]
+r_all[1] = math.sin(in_t[21])
+r_all[8] = r_all[2] + in_t[23]
+r_all[8] = r_all[1] * r_all[16]
+r_all[2] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[1] + 1.0
+r_all[5] = r_all[5] - r_all[8]
+r_all[3] = r_all[4] - in_t[18]
+r_all[5] = math.log10(abs(in_t[34])) if in_t[34] != 0 else r_all[4] + 1.0
+r_all[5] = in_t[12] + r_all[5]
+r_all[3] = r_all[5] - r_all[5]
+r_all[0] = r_all[5] + r_all[3]
+------------------------
+Instrucciones efectivas: 
+------------------------
+r_all[5] = math.log10(abs(in_t[34])) if in_t[34] != 0 else r_all[4] + 1.0
+r_all[5] = in_t[12] + r_all[5]
+r_all[3] = r_all[5] - r_all[5]
+r_all[0] = r_all[5] + r_all[3]
+-----------
+Registros: 
+-----------
+r_all[0] = 1
+r_all[1] = 1
+r_all[2] = 1
+r_all[3] = 1
+r_all[4] = 1
+r_all[5] = 1
+r_all[6] = 1
+r_all[7] = 1
+r_all[8] = 1
+r_all[9] = 0.200662
+r_all[10] = 0.685821
+r_all[11] = 0.947061
+r_all[12] = 0.287343
+r_all[13] = 0.282278
+r_all[14] = 0.104658
+r_all[15] = 0
+r_all[16] = 1
+r_all[17] = 2.71828
+r_all[18] = 3.14159
+*********************************************************************************
+Best Individual: 2
+*********************************************************************************
+Config Pos: 15
+Training error: 1e+10
+Trainig Deviation: 0
+Fitness: 1e-10
+List Size: 464
+List effective Size: 178
+-----------------------
+Lista de instrucciones: 
+-----------------------
+r_all[2] = math.cos(in_t[12])
+r_all[8] = in_t[25] ** 2
+r_all[3] = math.sin(r_all[18])
+r_all[4] = math.cos(in_t[19])
+r_all[3] = math.sqrt(abs(in_t[16]))
+r_all[4] = r_all[2] - in_t[18]
+r_all[1] = in_t[5] * r_all[2]
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[5] = math.sin(r_all[6])
+r_all[4] = r_all[1] * r_all[16]
+r_all[6] = r_all[1] ** 2
+r_all[4] = in_t[19] * in_t[17]
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = in_t[11] - r_all[4]
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[1] = math.cos(r_all[2])
+r_all[5] = r_all[5] * r_all[10]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[1] = in_t[3] + r_all[1]
+r_all[5] = in_t[22] + r_all[8]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[6] + 1.0
+r_all[3] = math.cos(r_all[6])
+r_all[6] = r_all[3] / in_t[10] if in_t[10] != 0 else r_all[3] + 1.0
+r_all[6] = math.sin(r_all[6])
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[5] = math.sin(r_all[6])
+r_all[8] = math.log10(abs(in_t[12])) if in_t[12] != 0 else r_all[2] + 1.0
+r_all[4] = r_all[1] * r_all[16]
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = in_t[15] + r_all[1]
+r_all[1] = r_all[5] - in_t[4]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[7] = r_all[3] * r_all[8]
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[5] = r_all[5] - r_all[11]
+r_all[5] = in_t[20] ** 2
+r_all[5] = in_t[22] + r_all[8]
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[8] = math.sin(r_all[8])
+r_all[4] = r_all[2] - in_t[18]
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[4] = r_all[1] * r_all[16]
+r_all[4] = in_t[19] * in_t[17]
+r_all[7] = in_t[32] ** 2
+r_all[2] = in_t[11] - r_all[4]
+r_all[6] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[8] = math.sqrt(abs(r_all[3]))
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[5] = in_t[7] ** 2
+r_all[2] = r_all[6] * in_t[12]
+r_all[6] = r_all[1] + in_t[34]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[1] = math.sqrt(abs(in_t[28]))
+r_all[1] = in_t[10] ** 2
+r_all[5] = in_t[22] + r_all[8]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[1] = in_t[3] + r_all[1]
+r_all[5] = in_t[22] + r_all[8]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[6] + 1.0
+r_all[3] = math.cos(r_all[6])
+r_all[6] = r_all[3] / in_t[10] if in_t[10] != 0 else r_all[3] + 1.0
+r_all[6] = math.sin(r_all[6])
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[5] = math.sin(r_all[6])
+r_all[8] = math.log10(abs(in_t[12])) if in_t[12] != 0 else r_all[2] + 1.0
+r_all[4] = r_all[1] * r_all[16]
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = in_t[15] + r_all[1]
+r_all[1] = r_all[5] - in_t[4]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[7] = r_all[3] * r_all[8]
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[5] = r_all[5] - r_all[11]
+r_all[5] = in_t[20] ** 2
+r_all[5] = in_t[22] + r_all[8]
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[8] = math.sin(r_all[8])
+r_all[4] = r_all[2] - in_t[18]
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[4] = r_all[1] * r_all[16]
+r_all[4] = in_t[19] * in_t[17]
+r_all[7] = in_t[32] ** 2
+r_all[2] = in_t[11] - r_all[4]
+r_all[6] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[8] = math.sqrt(abs(r_all[3]))
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[5] = in_t[7] ** 2
+r_all[2] = r_all[6] * in_t[12]
+r_all[6] = r_all[1] + in_t[34]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[1] = math.sqrt(abs(in_t[28]))
+r_all[1] = in_t[10] ** 2
+r_all[5] = in_t[22] + r_all[8]
+r_all[3] = math.sqrt(abs(in_t[8]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = r_all[8] + in_t[32]
+r_all[2] = in_t[11] - r_all[3]
+r_all[3] = r_all[1] * r_all[9]
+r_all[8] = in_t[6] ** 2
+r_all[4] = r_all[8] * r_all[17]
+r_all[2] = math.cos(in_t[12])
+r_all[8] = in_t[25] ** 2
+r_all[4] = math.cos(in_t[19])
+r_all[3] = math.sin(r_all[18])
+r_all[4] = math.cos(in_t[19])
+r_all[3] = math.sqrt(abs(in_t[16]))
+r_all[4] = r_all[2] - in_t[18]
+r_all[1] = in_t[5] * r_all[2]
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[1] ** 2
+r_all[5] = math.sin(r_all[6])
+r_all[4] = r_all[1] * r_all[16]
+r_all[6] = r_all[1] ** 2
+r_all[4] = in_t[19] * in_t[17]
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = in_t[11] - r_all[4]
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[5] = in_t[15] + r_all[1]
+r_all[1] = math.cos(r_all[2])
+r_all[5] = r_all[5] * r_all[10]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[1] = in_t[3] + r_all[1]
+r_all[5] = in_t[22] + r_all[8]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[6] + 1.0
+r_all[3] = math.cos(r_all[6])
+r_all[6] = r_all[3] / in_t[10] if in_t[10] != 0 else r_all[3] + 1.0
+r_all[6] = math.sin(r_all[6])
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[5] = math.sin(r_all[6])
+r_all[8] = math.log10(abs(in_t[12])) if in_t[12] != 0 else r_all[2] + 1.0
+r_all[4] = r_all[1] * r_all[16]
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = in_t[15] + r_all[1]
+r_all[2] = r_all[4] - in_t[19]
+r_all[1] = r_all[5] - in_t[4]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[7] = r_all[3] * r_all[8]
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[5] = r_all[5] - r_all[11]
+r_all[5] = in_t[20] ** 2
+r_all[5] = in_t[22] + r_all[8]
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[8] = math.sin(r_all[8])
+r_all[4] = r_all[2] - in_t[18]
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[4] = r_all[1] * r_all[16]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[6] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[8] = math.sqrt(abs(r_all[3]))
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[2] = r_all[6] * in_t[12]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[1] = math.sqrt(abs(in_t[28]))
+r_all[1] = in_t[10] ** 2
+r_all[5] = in_t[22] + r_all[8]
+r_all[3] = math.sqrt(abs(in_t[8]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = r_all[8] + in_t[32]
+r_all[2] = in_t[11] - r_all[3]
+r_all[3] = r_all[1] * r_all[9]
+r_all[8] = in_t[6] ** 2
+r_all[4] = r_all[8] * r_all[17]
+r_all[5] = r_all[2] ** 2
+r_all[2] = r_all[2] - r_all[14]
+r_all[4] = in_t[4] + r_all[5]
+r_all[8] = r_all[5] * in_t[3]
+r_all[6] = r_all[1] * in_t[11]
+r_all[5] = math.sin(r_all[11])
+r_all[7] = in_t[16] * r_all[4]
+r_all[8] = r_all[8] + in_t[13]
+r_all[6] = math.sqrt(abs(in_t[14]))
+r_all[8] = r_all[8] / r_all[15] if r_all[15] != 0 else r_all[8] + 1.0
+r_all[4] = in_t[31] * r_all[7]
+r_all[4] = r_all[8] + r_all[4]
+r_all[1] = r_all[5] + r_all[18]
+r_all[6] = r_all[4] ** 2
+r_all[4] = r_all[2] - r_all[18]
+r_all[5] = r_all[3] + r_all[17]
+r_all[3] = r_all[6] + in_t[8]
+r_all[3] = r_all[3] + r_all[13]
+r_all[7] = in_t[14] * in_t[16]
+r_all[3] = r_all[3] + r_all[7]
+r_all[3] = r_all[3] + r_all[17]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[2] = in_t[10] + in_t[23]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[2] = in_t[3] * r_all[11]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[9]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[4] = r_all[7] + in_t[3]
+r_all[3] = r_all[3] + in_t[30]
+r_all[7] = r_all[8] ** 2
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[4] = r_all[8] + r_all[2]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[1] = in_t[18] * r_all[13]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[21] ** 2
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[5] = r_all[6] - in_t[1]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[10] + in_t[23]
+r_all[4] = r_all[8] + r_all[2]
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[8] = r_all[3] * in_t[33]
+r_all[5] = math.cos(r_all[13])
+r_all[4] = r_all[7] + in_t[3]
+r_all[4] = r_all[4] + in_t[14]
+r_all[2] = math.sin(in_t[2])
+r_all[3] = r_all[3] + in_t[30]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[21] ** 2
+r_all[5] = r_all[6] - in_t[1]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[3] = r_all[3] + r_all[16]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[1] = r_all[18] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[7] = r_all[8] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[2] = in_t[3] * r_all[11]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[8] = r_all[3] * in_t[19]
+r_all[4] = r_all[7] + in_t[3]
+r_all[3] = in_t[15] + r_all[3]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[4] = r_all[8] + r_all[2]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[2] = in_t[21] ** 2
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[4] + r_all[3]
+r_all[3] = r_all[2] + r_all[3]
+r_all[3] = r_all[3] + in_t[21]
+r_all[4] = r_all[4] + in_t[14]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[4] = r_all[7] + in_t[3]
+r_all[3] = in_t[26] + r_all[3]
+r_all[8] = r_all[3] * in_t[33]
+r_all[5] = math.cos(r_all[13])
+r_all[5] = math.log10(abs(in_t[8])) if in_t[8] != 0 else in_t[34] + 1.0
+r_all[4] = r_all[7] + in_t[3]
+r_all[2] = math.sin(in_t[2])
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[3] = r_all[3] + r_all[12]
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[5] + r_all[3]
+r_all[1] = in_t[31] + in_t[4]
+r_all[2] = in_t[21] ** 2
+r_all[3] = r_all[3] + r_all[1]
+r_all[3] = r_all[3] / r_all[16] if r_all[16] != 0 else r_all[3] + 1.0
+r_all[4] = in_t[31] + in_t[10]
+r_all[2] = math.sin(in_t[2])
+r_all[2] = math.sin(in_t[2])
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[2] = in_t[3] * r_all[11]
+r_all[3] = r_all[3] + r_all[17]
+r_all[2] = in_t[10] + in_t[23]
+r_all[3] = r_all[3] + in_t[10]
+r_all[2] = in_t[21] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[7] = r_all[8] ** 2
+r_all[4] = r_all[8] + r_all[2]
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[2] = r_all[2] * r_all[12]
+r_all[5] = math.sqrt(abs(in_t[13]))
+r_all[6] = r_all[7] * in_t[7]
+r_all[3] = r_all[1] + r_all[9]
+r_all[5] = math.cos(r_all[5])
+r_all[7] = math.sin(in_t[25])
+r_all[1] = r_all[4] - r_all[4]
+r_all[6] = math.cos(in_t[16])
+r_all[2] = in_t[12] + in_t[30]
+r_all[3] = r_all[6] - r_all[4]
+r_all[5] = r_all[2] / r_all[3] if r_all[3] != 0 else r_all[2] + 1.0
+r_all[1] = in_t[24] ** 2
+r_all[1] = r_all[1] / r_all[18] if r_all[18] != 0 else r_all[1] + 1.0
+r_all[5] = r_all[5] / in_t[31] if in_t[31] != 0 else r_all[5] + 1.0
+r_all[2] = r_all[5] / in_t[25] if in_t[25] != 0 else r_all[5] + 1.0
+r_all[8] = r_all[2] * r_all[12]
+r_all[6] = r_all[4] / r_all[2] if r_all[2] != 0 else r_all[4] + 1.0
+r_all[4] = r_all[8] / in_t[13] if in_t[13] != 0 else r_all[8] + 1.0
+r_all[8] = in_t[9] / r_all[4] if r_all[4] != 0 else in_t[9] + 1.0
+r_all[1] = r_all[8] - in_t[18]
+r_all[5] = math.sin(in_t[15])
+r_all[7] = in_t[22] - r_all[1]
+r_all[1] = math.cos(in_t[8])
+r_all[3] = r_all[3] + in_t[10]
+r_all[2] = in_t[21] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[7] = r_all[8] ** 2
+r_all[4] = r_all[8] + r_all[2]
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[2] = r_all[2] * r_all[12]
+r_all[5] = math.sqrt(abs(in_t[13]))
+r_all[6] = r_all[7] * in_t[7]
+r_all[3] = r_all[1] + r_all[9]
+r_all[5] = math.cos(r_all[5])
+r_all[7] = math.sin(in_t[25])
+r_all[1] = r_all[4] - r_all[4]
+r_all[6] = math.cos(in_t[16])
+r_all[2] = in_t[12] + in_t[30]
+r_all[3] = r_all[6] - r_all[4]
+r_all[5] = r_all[2] / r_all[3] if r_all[3] != 0 else r_all[2] + 1.0
+r_all[1] = in_t[24] ** 2
+r_all[1] = r_all[1] / r_all[18] if r_all[18] != 0 else r_all[1] + 1.0
+r_all[5] = r_all[5] / in_t[31] if in_t[31] != 0 else r_all[5] + 1.0
+r_all[2] = r_all[5] / in_t[25] if in_t[25] != 0 else r_all[5] + 1.0
+r_all[8] = r_all[2] * r_all[12]
+r_all[6] = r_all[4] / r_all[2] if r_all[2] != 0 else r_all[4] + 1.0
+r_all[4] = r_all[8] / in_t[13] if in_t[13] != 0 else r_all[8] + 1.0
+r_all[8] = in_t[9] / r_all[4] if r_all[4] != 0 else in_t[9] + 1.0
+r_all[1] = r_all[8] - in_t[18]
+r_all[5] = math.sin(in_t[15])
+r_all[7] = in_t[22] - r_all[1]
+r_all[1] = math.cos(in_t[8])
+r_all[8] = r_all[7] ** 2
+r_all[4] = r_all[8] + r_all[11]
+r_all[2] = r_all[4] + r_all[4]
+r_all[8] = math.sin(r_all[15])
+r_all[1] = math.sin(in_t[21])
+r_all[6] = r_all[4] ** 2
+r_all[5] = r_all[6] + in_t[33]
+r_all[3] = r_all[17] ** 2
+r_all[6] = r_all[6] + in_t[28]
+r_all[7] = math.cos(in_t[2])
+r_all[2] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[1] + 1.0
+r_all[0] = r_all[5] + r_all[3]
+------------------------
+Instrucciones efectivas: 
+------------------------
+r_all[2] = math.cos(in_t[12])
+r_all[1] = in_t[5] * r_all[2]
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[1] ** 2
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[6] + 1.0
+r_all[3] = math.cos(r_all[6])
+r_all[6] = r_all[3] / in_t[10] if in_t[10] != 0 else r_all[3] + 1.0
+r_all[6] = math.sin(r_all[6])
+r_all[5] = math.sin(r_all[6])
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[5] = in_t[15] + r_all[1]
+r_all[2] = r_all[4] - in_t[19]
+r_all[1] = r_all[5] - in_t[4]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[8] = math.sin(r_all[8])
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = r_all[8] + in_t[32]
+r_all[2] = in_t[11] - r_all[3]
+r_all[5] = r_all[2] ** 2
+r_all[4] = in_t[4] + r_all[5]
+r_all[8] = r_all[5] * in_t[3]
+r_all[7] = in_t[16] * r_all[4]
+r_all[8] = r_all[8] + in_t[13]
+r_all[8] = r_all[8] / r_all[15] if r_all[15] != 0 else r_all[8] + 1.0
+r_all[4] = in_t[31] * r_all[7]
+r_all[4] = r_all[8] + r_all[4]
+r_all[6] = r_all[4] ** 2
+r_all[3] = r_all[6] + in_t[8]
+r_all[3] = r_all[3] + r_all[13]
+r_all[7] = in_t[14] * in_t[16]
+r_all[3] = r_all[3] + r_all[7]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[30]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[1] = in_t[18] * r_all[13]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[30]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[3] = r_all[3] + r_all[16]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[1] = r_all[18] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[3] = in_t[15] + r_all[3]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[2] = in_t[21] ** 2
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[4] + r_all[3]
+r_all[3] = r_all[2] + r_all[3]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = in_t[26] + r_all[3]
+r_all[5] = math.log10(abs(in_t[8])) if in_t[8] != 0 else in_t[34] + 1.0
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[5] + r_all[3]
+r_all[1] = in_t[31] + in_t[4]
+r_all[3] = r_all[3] + r_all[1]
+r_all[3] = r_all[3] / r_all[16] if r_all[16] != 0 else r_all[3] + 1.0
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[7] = r_all[8] ** 2
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[6] = math.cos(in_t[16])
+r_all[3] = r_all[6] - r_all[4]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[7] = r_all[8] ** 2
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[6] = math.cos(in_t[16])
+r_all[2] = in_t[12] + in_t[30]
+r_all[3] = r_all[6] - r_all[4]
+r_all[5] = r_all[2] / r_all[3] if r_all[3] != 0 else r_all[2] + 1.0
+r_all[5] = r_all[5] / in_t[31] if in_t[31] != 0 else r_all[5] + 1.0
+r_all[2] = r_all[5] / in_t[25] if in_t[25] != 0 else r_all[5] + 1.0
+r_all[8] = r_all[2] * r_all[12]
+r_all[4] = r_all[8] / in_t[13] if in_t[13] != 0 else r_all[8] + 1.0
+r_all[8] = in_t[9] / r_all[4] if r_all[4] != 0 else in_t[9] + 1.0
+r_all[1] = r_all[8] - in_t[18]
+r_all[7] = in_t[22] - r_all[1]
+r_all[8] = r_all[7] ** 2
+r_all[4] = r_all[8] + r_all[11]
+r_all[6] = r_all[4] ** 2
+r_all[5] = r_all[6] + in_t[33]
+r_all[3] = r_all[17] ** 2
+r_all[0] = r_all[5] + r_all[3]
+-----------
+Registros: 
+-----------
+r_all[0] = 1
+r_all[1] = 1
+r_all[2] = 1
+r_all[3] = 1
+r_all[4] = 1
+r_all[5] = 1
+r_all[6] = 1
+r_all[7] = 1
+r_all[8] = 1
+r_all[9] = 0.200662
+r_all[10] = 0.685821
+r_all[11] = 0.947061
+r_all[12] = 0.287343
+r_all[13] = 0.282278
+r_all[14] = 0.104658
+r_all[15] = 0
+r_all[16] = 1
+r_all[17] = 2.71828
+r_all[18] = 3.14159
+*********************************************************************************
+Best Individual: 3
+*********************************************************************************
+Config Pos: 15
+Training error: 1e+10
+Trainig Deviation: 7088.81
+Fitness: 9.99999e-11
+List Size: 413
+List effective Size: 226
+-----------------------
+Lista de instrucciones: 
+-----------------------
+r_all[2] = math.cos(in_t[12])
+r_all[3] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[18] + 1.0
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[1] ** 2
+r_all[6] = math.log10(abs(r_all[3])) if r_all[3] != 0 else r_all[5] + 1.0
+r_all[5] = math.sin(r_all[6])
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = math.cos(r_all[4])
+r_all[3] = r_all[8] + in_t[32]
+r_all[1] = in_t[5] * r_all[2]
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[1] ** 2
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[5] = math.sin(r_all[6])
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = in_t[11] - r_all[4]
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[5] = r_all[3] ** 2
+r_all[2] = r_all[6] * in_t[12]
+r_all[1] = in_t[3] + r_all[1]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[3] = math.sqrt(abs(in_t[8]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[5] = math.cos(r_all[3])
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[6] + 1.0
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[3] = math.cos(r_all[6])
+r_all[6] = r_all[7] / r_all[18] if r_all[18] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[3] / in_t[10] if in_t[10] != 0 else r_all[3] + 1.0
+r_all[4] = in_t[19] * in_t[17]
+r_all[6] = math.sin(r_all[6])
+r_all[1] = r_all[5] - r_all[7]
+r_all[5] = math.sin(r_all[6])
+r_all[3] = math.cos(in_t[24])
+r_all[4] = r_all[1] * r_all[16]
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = in_t[15] + r_all[1]
+r_all[8] = math.sqrt(abs(r_all[3]))
+r_all[2] = r_all[4] - in_t[19]
+r_all[1] = r_all[5] - in_t[4]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = math.cos(r_all[8])
+r_all[3] = r_all[8] + in_t[32]
+r_all[1] = in_t[5] * r_all[2]
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[1] ** 2
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = in_t[11] - r_all[4]
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[2] = math.cos(r_all[8])
+r_all[3] = r_all[8] + in_t[32]
+r_all[1] = in_t[5] * r_all[2]
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[1] ** 2
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[5] = math.sin(r_all[6])
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = in_t[11] - r_all[4]
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[5] = r_all[3] ** 2
+r_all[2] = r_all[6] * in_t[12]
+r_all[1] = in_t[3] + r_all[1]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[3] = math.sqrt(abs(in_t[8]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[5] = math.cos(r_all[3])
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[6] + 1.0
+r_all[3] = math.cos(r_all[6])
+r_all[6] = r_all[7] / r_all[18] if r_all[18] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[3] / in_t[10] if in_t[10] != 0 else r_all[3] + 1.0
+r_all[4] = in_t[19] * in_t[17]
+r_all[6] = math.sin(r_all[6])
+r_all[1] = r_all[5] - r_all[7]
+r_all[5] = math.sin(r_all[6])
+r_all[3] = math.cos(in_t[24])
+r_all[4] = r_all[1] * r_all[16]
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = in_t[15] + r_all[1]
+r_all[8] = math.sqrt(abs(r_all[3]))
+r_all[2] = r_all[4] - in_t[19]
+r_all[1] = r_all[5] - in_t[4]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = math.cos(r_all[3])
+r_all[3] = r_all[8] + in_t[32]
+r_all[1] = in_t[5] * r_all[2]
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[1] ** 2
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[5] = math.sin(r_all[6])
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = in_t[11] - r_all[4]
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[5] = r_all[3] ** 2
+r_all[2] = r_all[6] * in_t[12]
+r_all[1] = in_t[3] + r_all[1]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[3] = math.sqrt(abs(in_t[8]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[5] = math.cos(r_all[3])
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[6] + 1.0
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[3] = math.cos(r_all[6])
+r_all[6] = r_all[7] / r_all[18] if r_all[18] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[3] / in_t[10] if in_t[10] != 0 else r_all[3] + 1.0
+r_all[4] = in_t[19] * in_t[17]
+r_all[6] = math.sin(r_all[6])
+r_all[1] = r_all[5] - r_all[7]
+r_all[5] = math.sin(r_all[6])
+r_all[3] = math.cos(in_t[24])
+r_all[4] = r_all[1] * r_all[16]
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = in_t[15] + r_all[1]
+r_all[8] = math.sqrt(abs(r_all[3]))
+r_all[2] = r_all[4] - in_t[19]
+r_all[1] = r_all[5] - in_t[4]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[7] = r_all[3] * r_all[8]
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[2] = math.cos(r_all[7])
+r_all[6] = math.cos(r_all[8])
+r_all[5] = in_t[7] ** 2
+r_all[2] = r_all[6] * in_t[12]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[5] = r_all[5] - r_all[11]
+r_all[1] = math.sqrt(abs(in_t[28]))
+r_all[1] = in_t[10] ** 2
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[8] = math.sin(r_all[8])
+r_all[1] = r_all[8] - in_t[10]
+r_all[3] = math.sin(r_all[18])
+r_all[5] = math.cos(r_all[3])
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[8] = math.log10(abs(in_t[12])) if in_t[12] != 0 else r_all[2] + 1.0
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = in_t[15] + r_all[1]
+r_all[8] = math.sqrt(abs(r_all[3]))
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[5] = in_t[22] + r_all[8]
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = math.sin(r_all[18])
+r_all[3] = r_all[8] + in_t[32]
+r_all[2] = in_t[11] - r_all[3]
+r_all[5] = in_t[15] + r_all[1]
+r_all[5] = r_all[2] ** 2
+r_all[4] = in_t[4] + r_all[5]
+r_all[8] = r_all[5] * in_t[3]
+r_all[6] = r_all[1] * in_t[11]
+r_all[7] = in_t[16] * r_all[4]
+r_all[8] = r_all[8] + in_t[13]
+r_all[8] = r_all[8] / r_all[15] if r_all[15] != 0 else r_all[8] + 1.0
+r_all[4] = in_t[31] * r_all[7]
+r_all[4] = r_all[8] + r_all[4]
+r_all[6] = r_all[4] ** 2
+r_all[3] = math.cos(in_t[34])
+r_all[7] = in_t[19] * in_t[33]
+r_all[3] = r_all[6] + in_t[8]
+r_all[3] = r_all[3] + r_all[13]
+r_all[7] = in_t[14] * in_t[16]
+r_all[2] = in_t[3] * r_all[11]
+r_all[3] = r_all[3] + r_all[7]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[7] = r_all[8] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[3] = r_all[3] + r_all[9]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[8] = r_all[1] ** 2
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[8] = r_all[3] * in_t[33]
+r_all[4] = r_all[4] + in_t[14]
+r_all[3] = r_all[3] + in_t[30]
+r_all[7] = r_all[8] ** 2
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[5] = r_all[6] - in_t[1]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[1] = in_t[18] * r_all[13]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[7] = r_all[8] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[9]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[8] = r_all[3] * in_t[33]
+r_all[2] = math.sin(in_t[2])
+r_all[3] = r_all[3] + in_t[30]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[5] = r_all[6] - in_t[1]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[3] = r_all[3] + r_all[16]
+r_all[2] = in_t[21] ** 2
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[1] = r_all[18] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[5] = r_all[6] - in_t[1]
+r_all[3] = r_all[3] + in_t[12]
+r_all[7] = r_all[8] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[4] = r_all[7] + in_t[3]
+r_all[3] = in_t[15] + r_all[3]
+r_all[8] = r_all[1] ** 2
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[4] + r_all[3]
+r_all[3] = r_all[2] + r_all[3]
+r_all[3] = r_all[3] + in_t[21]
+r_all[5] = math.cos(r_all[13])
+r_all[4] = r_all[7] + in_t[3]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[5] = math.cos(r_all[13])
+r_all[3] = in_t[26] + r_all[3]
+r_all[4] = r_all[4] + in_t[14]
+r_all[5] = math.log10(abs(in_t[8])) if in_t[8] != 0 else in_t[34] + 1.0
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[4] = r_all[7] + in_t[3]
+r_all[4] = r_all[4] + in_t[14]
+r_all[2] = math.sin(in_t[2])
+r_all[3] = r_all[3] + in_t[5]
+r_all[2] = r_all[2] * r_all[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[3] = r_all[3] + r_all[12]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[3] = r_all[5] + r_all[3]
+r_all[1] = in_t[31] + in_t[4]
+r_all[3] = r_all[3] + r_all[1]
+r_all[5] = r_all[6] - in_t[1]
+r_all[8] = r_all[1] ** 2
+r_all[4] = r_all[7] + in_t[3]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[2] = in_t[3] * r_all[11]
+r_all[3] = r_all[3] + r_all[17]
+r_all[7] = r_all[8] ** 2
+r_all[3] = r_all[3] + in_t[10]
+r_all[2] = in_t[21] ** 2
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] * r_all[16]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[7] = r_all[8] ** 2
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[4] = in_t[31] + in_t[10]
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[7] = r_all[2] * in_t[31]
+r_all[2] = r_all[2] * r_all[12]
+r_all[5] = math.sqrt(abs(in_t[13]))
+r_all[6] = math.log10(abs(in_t[28])) if in_t[28] != 0 else r_all[3] + 1.0
+r_all[6] = r_all[7] * in_t[7]
+r_all[2] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[5] + 1.0
+r_all[5] = math.cos(r_all[5])
+r_all[7] = math.sin(in_t[25])
+r_all[1] = r_all[4] - r_all[4]
+r_all[7] = r_all[4] + r_all[4]
+r_all[6] = math.sin(in_t[19])
+r_all[8] = in_t[9] ** 2
+r_all[3] = r_all[1] * r_all[10]
+r_all[7] = r_all[8] * in_t[12]
+r_all[3] = in_t[0] - r_all[12]
+r_all[1] = r_all[1] / r_all[5] if r_all[5] != 0 else r_all[1] + 1.0
+r_all[6] = math.sqrt(abs(in_t[4]))
+r_all[6] = math.sin(in_t[1])
+r_all[2] = in_t[12] + in_t[30]
+r_all[6] = math.cos(in_t[13])
+r_all[3] = math.sin(r_all[5])
+r_all[3] = r_all[6] - r_all[4]
+r_all[5] = r_all[2] / r_all[3] if r_all[3] != 0 else r_all[2] + 1.0
+r_all[1] = r_all[1] / r_all[18] if r_all[18] != 0 else r_all[1] + 1.0
+r_all[5] = r_all[5] / in_t[31] if in_t[31] != 0 else r_all[5] + 1.0
+r_all[2] = r_all[5] / in_t[25] if in_t[25] != 0 else r_all[5] + 1.0
+r_all[8] = r_all[2] * r_all[12]
+r_all[6] = r_all[5] * in_t[15]
+r_all[1] = math.sqrt(abs(in_t[31]))
+r_all[4] = r_all[8] / in_t[13] if in_t[13] != 0 else r_all[8] + 1.0
+r_all[2] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[2] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[7] = math.sin(r_all[12])
+r_all[7] = math.log10(abs(in_t[15])) if in_t[15] != 0 else in_t[19] + 1.0
+r_all[5] = r_all[7] + in_t[27]
+r_all[8] = in_t[9] / r_all[4] if r_all[4] != 0 else in_t[9] + 1.0
+r_all[5] = r_all[7] + in_t[27]
+r_all[5] = math.cos(r_all[14])
+r_all[5] = in_t[16] + in_t[1]
+r_all[1] = r_all[8] - r_all[5]
+r_all[5] = math.sin(in_t[15])
+r_all[7] = in_t[22] - r_all[1]
+r_all[8] = r_all[7] ** 2
+r_all[4] = r_all[8] + r_all[11]
+r_all[7] = math.sin(r_all[2])
+r_all[3] = math.log10(abs(in_t[6])) if in_t[6] != 0 else r_all[3] + 1.0
+r_all[6] = r_all[4] ** 2
+r_all[4] = r_all[8] + r_all[11]
+r_all[7] = math.sin(r_all[2])
+r_all[3] = math.log10(abs(in_t[6])) if in_t[6] != 0 else r_all[3] + 1.0
+r_all[6] = r_all[4] ** 2
+r_all[5] = r_all[6] + in_t[33]
+r_all[3] = math.sin(in_t[12])
+r_all[0] = r_all[5] + r_all[3]
+------------------------
+Instrucciones efectivas: 
+------------------------
+r_all[3] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[18] + 1.0
+r_all[6] = math.log10(abs(r_all[3])) if r_all[3] != 0 else r_all[5] + 1.0
+r_all[5] = math.sin(r_all[6])
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[2] = math.cos(r_all[4])
+r_all[1] = in_t[5] * r_all[2]
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[1] ** 2
+r_all[3] = math.sin(r_all[6])
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[6] + 1.0
+r_all[3] = math.cos(r_all[6])
+r_all[6] = r_all[3] / in_t[10] if in_t[10] != 0 else r_all[3] + 1.0
+r_all[6] = math.sin(r_all[6])
+r_all[3] = math.sin(r_all[6])
+r_all[8] = math.sqrt(abs(r_all[3]))
+r_all[2] = math.cos(r_all[8])
+r_all[1] = in_t[5] * r_all[2]
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[1] ** 2
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[2] = math.cos(r_all[8])
+r_all[1] = in_t[5] * r_all[2]
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[1] ** 2
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[6] + 1.0
+r_all[3] = math.cos(r_all[6])
+r_all[6] = r_all[3] / in_t[10] if in_t[10] != 0 else r_all[3] + 1.0
+r_all[6] = math.sin(r_all[6])
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = math.cos(r_all[3])
+r_all[1] = in_t[5] * r_all[2]
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[1] ** 2
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[6] + 1.0
+r_all[3] = math.cos(r_all[6])
+r_all[6] = r_all[3] / in_t[10] if in_t[10] != 0 else r_all[3] + 1.0
+r_all[6] = math.sin(r_all[6])
+r_all[5] = math.sin(r_all[6])
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[5] = in_t[15] + r_all[1]
+r_all[2] = r_all[4] - in_t[19]
+r_all[1] = r_all[5] - in_t[4]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[8] = math.sin(r_all[8])
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = r_all[8] + in_t[32]
+r_all[2] = in_t[11] - r_all[3]
+r_all[5] = r_all[2] ** 2
+r_all[4] = in_t[4] + r_all[5]
+r_all[8] = r_all[5] * in_t[3]
+r_all[7] = in_t[16] * r_all[4]
+r_all[8] = r_all[8] + in_t[13]
+r_all[8] = r_all[8] / r_all[15] if r_all[15] != 0 else r_all[8] + 1.0
+r_all[4] = in_t[31] * r_all[7]
+r_all[4] = r_all[8] + r_all[4]
+r_all[6] = r_all[4] ** 2
+r_all[3] = r_all[6] + in_t[8]
+r_all[3] = r_all[3] + r_all[13]
+r_all[7] = in_t[14] * in_t[16]
+r_all[3] = r_all[3] + r_all[7]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[30]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[1] = in_t[18] * r_all[13]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[9]
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[30]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[3] = r_all[3] + r_all[16]
+r_all[2] = in_t[21] ** 2
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[1] = r_all[18] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[3] = in_t[15] + r_all[3]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[4] + r_all[3]
+r_all[3] = r_all[2] + r_all[3]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = in_t[26] + r_all[3]
+r_all[5] = math.log10(abs(in_t[8])) if in_t[8] != 0 else in_t[34] + 1.0
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[5] + r_all[3]
+r_all[1] = in_t[31] + in_t[4]
+r_all[3] = r_all[3] + r_all[1]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] * r_all[16]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[7] = r_all[8] ** 2
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[2] = in_t[12] + in_t[30]
+r_all[6] = math.cos(in_t[13])
+r_all[3] = r_all[6] - r_all[4]
+r_all[5] = r_all[2] / r_all[3] if r_all[3] != 0 else r_all[2] + 1.0
+r_all[5] = r_all[5] / in_t[31] if in_t[31] != 0 else r_all[5] + 1.0
+r_all[2] = r_all[5] / in_t[25] if in_t[25] != 0 else r_all[5] + 1.0
+r_all[8] = r_all[2] * r_all[12]
+r_all[4] = r_all[8] / in_t[13] if in_t[13] != 0 else r_all[8] + 1.0
+r_all[8] = in_t[9] / r_all[4] if r_all[4] != 0 else in_t[9] + 1.0
+r_all[5] = in_t[16] + in_t[1]
+r_all[1] = r_all[8] - r_all[5]
+r_all[7] = in_t[22] - r_all[1]
+r_all[8] = r_all[7] ** 2
+r_all[4] = r_all[8] + r_all[11]
+r_all[6] = r_all[4] ** 2
+r_all[5] = r_all[6] + in_t[33]
+r_all[3] = math.sin(in_t[12])
+r_all[0] = r_all[5] + r_all[3]
+-----------
+Registros: 
+-----------
+r_all[0] = 1
+r_all[1] = 1
+r_all[2] = 1
+r_all[3] = 1
+r_all[4] = 1
+r_all[5] = 1
+r_all[6] = 1
+r_all[7] = 1
+r_all[8] = 1
+r_all[9] = 0.200662
+r_all[10] = 0.685821
+r_all[11] = 0.947061
+r_all[12] = 0.287343
+r_all[13] = 0.282278
+r_all[14] = 0.104658
+r_all[15] = 0
+r_all[16] = 1
+r_all[17] = 2.71828
+r_all[18] = 3.14159
+*********************************************************************************
+Best Individual: 4
+*********************************************************************************
+Config Pos: 15
+Training error: 20243.1
+Trainig Deviation: 6772.07
+Fitness: 3.70162e-05
+List Size: 355
+List effective Size: 6
+-----------------------
+Lista de instrucciones: 
+-----------------------
+r_all[2] = math.cos(in_t[12])
+r_all[4] = math.cos(in_t[19])
+r_all[3] = math.sqrt(abs(in_t[16]))
+r_all[6] = r_all[2] - in_t[32]
+r_all[1] = in_t[5] * r_all[2]
+r_all[6] = math.cos(r_all[3])
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[3] = math.cos(in_t[24])
+r_all[3] = math.sqrt(abs(in_t[16]))
+r_all[3] = r_all[8] + in_t[32]
+r_all[3] = math.sqrt(abs(in_t[16]))
+r_all[4] = r_all[2] - in_t[18]
+r_all[3] = math.sqrt(abs(in_t[16]))
+r_all[1] = in_t[5] * r_all[2]
+r_all[6] = math.cos(r_all[3])
+r_all[3] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[18] + 1.0
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[2] = math.cos(in_t[12])
+r_all[4] = math.cos(in_t[19])
+r_all[3] = math.sqrt(abs(in_t[16]))
+r_all[6] = r_all[2] - in_t[32]
+r_all[1] = in_t[5] * r_all[2]
+r_all[6] = math.cos(r_all[3])
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[3] = math.cos(in_t[24])
+r_all[3] = math.sqrt(abs(in_t[16]))
+r_all[3] = r_all[8] + in_t[32]
+r_all[3] = math.sqrt(abs(in_t[16]))
+r_all[4] = r_all[2] - in_t[18]
+r_all[3] = math.sqrt(abs(in_t[16]))
+r_all[6] = math.sin(r_all[1])
+r_all[4] = r_all[2] - in_t[18]
+r_all[4] = math.cos(in_t[19])
+r_all[3] = math.sqrt(abs(in_t[16]))
+r_all[6] = math.sin(r_all[1])
+r_all[4] = r_all[2] - in_t[18]
+r_all[3] = math.sin(r_all[18])
+r_all[6] = r_all[2] - in_t[32]
+r_all[1] = in_t[5] * r_all[2]
+r_all[6] = math.cos(r_all[3])
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[1] ** 2
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[3] = math.cos(in_t[24])
+r_all[5] = in_t[20] ** 2
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = in_t[11] - r_all[4]
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[5] = in_t[15] + r_all[1]
+r_all[1] = math.cos(r_all[2])
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[4] = r_all[8] * r_all[17]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[1] = in_t[3] + r_all[1]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[1] = r_all[5] ** 2
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[5] = math.cos(r_all[3])
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[6] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[13] + 1.0
+r_all[3] = math.cos(r_all[6])
+r_all[6] = r_all[3] / in_t[10] if in_t[10] != 0 else r_all[3] + 1.0
+r_all[6] = math.sin(r_all[6])
+r_all[1] = r_all[5] - r_all[7]
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[5] = math.sin(r_all[6])
+r_all[8] = math.log10(abs(in_t[12])) if in_t[12] != 0 else r_all[2] + 1.0
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[5] = in_t[15] + r_all[1]
+r_all[6] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[2] = r_all[4] - in_t[19]
+r_all[1] = r_all[5] - in_t[4]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = r_all[5] / in_t[22] if in_t[22] != 0 else r_all[5] + 1.0
+r_all[7] = r_all[3] * r_all[8]
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[5] = in_t[7] ** 2
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[5] = r_all[5] - r_all[11]
+r_all[5] = in_t[20] ** 2
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[8] = r_all[8] + r_all[15]
+r_all[8] = math.sin(r_all[8])
+r_all[1] = r_all[8] - in_t[10]
+r_all[3] = math.sin(r_all[18])
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[5] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = in_t[15] + r_all[1]
+r_all[6] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[2] = math.cos(r_all[7])
+r_all[1] = in_t[3] + r_all[1]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[3] = math.sqrt(abs(in_t[8]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = r_all[8] + in_t[32]
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[2] = in_t[11] - r_all[3]
+r_all[8] = math.sqrt(abs(r_all[4]))
+r_all[5] = r_all[5] * r_all[10]
+r_all[4] = r_all[8] * r_all[17]
+r_all[5] = r_all[2] ** 2
+r_all[2] = r_all[2] - r_all[14]
+r_all[4] = in_t[4] + r_all[5]
+r_all[8] = r_all[5] * in_t[3]
+r_all[5] = math.sin(r_all[11])
+r_all[7] = in_t[16] * r_all[4]
+r_all[4] = r_all[1] + r_all[13]
+r_all[8] = r_all[8] + in_t[13]
+r_all[3] = r_all[6] * in_t[3]
+r_all[8] = r_all[8] / r_all[15] if r_all[15] != 0 else r_all[8] + 1.0
+r_all[4] = in_t[31] * r_all[7]
+r_all[4] = r_all[8] + r_all[4]
+r_all[1] = r_all[5] + r_all[18]
+r_all[6] = r_all[4] ** 2
+r_all[4] = r_all[2] - r_all[18]
+r_all[7] = in_t[19] * in_t[33]
+r_all[3] = r_all[6] + in_t[8]
+r_all[3] = r_all[3] + r_all[13]
+r_all[7] = in_t[14] * in_t[16]
+r_all[2] = in_t[3] * r_all[11]
+r_all[3] = r_all[3] + r_all[7]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[10] + in_t[23]
+r_all[4] = r_all[8] + r_all[2]
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[5] = math.cos(r_all[13])
+r_all[4] = r_all[4] + in_t[14]
+r_all[2] = math.sin(in_t[2])
+r_all[3] = r_all[3] + in_t[30]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[5] = r_all[6] - in_t[1]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[1] = in_t[18] * r_all[13]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[5] = r_all[6] - in_t[1]
+r_all[3] = r_all[3] + in_t[12]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[2] = in_t[10] + in_t[23]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[5] = r_all[6] - in_t[1]
+r_all[3] = r_all[3] + in_t[12]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[7] = r_all[8] ** 2
+r_all[3] = r_all[3] + r_all[9]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[8] = r_all[3] * in_t[33]
+r_all[4] = r_all[7] + in_t[3]
+r_all[4] = r_all[4] + in_t[14]
+r_all[3] = r_all[3] + in_t[30]
+r_all[7] = r_all[8] ** 2
+r_all[2] = in_t[10] + in_t[23]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[21] ** 2
+r_all[5] = r_all[6] - in_t[1]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[3] = r_all[3] + r_all[16]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[21] ** 2
+r_all[3] = in_t[15] + r_all[3]
+r_all[5] = r_all[6] - in_t[1]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[1] = r_all[18] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[4] = r_all[7] + in_t[3]
+r_all[2] = math.sin(in_t[2])
+r_all[3] = in_t[15] + r_all[3]
+r_all[7] = r_all[8] ** 2
+r_all[2] = in_t[10] + in_t[23]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[2] = in_t[21] ** 2
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[4] + r_all[3]
+r_all[3] = r_all[2] + r_all[3]
+r_all[3] = r_all[3] + in_t[21]
+r_all[2] = math.sin(in_t[2])
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[8] = r_all[3] * in_t[33]
+r_all[4] = r_all[7] + in_t[3]
+r_all[3] = in_t[26] + r_all[3]
+r_all[2] = math.sin(in_t[2])
+r_all[5] = math.log10(abs(in_t[8])) if in_t[8] != 0 else in_t[34] + 1.0
+r_all[2] = math.sin(in_t[2])
+r_all[3] = r_all[3] + in_t[5]
+r_all[2] = r_all[2] * r_all[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[3] + in_t[5]
+r_all[2] = r_all[2] * r_all[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[3] = r_all[3] + r_all[12]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[3] = r_all[5] + r_all[3]
+r_all[1] = in_t[31] + in_t[4]
+r_all[3] = r_all[3] + r_all[1]
+r_all[8] = r_all[1] ** 2
+r_all[8] = r_all[3] * in_t[33]
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[4] = r_all[7] + in_t[3]
+r_all[2] = math.sin(in_t[2])
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[2] = r_all[2] * r_all[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[7] = r_all[8] ** 2
+r_all[5] = r_all[6] - in_t[1]
+r_all[8] = r_all[1] ** 2
+r_all[5] = math.cos(r_all[13])
+r_all[4] = r_all[4] + in_t[14]
+r_all[2] = math.sin(in_t[2])
+r_all[8] = r_all[3] / in_t[34] if in_t[34] != 0 else r_all[3] + 1.0
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[2] = r_all[2] * r_all[12]
+r_all[8] = r_all[8] ** 2
+r_all[6] = math.log10(abs(in_t[28])) if in_t[28] != 0 else r_all[3] + 1.0
+r_all[7] = math.sin(in_t[25])
+r_all[7] = r_all[4] + r_all[4]
+r_all[6] = r_all[3] - r_all[6]
+r_all[6] = in_t[11] / r_all[8] if r_all[8] != 0 else in_t[11] + 1.0
+r_all[6] = in_t[6] + r_all[17]
+r_all[2] = in_t[12] + in_t[30]
+r_all[3] = r_all[6] - r_all[4]
+r_all[5] = r_all[2] / r_all[3] if r_all[3] != 0 else r_all[2] + 1.0
+r_all[4] = in_t[31] - in_t[0]
+r_all[4] = in_t[11] ** 2
+r_all[1] = r_all[1] / r_all[18] if r_all[18] != 0 else r_all[1] + 1.0
+r_all[5] = r_all[5] / in_t[31] if in_t[31] != 0 else r_all[5] + 1.0
+r_all[2] = r_all[5] / in_t[25] if in_t[25] != 0 else r_all[5] + 1.0
+r_all[8] = r_all[2] * r_all[12]
+r_all[7] = r_all[8] - r_all[6]
+r_all[4] = r_all[8] / in_t[13] if in_t[13] != 0 else r_all[8] + 1.0
+r_all[2] = r_all[3] - in_t[27]
+r_all[8] = in_t[9] / r_all[4] if r_all[4] != 0 else in_t[9] + 1.0
+r_all[5] = r_all[7] + in_t[27]
+r_all[7] = in_t[19] * in_t[11]
+r_all[8] = r_all[8] + r_all[13]
+r_all[5] = math.sin(in_t[15])
+r_all[5] = r_all[7] + in_t[27]
+r_all[1] = r_all[8] - in_t[18]
+r_all[7] = in_t[22] - r_all[1]
+r_all[6] = math.log10(abs(in_t[5])) if in_t[5] != 0 else in_t[17] + 1.0
+r_all[6] = r_all[13] ** 2
+r_all[8] = r_all[7] ** 2
+r_all[4] = r_all[8] + r_all[11]
+r_all[4] = in_t[33] - r_all[4]
+r_all[2] = r_all[4] + r_all[4]
+r_all[7] = math.sin(r_all[6])
+r_all[6] = r_all[4] ** 2
+r_all[3] = math.sin(in_t[12])
+r_all[1] = math.sin(in_t[21])
+r_all[5] = r_all[6] + in_t[33]
+r_all[3] = math.sin(in_t[12])
+r_all[3] = math.log10(abs(in_t[6])) if in_t[6] != 0 else r_all[3] + 1.0
+r_all[5] = r_all[5] - r_all[7]
+r_all[3] = math.log10(abs(in_t[6])) if in_t[6] != 0 else r_all[3] + 1.0
+r_all[2] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[1] + 1.0
+r_all[2] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[1] + 1.0
+r_all[2] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[1] + 1.0
+r_all[5] = r_all[6] + in_t[33]
+r_all[3] = math.sin(in_t[12])
+r_all[3] = math.log10(abs(in_t[6])) if in_t[6] != 0 else r_all[3] + 1.0
+r_all[2] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[1] + 1.0
+r_all[5] = math.sqrt(abs(in_t[21]))
+r_all[5] = r_all[5] - r_all[7]
+r_all[3] = math.log10(abs(in_t[6])) if in_t[6] != 0 else r_all[3] + 1.0
+r_all[2] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[1] + 1.0
+r_all[2] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[1] + 1.0
+r_all[2] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[1] + 1.0
+r_all[3] = math.sin(in_t[12])
+r_all[3] = math.sin(in_t[12])
+r_all[0] = r_all[5] + r_all[3]
+------------------------
+Instrucciones efectivas: 
+------------------------
+r_all[6] = r_all[13] ** 2
+r_all[7] = math.sin(r_all[6])
+r_all[5] = math.sqrt(abs(in_t[21]))
+r_all[5] = r_all[5] - r_all[7]
+r_all[3] = math.sin(in_t[12])
+r_all[0] = r_all[5] + r_all[3]
+-----------
+Registros: 
+-----------
+r_all[0] = 1
+r_all[1] = 1
+r_all[2] = 1
+r_all[3] = 1
+r_all[4] = 1
+r_all[5] = 1
+r_all[6] = 1
+r_all[7] = 1
+r_all[8] = 1
+r_all[9] = 0.200662
+r_all[10] = 0.685821
+r_all[11] = 0.947061
+r_all[12] = 0.287343
+r_all[13] = 0.282278
+r_all[14] = 0.104658
+r_all[15] = 0
+r_all[16] = 1
+r_all[17] = 2.71828
+r_all[18] = 3.14159
+*********************************************************************************
+Best Individual: 5
+*********************************************************************************
+Config Pos: 15
+Training error: 20004.8
+Trainig Deviation: 6678.28
+Fitness: 3.7477e-05
+List Size: 316
+List effective Size: 3
+-----------------------
+Lista de instrucciones: 
+-----------------------
+r_all[2] = math.cos(in_t[12])
+r_all[8] = in_t[25] ** 2
+r_all[4] = math.cos(r_all[16])
+r_all[3] = math.sqrt(abs(in_t[16]))
+r_all[4] = math.sqrt(abs(in_t[4]))
+r_all[6] = r_all[2] - in_t[32]
+r_all[3] = r_all[8] + in_t[32]
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = math.sqrt(abs(in_t[16]))
+r_all[4] = r_all[2] - in_t[18]
+r_all[4] = math.cos(r_all[16])
+r_all[3] = math.sqrt(abs(in_t[16]))
+r_all[6] = r_all[2] - in_t[32]
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = math.sin(r_all[18])
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = math.sin(r_all[18])
+r_all[3] = math.sqrt(abs(in_t[16]))
+r_all[4] = r_all[2] - in_t[18]
+r_all[3] = math.sin(r_all[18])
+r_all[1] = in_t[5] * r_all[2]
+r_all[3] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[18] + 1.0
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[1] ** 2
+r_all[3] = math.cos(in_t[24])
+r_all[4] = r_all[1] * r_all[16]
+r_all[7] = in_t[32] ** 2
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[5] = in_t[15] + r_all[1]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[4] = r_all[8] * r_all[17]
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[2] = r_all[6] * in_t[12]
+r_all[1] = in_t[3] + r_all[1]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[4] = r_all[2] - in_t[18]
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[6] + 1.0
+r_all[3] = math.cos(r_all[6])
+r_all[8] = math.log10(abs(in_t[12])) if in_t[12] != 0 else r_all[2] + 1.0
+r_all[6] = r_all[3] / in_t[10] if in_t[10] != 0 else r_all[3] + 1.0
+r_all[6] = math.sin(r_all[6])
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[5] = math.sin(r_all[6])
+r_all[8] = math.log10(abs(in_t[12])) if in_t[12] != 0 else r_all[2] + 1.0
+r_all[4] = in_t[19] * in_t[17]
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[5] = in_t[15] + r_all[1]
+r_all[6] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[8] = math.sqrt(abs(r_all[3]))
+r_all[2] = r_all[4] - in_t[19]
+r_all[1] = r_all[5] - in_t[4]
+r_all[5] = r_all[5] * r_all[10]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = r_all[5] / in_t[22] if in_t[22] != 0 else r_all[5] + 1.0
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[2] = math.cos(r_all[7])
+r_all[6] = math.cos(r_all[8])
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[5] = r_all[5] - r_all[11]
+r_all[1] = math.sqrt(abs(in_t[28]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[8] = math.sin(r_all[8])
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[8] = math.log10(abs(in_t[12])) if in_t[12] != 0 else r_all[2] + 1.0
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[4] = r_all[8] * r_all[17]
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[5] = in_t[7] ** 2
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[5] = in_t[22] + r_all[8]
+r_all[3] = math.sqrt(abs(in_t[8]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = math.sin(r_all[18])
+r_all[8] = r_all[8] - r_all[3]
+r_all[3] = r_all[8] + in_t[32]
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[2] = in_t[11] - r_all[3]
+r_all[4] = r_all[1] + r_all[2]
+r_all[4] = r_all[1] * in_t[29]
+r_all[8] = in_t[6] ** 2
+r_all[5] = r_all[2] ** 2
+r_all[7] = r_all[2] + r_all[8]
+r_all[4] = in_t[4] + r_all[5]
+r_all[8] = r_all[5] * in_t[3]
+r_all[6] = r_all[1] * in_t[11]
+r_all[5] = math.sin(r_all[11])
+r_all[7] = in_t[16] ** 2
+r_all[7] = in_t[16] * r_all[4]
+r_all[4] = r_all[1] + r_all[13]
+r_all[8] = r_all[8] + in_t[13]
+r_all[8] = r_all[8] / r_all[15] if r_all[15] != 0 else r_all[8] + 1.0
+r_all[4] = in_t[31] * r_all[7]
+r_all[4] = r_all[8] + r_all[4]
+r_all[3] = in_t[22] / in_t[19] if in_t[19] != 0 else in_t[22] + 1.0
+r_all[6] = r_all[4] ** 2
+r_all[3] = math.cos(in_t[34])
+r_all[3] = r_all[6] + in_t[8]
+r_all[3] = r_all[3] + r_all[13]
+r_all[7] = in_t[14] * in_t[16]
+r_all[2] = in_t[3] * r_all[11]
+r_all[3] = r_all[3] + r_all[7]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[7] = r_all[8] ** 2
+r_all[2] = in_t[10] + in_t[23]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[10] + in_t[23]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[4] = r_all[8] + r_all[2]
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[4] = r_all[4] + in_t[14]
+r_all[3] = r_all[3] + in_t[30]
+r_all[5] = r_all[6] - in_t[1]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[1] = in_t[18] * r_all[13]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[6] = r_all[5] - r_all[11]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[2] = in_t[10] + in_t[23]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[9]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[5] = r_all[6] - in_t[1]
+r_all[3] = r_all[1] + r_all[3]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[8] = r_all[3] * in_t[33]
+r_all[4] = r_all[7] + in_t[3]
+r_all[3] = r_all[3] + in_t[30]
+r_all[7] = r_all[8] ** 2
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[5] = r_all[6] - in_t[1]
+r_all[8] = r_all[1] ** 2
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[3] = r_all[3] + r_all[16]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[21] ** 2
+r_all[6] = r_all[1] / in_t[29] if in_t[29] != 0 else r_all[1] + 1.0
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[5] = r_all[6] - in_t[1]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[7] = r_all[8] ** 2
+r_all[2] = in_t[10] + in_t[23]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[1] = r_all[18] ** 2
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[2] = math.sin(in_t[2])
+r_all[3] = in_t[15] + r_all[3]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[4] = r_all[8] + r_all[2]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[21] ** 2
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[4] + r_all[3]
+r_all[3] = r_all[2] + r_all[3]
+r_all[3] = r_all[3] + in_t[21]
+r_all[4] = r_all[4] + in_t[14]
+r_all[2] = math.sin(in_t[2])
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = in_t[26] + r_all[3]
+r_all[5] = math.cos(r_all[13])
+r_all[4] = r_all[4] + in_t[14]
+r_all[5] = math.log10(abs(in_t[8])) if in_t[8] != 0 else in_t[34] + 1.0
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[4] = r_all[7] + in_t[3]
+r_all[2] = math.sin(in_t[2])
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[2] = math.sin(in_t[2])
+r_all[3] = r_all[3] + in_t[5]
+r_all[2] = r_all[2] * r_all[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[3] = r_all[3] + r_all[12]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[3] = r_all[5] + r_all[3]
+r_all[1] = in_t[31] + in_t[4]
+r_all[3] = r_all[3] + r_all[1]
+r_all[5] = r_all[6] - in_t[1]
+r_all[8] = r_all[3] * in_t[33]
+r_all[2] = math.sin(in_t[2])
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[2] = r_all[2] * r_all[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[2] = in_t[10] + in_t[23]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[7] = r_all[8] ** 2
+r_all[6] = r_all[6] * in_t[20]
+r_all[2] = in_t[10] + in_t[23]
+r_all[1] = math.sqrt(abs(in_t[29]))
+r_all[2] = in_t[21] ** 2
+r_all[4] = r_all[8] + r_all[2]
+r_all[4] = in_t[31] + in_t[10]
+r_all[6] = math.log10(abs(in_t[8])) if in_t[8] != 0 else r_all[8] + 1.0
+r_all[4] = r_all[7] + in_t[3]
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[2] = r_all[2] * r_all[12]
+r_all[5] = math.sqrt(abs(in_t[13]))
+r_all[2] = in_t[8] + in_t[2]
+r_all[7] = in_t[12] / r_all[8] if r_all[8] != 0 else in_t[12] + 1.0
+r_all[3] = math.cos(in_t[10])
+r_all[2] = in_t[12] + in_t[30]
+r_all[3] = r_all[6] - r_all[4]
+r_all[5] = r_all[2] / r_all[3] if r_all[3] != 0 else r_all[2] + 1.0
+r_all[4] = in_t[11] ** 2
+r_all[1] = in_t[24] ** 2
+r_all[5] = r_all[5] / in_t[31] if in_t[31] != 0 else r_all[5] + 1.0
+r_all[6] = in_t[19] ** 2
+r_all[2] = r_all[5] / in_t[25] if in_t[25] != 0 else r_all[5] + 1.0
+r_all[8] = r_all[2] * r_all[12]
+r_all[6] = r_all[4] / r_all[2] if r_all[2] != 0 else r_all[4] + 1.0
+r_all[4] = r_all[8] / in_t[13] if in_t[13] != 0 else r_all[8] + 1.0
+r_all[8] = in_t[9] / r_all[4] if r_all[4] != 0 else in_t[9] + 1.0
+r_all[2] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[7] = r_all[1] / r_all[1] if r_all[1] != 0 else r_all[1] + 1.0
+r_all[2] = r_all[3] - in_t[27]
+r_all[5] = r_all[7] + in_t[27]
+r_all[7] = math.cos(r_all[18])
+r_all[5] = in_t[12] ** 2
+r_all[5] = in_t[23] ** 2
+r_all[5] = r_all[7] + r_all[17]
+r_all[5] = math.cos(r_all[15])
+r_all[1] = r_all[8] - r_all[5]
+r_all[7] = in_t[22] - r_all[1]
+r_all[6] = math.log10(abs(in_t[5])) if in_t[5] != 0 else in_t[17] + 1.0
+r_all[8] = r_all[7] ** 2
+r_all[4] = r_all[8] + r_all[11]
+r_all[7] = math.sin(r_all[2])
+r_all[6] = r_all[4] ** 2
+r_all[5] = r_all[6] + in_t[33]
+r_all[5] = r_all[8] ** 2
+r_all[6] = r_all[6] + in_t[28]
+r_all[3] = math.log10(abs(in_t[6])) if in_t[6] != 0 else r_all[3] + 1.0
+r_all[5] = math.cos(in_t[8])
+r_all[3] = r_all[17] ** 2
+r_all[6] = r_all[6] + in_t[28]
+r_all[0] = r_all[5] + r_all[3]
+------------------------
+Instrucciones efectivas: 
+------------------------
+r_all[5] = math.cos(in_t[8])
+r_all[3] = r_all[17] ** 2
+r_all[0] = r_all[5] + r_all[3]
+-----------
+Registros: 
+-----------
+r_all[0] = 1
+r_all[1] = 1
+r_all[2] = 1
+r_all[3] = 1
+r_all[4] = 1
+r_all[5] = 1
+r_all[6] = 1
+r_all[7] = 1
+r_all[8] = 1
+r_all[9] = 0.200662
+r_all[10] = 0.685821
+r_all[11] = 0.947061
+r_all[12] = 0.287343
+r_all[13] = 0.282278
+r_all[14] = 0.104658
+r_all[15] = 0
+r_all[16] = 1
+r_all[17] = 2.71828
+r_all[18] = 3.14159
+*********************************************************************************
+Best Individual: 6
+*********************************************************************************
+Config Pos: 15
+Training error: 1e+10
+Trainig Deviation: 7088.81
+Fitness: 9.99999e-11
+List Size: 336
+List effective Size: 165
+-----------------------
+Lista de instrucciones: 
+-----------------------
+r_all[3] = r_all[6] ** 2
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[8] = in_t[25] ** 2
+r_all[7] = in_t[32] ** 2
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[2] = math.cos(in_t[12])
+r_all[8] = in_t[25] ** 2
+r_all[4] = r_all[2] - in_t[18]
+r_all[3] = math.sin(r_all[18])
+r_all[4] = math.cos(in_t[19])
+r_all[4] = r_all[2] - in_t[18]
+r_all[4] = math.sqrt(abs(in_t[4]))
+r_all[1] = in_t[5] * r_all[2]
+r_all[7] = r_all[3] - in_t[25]
+r_all[3] = r_all[6] ** 2
+r_all[3] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[18] + 1.0
+r_all[1] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[7] + 1.0
+r_all[6] = r_all[1] ** 2
+r_all[4] = r_all[1] * r_all[16]
+r_all[6] = r_all[6] / in_t[29] if in_t[29] != 0 else r_all[6] + 1.0
+r_all[3] = math.sin(r_all[6])
+r_all[2] = in_t[11] - r_all[4]
+r_all[2] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[28] + 1.0
+r_all[1] = math.cos(r_all[2])
+r_all[6] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[8] = math.sqrt(abs(r_all[3]))
+r_all[5] = r_all[5] * r_all[10]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[3] = r_all[8] + r_all[8]
+r_all[7] = r_all[3] * r_all[8]
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[2] = math.cos(r_all[7])
+r_all[6] = math.cos(r_all[8])
+r_all[2] = r_all[6] * in_t[12]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[5] = r_all[5] - r_all[11]
+r_all[3] = math.sqrt(abs(in_t[8]))
+r_all[8] = math.sin(in_t[12])
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[6] + 1.0
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[3] = math.cos(r_all[6])
+r_all[6] = r_all[7] / r_all[18] if r_all[18] != 0 else r_all[7] + 1.0
+r_all[4] = r_all[1] * r_all[16]
+r_all[6] = r_all[3] / in_t[10] if in_t[10] != 0 else r_all[3] + 1.0
+r_all[4] = in_t[19] * in_t[17]
+r_all[6] = math.sin(r_all[6])
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[5] = math.sin(r_all[6])
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = in_t[15] + r_all[1]
+r_all[2] = r_all[4] - in_t[19]
+r_all[1] = r_all[5] - in_t[4]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = r_all[5] / in_t[22] if in_t[22] != 0 else r_all[5] + 1.0
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[2] = r_all[6] * in_t[12]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[8] = math.sin(r_all[8])
+r_all[3] = math.sin(r_all[18])
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[8] = math.log10(abs(in_t[12])) if in_t[12] != 0 else r_all[2] + 1.0
+r_all[7] = in_t[32] ** 2
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = in_t[15] + r_all[1]
+r_all[6] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[5] = in_t[7] ** 2
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[1] = math.sqrt(abs(in_t[28]))
+r_all[5] = in_t[22] + r_all[8]
+r_all[3] = math.sqrt(abs(in_t[8]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = r_all[8] + in_t[32]
+r_all[5] = math.cos(r_all[3])
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[2] = in_t[11] - r_all[3]
+r_all[5] = in_t[15] + r_all[1]
+r_all[5] = r_all[5] * r_all[10]
+r_all[3] = r_all[1] * r_all[9]
+r_all[8] = in_t[6] ** 2
+r_all[4] = r_all[8] * r_all[17]
+r_all[5] = r_all[2] ** 2
+r_all[5] = r_all[5] + r_all[15]
+r_all[2] = r_all[2] - r_all[14]
+r_all[4] = in_t[4] + r_all[5]
+r_all[8] = r_all[5] * in_t[3]
+r_all[5] = math.sin(r_all[11])
+r_all[7] = in_t[16] ** 2
+r_all[7] = in_t[16] * r_all[4]
+r_all[8] = r_all[8] + in_t[13]
+r_all[6] = math.sqrt(abs(in_t[14]))
+r_all[8] = r_all[8] / r_all[15] if r_all[15] != 0 else r_all[8] + 1.0
+r_all[4] = in_t[31] * r_all[7]
+r_all[4] = r_all[8] + r_all[4]
+r_all[1] = r_all[5] + r_all[18]
+r_all[6] = r_all[4] ** 2
+r_all[5] = r_all[3] + r_all[17]
+r_all[7] = in_t[19] * in_t[33]
+r_all[3] = r_all[6] + in_t[8]
+r_all[3] = r_all[3] + r_all[13]
+r_all[7] = in_t[14] * in_t[16]
+r_all[3] = r_all[3] + r_all[7]
+r_all[3] = r_all[3] + r_all[17]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[2] = in_t[10] + in_t[23]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[5] = r_all[6] - in_t[1]
+r_all[3] = r_all[1] + r_all[3]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[8] = r_all[3] * in_t[33]
+r_all[3] = r_all[3] + in_t[30]
+r_all[7] = r_all[8] ** 2
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[1] = in_t[18] * r_all[13]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[10] + in_t[23]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[5] = r_all[6] - in_t[1]
+r_all[3] = r_all[1] + r_all[3]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[30]
+r_all[2] = in_t[21] ** 2
+r_all[2] = in_t[10] + in_t[23]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[21] ** 2
+r_all[4] = r_all[8] + r_all[2]
+r_all[8] = r_all[1] ** 2
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[3] = r_all[3] + r_all[16]
+r_all[2] = in_t[21] ** 2
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[7] = r_all[8] ** 2
+r_all[1] = r_all[18] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[2] = math.sin(in_t[2])
+r_all[3] = in_t[15] + r_all[3]
+r_all[7] = r_all[8] ** 2
+r_all[2] = in_t[10] + in_t[23]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[5] = r_all[6] - in_t[1]
+r_all[8] = r_all[1] ** 2
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[2] = in_t[21] ** 2
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[5] = r_all[6] - in_t[1]
+r_all[8] = r_all[1] ** 2
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[4] + r_all[3]
+r_all[3] = r_all[2] + r_all[3]
+r_all[3] = r_all[3] + in_t[21]
+r_all[4] = r_all[7] + in_t[3]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[8] = r_all[3] * in_t[33]
+r_all[4] = r_all[7] + in_t[3]
+r_all[3] = in_t[26] + r_all[3]
+r_all[5] = math.cos(r_all[13])
+r_all[5] = math.log10(abs(in_t[8])) if in_t[8] != 0 else in_t[34] + 1.0
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[4] = r_all[7] + in_t[3]
+r_all[4] = r_all[4] + in_t[14]
+r_all[3] = r_all[3] + in_t[5]
+r_all[2] = r_all[2] * r_all[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[5] + r_all[3]
+r_all[1] = in_t[31] + in_t[4]
+r_all[3] = r_all[3] + r_all[1]
+r_all[8] = r_all[3] * in_t[33]
+r_all[2] = math.sin(in_t[2])
+r_all[2] = math.sin(in_t[2])
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[2] = in_t[3] * r_all[11]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[2] = in_t[21] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[7] = r_all[8] ** 2
+r_all[7] = r_all[7] - r_all[17]
+r_all[2] = in_t[21] ** 2
+r_all[4] = in_t[31] + in_t[10]
+r_all[7] = r_all[7] + in_t[22]
+r_all[4] = r_all[7] + in_t[3]
+r_all[4] = r_all[4] + in_t[14]
+r_all[7] = r_all[7] + in_t[22]
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[2] = r_all[2] * r_all[12]
+r_all[5] = r_all[6] - in_t[1]
+r_all[8] = r_all[1] ** 2
+r_all[4] = in_t[31] + in_t[10]
+r_all[8] = r_all[3] * in_t[33]
+r_all[4] = r_all[7] + in_t[3]
+r_all[4] = r_all[4] + in_t[14]
+r_all[2] = math.sin(in_t[2])
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[2] = r_all[2] * r_all[12]
+r_all[5] = math.sqrt(abs(in_t[13]))
+r_all[6] = r_all[7] * in_t[7]
+r_all[3] = r_all[1] + r_all[9]
+r_all[3] = in_t[24] - in_t[6]
+r_all[1] = r_all[4] - r_all[4]
+r_all[6] = math.sin(in_t[19])
+r_all[5] = math.sin(in_t[25])
+r_all[3] = in_t[24] - in_t[6]
+r_all[7] = in_t[12] / r_all[8] if r_all[8] != 0 else in_t[12] + 1.0
+r_all[4] = r_all[4] - in_t[7]
+r_all[3] = math.cos(r_all[10])
+r_all[6] = math.sqrt(abs(in_t[4]))
+r_all[6] = math.cos(r_all[3])
+r_all[7] = math.sqrt(abs(r_all[4]))
+r_all[2] = in_t[12] + in_t[30]
+r_all[6] = r_all[7] - in_t[17]
+r_all[3] = r_all[6] - r_all[4]
+r_all[5] = r_all[2] / r_all[3] if r_all[3] != 0 else r_all[2] + 1.0
+r_all[4] = in_t[31] - in_t[0]
+r_all[3] = r_all[3] / r_all[6] if r_all[6] != 0 else r_all[3] + 1.0
+r_all[3] = r_all[5] - in_t[25]
+r_all[1] = in_t[24] ** 2
+r_all[5] = r_all[5] / in_t[31] if in_t[31] != 0 else r_all[5] + 1.0
+r_all[2] = r_all[5] / in_t[25] if in_t[25] != 0 else r_all[5] + 1.0
+r_all[8] = r_all[2] * r_all[12]
+r_all[6] = r_all[4] / r_all[2] if r_all[2] != 0 else r_all[4] + 1.0
+r_all[3] = math.sqrt(abs(r_all[7]))
+r_all[6] = r_all[5] * in_t[15]
+r_all[6] = in_t[2] ** 2
+r_all[1] = math.sqrt(abs(in_t[31]))
+r_all[3] = math.sqrt(abs(in_t[26]))
+r_all[3] = r_all[8] / in_t[20] if in_t[20] != 0 else r_all[8] + 1.0
+r_all[4] = r_all[8] / in_t[13] if in_t[13] != 0 else r_all[8] + 1.0
+r_all[7] = math.log10(abs(in_t[28])) if in_t[28] != 0 else in_t[12] + 1.0
+r_all[2] = r_all[3] - in_t[27]
+r_all[5] = r_all[7] + in_t[27]
+r_all[8] = in_t[9] / r_all[4] if r_all[4] != 0 else in_t[9] + 1.0
+r_all[1] = math.sin(r_all[2])
+r_all[2] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[3] = math.log10(abs(r_all[1])) if r_all[1] != 0 else in_t[15] + 1.0
+r_all[3] = in_t[1] / r_all[15] if r_all[15] != 0 else in_t[1] + 1.0
+r_all[5] = r_all[7] + in_t[27]
+r_all[5] = math.cos(r_all[3])
+r_all[1] = r_all[8] - r_all[5]
+r_all[7] = in_t[22] - r_all[1]
+r_all[8] = r_all[7] ** 2
+r_all[8] = r_all[8] - in_t[2]
+r_all[4] = r_all[8] + r_all[11]
+r_all[8] = math.sin(r_all[15])
+r_all[6] = r_all[4] ** 2
+r_all[5] = r_all[6] + in_t[33]
+r_all[3] = math.sin(in_t[12])
+r_all[6] = r_all[6] + in_t[28]
+r_all[1] = math.sin(in_t[21])
+r_all[2] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[1] + 1.0
+r_all[5] = r_all[6] + in_t[33]
+r_all[3] = in_t[31] ** 2
+r_all[0] = r_all[5] + r_all[3]
+------------------------
+Instrucciones efectivas: 
+------------------------
+r_all[8] = math.sin(in_t[12])
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[6] + 1.0
+r_all[3] = math.cos(r_all[6])
+r_all[6] = r_all[3] / in_t[10] if in_t[10] != 0 else r_all[3] + 1.0
+r_all[6] = math.sin(r_all[6])
+r_all[7] = in_t[32] ** 2
+r_all[5] = math.sin(r_all[6])
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[5] = in_t[15] + r_all[1]
+r_all[2] = r_all[4] - in_t[19]
+r_all[1] = r_all[5] - in_t[4]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[8] = math.sin(r_all[8])
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = r_all[8] + in_t[32]
+r_all[2] = in_t[11] - r_all[3]
+r_all[5] = r_all[2] ** 2
+r_all[5] = r_all[5] + r_all[15]
+r_all[4] = in_t[4] + r_all[5]
+r_all[8] = r_all[5] * in_t[3]
+r_all[7] = in_t[16] * r_all[4]
+r_all[8] = r_all[8] + in_t[13]
+r_all[8] = r_all[8] / r_all[15] if r_all[15] != 0 else r_all[8] + 1.0
+r_all[4] = in_t[31] * r_all[7]
+r_all[4] = r_all[8] + r_all[4]
+r_all[6] = r_all[4] ** 2
+r_all[3] = r_all[6] + in_t[8]
+r_all[3] = r_all[3] + r_all[13]
+r_all[7] = in_t[14] * in_t[16]
+r_all[3] = r_all[3] + r_all[7]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[30]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[1] = in_t[18] * r_all[13]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[30]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[3] = r_all[3] + r_all[16]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[1] = r_all[18] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[3] = in_t[15] + r_all[3]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[2] = in_t[21] ** 2
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[4] + r_all[3]
+r_all[3] = r_all[2] + r_all[3]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = in_t[26] + r_all[3]
+r_all[5] = math.log10(abs(in_t[8])) if in_t[8] != 0 else in_t[34] + 1.0
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[5] + r_all[3]
+r_all[1] = in_t[31] + in_t[4]
+r_all[3] = r_all[3] + r_all[1]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[7] = r_all[8] ** 2
+r_all[7] = r_all[7] - r_all[17]
+r_all[7] = r_all[7] + in_t[22]
+r_all[7] = r_all[7] + in_t[22]
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[4] = r_all[4] - in_t[7]
+r_all[7] = math.sqrt(abs(r_all[4]))
+r_all[2] = in_t[12] + in_t[30]
+r_all[6] = r_all[7] - in_t[17]
+r_all[3] = r_all[6] - r_all[4]
+r_all[5] = r_all[2] / r_all[3] if r_all[3] != 0 else r_all[2] + 1.0
+r_all[5] = r_all[5] / in_t[31] if in_t[31] != 0 else r_all[5] + 1.0
+r_all[2] = r_all[5] / in_t[25] if in_t[25] != 0 else r_all[5] + 1.0
+r_all[8] = r_all[2] * r_all[12]
+r_all[4] = r_all[8] / in_t[13] if in_t[13] != 0 else r_all[8] + 1.0
+r_all[8] = in_t[9] / r_all[4] if r_all[4] != 0 else in_t[9] + 1.0
+r_all[3] = in_t[1] / r_all[15] if r_all[15] != 0 else in_t[1] + 1.0
+r_all[5] = math.cos(r_all[3])
+r_all[1] = r_all[8] - r_all[5]
+r_all[7] = in_t[22] - r_all[1]
+r_all[8] = r_all[7] ** 2
+r_all[8] = r_all[8] - in_t[2]
+r_all[4] = r_all[8] + r_all[11]
+r_all[6] = r_all[4] ** 2
+r_all[6] = r_all[6] + in_t[28]
+r_all[5] = r_all[6] + in_t[33]
+r_all[3] = in_t[31] ** 2
+r_all[0] = r_all[5] + r_all[3]
+-----------
+Registros: 
+-----------
+r_all[0] = 1
+r_all[1] = 1
+r_all[2] = 1
+r_all[3] = 1
+r_all[4] = 1
+r_all[5] = 1
+r_all[6] = 1
+r_all[7] = 1
+r_all[8] = 1
+r_all[9] = 0.200662
+r_all[10] = 0.685821
+r_all[11] = 0.947061
+r_all[12] = 0.287343
+r_all[13] = 0.282278
+r_all[14] = 0.104658
+r_all[15] = 0
+r_all[16] = 1
+r_all[17] = 2.71828
+r_all[18] = 3.14159
+*********************************************************************************
+Best Individual: 7
+*********************************************************************************
+Config Pos: 15
+Training error: 29029.1
+Trainig Deviation: 7883.01
+Fitness: 2.70914e-05
+List Size: 217
+List effective Size: 134
+-----------------------
+Lista de instrucciones: 
+-----------------------
+r_all[2] = math.cos(in_t[12])
+r_all[6] = r_all[2] - in_t[32]
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[4] = r_all[2] - in_t[18]
+r_all[1] = in_t[5] * r_all[2]
+r_all[2] = math.cos(in_t[12])
+r_all[4] = r_all[2] - in_t[18]
+r_all[1] = in_t[5] * r_all[2]
+r_all[6] = math.cos(r_all[3])
+r_all[2] = math.cos(in_t[12])
+r_all[7] = math.log10(abs(r_all[10])) if r_all[10] != 0 else r_all[2] + 1.0
+r_all[5] = math.sin(r_all[6])
+r_all[8] = math.log10(abs(in_t[12])) if in_t[12] != 0 else r_all[2] + 1.0
+r_all[4] = in_t[19] * in_t[17]
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = in_t[15] + r_all[1]
+r_all[6] = r_all[5] / r_all[4] if r_all[4] != 0 else r_all[5] + 1.0
+r_all[2] = r_all[4] - in_t[19]
+r_all[1] = r_all[5] - in_t[4]
+r_all[5] = r_all[5] * r_all[10]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = r_all[5] / in_t[22] if in_t[22] != 0 else r_all[5] + 1.0
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[5] = in_t[20] ** 2
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[8] = math.sin(r_all[8])
+r_all[3] = math.sin(r_all[18])
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[8] = math.log10(abs(in_t[12])) if in_t[12] != 0 else r_all[2] + 1.0
+r_all[7] = in_t[32] ** 2
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[5] = in_t[7] ** 2
+r_all[1] = in_t[3] + r_all[1]
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[1] = in_t[10] ** 2
+r_all[5] = in_t[20] ** 2
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = r_all[8] + in_t[32]
+r_all[5] = math.cos(r_all[3])
+r_all[7] = in_t[32] ** 2
+r_all[2] = in_t[11] - r_all[3]
+r_all[5] = r_all[2] ** 2
+r_all[4] = in_t[4] + r_all[5]
+r_all[8] = r_all[5] * in_t[3]
+r_all[6] = r_all[1] * in_t[11]
+r_all[1] = math.log10(abs(r_all[8])) if r_all[8] != 0 else in_t[18] + 1.0
+r_all[7] = in_t[16] * r_all[4]
+r_all[8] = r_all[8] + in_t[13]
+r_all[8] = r_all[8] / r_all[15] if r_all[15] != 0 else r_all[8] + 1.0
+r_all[4] = in_t[31] * r_all[7]
+r_all[4] = r_all[8] + r_all[4]
+r_all[2] = r_all[1] - in_t[8]
+r_all[6] = r_all[4] ** 2
+r_all[3] = math.cos(in_t[34])
+r_all[4] = r_all[2] - r_all[18]
+r_all[5] = r_all[3] + r_all[17]
+r_all[3] = r_all[6] + in_t[8]
+r_all[3] = r_all[3] + r_all[13]
+r_all[7] = in_t[14] * in_t[16]
+r_all[2] = in_t[3] * r_all[11]
+r_all[3] = r_all[3] + r_all[7]
+r_all[3] = r_all[3] + r_all[17]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[4] = r_all[7] + in_t[3]
+r_all[4] = r_all[4] + in_t[14]
+r_all[2] = math.sin(in_t[2])
+r_all[3] = r_all[3] + in_t[30]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[1] = in_t[18] * r_all[13]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[5] = r_all[6] - in_t[1]
+r_all[3] = r_all[3] + in_t[12]
+r_all[5] = r_all[7] / r_all[17] if r_all[17] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + r_all[9]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[30]
+r_all[7] = r_all[8] ** 2
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[21] ** 2
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + in_t[10]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[3] = r_all[3] + r_all[16]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[2] = in_t[21] ** 2
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[7] = r_all[8] ** 2
+r_all[1] = r_all[18] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[4] = r_all[4] + in_t[14]
+r_all[3] = in_t[15] + r_all[3]
+r_all[8] = r_all[1] ** 2
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[6] = math.cos(in_t[15])
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[4] + r_all[3]
+r_all[3] = r_all[2] + r_all[3]
+r_all[3] = r_all[3] + in_t[21]
+r_all[5] = math.cos(r_all[13])
+r_all[4] = r_all[4] + in_t[14]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = in_t[26] + r_all[3]
+r_all[8] = r_all[3] * in_t[33]
+r_all[5] = math.log10(abs(in_t[8])) if in_t[8] != 0 else in_t[34] + 1.0
+r_all[4] = r_all[7] + in_t[3]
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[3] = r_all[3] + r_all[12]
+r_all[2] = math.sin(in_t[2])
+r_all[4] = r_all[7] / r_all[11] if r_all[11] != 0 else r_all[7] + 1.0
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[5] + r_all[3]
+r_all[1] = in_t[31] + in_t[4]
+r_all[2] = in_t[21] ** 2
+r_all[3] = r_all[3] + r_all[1]
+r_all[8] = r_all[1] ** 2
+r_all[4] = in_t[31] + in_t[10]
+r_all[2] = math.sin(in_t[2])
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[7] = r_all[8] ** 2
+r_all[6] = math.log10(abs(in_t[10])) if in_t[10] != 0 else in_t[32] + 1.0
+r_all[3] = r_all[3] + in_t[10]
+r_all[4] = in_t[12] / r_all[17] if r_all[17] != 0 else in_t[12] + 1.0
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[8] = r_all[3] * in_t[19]
+r_all[7] = r_all[8] ** 2
+r_all[7] = r_all[7] - in_t[22]
+r_all[5] = r_all[6] - in_t[1]
+r_all[8] = r_all[1] ** 2
+r_all[1] = math.sin(in_t[25])
+r_all[1] = math.sqrt(abs(in_t[2]))
+r_all[6] = math.sin(r_all[3])
+r_all[3] = r_all[17] ** 2
+r_all[5] = r_all[5] + in_t[7]
+r_all[3] = r_all[17] ** 2
+r_all[5] = math.cos(in_t[0])
+r_all[3] = r_all[6] - in_t[7]
+r_all[0] = r_all[5] + r_all[3]
+------------------------
+Instrucciones efectivas: 
+------------------------
+r_all[6] = math.cos(r_all[3])
+r_all[5] = math.sin(r_all[6])
+r_all[7] = in_t[32] ** 2
+r_all[1] = r_all[5] - r_all[7]
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[5] = in_t[15] + r_all[1]
+r_all[2] = r_all[4] - in_t[19]
+r_all[1] = r_all[5] - in_t[4]
+r_all[3] = r_all[1] * r_all[9]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[7] = r_all[3] * r_all[8]
+r_all[8] = math.log10(abs(r_all[7])) if r_all[7] != 0 else r_all[4] + 1.0
+r_all[6] = math.cos(r_all[8])
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[8] = math.sin(r_all[8])
+r_all[5] = in_t[3] / r_all[8] if r_all[8] != 0 else in_t[3] + 1.0
+r_all[4] = math.log10(abs(r_all[5])) if r_all[5] != 0 else r_all[2] + 1.0
+r_all[2] = in_t[11] - r_all[4]
+r_all[5] = r_all[2] / in_t[4] if in_t[4] != 0 else r_all[2] + 1.0
+r_all[8] = r_all[5] / in_t[4] if in_t[4] != 0 else r_all[5] + 1.0
+r_all[6] = math.log10(abs(r_all[8])) if r_all[8] != 0 else r_all[5] + 1.0
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[8] = r_all[8] / in_t[7] if in_t[7] != 0 else r_all[8] + 1.0
+r_all[3] = r_all[8] + in_t[32]
+r_all[2] = in_t[11] - r_all[3]
+r_all[5] = r_all[2] ** 2
+r_all[4] = in_t[4] + r_all[5]
+r_all[8] = r_all[5] * in_t[3]
+r_all[7] = in_t[16] * r_all[4]
+r_all[8] = r_all[8] + in_t[13]
+r_all[8] = r_all[8] / r_all[15] if r_all[15] != 0 else r_all[8] + 1.0
+r_all[4] = in_t[31] * r_all[7]
+r_all[4] = r_all[8] + r_all[4]
+r_all[6] = r_all[4] ** 2
+r_all[3] = r_all[6] + in_t[8]
+r_all[3] = r_all[3] + r_all[13]
+r_all[7] = in_t[14] * in_t[16]
+r_all[3] = r_all[3] + r_all[7]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[30]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[1] = in_t[18] * r_all[13]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[9]
+r_all[2] = in_t[34] ** 2
+r_all[1] = r_all[2] * r_all[14]
+r_all[3] = r_all[1] + r_all[3]
+r_all[4] = in_t[31] + in_t[10]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[30]
+r_all[1] = math.sqrt(abs(in_t[24]))
+r_all[3] = r_all[3] + in_t[10]
+r_all[8] = r_all[1] + r_all[4]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[3] = r_all[3] + r_all[16]
+r_all[2] = in_t[21] ** 2
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[1] = r_all[18] ** 2
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + in_t[12]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[7]
+r_all[3] = in_t[15] + r_all[3]
+r_all[8] = r_all[1] ** 2
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + r_all[8]
+r_all[4] = r_all[8] + r_all[2]
+r_all[3] = in_t[15] + r_all[3]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[4] + r_all[3]
+r_all[3] = r_all[2] + r_all[3]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + in_t[21]
+r_all[3] = in_t[26] + r_all[3]
+r_all[5] = math.log10(abs(in_t[8])) if in_t[8] != 0 else in_t[34] + 1.0
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[3] + in_t[5]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + r_all[12]
+r_all[3] = r_all[5] + r_all[3]
+r_all[1] = in_t[31] + in_t[4]
+r_all[3] = r_all[3] + r_all[1]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[3] = r_all[3] + in_t[10]
+r_all[3] = r_all[3] + r_all[13]
+r_all[3] = r_all[3] + in_t[9]
+r_all[3] = r_all[3] + r_all[17]
+r_all[6] = math.sin(r_all[3])
+r_all[5] = math.cos(in_t[0])
+r_all[3] = r_all[6] - in_t[7]
+r_all[0] = r_all[5] + r_all[3]
+-----------
+Registros: 
+-----------
+r_all[0] = 1
+r_all[1] = 1
+r_all[2] = 1
+r_all[3] = 1
+r_all[4] = 1
+r_all[5] = 1
+r_all[6] = 1
+r_all[7] = 1
+r_all[8] = 1
+r_all[9] = 0.200662
+r_all[10] = 0.685821
+r_all[11] = 0.947061
+r_all[12] = 0.287343
+r_all[13] = 0.282278
+r_all[14] = 0.104658
+r_all[15] = 0
+r_all[16] = 1
+r_all[17] = 2.71828
+r_all[18] = 3.14159
