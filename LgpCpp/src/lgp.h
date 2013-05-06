@@ -69,7 +69,7 @@ Individual* Lgp::best_individual_in_training() {
 	best = deme_best[0];
 
 	for (int i = 1; i < num_demes; i++) {
-		if (Individual::compare_fitness(*deme_best[i], *best)) {
+		if (Individual::compare_fitness(*best, *deme_best[i])) {
 			best = deme_best[i];
 		}
 	}
@@ -162,18 +162,23 @@ void Lgp::deme_evolve(int deme_index) {
 	} else {
 		std::sort(population[deme_index].list_ind->begin(), population[deme_index].list_ind->end(), compare_ob2());
 	}
-	/*
-	std::cout<<"Despues del sort\n";
 
-	index = 0;
 
+
+/*
+
+	if (deme_index == 0) {
+		int index = 0;
+		std::cout<<"Despues del sort\n";
 	for (std::vector<Individual>::iterator it = population[deme_index].list_ind->begin(); it != population[deme_index].list_ind->end(); ++it) {
-		//if (index % 3 == 0)
+		//if (index % 4 == 0)
 			(*it).check(deme_index, index);
 
 		index++;
 	}
-	*/
+	}
+*/
+
 }
 
 
@@ -187,7 +192,7 @@ void Lgp::evolve() {
 		generation++;
 		//std::cout << "Generación #" << generation << "\n";
 		for_replace = MIGRATION_RATE * (float) population[0].deme_size;
-		//for_replace = 7;
+		//for_replace = 3;
 		//std::cout << "for replace " << for_replace << "\n";
 
 		//todo paralelizar
@@ -203,7 +208,7 @@ void Lgp::evolve() {
 			}*/
 		}
 
-		if (random_flip_coin (P_MIGRATION)) {
+		if (random_flip_coin(P_MIGRATION)) {
 			ini = population[num_demes - 1].list_ind->end() - for_replace;
 			end = population[num_demes - 1].list_ind->end();
 			it = population[0].list_ind->begin();
@@ -211,7 +216,17 @@ void Lgp::evolve() {
 			int cont = 0;
 
 			for ( ; ini != end; ++ini) {
+				/*
+				std::cout << "·························" << "\n";
+				std::cout << "Este se borra" << "\n";
+				(*ini).check(num_demes -1, cont);
+				std::cout << "Se reemplaza por este" << "\n";
+				(*it).check(0, cont);
+				*/
+				if ((*ini)
 				(*ini) = (*it);
+
+
 				it++;
 				cont++;
 			}
@@ -231,6 +246,15 @@ void Lgp::evolve() {
 				int cont = 0;
 
 				for ( ; ini != end; ++ini) {
+					/*
+					std::cout << "·························" << "\n";
+					std::cout << "Este se borra" << "\n";
+					(*ini).check(i  -1, cont);
+					std::cout << "Se reemplaza por este" << "\n";
+					(*it).check(i, cont);
+					*/
+					(*ini) = (*it);
+
 					(*ini) = (*it);
 					it++;
 					cont++;

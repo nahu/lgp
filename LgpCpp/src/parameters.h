@@ -22,7 +22,7 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 #define TRAINING 0
 #define VALIDATION 1
 
-#define W_OB1 1 //error
+#define W_OB1 2 //error
 #define W_OB2 1 //desviacion
 
 //para la función de evaluación de individuos
@@ -41,9 +41,9 @@ la convención para asegurar que el programa tenga una salida es que la
 última instrucción sea del tipo [operación, 0, operador1, operador2]
 */
 
-#define NUM_MIN_INSTRUCTIONS (5 * K)
-#define NUM_MAX_INSTRUCTIONS (20 * K)
-#define NUM_INI_INSTRUCTIONS (9 * K)
+#define NUM_MIN_INSTRUCTIONS (4 * K)
+#define NUM_MAX_INSTRUCTIONS (18 * K)
+#define NUM_INI_INSTRUCTIONS (8 * K)
 #define NUM_OPERATORS 9
 
 
@@ -116,13 +116,13 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 **********************************************************************************************/
 
-#define NUM_GENERATIONS 1000
-#define POPULATION_SIZE 20000//1000
+#define NUM_GENERATIONS 800
+#define POPULATION_SIZE 15000//1000
 #define DEMES 8
 #define FREQ_STATS 50
-#define POOL_SIZE 3
-#define MIGRATION_RATE 0.05
-#define GEN_TO_MIGRATE 500
+#define POOL_SIZE 5
+#define MIGRATION_RATE 0.06
+#define GEN_TO_MIGRATE 250
 
 
 /***************************************  PROBABILIDADES **************************************
@@ -147,8 +147,8 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
     p_crossover: probabilidad de carplia la operación de cruzamiento.
 *************************************************************************************************/
 
-#define P_MIGRATION 0.25
-#define P_MIGRATION_CRITERIA 0.4
+#define P_MIGRATION 0.8
+#define P_MIGRATION_CRITERIA 0.9
 
 #define P_REG_OP1_CONST 0.6
 #define P_REG_OP2_CONST 0.1
@@ -157,8 +157,8 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define CONST_MAX 1 //50
 
 #define P_MACRO_MUTATION 0.5//0.50
-#define P_INS 0.75
-#define P_DEL 0.25
+#define P_INS 0.7
+#define P_DEL 0.3
 
 #define P_MICRO_MUTATION 0.9//0.90
 #define P_REGMUT 0.50

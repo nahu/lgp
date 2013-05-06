@@ -171,7 +171,7 @@ int main() {
 			{
 			std::stringstream f_programs;
 			f_programs.str("");
-			f_programs << folder << "/TRAINING-programas-TRAF" << i << "-G" << NUM_GENERATIONS << ".csv";
+			f_programs << folder << "/TRAINING-programas-TRAF" << i << "-G" << NUM_GENERATIONS << ".txt";
 			programs_to_file(f_programs.str(), best_individuals_training);
 			}
 

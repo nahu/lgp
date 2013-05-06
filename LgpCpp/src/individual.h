@@ -387,15 +387,11 @@ inline bool Individual::compare_validation_error(Individual &x, Individual &y) {
 
 
 void Individual::check(int deme, int index) {
-	if (fitness > 1) {
-		std::cout << "From deme: " << deme << " ";
-		std::cout << "individidual: " << index << " ";
-		std::cout << "fitness: " << fitness << " ";
-		std::cout << "error: " << error << " ";
-		std::cout << "Program n_eff: " << program->n_eff << "\n";
-	}
-
-
+	std::cout << "From deme: " << deme << " ";
+	std::cout << "individidual: " << index << " ";
+	std::cout << "fitness: " << fitness << " ";
+	std::cout << "error: " << error << " ";
+	std::cout << "sigma: " << sigma << "\n";
 }
 
 

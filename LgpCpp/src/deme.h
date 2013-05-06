@@ -156,7 +156,7 @@ Individual** Deme::tournament_with_mutation(Participant * indices, int ini, int 
 		list_ind->at(indices[ini].pop_position).eval_fitness();
 		//std::cout<<"(*it).pop_position "<<(*it).pop_position<<"\n";
 		//std::cout<<"(*chosen).pop_position "<<(*choosen).pop_position<<"\n";
-		if (Individual::compare_fitness(list_ind->at(indices[ini].pop_position), list_ind->at(indices[choosen].pop_position))) {
+		if (Individual::compare_fitness(list_ind->at(indices[choosen].pop_position), list_ind->at(indices[ini].pop_position))) {
 			choosen = ini;
 		}
 	}
@@ -194,7 +194,7 @@ void Deme::override_loosers(Participant * indices, int ini, int end, Individual 
 	winners[1]->eval_fitness();
 
 	best_replace = 1;
-	if (Individual::compare_fitness(*(winners[0]), *(winners[1]))) {
+	if (Individual::compare_fitness(*(winners[1]), *(winners[0]))) {
 		best_replace = 0;
 	}
 
