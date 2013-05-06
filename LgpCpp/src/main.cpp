@@ -89,7 +89,7 @@ int main() {
 	}
 
 	//Se escriben los parametros
-	parameters_to_file(folder + "parametros.txt");
+	parameters_to_file(folder + "/parametros.txt");
 
 	int index = 0;
 	for (int i = 0; i < N; i++) {
