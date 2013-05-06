@@ -223,9 +223,10 @@ void Lgp::evolve() {
 				std::cout << "Se reemplaza por este" << "\n";
 				(*it).check(0, cont);
 				*/
-				if ((*ini)
-				(*ini) = (*it);
 
+				if (Individual::compare_fitness(*ini, *it)) {
+					(*ini) = (*it);
+				}
 
 				it++;
 				cont++;
@@ -253,9 +254,11 @@ void Lgp::evolve() {
 					std::cout << "Se reemplaza por este" << "\n";
 					(*it).check(i, cont);
 					*/
-					(*ini) = (*it);
 
-					(*ini) = (*it);
+					if (Individual::compare_fitness(*ini, *it)) {
+						(*ini) = (*it);
+					}
+
 					it++;
 					cont++;
 				}
