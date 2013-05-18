@@ -53,12 +53,13 @@ class MdpProcess():
         v = pcanode1.get_projmatrix()
         print v
         
-        y = pcanode1(x) #Es lo mismo que pcanode1.execute(x)
+        y = pcanode1.execute(x) #Es lo mismo que pcanode1.execute(x)
         
         print ">> Resultado..."
         print y
         print ">> Se tienen " + str(y.shape[1]) + " variables, " + str(y.shape[0]) + " observaciones"
-
+#To do: Se tendria que pasar a train(x) los datos de entrenamiento (200 muestras) y a 
+#execute los datos restantes (48 muestras)....  
 if __name__ == "__main__":
     m = MdpProcess()
     m.process()
