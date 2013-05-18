@@ -23,6 +23,7 @@ import Population
 import Util
 import Parameters
 import Individual
+from MdpProcess import * 
 
 def deme_evolve(population):
     '''Se reinician los indices, para hacer coincidir cada individuo.index con su posicion en internal_pop'''
@@ -250,7 +251,10 @@ class LGP():
         
         
 if __name__ == "__main__":    
-    t_inicio = time.time()
+    m = MdpProcess()
+    m.process()
+    
+    """t_inicio = time.time()
     pool = Pool(processes=Parameters.num_processors)
     '''
     Se crea el direcctorio de resultados si no existe'
@@ -263,7 +267,7 @@ if __name__ == "__main__":
 #    if not os.path.exists(folder):
 #        os.makedirs(folder)
 #    
-    folder = sys.argv[1]
+    folder = "./"#sys.argv[1]
     '''
     Se escribe en un archivo los parámetros usados
     '''
@@ -367,3 +371,4 @@ if __name__ == "__main__":
     print '%s Duracion %0.5f s' % ("LGPMAIN", (t_final - t_inicio))
     print "\n"
 #    raw_input()
+"""
