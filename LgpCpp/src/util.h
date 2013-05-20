@@ -67,7 +67,7 @@ void imprimir_matriz(double ** matriz, int n, int m) {
 	printf("\n");
 }
 
-double ** get_matrix_from_file() {
+double ** get_matrix_from_file(const char * file_name) {
 	std::string medida;
 	int current_trafo = 0;
 	int current_sample = 0;
@@ -80,7 +80,7 @@ double ** get_matrix_from_file() {
 
 	//Apertura del archivo
 	std::ifstream myfile;
-	myfile.open(FILE_NAME, std::ios::in);
+	myfile.open(file_name, std::ios::in);
 	getline(myfile, medida, '\n');
 	getline(myfile, medida, '\n');
 

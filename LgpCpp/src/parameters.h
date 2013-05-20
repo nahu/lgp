@@ -8,22 +8,24 @@
 #define _USE_MATH_DEFINES
 
 #define FILE_NAME "./data/Datos60.txt"
+#define FILE_NAME_DR "./data/datos_reducidos.txt"
+
 //Solo faltan 5 transformadores. [1,7,15,23,39]
 std::string CONFIG = "1011111011111110111111101111111111111110";
 #define N 40
 #define K 35
+#define Q 10
 
 
 /******************************* DATOS **********************************/
-
 #define LINES 248
 #define TRAINING_LINES 200
 #define VALIDATION_LINES 48
 #define TRAINING 0
 #define VALIDATION 1
 
-#define W_OB1 2 //error
-#define W_OB2 1 //desviacion
+#define W_OB1 1 //error
+#define W_OB2 4 //desviacion
 
 //para la función de evaluación de individuos
 #define FITNESS 0
@@ -41,13 +43,14 @@ la convención para asegurar que el programa tenga una salida es que la
 última instrucción sea del tipo [operación, 0, operador1, operador2]
 */
 
-#define NUM_MIN_INSTRUCTIONS (4 * K)
-#define NUM_MAX_INSTRUCTIONS (18 * K)
-#define NUM_INI_INSTRUCTIONS (8 * K)
+
+#define NUM_MIN_INSTRUCTIONS (3 * K)
+#define NUM_MAX_INSTRUCTIONS (12 * K)
+#define NUM_INI_INSTRUCTIONS (5 * K)
 #define NUM_OPERATORS 9
 
 
-#define NUM_VAR_REGISTER 8//K
+#define NUM_VAR_REGISTER 7//K
 #define NUM_CONST_IN_REGISTERS K
 #define NUM_OUT_REGISTERS 1
 #define NUM_CONST_RANDOM_REGISTERS 6//K
@@ -55,6 +58,7 @@ la convención para asegurar que el programa tenga una salida es que la
 #define NUM_CONTS_REGISTERS (NUM_CONST_RANDOM_REGISTERS + NUM_CONST_IN_REGISTERS + NUM_CONST_MATH_REGISTERS)
 #define NUM_REGISTERS (NUM_CONTS_REGISTERS + NUM_VAR_REGISTER + NUM_OUT_REGISTERS)
 #define NUM_INDIVIDUAL_REGISTERS (NUM_REGISTERS - NUM_CONST_IN_REGISTERS)
+
 
 //Límites en las instrucciones
 #define REG_OUT 0
@@ -67,6 +71,7 @@ la convención para asegurar que el programa tenga una salida es que la
 #define OP_MIN 1
 #define OP_MAX 9
 
+
 #define REGISTER_OFFSET (CONST_AL_MAX + 1)
 
 /*REGISTROS
@@ -76,6 +81,7 @@ r[1] .. r[k] registros variables inicializados a 1
 r[k + 1] .. r[2*k] registros aleatorios constantes
 r[2*k + 1] .. r[3*k] registros de entrada constantes
 */
+
 
 #define INIT_VAR_VALUE 1.0 //Valor inicial de los registros variables
 
@@ -105,6 +111,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define OPERAND_1 2
 #define OPERAND_2 3
 
+
 /************************************  ALGORITMO EVOLUTIVO ***********************************
 
     num_generations: cantidad de generaciones de individuos en el algoritmo evolutivo
@@ -116,13 +123,16 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 **********************************************************************************************/
 
-#define NUM_GENERATIONS 800
-#define POPULATION_SIZE 15000//1000
+
+
+#define NUM_GENERATIONS 900
+#define POPULATION_SIZE 25000//1000
 #define DEMES 8
 #define FREQ_STATS 50
-#define POOL_SIZE 5
-#define MIGRATION_RATE 0.06
-#define GEN_TO_MIGRATE 250
+#define POOL_SIZE 4
+#define MIGRATION_RATE 0.05
+#define GEN_TO_MIGRATE 400
+
 
 
 /***************************************  PROBABILIDADES **************************************
@@ -147,8 +157,10 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
     p_crossover: probabilidad de carplia la operación de cruzamiento.
 *************************************************************************************************/
 
-#define P_MIGRATION 0.8
-#define P_MIGRATION_CRITERIA 0.9
+
+#define P_MIGRATION 0.65
+#define P_MIGRATION_CRITERIA 0.6
+
 
 #define P_REG_OP1_CONST 0.6
 #define P_REG_OP2_CONST 0.1
@@ -156,9 +168,11 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define CONST_MIN 0 //50
 #define CONST_MAX 1 //50
 
-#define P_MACRO_MUTATION 0.5//0.50
-#define P_INS 0.7
-#define P_DEL 0.3
+
+#define P_MACRO_MUTATION 0.65//0.50
+#define P_INS 0.5
+#define P_DEL 0.6
+
 
 #define P_MICRO_MUTATION 0.9//0.90
 #define P_REGMUT 0.50
@@ -166,15 +180,19 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define P_CONSTMUT 0.05
 #define STEP_SIZE_CONST 5.0
 
+
 #define P_CROSSOVER 0.15//0.10
 
 
+
 /*************************************  MULTIPROCESAMIENTO *************************************
+
 Las operaciones sobre la población,como la inicialización y la evaluación de fitness se realiza
 utilizando multiprocessing de Python
+
 */
+
+
 #define NUM_PROCESSORS 4 //NÚMERO DE PROCESOS WORKERS
 #define CHUNK_SIZE (POPULATION_SIZE / DEMES) // NUM_PROCESSORS
 #define CHUNK_SIZE_STEP (DEMES / NUM_PROCESSORS)
-
-

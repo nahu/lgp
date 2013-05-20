@@ -239,7 +239,7 @@ public:
 double Program::R_OUT[NUM_OUT_REGISTERS] = {};
 double Program::R_VAR[NUM_VAR_REGISTER] = {};
 double Program::R_MATH_CONST[NUM_CONST_MATH_REGISTERS] = {};
-double ** Program::R_CONST = new double*[LINES];
+double ** Program::R_CONST = 0;
 double ** Program::DATA = 0;
 
 void Program::init_registers() {
@@ -255,9 +255,12 @@ void Program::init_registers() {
 	R_MATH_CONST[3] = M_PI;
 
 	//se carga la matriz desde el archivo
-	DATA = get_matrix_from_file();
-	//se imprime la matriz
+	DATA = get_matrix_from_file(FILE_NAME);
+	//se impriR_CONSTR_CONSTme la matriz
 	//imprimir_matriz(DATA, LINES, N);
+
+#if !defined FILE_NAME_DR
+	R_CONST = new double*[LINES];
 
 	for (int t = 0; t < LINES; t++) {
 		R_CONST[t] = new double[K];
@@ -272,8 +275,12 @@ void Program::init_registers() {
 			}
 		}
 	}
+#else
+	R_CONST = get_matrix_from_file(FILE_NAME_DR);
+#endif
 	//imprimir_matriz(R_CONST, LINES, K);
 }
+
 
 Program::Program(const Program& source) :
 	height(source.height),
