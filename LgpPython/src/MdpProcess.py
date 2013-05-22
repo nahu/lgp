@@ -12,6 +12,8 @@ import numpy as np
 import mdp
 import Util
 import Parameters
+import csv
+import os
 
 class MdpProcess():
     def __init__(self):
@@ -81,9 +83,24 @@ class MdpProcess():
         print ">> Resultado Validacion..."
         print y_v
         print ">> Se tienen " + str(y_v.shape[1]) + " variables, " + str(y_v.shape[0]) + " observaciones"
-        
-#To do: Se tendria que pasar a train(x) los datos de entrenamiento (200 muestras) y a 
-#execute los datos restantes (48 muestras)....  
+
+        print ">> Guardando en archivo... ../data/datos_reducidos.csv "
+        lol_t = y_t.tolist()
+        lol_v = y_v.tolist()
+        lol = lol_t + lol_v
+
+        file = "../data/datos_reducidos.csv"
+        f = open(file, "w")
+
+        for t in range(len(lol)):#248
+            row = ""
+            for i in range(len(lol[t])):#10
+                row += (str(lol[t][i]) + ";")
+            row += "\n"
+            f.write(row.replace('.', ','))
+            
+        f.close()  
+
 if __name__ == "__main__":
     m = MdpProcess()
     m.process()
