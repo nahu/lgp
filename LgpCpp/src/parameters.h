@@ -14,7 +14,7 @@
 std::string CONFIG = "1011111011111110111111101111111111111110";
 #define N 40
 #define K 35
-#define Q 10
+#define Q 9
 
 
 /******************************* DATOS **********************************/
@@ -25,7 +25,7 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 #define VALIDATION 1
 
 #define W_OB1 1 //error
-#define W_OB2 4 //desviacion
+#define W_OB2 3 //desviacion
 
 //para la función de evaluación de individuos
 #define FITNESS 0
@@ -44,14 +44,20 @@ la convención para asegurar que el programa tenga una salida es que la
 */
 
 
-#define NUM_MIN_INSTRUCTIONS (3 * K)
-#define NUM_MAX_INSTRUCTIONS (12 * K)
-#define NUM_INI_INSTRUCTIONS (5 * K)
-#define NUM_OPERATORS 9
+#define NUM_MIN_INSTRUCTIONS (2 * K)
+#define NUM_MAX_INSTRUCTIONS (10 * K)
+#define NUM_INI_INSTRUCTIONS (4 * K)
+#define NUM_OPERATORS 10
 
 
 #define NUM_VAR_REGISTER 7//K
-#define NUM_CONST_IN_REGISTERS K
+
+#ifdef Q
+	#define NUM_CONST_IN_REGISTERS Q
+#else
+	#define NUM_CONST_IN_REGISTERS K
+#endif
+
 #define NUM_OUT_REGISTERS 1
 #define NUM_CONST_RANDOM_REGISTERS 6//K
 #define NUM_CONST_MATH_REGISTERS 4
@@ -125,13 +131,13 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 
 
-#define NUM_GENERATIONS 900
+#define NUM_GENERATIONS 500
 #define POPULATION_SIZE 25000//1000
 #define DEMES 8
 #define FREQ_STATS 50
-#define POOL_SIZE 4
+#define POOL_SIZE 3
 #define MIGRATION_RATE 0.05
-#define GEN_TO_MIGRATE 400
+#define GEN_TO_MIGRATE 300
 
 
 

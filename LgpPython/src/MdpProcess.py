@@ -46,9 +46,11 @@ class MdpProcess():
         print ">> VALIDACAION" 
         print ">> Se tienen " + str(x_v.shape[1]) + " variables, " + str(x_v.shape[0]) + " observaciones"
         
-        pcanode1 = mdp.nodes.PCANode(input_dim=35, output_dim=10, dtype='float64', reduce=True)
+        out_dim = 10
+        in_dim = 35
+        pcanode1 = mdp.nodes.PCANode(input_dim=in_dim, output_dim=out_dim, dtype='float64', reduce=True)
         #pcanode1 = mdp.nodes.PCANode()
-        #pcanode1.reduce = True
+        #pcanode1.reduce = Tr
         
         print pcanode1
         
@@ -89,9 +91,12 @@ class MdpProcess():
         lol_v = y_v.tolist()
         lol = lol_t + lol_v
 
-        file = "../data/datos_reducidos.csv"
+        file = "../data/datos_reducidos.txt"
         f = open(file, "w")
-
+        
+        f.write(str(out_dim) + '\n')
+        f.write(str(fil) + '\n')
+        
         for t in range(len(lol)):#248
             row = ""
             for i in range(len(lol[t])):#10
