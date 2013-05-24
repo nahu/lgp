@@ -86,7 +86,7 @@ class MdpProcess():
         print y_v
         print ">> Se tienen " + str(y_v.shape[1]) + " variables, " + str(y_v.shape[0]) + " observaciones"
 
-        print ">> Guardando en archivo... ../data/datos_reducidos.csv "
+        print ">> Guardando en archivo... ../data/datos_reducidos.txt "
         lol_t = y_t.tolist()
         lol_v = y_v.tolist()
         lol = lol_t + lol_v
@@ -102,9 +102,10 @@ class MdpProcess():
             for i in range(len(lol[t])):#10
                 row += (str(lol[t][i]) + ";")
             row += "\n"
-            f.write(row.replace('.', ','))
+            f.write(row)#f.write(row.replace('.', ','))
             
         f.close()  
+        print "Se termino de escribir el archivo"
 
 if __name__ == "__main__":
     m = MdpProcess()
