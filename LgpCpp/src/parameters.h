@@ -14,7 +14,7 @@
 std::string CONFIG = "1011111011111110111111101111111111111110";
 #define N 40
 #define K 35
-#define Q 9
+#define Q 10
 
 
 /******************************* DATOS **********************************/
@@ -25,7 +25,7 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 #define VALIDATION 1
 
 #define W_OB1 1 //error
-#define W_OB2 3 //desviacion
+#define W_OB2 2 //desviacion
 
 //para la función de evaluación de individuos
 #define FITNESS 0
@@ -44,9 +44,9 @@ la convención para asegurar que el programa tenga una salida es que la
 */
 
 
-#define NUM_MIN_INSTRUCTIONS (2 * K)
-#define NUM_MAX_INSTRUCTIONS (10 * K)
-#define NUM_INI_INSTRUCTIONS (4 * K)
+#define NUM_MIN_INSTRUCTIONS (5 * K)
+#define NUM_MAX_INSTRUCTIONS (14 * K)
+#define NUM_INI_INSTRUCTIONS (7 * K)
 #define NUM_OPERATORS 10
 
 
@@ -131,13 +131,13 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 
 
-#define NUM_GENERATIONS 500
-#define POPULATION_SIZE 25000//1000
+#define NUM_GENERATIONS 800
+#define POPULATION_SIZE 20000//1000
 #define DEMES 8
 #define FREQ_STATS 50
-#define POOL_SIZE 3
+#define POOL_SIZE 4
 #define MIGRATION_RATE 0.05
-#define GEN_TO_MIGRATE 300
+#define GEN_TO_MIGRATE 500
 
 
 
@@ -164,20 +164,20 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 *************************************************************************************************/
 
 
-#define P_MIGRATION 0.65
+#define P_MIGRATION 0.9
 #define P_MIGRATION_CRITERIA 0.6
 
 
-#define P_REG_OP1_CONST 0.6
-#define P_REG_OP2_CONST 0.1
-#define P_CONST_IN 0.75
+#define P_REG_OP1_CONST 0.4
+#define P_REG_OP2_CONST 0.6
+#define P_CONST_IN 0.80
 #define CONST_MIN 0 //50
 #define CONST_MAX 1 //50
 
 
-#define P_MACRO_MUTATION 0.65//0.50
-#define P_INS 0.5
-#define P_DEL 0.6
+#define P_MACRO_MUTATION 0.6//0.50
+#define P_INS 0.55
+#define P_DEL 0.45
 
 
 #define P_MICRO_MUTATION 0.9//0.90
@@ -187,7 +187,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define STEP_SIZE_CONST 5.0
 
 
-#define P_CROSSOVER 0.15//0.10
+#define P_CROSSOVER 0.1//0.10
 
 
 

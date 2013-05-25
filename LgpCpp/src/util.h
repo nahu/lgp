@@ -104,7 +104,7 @@ double ** get_matrix_from_file(const char * file_name) {
 			//std::cout<<"\n";
 
 		}
-		imprimir_matriz(file_name, data,muestras,limite);
+		//imprimir_matriz(file_name, data,muestras,limite);
 		myfile.close();
 
 	}
