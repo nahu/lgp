@@ -884,7 +884,7 @@ double * Individual::eval_individual(int tipo) {
 				if ((approximation_offset - in_index) >= 0) {
 					int_t[offset + in_index] = approximation[approximation_offset - in_index];
 				} else {
-					int_t[offset + in_index] = C_UNDEF;
+					int_t[offset + in_index] = Program::DATA[t - in_index][config_position];
 				}
 			}
 		}
