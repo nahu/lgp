@@ -225,7 +225,24 @@ void Individual::eval_fitness() {
 
 	for (int t = 0; t < TRAINING_LINES; t++) {
 		int_t = Program::R_CONST[t];
+
+#ifdef Q
+		int offset = Q;
+#else
+		int offset = K;
+#endif
+
+		for (int index = 1; index < DELTA; ++index) { // La posición offset está ocupada por el promedio de las mediciones
+			if ((t - index) >= 0) {
+				int_t[offset + index] = Program::DATA[t - index][config_position];
+			} else {
+				int_t[offset + index] = C_UNDEF;
+			}
+		}
+
+
 		result = program->execute_program(int_t);
+
 		if (!finite(result)) {
 			//std::cout << "El resultado del programa salio mal " << result << "\n";
 			error_quad[t] = HUGE_NUMBER;
@@ -829,6 +846,7 @@ double * Individual::eval_individual(int tipo) {
 	double error_a_quad, error_prom_quad;
 	int size;
 	int ini, end;
+	int approximation_offset;
 
 	if (tipo == TRAINING) {
 		size = TRAINING_LINES;
@@ -841,13 +859,46 @@ double * Individual::eval_individual(int tipo) {
 	}
 
 	double * error_quad = new double[size+3];
+	double * approximation = new double[size];
 
 	int index = 0;
 	error_a_quad = 0.0;
 	for (int t = ini; t < end; t++) {
 		int_t = Program::R_CONST[t];
+
+#ifdef Q
+		int offset = Q;
+#else
+		int offset = K;
+#endif
+
+		for (int in_index = 1; in_index < DELTA; ++in_index) { // La posición offset está ocupada por el promedio de las mediciones
+			if (tipo == TRAINING) {
+				if ((t - in_index) >= 0) {
+					int_t[offset + in_index] = Program::DATA[t - in_index][config_position];
+				} else {
+					int_t[offset + in_index] = C_UNDEF;
+				}
+			} else if(tipo == VALIDATION) {
+				approximation_offset = t - TRAINING_LINES;
+				if ((approximation_offset - in_index) >= 0) {
+					int_t[offset + in_index] = approximation[approximation_offset - in_index];
+				} else {
+					int_t[offset + in_index] = C_UNDEF;
+				}
+			}
+		}
+
 		result = program->execute_program(int_t);
+
+		if(tipo == VALIDATION) {
+			approximation[t - TRAINING_LINES] = result;
+		}
+
 		if (!finite(result)) {
+			if(tipo == VALIDATION) {
+				approximation[t - TRAINING_LINES] = C_UNDEF;
+			}
 		 	error_quad[index] = HUGE_NUMBER;
 		} else {
 			error_quad[index] = pow((result - Program::DATA[t][config_position]), 2.0);

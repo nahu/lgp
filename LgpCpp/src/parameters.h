@@ -15,6 +15,7 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 #define N 40
 #define K 35
 #define Q 10
+#define DELTA 4
 
 
 /******************************* DATOS **********************************/
@@ -44,18 +45,18 @@ la convención para asegurar que el programa tenga una salida es que la
 */
 
 
-#define NUM_MIN_INSTRUCTIONS (5 * K)
-#define NUM_MAX_INSTRUCTIONS (14 * K)
-#define NUM_INI_INSTRUCTIONS (7 * K)
+#define NUM_MIN_INSTRUCTIONS (2 * K)
+#define NUM_MAX_INSTRUCTIONS (9 * K)
+#define NUM_INI_INSTRUCTIONS (5* K)
 #define NUM_OPERATORS 10
 
 
 #define NUM_VAR_REGISTER 7//K
 
 #ifdef Q
-	#define NUM_CONST_IN_REGISTERS Q
+	#define NUM_CONST_IN_REGISTERS (Q + DELTA)
 #else
-	#define NUM_CONST_IN_REGISTERS K
+	#define NUM_CONST_IN_REGISTERS (K + DELTA)
 #endif
 
 #define NUM_OUT_REGISTERS 1
@@ -131,13 +132,13 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 
 
-#define NUM_GENERATIONS 800
+#define NUM_GENERATIONS 100
 #define POPULATION_SIZE 20000//1000
 #define DEMES 8
 #define FREQ_STATS 50
 #define POOL_SIZE 4
 #define MIGRATION_RATE 0.05
-#define GEN_TO_MIGRATE 500
+#define GEN_TO_MIGRATE 200
 
 
 

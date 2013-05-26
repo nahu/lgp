@@ -259,24 +259,47 @@ void Program::init_registers() {
 	//se impriR_CONSTR_CONSTme la matriz
 	//imprimir_matriz(DATA, LINES, N);
 
-#if !defined FILE_NAME_DR
 	R_CONST = new double*[LINES];
 
+#if !defined FILE_NAME_DR
+
+	double sum = 0;
+
 	for (int t = 0; t < LINES; t++) {
-		R_CONST[t] = new double[K];
+		R_CONST[t] = new double[K + DELTA];
 	}
 
 	for (int t = 0; t < LINES; t++) {
+		sum = 0.0;
 		for (int i = 0, j = 0; i < N; i++) {
 			//std::cout << "t: " << t << " i: " <<  i <<"\n";
 			if (CONFIG[i] == '1') {
 				R_CONST[t][j] = DATA[t][i];
+				sum += R_CONST[t][j];
 				j++;
 			}
 		}
+		R_CONST[t][K] = sum / K;
 	}
 #else
-	R_CONST = get_matrix_from_file(FILE_NAME_DR);
+	double ** r_const_rd = get_matrix_from_file(FILE_NAME_DR);
+
+	double sum = 0.0;
+
+	for (int t = 0; t < LINES; t++) {
+		R_CONST[t] = new double[Q + DELTA];
+	}
+
+	for (int t = 0; t < LINES; t++) {
+		sum = 0;
+		for (int i = 0, j = 0; i < (Q + DELTA); i++) {
+			R_CONST[t][i] = r_const_rd[t][i];
+			sum += R_CONST[t][j];
+		}
+
+		R_CONST[t][Q] = sum / Q;
+	}
+
 #endif
 	//imprimir_matriz(R_CONST, LINES, K);
 }
