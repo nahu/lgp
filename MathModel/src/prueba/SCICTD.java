@@ -35,7 +35,7 @@ public class SCICTD {
     
     public SCICTD(int cantidadTrafos, int numeroDeObjetivos) throws FileNotFoundException, IOException, ClassNotFoundException {
         numberOfTrafos_ = cantidadTrafos;
-        matrizConsumo_ = readProblem( DATA_FOLDER + "Datos60.txt", matrizConsumo_);
+        matrizConsumo_ = readProblem( DATA_FOLDER + "Datos8.txt", matrizConsumo_);
     } 
     
     public Double [][] evaluate(int[] nodos) {
@@ -412,12 +412,14 @@ public class SCICTD {
     public static void main(String[] args) {
         try {
             int n;
-            n = 40;
-            SCICTD programa = new SCICTD(40, 2);
-            programa.configuracion =   "1 0 1 1 1 1 1 0 1 1 " 
+            n = 8;
+            SCICTD programa = new SCICTD(8, 2);
+            /*programa.configuracion =   "1 0 1 1 1 1 1 0 1 1 " 
         							 + "1 1 1 1 1 0 1 1 1 1 " 
     							 	 + "1 1 1 0 1 1 1 1 1 1 " 
-							 		 + "1 1 1 1 1 1 1 1 1 0 ";
+							 		 + "1 1 1 1 1 1 1 1 1 0 ";*/
+           
+            programa.configuracion =   "1 0 0 1 1 1 1 0 ";
                            
             System.out.println("Ejecutando programa. Configuracion: " + programa.configuracion);
             programa.evaluate(programa.getConfiguracion(programa.configuracion, n));

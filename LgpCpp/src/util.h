@@ -68,16 +68,10 @@ void imprimir_matriz(const char * file_name, double ** matriz, int n, int m) {
 	printf("\n");
 }
 
-double ** get_matrix_from_file(const char * file_name) {
+double ** get_matrix_from_file(const char * file_name, bool include_sums) {
 	std::string medida;
 	int current_trafo = 0;
 	int current_sample = 0;
-
-	double ** data = new double*[LINES];
-
-	for (current_sample = 0; current_sample < LINES; current_sample++) {
-		data[current_sample] = new double[N];
-	}
 
 	//Apertura del archivo
 	std::ifstream myfile;
@@ -89,17 +83,33 @@ double ** get_matrix_from_file(const char * file_name) {
 	getline(myfile, medida, '\n');
 	int muestras = atoi(medida.c_str());
 
+	int trafos = limite;
+	if (include_sums) {
+		trafos++;//una columna más para las sumas
+	}
+	double ** data = new double*[muestras];
+
+	for (current_sample = 0; current_sample < muestras; current_sample++) {
+		data[current_sample] = new double[trafos];
+	}
+	double sum = 0.0;
 	if (myfile.is_open()) {
 		for (current_sample = 0; current_sample < muestras; current_sample++) {
 			char * c_medida;
 			getline(myfile, medida);
 			c_medida = (char*) medida.c_str();
 			char * ptr = strtok(c_medida, ";");
+			sum = 0.0;
 			for (current_trafo = 0; current_trafo < limite; current_trafo++) {
 				//guardar en una posicion de la matriz
 				data[current_sample][current_trafo] = (double)atof(ptr);
 				//std::cout << std::setprecision(16) <<data[current_sample][current_trafo]<<"\t";
 				ptr = strtok(0, ";");
+				sum += data[current_sample][current_trafo];
+			}
+
+			if (include_sums) {
+				data[current_sample][limite] = sum;
 			}
 			//std::cout<<"\n";
 

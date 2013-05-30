@@ -255,7 +255,7 @@ void Program::init_registers() {
 	R_MATH_CONST[3] = M_PI;
 
 	//se carga la matriz desde el archivo
-	DATA = get_matrix_from_file(FILE_NAME);
+	DATA = get_matrix_from_file(FILE_NAME, true);
 	//se impriR_CONSTR_CONSTme la matriz
 	//imprimir_matriz(DATA, LINES, N);
 
@@ -263,28 +263,29 @@ void Program::init_registers() {
 
 #if !defined FILE_NAME_DR
 
-	double sum = 0.0;
+	//double sum = 0.0;
 
 	for (int t = 0; t < LINES; t++) {
 		R_CONST[t] = new double[K + DELTA];
 	}
 
 	for (int t = 0; t < LINES; t++) {
-		sum = 0.0;
+		//sum = 0.0;
 		for (int i = 0, j = 0; i < N; i++) {
 			//std::cout << "t: " << t << " i: " <<  i <<"\n";
 			if (CONFIG[i] == '1') {
 				R_CONST[t][j] = DATA[t][i];
-				sum += R_CONST[t][j];
+				//sum += R_CONST[t][j];
 				j++;
 			}
 		}
-		R_CONST[t][K] = sum / K;
+		//R_CONST[t][K] = sum / K;
+		R_CONST[t][K] = DATA[t][N];
 	}
 #else
-	double ** r_const_rd = get_matrix_from_file(FILE_NAME_DR);
+	double ** r_const_rd = get_matrix_from_file(FILE_NAME_DR, false);
 
-	double sum = 0.0;
+	//double sum = 0.0;
 
 	for (int t = 0; t < LINES; t++) {
 		R_CONST[t] = new double[Q + DELTA];
@@ -295,13 +296,14 @@ void Program::init_registers() {
 		for (int i = 0; i < (Q + DELTA); i++) {
 			R_CONST[t][i] = r_const_rd[t][i];
 		}
-		sum = 0.0;
+		/*sum = 0.0;
 		for (int i = 0; i < N; i++) {
 			if (CONFIG[i] == '1') {
 				sum += DATA[t][i];
 			}
-		}
-		R_CONST[t][Q] = sum / Q;
+		}*/
+		//R_CONST[t][Q] = sum / Q;
+		R_CONST[t][Q] = DATA[t][N];
 	}
 
 #endif
