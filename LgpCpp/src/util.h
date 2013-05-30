@@ -114,8 +114,19 @@ std::string get_current_time(){
 	std::stringstream timestream;
 	time_t t = time(0);
 	struct tm * now = localtime(&t);
-	timestream << now->tm_mday << '-' << (now->tm_mon + 1) << '-'
-			<< (now->tm_year + 1900) << '_' << now->tm_hour << ':'
-			<< now->tm_min << ':' << now->tm_sec;
+	timestream << now->tm_mday << '_' << (now->tm_mon + 1) << '_'
+			<< (now->tm_year + 1900) << '_' << now->tm_hour << '_'
+			<< now->tm_min << '_' << now->tm_sec;
 	return timestream.str();
+}
+
+void write_duration(std::string message, double duration){
+	int hours, rest, minutes, seconds;
+	hours = duration / 3600;
+	rest = (int) duration % 3600;
+	minutes = rest / 60;
+	seconds = rest  % 60;
+
+	std::cout << message << hours << ":" << minutes << ":" << seconds << " (" << duration << " seconds)\n";
+
 }
