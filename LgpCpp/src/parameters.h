@@ -15,7 +15,7 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 #define N 40
 #define K 35
 #define Q 10
-#define DELTA 4
+#define DELTA 5
 
 
 /******************************* DATOS **********************************/
@@ -25,8 +25,8 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 #define TRAINING 0
 #define VALIDATION 1
 
-#define W_OB1 1 //error
-#define W_OB2 2 //desviacion
+#define W_OB1 2 //error
+#define W_OB2 1 //desviacion
 
 //para la función de evaluación de individuos
 #define FITNESS 0
@@ -45,9 +45,9 @@ la convención para asegurar que el programa tenga una salida es que la
 */
 
 
-#define NUM_MIN_INSTRUCTIONS (2 * K)
-#define NUM_MAX_INSTRUCTIONS (9 * K)
-#define NUM_INI_INSTRUCTIONS (5* K)
+#define NUM_MIN_INSTRUCTIONS (5 * K)
+#define NUM_MAX_INSTRUCTIONS (14 * K)
+#define NUM_INI_INSTRUCTIONS (8 * K)
 #define NUM_OPERATORS 10
 
 
@@ -132,13 +132,13 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 
 
-#define NUM_GENERATIONS 100
+#define NUM_GENERATIONS 800
 #define POPULATION_SIZE 20000//1000
 #define DEMES 8
 #define FREQ_STATS 50
 #define POOL_SIZE 4
 #define MIGRATION_RATE 0.05
-#define GEN_TO_MIGRATE 200
+#define GEN_TO_MIGRATE 400
 
 
 
@@ -165,7 +165,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 *************************************************************************************************/
 
 
-#define P_MIGRATION 0.9
+#define P_MIGRATION 0.8
 #define P_MIGRATION_CRITERIA 0.6
 
 

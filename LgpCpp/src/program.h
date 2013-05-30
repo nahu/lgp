@@ -263,7 +263,7 @@ void Program::init_registers() {
 
 #if !defined FILE_NAME_DR
 
-	double sum = 0;
+	double sum = 0.0;
 
 	for (int t = 0; t < LINES; t++) {
 		R_CONST[t] = new double[K + DELTA];
@@ -291,12 +291,16 @@ void Program::init_registers() {
 	}
 
 	for (int t = 0; t < LINES; t++) {
-		sum = 0;
-		for (int i = 0, j = 0; i < (Q + DELTA); i++) {
-			R_CONST[t][i] = r_const_rd[t][i];
-			sum += R_CONST[t][j];
-		}
 
+		for (int i = 0; i < (Q + DELTA); i++) {
+			R_CONST[t][i] = r_const_rd[t][i];
+		}
+		sum = 0.0;
+		for (int i = 0; i < N; i++) {
+			if (CONFIG[i] == '1') {
+				sum += DATA[t][i];
+			}
+		}
 		R_CONST[t][Q] = sum / Q;
 	}
 
