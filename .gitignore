@@ -73,4 +73,7 @@ LgpCpp/OpenMP
 LgpCpp/gmon.out
 LgpCpp/resultados*
 
+#varios parametros
+LgpCpp/data/parameters*
+LgpCpp/src/parameters.h
 
