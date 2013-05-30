@@ -234,9 +234,9 @@ void Individual::eval_fitness() {
 
 		for (int index = 1; index < DELTA; ++index) { // La posición offset está ocupada por el promedio de las mediciones
 			if ((t - index) >= 0) {
-				int_t[offset + index] = Program::DATA[t - index][config_position];
+				int_t[offset + index] = Program::DATA[t - index][N];
 			} else {
-				int_t[offset + index] = C_UNDEF;
+				int_t[offset + index] = Program::DATA[t][N];
 			}
 		}
 
@@ -873,32 +873,23 @@ double * Individual::eval_individual(int tipo) {
 #endif
 
 		for (int in_index = 1; in_index < DELTA; ++in_index) { // La posición offset está ocupada por el promedio de las mediciones
-			if (tipo == TRAINING) {
-				if ((t - in_index) >= 0) {
-					int_t[offset + in_index] = Program::DATA[t - in_index][config_position];
-				} else {
-					int_t[offset + in_index] = C_UNDEF;
-				}
-			} else if(tipo == VALIDATION) {
-				approximation_offset = t - TRAINING_LINES;
-				if ((approximation_offset - in_index) >= 0) {
-					int_t[offset + in_index] = approximation[approximation_offset - in_index];
-				} else {
-					int_t[offset + in_index] = Program::DATA[t - in_index][config_position];
-				}
+			if ((t - in_index) >= 0) {
+				int_t[offset + in_index] = Program::DATA[t - in_index][N];
+			} else {
+				int_t[offset + in_index] = Program::DATA[t][N];
 			}
 		}
 
 		result = program->execute_program(int_t);
 
-		if(tipo == VALIDATION) {
+/*		if(tipo == VALIDATION) {
 			approximation[t - TRAINING_LINES] = result;
-		}
+		}*/
 
 		if (!finite(result)) {
-			if(tipo == VALIDATION) {
+/*			if(tipo == VALIDATION) {
 				approximation[t - TRAINING_LINES] = C_UNDEF;
-			}
+			}*/
 		 	error_quad[index] = HUGE_NUMBER;
 		} else {
 			error_quad[index] = pow((result - Program::DATA[t][config_position]), 2.0);

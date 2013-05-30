@@ -7,15 +7,16 @@
 
 #define _USE_MATH_DEFINES
 
-#define FILE_NAME "./data/Datos60.txt"
-#define FILE_NAME_DR "./data/datos_reducidos.txt"
+#define FILE_NAME "./data/Datos8.txt"
+//#define FILE_NAME_DR "./data/datos_reducidos.txt"
 
 //Solo faltan 5 transformadores. [1,7,15,23,39]
-std::string CONFIG = "1011111011111110111111101111111111111110";
-#define N 40
-#define K 35
-#define Q 10
-#define DELTA 5
+std::string CONFIG = "10011110";
+#define N 8
+#define K 5
+//#define Q 10
+#define DELTA 4
+
 
 
 /******************************* DATOS **********************************/
@@ -25,8 +26,8 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 #define TRAINING 0
 #define VALIDATION 1
 
-#define W_OB1 2 //error
-#define W_OB2 1 //desviacion
+#define W_OB1 1 //error
+#define W_OB2 0 //desviacion
 
 //para la función de evaluación de individuos
 #define FITNESS 0
