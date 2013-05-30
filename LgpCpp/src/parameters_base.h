@@ -1,5 +1,5 @@
 /*
- * parameters.h
+ * parameters_base.h
  *
  *  Created on: Mar 16, 2013
  *      Author: Vanessa Cañete, Nahuel Hernández
@@ -16,7 +16,7 @@ std::string CONFIG = "10011110";
 #define K 5
 //#define Q 10
 #define DELTA 4
-
+#define CNT_PRUEBAS 3
 
 
 /******************************* DATOS **********************************/

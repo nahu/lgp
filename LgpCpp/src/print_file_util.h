@@ -177,7 +177,7 @@ void save_global_results(Individual * best_global , std::string folder) {
 	 *
 	 */
 	std::ofstream f;
-	std::string file = folder + "MEJORES_VALIDACION.csv";
+	std::string file = folder + "RESUMEN_VALIDACION.csv";
 	f.open(file.c_str());
 	f.precision(6);
 	std::string row;
