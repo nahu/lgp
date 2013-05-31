@@ -186,7 +186,7 @@ void save_global_results(Individual * best_global , std::string folder) {
 		error_list[j] = best_global[j].eval_individual(VALIDATION);
 	}
 	double sum_prom_errores = 0;
-	int size = TRAINING_LINES + 3;
+	int size = VALIDATION_LINES + 3;
 
 	for (int t = 0; t < size; t++) {
 		if (t == size - 3) {
@@ -211,7 +211,7 @@ void save_global_results(Individual * best_global , std::string folder) {
 			max = error_list.at(i)[size-2];
 		}
 	}
-	f << "Error promedio total: ;" << sum_prom_errores/VALIDATION_LINES << ";\n";
+	f << "Error promedio total: ;" << sum_prom_errores/(N-K)<< ";\n";
 	f << "Error maximo: ;" << max << ";\n";
 	f.close();
 }
