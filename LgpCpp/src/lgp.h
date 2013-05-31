@@ -190,7 +190,7 @@ void Lgp::evolve() {
 
 	while (!termination_criteria()) {
 		generation++;
-		//std::cout << "Generación #" << generation << "\n";
+		std::cout << "Generación #" << generation << "\n";
 		for_replace = MIGRATION_RATE * (float) population[0].deme_size;
 		//for_replace = 3;
 		//std::cout << "for replace " << for_replace << "\n";

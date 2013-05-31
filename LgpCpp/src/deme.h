@@ -7,7 +7,7 @@
 
 struct Participant {
 	int pop_position;
-	int win;
+	int status;
 };
 
 
@@ -123,7 +123,7 @@ Participant * Deme::indices_selection(unsigned int pool_size) {
 
 	for (std::set<int>::iterator it = pool_set.begin(); it != pool_set.end(); ++it) {
 		index_pool[i].pop_position = *it;
-		index_pool[i].win = 0;
+		index_pool[i].status = NONE;
 		i++;
 	}
 
@@ -140,7 +140,8 @@ Individual** Deme::tournament_with_mutation(Participant * indices, int ini, int 
 	int choosen = ini;
 
 	int pos = indices[choosen].pop_position;
-
+	int to_replace[POOL_REPRODUCTION];
+	to_replace[0] = choosen;
 
 	int tamanho = list_ind->size();
 	if ((tamanho != deme_size) || (deme_size < pos)) {
@@ -151,6 +152,8 @@ Individual** Deme::tournament_with_mutation(Participant * indices, int ini, int 
 	//std::cout<<"Problemas deme_size "<< deme_size << ", tamanho " << tamanho << ", pos " << pos <<"\n";
 	list_ind->at(pos).eval_fitness();
 
+	int replace_count = 1;
+
 	for (++ini; ini < end; ++ini) {
 
 		list_ind->at(indices[ini].pop_position).eval_fitness();
@@ -159,9 +162,26 @@ Individual** Deme::tournament_with_mutation(Participant * indices, int ini, int 
 		if (Individual::compare_fitness(list_ind->at(indices[choosen].pop_position), list_ind->at(indices[ini].pop_position))) {
 			choosen = ini;
 		}
-	}
 
-	indices[choosen].win = 1;
+		if (replace_count < POOL_REPRODUCTION) {
+			to_replace[replace_count] = ini;
+			replace_count++;
+		} else {
+			for (int j = 0; j < POOL_REPRODUCTION; j++) {
+				if (Individual::compare_fitness(list_ind->at(indices[ini].pop_position), list_ind->at(indices[to_replace[j]].pop_position))) {
+					to_replace[j] = ini;
+					break;
+				}
+			}
+		}
+	}
+	//establecer los estados de los participantes
+	indices[choosen].status = WINNER; //ganador
+
+	//perdedores a sobreescribir por el mejor ganador (modificado/sin modificar)
+	for (int j = 0; j < POOL_REPRODUCTION; j++) {
+		indices[to_replace[j]].status = REPLACE;
+	}
 
 	winner = new Individual(list_ind->at(indices[choosen].pop_position));
 
@@ -206,9 +226,9 @@ void Deme::override_loosers(Participant * indices, int ini, int end, Individual 
 	}
 
 	for ( ;ini < end; ++ini) {
-		if (indices[ini].win) {
+		if (indices[ini].status == WINNER) {
 			win_pos = indices[ini].pop_position;
-		} else {
+		} else if (indices[ini].status == REPLACE){
 			list_ind->at(indices[ini].pop_position) = *(winners[best_replace]);
 		}
 	}

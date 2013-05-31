@@ -36,6 +36,11 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 #define OB1 1
 #define OB2 2
 
+//para el operador de reproduccion, posibles tipos de estados despues de participar del torneo
+#define NONE 0
+#define WINNER 1
+#define REPLACE 2
+
 
 /*INSTRUCCIONES
 
@@ -139,7 +144,8 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define POPULATION_SIZE 2000//1000
 #define DEMES 8
 #define FREQ_STATS 50
-#define POOL_SIZE 4
+#define POOL_SIZE 5
+#define POOL_REPRODUCTION 1
 #define MIGRATION_RATE 0.05
 #define GEN_TO_MIGRATE 10
 

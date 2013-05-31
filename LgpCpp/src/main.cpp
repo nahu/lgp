@@ -46,13 +46,17 @@ int main(int argc, char ** argv) {
 	//folder = folder + diff;
 	std::string folder_orig;
 
-	if (argc<1){
+	if (argc == 1){
 		std::cout<< "No se ha recibido ningun parametro para el programa."<<std::endl;
 	}else{
 		std::cout<<"Se recibio argumento"<<std::string (argv[1])<<std::endl;
 		folder_orig = std::string (argv[1]);
 		std::cout<<"Se recibio argumento"<<std::endl;
 	}
+
+	srand((unsigned)time(0));
+	//omp_set_num_threads(NUM_PROCESSORS);
+	Program::init_registers();
 
 	for (int p = 0; p < CNT_PRUEBAS; p++) {
 		std::stringstream st; st << p;
@@ -70,10 +74,6 @@ int main(int argc, char ** argv) {
 
 		main_begin = clock();
 		clock_gettime(CLOCK_REALTIME, &real_main_begin);
-		srand((unsigned)time(0));
-		omp_set_num_threads(NUM_PROCESSORS);
-
-		Program::init_registers();
 
 		//Creacion de carpeta de resultados
 		int exito = mkdir(folder.c_str(), 0777);
