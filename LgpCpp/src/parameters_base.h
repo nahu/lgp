@@ -7,13 +7,15 @@
 
 #define _USE_MATH_DEFINES
 
-#define FILE_NAME "./data/Datos8.txt"
+//#define FILE_NAME "./data/Datos8.txt"
+#define FILE_NAME "./data/Datos60.txt"
 //#define FILE_NAME_DR "./data/datos_reducidos.txt"
 
 //Solo faltan 5 transformadores. [1,7,15,23,39]
-std::string CONFIG = "10011110";
-#define N 8
-#define K 5
+//std::string CONFIG = "10011110";
+std::string CONFIG = "1011111011111110111111101111111111111110";
+#define N 40//8
+#define K 35//5
 //#define Q 10
 #define DELTA 4
 
@@ -166,8 +168,8 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 *************************************************************************************************/
 
 
-#define P_MIGRATION 0.8
-#define P_MIGRATION_CRITERIA 0.6
+#define P_MIGRATION 0.6
+#define P_MIGRATION_CRITERIA 0.9
 
 
 #define P_REG_OP1_CONST 0.4
