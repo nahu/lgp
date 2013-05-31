@@ -8,6 +8,7 @@
 #define _USE_MATH_DEFINES
 
 #define FILE_NAME "./data/Datos8.txt"
+#define FILE_ANALISIS "./analisis/analisis.csv"
 //#define FILE_NAME_DR "./data/datos_reducidos.txt"
 
 //Solo faltan 5 transformadores. [1,7,15,23,39]
