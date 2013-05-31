@@ -1,5 +1,5 @@
 /*
- * parameters.h
+ * parameters_base.h
  *
  *  Created on: Mar 16, 2013
  *      Author: Vanessa Cañete, Nahuel Hernández
@@ -18,7 +18,7 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 #define K 35//5
 //#define Q 10
 #define DELTA 4
-
+#define CNT_PRUEBAS 3
 
 
 /******************************* DATOS **********************************/
@@ -135,13 +135,13 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 
 
-#define NUM_GENERATIONS 800
-#define POPULATION_SIZE 20000//1000
+#define NUM_GENERATIONS 100
+#define POPULATION_SIZE 2000//1000
 #define DEMES 8
 #define FREQ_STATS 50
 #define POOL_SIZE 4
 #define MIGRATION_RATE 0.05
-#define GEN_TO_MIGRATE 400
+#define GEN_TO_MIGRATE 10
 
 
 

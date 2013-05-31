@@ -169,3 +169,50 @@ void programs_to_file (std::string file, Individual ** best_individuals) {
 	}
 	f.close();
 }
+
+void save_global_results(Individual * best_global , std::string folder) {
+	/*
+	 * Se debe calcular el error promedio y el error maximo.
+	 * Se debe escribir lo siguiente (agregando al archivo)
+	 *
+	 */
+	std::ofstream f;
+	std::string file = folder + "RESUMEN_VALIDACION.csv";
+	f.open(file.c_str());
+	f.precision(6);
+	std::string row;
+	std::vector<double *> error_list(N-K);
+	for (int j = 0; j < N-K; j++) {
+		error_list[j] = best_global[j].eval_individual(VALIDATION);
+	}
+	double sum_prom_errores = 0;
+	int size = VALIDATION_LINES + 3;
+
+	for (int t = 0; t < size; t++) {
+		if (t == size - 3) {
+			f<<"Error total;";
+		} else if (t == size - 2) {
+			f<<"Error promedio;";
+		} else if (t == size - 1) {
+			f<<"Posicion;";
+		} else {
+			f<<t<<";";
+		}
+
+		for (unsigned i = 0; i < error_list.size(); i++) {
+			f << "" << std::fixed << error_list.at(i)[t] << ";";
+		}
+		f << "\n";
+	}
+	double max = error_list.at(0)[size-2];
+	for (unsigned i = 0; i < error_list.size(); i++) {
+		sum_prom_errores += error_list.at(i)[size-2]; //el promedio de errores de la instancia de prueba
+		if (error_list.at(i)[size-2] > max){ //El maximo error de los transformadores
+			max = error_list.at(i)[size-2];
+		}
+	}
+	f << "Error promedio total: ;" << sum_prom_errores/(N-K)<< ";\n";
+	f << "Error maximo: ;" << max << ";\n";
+	f.close();
+}
+

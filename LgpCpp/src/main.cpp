@@ -41,181 +41,154 @@
 
 
 
-int main() {
-	/*int count = 0;
-	while(true) {
-		int hola = randint(0,5 - 1);
-		count++;
-		//std::cout<< " " << hola << std::endl;
-		if (hola == 5) {
-			std::cout<< "************************** count " << count << std::endl;
-		}
-	}*/
+int main(int argc, char ** argv) {
+	//std::string diff = get_current_time();
+	//folder = folder + diff;
+	std::string folder_orig;
 
-	clock_t main_begin, main_end, t_begin, t_end;
-	timespec real_main_begin, real_main_end, real_t_begin, real_t_end;
-	int hours, rest, minutes, seconds;
-
-	main_begin = clock();
-	clock_gettime(CLOCK_REALTIME, &real_main_begin);
-
-
-	srand((unsigned)time(0));
-
-	omp_set_num_threads(NUM_PROCESSORS);
-
-
-	Program::init_registers();
-
-	//Declaraciones
-	Individual ** best_individuals_training;
-	//Individual ** best_individuals_validation;
-
-	std::string folder = "./resultados/";
-	std::vector<int> posiciones (N - K);
-	std::vector<double *> list_training_errors(DEMES), list_validation_errors(DEMES);
-	double duration;
-
-	std::string diff = get_current_time();
-
-
-	folder = folder + diff;
-	int exito = mkdir(folder.c_str(), 0777);
-	if (exito < 0) {
-		std::cout << "No se pudo crear la carpeta de resultados! \n";
-		exit(EXIT_FAILURE);
-	} else {
-		std::cout << "Los resultados se guardaran en " << folder << std::endl;
+	if (argc<1){
+		std::cout<< "No se ha recibido ningun parametro para el programa."<<std::endl;
+	}else{
+		std::cout<<"Se recibio argumento"<<std::string (argv[1])<<std::endl;
+		folder_orig = std::string (argv[1]);
+		std::cout<<"Se recibio argumento"<<std::endl;
 	}
 
-	//Se escriben los parametros
-	parameters_to_file(folder + "/parametros.txt");
+	for (int p = 0; p < CNT_PRUEBAS; p++) {
+		std::stringstream st; st << p;
+		std::string folder = folder_orig + "/" + st.str() + "/"; //./resultados/hola/1/p/
 
-	int index = 0;
-	for (int i = 0; i < N; i++) {
-		if (CONFIG[i] == '0') {
-			posiciones[index] = i;
-			index++;
-		}
-	}
-
-	for (std::vector<int>::iterator it = posiciones.begin(); it != posiciones.end(); ++it) {
-		int i = *it;
-		t_begin = clock();
-		clock_gettime(CLOCK_REALTIME, &real_t_begin);
-
-		std::cout << "*******************************************************************\n";
-		std::cout << "---- Transformador " << i << "\n";
-		std::cout << "*******************************************************************\n";
-
-		Lgp * lgp = new Lgp(i, DEMES, POPULATION_SIZE, NUM_GENERATIONS);
-
-		lgp->evolve();
-
-		best_individuals_training = lgp->best_individuals_of_demes(TRAINING);
-		//best_individuals_validation = lgp->best_individuals_of_demes(VALIDATION);
-
-		t_end = clock();
-		clock_gettime(CLOCK_REALTIME, &real_t_end);
-
-		duration = (double) (t_end - t_begin) / CLOCKS_PER_SEC;
-
-		hours = duration / 3600;
-		rest = (int) duration % 3600;
-		minutes = rest / 60;
-		seconds = rest  % 60;
-
-		std::cout << "Transformador " << i << "\n";
-		std::cout << "Duración CPU: " << hours << ":" << minutes << ":" << seconds << " (" << duration << " seconds)\n";
+		//Declaraciones
+		clock_t main_begin, main_end, t_begin, t_end;
+		timespec real_main_begin, real_main_end, real_t_begin, real_t_end;
+		Individual ** best_individuals_training;
+		std::vector<int> posiciones (N - K);
+		std::vector<double *> list_training_errors(DEMES), list_validation_errors(DEMES);
+		double duration;
 
 
-		duration = (real_t_end.tv_sec - real_t_begin.tv_sec);
 
-		hours = duration / 3600;
-		rest = (int) duration % 3600;
-		minutes = rest / 60;
-		seconds = rest  % 60;
+		main_begin = clock();
+		clock_gettime(CLOCK_REALTIME, &real_main_begin);
+		srand((unsigned)time(0));
+		omp_set_num_threads(NUM_PROCESSORS);
 
-		std::cout << "Duración REAL: " << hours << ":" << minutes << ":" << seconds << " (" << duration << " seconds)\n";
+		Program::init_registers();
 
-		//****************************** Obtener listas de errores *****************************
-		int chunks = DEMES / (NUM_PROCESSORS);
-		#pragma omp parallel for schedule(static, chunks)
-		for (int j = 0; j < DEMES; j++) {
-			list_training_errors[j] = best_individuals_training[j]->eval_individual(TRAINING);
-			list_validation_errors[j] = best_individuals_training[j]->eval_individual(VALIDATION);
+		//Creacion de carpeta de resultados
+		int exito = mkdir(folder.c_str(), 0777);
+		if (exito < 0) {
+			std::cout << "No se pudo crear la carpeta de resultados! \n"<<folder<<"\n";
+			exit(EXIT_FAILURE);
+		} else {
+			std::cout << "Los resultados se guardaran en " << folder << std::endl;
 		}
 
+		//Se escriben los parametros
+		parameters_to_file(folder + "/parametros.txt");
+
+		int index = 0;
+		for (int i = 0; i < N; i++) {
+			if (CONFIG[i] == '0') {
+				posiciones[index] = i;
+				index++;
+			}
+		}
+		//Aca se agregan los mejores individuos por cada trafo
+		Individual * best_global = new Individual[posiciones.size()];
+		int global_pos = 0;
+		std::vector<double *>  list_global_errors(posiciones.size());
+
+		//****************************** PROCESAMIENTO DE TRANSFORMADORES *****************************
+		for (std::vector<int>::iterator it = posiciones.begin(); it != posiciones.end(); ++it) {
+			int i = *it;
+			t_begin = clock();
+			clock_gettime(CLOCK_REALTIME, &real_t_begin);
+
+			std::cout << "*******************************************************************\n";
+			std::cout << "---- Transformador " << i << "\n";
+			std::cout << "*******************************************************************\n";
+
+			Lgp * lgp = new Lgp(i, DEMES, POPULATION_SIZE, NUM_GENERATIONS);
+
+			lgp->evolve();
 
 
-		//****************************** ESCRIBIR EN ARCHIVOS *****************************
+			best_individuals_training = lgp->best_individuals_of_demes(TRAINING);
+			//best_individuals_validation = lgp->best_individuals_of_demes(VALIDATION);
+			best_global[global_pos++] = *(lgp->best_individual_in_training());
 
-		#pragma omp parallel sections // starts a new team
-		{
-			{
-			std::stringstream f_errors_training;
-			f_errors_training.str("");
-			f_errors_training << folder << "/TRAINING-errores-TRAF" << i << "-G" << NUM_GENERATIONS << ".csv";
-			errors_to_file(f_errors_training.str(), list_training_errors, TRAINING_LINES + 3);
+			t_end = clock();
+			clock_gettime(CLOCK_REALTIME, &real_t_end);
+
+			duration = (double) (t_end - t_begin) / CLOCKS_PER_SEC;
+			st.clear(); st << "Transformador " << i << "\n";
+			write_duration(st.str() + "Duración CPU: ", duration);
+
+
+			duration = (real_t_end.tv_sec - real_t_begin.tv_sec);
+			st.clear(); st << "Transformador " << i << "\n";
+			write_duration(st.str() +  "Duración REAL: ", duration);
+
+			//****************************** Obtener listas de errores *****************************
+			int chunks = DEMES / (NUM_PROCESSORS);
+			#pragma omp parallel for schedule(static, chunks)
+			for (int j = 0; j < DEMES; j++) {
+				list_training_errors[j] = best_individuals_training[j]->eval_individual(TRAINING);
+				list_validation_errors[j] = best_individuals_training[j]->eval_individual(VALIDATION);
 			}
 
-			#pragma omp section
+			//****************************** ESCRIBIR EN ARCHIVOS *****************************
+
+			#pragma omp parallel sections // starts a new team
 			{
-			std::stringstream f_errors_val;
-			f_errors_val.str("");
-			f_errors_val << folder << "/VALIDATION-errores-TRAF" << i << "-G" << NUM_GENERATIONS << ".csv";
-			errors_to_file(f_errors_val.str(), list_validation_errors, VALIDATION_LINES + 3);
+				{
+					std::stringstream f_errors_training;
+					f_errors_training.str("");
+					f_errors_training << folder << "/TRAINING-errores-TRAF" << i << "-G" << NUM_GENERATIONS << ".csv";
+					errors_to_file(f_errors_training.str(), list_training_errors, TRAINING_LINES + 3);
+				}
+
+				#pragma omp section
+				{
+					std::stringstream f_errors_val;
+					f_errors_val.str("");
+					f_errors_val << folder << "/VALIDATION-errores-TRAF" << i << "-G" << NUM_GENERATIONS << ".csv";
+					errors_to_file(f_errors_val.str(), list_validation_errors, VALIDATION_LINES + 3);
+				}
+
+				#pragma omp section
+				{
+					std::stringstream f_programs;
+					f_programs.str("");
+					f_programs << folder << "/TRAINING-programas-TRAF" << i << "-G" << NUM_GENERATIONS << ".txt";
+					programs_to_file(f_programs.str(), best_individuals_training);
+				}
+
 			}
 
-			#pragma omp section
-			{
-			std::stringstream f_programs;
-			f_programs.str("");
-			f_programs << folder << "/TRAINING-programas-TRAF" << i << "-G" << NUM_GENERATIONS << ".txt";
-			programs_to_file(f_programs.str(), best_individuals_training);
+			//Borrar cosas antes de la siguiente iteracion
+			for (unsigned j = 0; j < DEMES; j++) {
+				delete [] list_training_errors[j];
+				//delete [] list_validation_errors[j];
 			}
 
+			delete [] best_individuals_training;
+			delete lgp;
 
-			/*
-			#pragma omp section
-			{
-			std::string f_programs_val = folder + "/VALIDATION-programas-TRAF" + transf.str() + "-G" + gen.str() + ".txt";
-			programs_to_file(f_programs_val, best_individuals_validation);
-			}*/
-		}
+		}//End for de transformadores
 
-		//Borrar cosas antes de la siguiente iteracion
-		for (unsigned j = 0; j < DEMES; j++) {
-			delete [] list_training_errors[j];
-			//delete [] list_validation_errors[j];
-		}
+		main_end = clock();
+		clock_gettime(CLOCK_REALTIME, &real_main_end);
+		duration = (double) (main_end - main_begin) / CLOCKS_PER_SEC;
+		write_duration("\n\n--%%%%%%%%%% LGP/main \n\n Duración CPU: ", duration);
+		duration = (real_main_end.tv_sec - real_main_begin.tv_sec);
+		write_duration("Duración REAL: ", duration);
+		std::cout<<"antes de escribir resultados";
+		//Se escriben los resultados de esta prueba
+		save_global_results(best_global, folder);
 
-		delete [] best_individuals_training;
-		delete lgp;
-	}
-
-
-	main_end = clock();
-	clock_gettime(CLOCK_REALTIME, &real_main_end);
-	duration = (double) (main_end - main_begin) / CLOCKS_PER_SEC;
-
-	hours = duration / 3600;
-	rest = (int) duration % 3600;
-	minutes = rest / 60;
-	seconds = rest  % 60;
-
-	std::cout<<"\n\n--%%%%%%%%%% LGP/main \n";
-	std::cout << "Duración CPU: " << hours << ":" << minutes << ":" << seconds << " (" << duration << " seconds)\n";
-
-	duration = (real_main_end.tv_sec - real_main_begin.tv_sec);
-
-	hours = duration / 3600;
-	rest = (int) duration % 3600;
-	minutes = rest / 60;
-	seconds = rest  % 60;
-
-	std::cout << "Duración REAL: " << hours << ":" << minutes << ":" << seconds << " (" << duration << " seconds)\n";
-
+	}//End for CTN_PRUEBAS
 
 	return 0;
 }
