@@ -60,7 +60,7 @@ int main(int argc, char ** argv) {
 
 	for (int p = 0; p < CNT_PRUEBAS; p++) {
 		std::stringstream st; st << p;
-		std::string folder = folder_orig + "/" + st.str() + "/"; //./resultados/hola/1/p/
+		std::string folder = folder_orig + st.str() + "/"; //./resultados/hola/1/p/
 
 		//Declaraciones
 		clock_t main_begin, main_end, t_begin, t_end;
