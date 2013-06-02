@@ -46,12 +46,12 @@ int main(int argc, char ** argv) {
 	//folder = folder + diff;
 	std::string folder_orig;
 
-	if (argc == 1){
-		std::cout<< "No se ha recibido ningun parametro para el programa."<<std::endl;
-	}else{
-		std::cout<<"Se recibio argumento"<<std::string (argv[1])<<std::endl;
+	if (argc == 1) {
+		std::cout << "No se ha recibido ningun parametro para el programa." << std::endl;
+	} else {
+		std::cout <<"Se recibio argumento" << std::string (argv[1]) << std::endl;
 		folder_orig = std::string (argv[1]);
-		std::cout<<"Se recibio argumento"<<std::endl;
+		std::cout <<"Se recibio argumento" << std::endl;
 	}
 
 	srand((unsigned)time(0));
@@ -78,7 +78,7 @@ int main(int argc, char ** argv) {
 		//Creacion de carpeta de resultados
 		int exito = mkdir(folder.c_str(), 0777);
 		if (exito < 0) {
-			std::cout << "No se pudo crear la carpeta de resultados! \n"<<folder<<"\n";
+			std::cout << "No se pudo crear la carpeta de resultados! \n" << folder << "\n";
 			exit(EXIT_FAILURE);
 		} else {
 			std::cout << "Los resultados se guardaran en " << folder << std::endl;
@@ -184,10 +184,11 @@ int main(int argc, char ** argv) {
 		write_duration("\n\n--%%%%%%%%%% LGP/main \n\n Duración CPU: ", duration);
 		duration = (real_main_end.tv_sec - real_main_begin.tv_sec);
 		write_duration("Duración REAL: ", duration);
-		std::cout<<"antes de escribir resultados";
+		std::cout << "antes de escribir resultados";
+
 		//Se escriben los resultados de esta prueba
 		save_global_results(best_global, folder);
-
+		delete [] best_global;
 	}//End for CTN_PRUEBAS
 
 	return 0;
