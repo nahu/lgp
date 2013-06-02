@@ -94,7 +94,6 @@ void parameters_to_file(std::string f_param) {
 	f << "num_min_instructions\t" << NUM_MIN_INSTRUCTIONS << "\n";
 
 	f << "\n--Procesos\n";
-	f << "chunk_size\t" << CHUNK_SIZE << "\n";
 	f << "num_processors\t" << NUM_PROCESSORS << "\n";
 
 	f.close();

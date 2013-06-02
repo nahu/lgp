@@ -8,20 +8,22 @@
 #define _USE_MATH_DEFINES
 
 
-//#define FILE_NAME "./data/Datos8.txt"
-#define FILE_NAME "./data/Datos60.txt"
+#define FILE_NAME "./data/Datos8.txt"
+//#define FILE_NAME "./data/Datos60.txt"
 #define FILE_ANALISIS "./analisis/analisis.csv"
 
 //#define FILE_NAME_DR "./data/datos_reducidos.txt"
 
 //Solo faltan 5 transformadores. [1,7,15,23,39]
-//std::string CONFIG = "10011110";
-std::string CONFIG = "1011111011111110111111101111111111111110";
-#define N 40//8
-#define K 35//5
+std::string CONFIG = "10011110";
+//std::string CONFIG = "1011111011111110111111101111111111111110";
+//#define N 40
+#define N 8
+//#define K 35//5
+#define K 5
 //#define Q 10
 #define DELTA 4
-#define CNT_PRUEBAS 3
+#define CNT_PRUEBAS 1
 
 
 /******************************* DATOS **********************************/
