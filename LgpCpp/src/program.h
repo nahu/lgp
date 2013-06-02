@@ -34,7 +34,11 @@ void Instruction::create_new_instruction() {
 
 	//operador 1 es constante de entrada con probabilidad P_REG_OP1_CONST
 	if (random_flip_coin(P_REG_OP1_CONST)) {
-		op1 = randint(CONST_IN_MIN, CONST_IN_MAX);
+		if (random_flip_coin(P_REG_CONST_DELTA)) {
+			op1 = randint(CONST_IN_DELTA_MIN, CONST_IN_DELTA_MAX);
+		} else {
+			op1 = randint(CONST_IN_MIN, CONST_IN_MAX);
+		}
 	} else {
 		op1 = randint(VAR_MIN, VAR_MAX);
 	}
@@ -43,7 +47,11 @@ void Instruction::create_new_instruction() {
 	if (random_flip_coin(P_REG_OP2_CONST)) {
 		//Si va a ser constante, las constantes de entrada tienen mayor probabilidad que las aleatorias.
 		if (random_flip_coin(P_CONST_IN)) {
-			op2 = randint(CONST_IN_MIN, CONST_IN_MAX);
+			if (random_flip_coin(P_REG_CONST_DELTA)) {
+				op2 = randint(CONST_IN_DELTA_MIN, CONST_IN_DELTA_MAX);
+			} else {
+				op2 = randint(CONST_IN_MIN, CONST_IN_MAX);
+			}
 		} else {
 			op2 = randint(CONST_AL_MIN, CONST_AL_MAX);
 		}

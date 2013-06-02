@@ -85,7 +85,9 @@ la convención para asegurar que el programa tenga una salida es que la
 #define CONST_AL_MIN (VAR_MAX + 1)
 #define CONST_AL_MAX (VAR_MAX + NUM_CONST_RANDOM_REGISTERS + NUM_CONST_MATH_REGISTERS) //3*K //aca le agrego las constantes matematicas
 #define CONST_IN_MIN (CONST_AL_MAX + 1)
-#define CONST_IN_MAX (CONST_AL_MAX + NUM_CONST_IN_REGISTERS)
+#define CONST_IN_MAX (CONST_AL_MAX + NUM_CONST_IN_REGISTERS - DELTA)
+#define CONST_IN_DELTA_MIN (CONST_IN_MAX + 1)
+#define CONST_IN_DELTA_MAX (CONST_IN_MAX + DELTA)
 #define OP_MIN 1
 #define OP_MAX 9
 
@@ -183,6 +185,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 #define P_REG_OP1_CONST 0.4
 #define P_REG_OP2_CONST 0.6
+#define P_REG_CONST_DELTA 0.5
 #define P_CONST_IN 0.80
 #define CONST_MIN 0 //50
 #define CONST_MAX 1 //50

@@ -666,7 +666,11 @@ int Individual::get_random_register(int &pos_to_replace, std::vector<int> reg_ef
 		if (random_flip_coin(0.5)) {
 			_register = randint(VAR_MIN, VAR_MAX);
 		} else {
-			_register = randint(CONST_IN_MIN, CONST_IN_MAX);
+			if (random_flip_coin(P_REG_CONST_DELTA)) {
+				_register = randint(CONST_IN_DELTA_MIN, CONST_IN_DELTA_MAX);
+			} else {
+				_register = randint(CONST_IN_MIN, CONST_IN_MAX);
+			}
 		}
 	case (OPERAND_2) :
 		//operador 2 es constante con probabilidad p_const
@@ -674,7 +678,11 @@ int Individual::get_random_register(int &pos_to_replace, std::vector<int> reg_ef
 			//Si va a ser constante, las constantes de entrada tienen mayor
 			//probabilidad que las aleatorias.
 			if (random_flip_coin (P_CONST_IN)) {
-				_register = randint(CONST_IN_MIN, CONST_IN_MAX);
+				if (random_flip_coin(P_REG_CONST_DELTA)) {
+					_register = randint(CONST_IN_DELTA_MIN, CONST_IN_DELTA_MAX);
+				} else {
+					_register = randint(CONST_IN_MIN, CONST_IN_MAX);
+				}
 			} else {
 				_register = randint(CONST_AL_MIN, CONST_AL_MAX);
 			}
