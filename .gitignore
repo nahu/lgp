@@ -77,3 +77,6 @@ LgpCpp/resultados*
 LgpCpp/data/parameters*
 LgpCpp/src/parameters.h
 
+#analisis
+LgpCpp/analisis
+
