@@ -5,7 +5,8 @@
  *      Author: Vanessa Cañete, Nahuel Hernández
  */
 
-struct Participant {
+class Participant {
+public:
 	int pop_position;
 	int status;
 };
@@ -139,9 +140,15 @@ Individual** Deme::tournament_with_mutation(Participant * indices, int ini, int 
 	Individual * winner;
 	int choosen = ini;
 
+	/*
+	std::cout<<"to replace\n";
+	std::cout<<"ini " << ini << "   ";
+	std::cout<<"end " << end << "\n";
+	*/
+
 	int pos = indices[choosen].pop_position;
 	int to_replace[POOL_REPRODUCTION];
-	to_replace[0] = choosen;
+	to_replace[0] = ini;
 
 	int tamanho = list_ind->size();
 	if ((tamanho != deme_size) || (deme_size < pos)) {
@@ -154,34 +161,38 @@ Individual** Deme::tournament_with_mutation(Participant * indices, int ini, int 
 
 	int replace_count = 1;
 
-	for (++ini; ini < end; ++ini) {
+	for (int i = ini + 1; i < end; i++) {
 
-		list_ind->at(indices[ini].pop_position).eval_fitness();
+		list_ind->at(indices[i].pop_position).eval_fitness();
 		//std::cout<<"(*it).pop_position "<<(*it).pop_position<<"\n";
 		//std::cout<<"(*chosen).pop_position "<<(*choosen).pop_position<<"\n";
-		if (Individual::compare_fitness(list_ind->at(indices[choosen].pop_position), list_ind->at(indices[ini].pop_position))) {
-			choosen = ini;
+		if (Individual::compare_fitness(list_ind->at(indices[choosen].pop_position), list_ind->at(indices[i].pop_position))) {
+			choosen = i;
 		}
 
 		if (replace_count < POOL_REPRODUCTION) {
-			to_replace[replace_count] = ini;
+			to_replace[replace_count] = i;
 			replace_count++;
 		} else {
 			for (int j = 0; j < POOL_REPRODUCTION; j++) {
-				if (Individual::compare_fitness(list_ind->at(indices[ini].pop_position), list_ind->at(indices[to_replace[j]].pop_position))) {
-					to_replace[j] = ini;
+				if (Individual::compare_fitness(list_ind->at(indices[i].pop_position), list_ind->at(indices[to_replace[j]].pop_position))) {
+					to_replace[j] = i;
 					break;
 				}
 			}
 		}
+
 	}
-	//establecer los estados de los participantes
-	indices[choosen].status = WINNER; //ganador
+
+
 
 	//perdedores a sobreescribir por el mejor ganador (modificado/sin modificar)
 	for (int j = 0; j < POOL_REPRODUCTION; j++) {
 		indices[to_replace[j]].status = REPLACE;
 	}
+
+	//establecer los estados de los participantes
+	indices[choosen].status = WINNER; //ganador
 
 	winner = new Individual(list_ind->at(indices[choosen].pop_position));
 

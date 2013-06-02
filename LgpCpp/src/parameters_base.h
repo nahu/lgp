@@ -143,14 +143,14 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 
 
-#define NUM_GENERATIONS 100
+#define NUM_GENERATIONS 200
 #define POPULATION_SIZE 2000//1000
 #define DEMES 8
 #define FREQ_STATS 50
 #define POOL_SIZE 5
 #define POOL_REPRODUCTION 1
 #define MIGRATION_RATE 0.05
-#define GEN_TO_MIGRATE 10
+#define GEN_TO_MIGRATE 100
 
 
 
@@ -213,5 +213,3 @@ utilizando multiprocessing de Python
 
 
 #define NUM_PROCESSORS 4 //NÚMERO DE PROCESOS WORKERS
-#define CHUNK_SIZE (POPULATION_SIZE / DEMES) // NUM_PROCESSORS
-#define CHUNK_SIZE_STEP (DEMES / NUM_PROCESSORS)
