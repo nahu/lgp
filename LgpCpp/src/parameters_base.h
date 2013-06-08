@@ -7,20 +7,23 @@
 
 #define _USE_MATH_DEFINES
 
+#define FILE_ANALISIS "./analisis-link/analisis.csv"
 
-#define FILE_NAME "./data/Datos8.txt"
+#define FILE_NAME "./data/Datos8-exp2.txt"
+
 //#define FILE_NAME "./data/Datos60.txt"
-#define FILE_ANALISIS "./analisis/analisis.csv"
-
 //#define FILE_NAME_DR "./data/datos_reducidos.txt"
 
 //Solo faltan 5 transformadores. [1,7,15,23,39]
-std::string CONFIG = "10011110";
+std::string CONFIG = "10101011";
 //std::string CONFIG = "1011111011111110111111101111111111111110";
-//#define N 40
+
 #define N 8
-//#define K 35//5
+//#define N 40
+
 #define K 5
+//#define K 35
+
 //#define Q 10
 #define DELTA 6
 #define CNT_PRUEBAS 3
@@ -58,10 +61,10 @@ la convención para asegurar que el programa tenga una salida es que la
 */
 
 
-#define NUM_MIN_INSTRUCTIONS (5 * K)
-#define NUM_MAX_INSTRUCTIONS (14 * K)
-#define NUM_INI_INSTRUCTIONS (8 * K)
-#define NUM_OPERATORS 10
+#define NUM_MIN_INSTRUCTIONS (3 * K)
+#define NUM_MAX_INSTRUCTIONS (12 * K)
+#define NUM_INI_INSTRUCTIONS (7 * K)
+#define NUM_OPERATORS 9
 
 
 #define NUM_VAR_REGISTER 7//K
@@ -73,7 +76,7 @@ la convención para asegurar que el programa tenga una salida es que la
 #endif
 
 #define NUM_OUT_REGISTERS 1
-#define NUM_CONST_RANDOM_REGISTERS 6//K
+#define NUM_CONST_RANDOM_REGISTERS 5//K
 #define NUM_CONST_MATH_REGISTERS 4
 #define NUM_CONTS_REGISTERS (NUM_CONST_RANDOM_REGISTERS + NUM_CONST_IN_REGISTERS + NUM_CONST_MATH_REGISTERS)
 #define NUM_REGISTERS (NUM_CONTS_REGISTERS + NUM_VAR_REGISTER + NUM_OUT_REGISTERS)
@@ -147,14 +150,14 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 
 
-#define NUM_GENERATIONS 200
-#define POPULATION_SIZE 2000//1000
+#define NUM_GENERATIONS 800
+#define POPULATION_SIZE 25000
 #define DEMES 8
 #define FREQ_STATS 50
-#define POOL_SIZE 5
-#define POOL_REPRODUCTION 1
-#define MIGRATION_RATE 0.05
-#define GEN_TO_MIGRATE 100
+#define POOL_SIZE 8
+#define POOL_REPRODUCTION 2
+#define MIGRATION_RATE 0.015
+#define GEN_TO_MIGRATE 350
 
 
 
@@ -181,13 +184,13 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 *************************************************************************************************/
 
 
-#define P_MIGRATION 0.6
-#define P_MIGRATION_CRITERIA 0.9
+#define P_MIGRATION 0.9
+#define P_MIGRATION_CRITERIA 0.8
 
 
 #define P_REG_OP1_CONST 0.4
 #define P_REG_OP2_CONST 0.6
-#define P_REG_CONST_DELTA 0.5
+#define P_REG_CONST_DELTA 0.8
 #define P_CONST_IN 0.80
 #define CONST_MIN 0 //50
 #define CONST_MAX 1 //50
@@ -205,7 +208,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define STEP_SIZE_CONST 5.0
 
 
-#define P_CROSSOVER 0.1//0.10
+#define P_CROSSOVER 0.5//0.10
 
 
 
