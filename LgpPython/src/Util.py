@@ -233,11 +233,47 @@ def get_estimation_error(index, t):
     return random.uniform(0,1000)
 
 
+def create_data_file(data_file, n, t, exp):
+    
+    f = open(data_file, "w")
+    
+    #escribir las dos primeras lineas
+    f.write(str(n))
+    f.write("\n")
+    f.write(str(t))
+    f.write("\n")
+    
+    
+    c_min = 2
+    c_max = 20
+    #los datos
+    c = []
+    
+    for trafo in range(n):
+        param = {}
+        param["c1"] = random.uniform(c_min, c_max)
+        param["c2"] = random.uniform(c_min, c_max)
+        c.append(param)
+        print "Trafo " + str(trafo) + "\n\t c1: " + str(param["c1"]) + ", c2: " + str(param["c2"]) + "\n" 
+        
+    for x in range(t):
+        row = ""
+        x_exp = x**exp
+        
+        for trafo in range(n):
+            y = c[trafo]["c1"] + c[trafo]["c2"] * x_exp
+            row += str(y)
+            if trafo != (n - 1):
+                row += ";"
+        row += "\n"
+        f.write(row)
+    
+
 
 if __name__ == "__main__":
     """
-    La tupla retornada tiene: (columnas, filas, matriz)
-    """
+    #La tupla retornada tiene: (columnas, filas, matriz)
+    
     _tuple = get_matrix_from_file("../data/Datos60.txt")
     
     print "Transformadores> "
@@ -248,4 +284,14 @@ if __name__ == "__main__":
     for i in _tuple [2]:
         print i
     random_flip_coin(0.4)
+    """ 
+    
+    data_file = "../data/Datos8-exp4.txt"
+    n = 8
+    t = 248
+    exp = 4
+    config = "10101011"
+    
+    create_data_file(data_file, n, t, exp)
+    
     

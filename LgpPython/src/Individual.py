@@ -114,7 +114,7 @@ def get_random_register(op, reg_eff=None, instruction=None):
             register = random.randint(Parameters.var_min, Parameters.var_max)
         else:
             register = random.randint(Parameters.cons_in_min, Parameters.cons_in_max)
-        register = random.randint(Parameters.var_min, Parameters.var_max)
+        #register = random.randint(Parameters.var_min, Parameters.var_max)
     
     if op == 3: #operando 2
         #print "operando 2"
@@ -517,9 +517,19 @@ def exec_program(program, all_r):
         r_all = copy.copy(all_r)
         exec program
         error_t = (r_all[0] - Parameters.data_samples[t][config_position]) ** 2
+        
         error_a_quad += error_t
         list_errors.append(error_t)
         list_estimations.append(r_all[0])
+        print "result: " + str(r_all[0])
+        print "data: " + str(Parameters.data_samples[t][config_position])
+        print "error: " + str(error_t)
+        print
+        print "R_ALL ++++++++++++++++++"
+        for line in range(len(r_all)):
+            print"r_all[%s] = " % (line) + str(r_all[line])
+        print
+        print "******************************"
         
     error_prom_quad = error_a_quad / Parameters.training_lines
     
@@ -549,13 +559,14 @@ def exec_program(program, all_r):
 
     #In evalutation
     error_a_quad = []
-
+"""
     for t in range(Parameters.training_lines, Parameters.lines):
         in_t = Parameters.r_const[t]
         r_all = copy.copy(all_r)
         
         exec program
         
+        for r in r_all
         error_a_quad.append((r_all[0] - Parameters.data_samples[t][config_position]) ** 2)
         list_estimations.append(r_all[0])
         
@@ -570,6 +581,8 @@ def exec_program(program, all_r):
     
     f_estimations = "estimaciones_transf-" + str(config_position) + ".csv"
     Util.estimations_to_file(f_estimations, list_estimations)
+"""
+
     
 if __name__ == "__main__":
 #    r = Individual(4, 0, 1)
@@ -729,6 +742,137 @@ r_all[0] = math.sqrt(abs(r_all[8]))
     r_all[13] = 13.778801291
     r_all[14] = 23.7290797537
     r_all[15] = 6.392450299
+    
+    program = \
+"""r_all[2] = in_t[31] / r_all[19] if r_all[19] != 0 else in_t[31] + 1.0
+r_all[4] = math.cos(r_all[2])
+r_all[6] = in_t[24] / in_t[23] if in_t[23] != 0 else in_t[24] + 1.0
+r_all[5] = math.cos(r_all[4])
+r_all[2] = math.sqrt(abs(r_all[6]))
+r_all[6] = r_all[2] ** 2
+r_all[2] = r_all[6] ** 2
+r_all[5] = in_t[26] - r_all[5]
+r_all[8] = math.cos(r_all[5])
+r_all[4] = math.sin(r_all[8])
+r_all[3] = math.sin(r_all[4])
+r_all[5] = math.cos(r_all[2])
+r_all[8] = r_all[5] ** 2
+r_all[5] = r_all[3] ** 2
+r_all[9] = r_all[8] * r_all[5]
+r_all[7] = r_all[2] ** 2
+r_all[6] = math.sin(r_all[9])
+r_all[9] = math.sin(r_all[6])
+r_all[8] = math.sqrt(abs(r_all[9]))
+r_all[3] = r_all[7] - r_all[8]
+r_all[7] = in_t[4] - r_all[3]
+r_all[5] = math.sin(r_all[7])
+r_all[5] = math.sqrt(abs(r_all[5]))
+r_all[3] = in_t[9] * r_all[5]
+r_all[8] = in_t[26] / in_t[14] if in_t[14] != 0 else in_t[26] + 1.0
+r_all[6] = in_t[5] / r_all[3] if r_all[3] != 0 else in_t[5] + 1.0
+r_all[9] = r_all[8] - r_all[6]
+r_all[0] = r_all[9] ** 2"""
+
+    r_all = []
+    for i in range(20):
+        r_all.append(1.0)
+    
+    r_all[10] = 0.49976
+    r_all[11] = 0.658297
+    r_all[12] = 0.381569
+    r_all[13] = 0.379089
+    r_all[14] = 0.815646
+    r_all[15] = 0.155824
+    r_all[16] = 0.0
+    r_all[17] = 1.0
+    r_all[18] = 2.71828
+    r_all[19] = 3.14159
+    
+    program = \
+"""r_all[2] = in_t[17] * r_all[3]
+r_all[2] = in_t[14] + r_all[2]
+r_all[1] = r_all[2] ** 2
+r_all[9] = in_t[30] - r_all[1]
+r_all[5] = math.cos(r_all[2])
+r_all[5] = in_t[27] - r_all[5]
+r_all[6] = in_t[25] - r_all[5]
+r_all[6] = r_all[5] / r_all[6] if r_all[6] != 0 else r_all[5] + 1.0
+r_all[1] = r_all[6] - r_all[5]
+r_all[9] = math.sin(r_all[9])
+r_all[4] = r_all[9] + r_all[1]
+r_all[9] = math.log10(abs(r_all[4])) if r_all[4] != 0 else in_t[23] + 1.0
+r_all[7] = in_t[18] ** 2
+r_all[5] = r_all[7] - r_all[9]
+r_all[4] = in_t[27] / r_all[5] if r_all[5] != 0 else in_t[27] + 1.0
+r_all[7] = math.sin(r_all[4])
+r_all[5] = math.sin(r_all[7])
+r_all[5] = in_t[10] / r_all[5] if r_all[5] != 0 else in_t[10] + 1.0
+r_all[1] = r_all[5] ** 2
+r_all[5] = in_t[18] / r_all[1] if r_all[1] != 0 else in_t[18] + 1.0
+r_all[6] = r_all[5] + r_all[10]
+r_all[3] = math.sqrt(abs(r_all[6]))
+r_all[5] = math.log10(abs(r_all[3])) if r_all[3] != 0 else in_t[32] + 1.0
+r_all[7] = math.sqrt(abs(r_all[5]))
+r_all[6] = r_all[7] ** 2
+r_all[8] = math.sqrt(abs(r_all[6]))
+r_all[7] = in_t[18] - r_all[8]
+r_all[9] = math.cos(r_all[7])
+r_all[2] = math.log10(abs(r_all[9])) if r_all[9] != 0 else r_all[6] + 1.0
+r_all[4] = math.sqrt(abs(r_all[2]))
+r_all[8] = math.cos(r_all[4])
+r_all[7] = in_t[11] / r_all[8] if r_all[8] != 0 else in_t[11] + 1.0
+r_all[1] = math.sqrt(abs(r_all[7]))
+r_all[1] = in_t[4] - r_all[1]
+r_all[5] = math.log10(abs(r_all[1])) if r_all[1] != 0 else r_all[4] + 1.0
+r_all[4] = in_t[31] + r_all[5]
+r_all[6] = in_t[22] / r_all[4] if r_all[4] != 0 else in_t[22] + 1.0
+r_all[7] = math.cos(in_t[28])
+r_all[4] = in_t[22] / r_all[6] if r_all[6] != 0 else in_t[22] + 1.0
+r_all[1] = math.sin(r_all[4])
+r_all[6] = in_t[16] - r_all[7]
+r_all[6] = math.sqrt(abs(r_all[6]))
+r_all[9] = r_all[1] ** 2
+r_all[4] = in_t[9] / r_all[9] if r_all[9] != 0 else in_t[9] + 1.0
+r_all[9] = math.sin(r_all[9])
+r_all[3] = math.log10(abs(r_all[6])) if r_all[6] != 0 else in_t[25] + 1.0
+r_all[2] = in_t[11] * r_all[3]
+r_all[1] = math.sin(r_all[2])
+r_all[6] = in_t[4] + r_all[1]
+r_all[1] = in_t[7] * r_all[7]
+r_all[3] = r_all[1] ** 2
+r_all[4] = r_all[4] / r_all[9] if r_all[9] != 0 else r_all[4] + 1.0
+r_all[7] = math.cos(r_all[3])
+r_all[5] = in_t[13] + r_all[7]
+r_all[7] = r_all[4] - r_all[5]
+r_all[8] = r_all[6] + r_all[7]
+r_all[9] = in_t[32] * r_all[8]
+r_all[4] = r_all[8] * r_all[4]
+r_all[7] = r_all[9] - r_all[4]
+r_all[9] = r_all[7] + r_all[4]
+r_all[8] = in_t[21] * r_all[9]
+r_all[3] = r_all[8] ** 2
+r_all[5] = r_all[3] ** 2
+r_all[5] = r_all[5] ** 2
+r_all[9] = math.cos(r_all[5])
+r_all[0] = r_all[9] ** 2"""
+
+    r_all = []
+    for i in range(20):
+        r_all.append(1.0)
+    
+
+    r_all[10] = 0.651083
+    r_all[11] = 0.999581
+    r_all[12] = 0.86093
+    r_all[13] = 0.84825
+    r_all[14] = 0.709379
+    r_all[15] = 0.518139
+    r_all[16] = 0.0
+    r_all[17] = 1.0
+    r_all[18] = 2.71828
+    r_all[19] = 3.14159
+
+    
     exec_program(program, r_all)
     
 

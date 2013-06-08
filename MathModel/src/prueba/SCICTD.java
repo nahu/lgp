@@ -32,10 +32,13 @@ public class SCICTD {
     public int k;
     public int n;
     public String configuracion = "";
+    public String FILE_NAME = "Datos8-exp4.txt"; //cambiar
     
     public SCICTD(int cantidadTrafos, int numeroDeObjetivos) throws FileNotFoundException, IOException, ClassNotFoundException {
         numberOfTrafos_ = cantidadTrafos;
-        matrizConsumo_ = readProblem( DATA_FOLDER + "Datos8.txt", matrizConsumo_);
+        matrizConsumo_ = readProblem( DATA_FOLDER + FILE_NAME , matrizConsumo_);
+        FILE_NAME = FILE_NAME.replace(".txt", "");
+        //System.out.println(FILE_NAME);
     } 
     
     public Double [][] evaluate(int[] nodos) {
@@ -268,7 +271,7 @@ public class SCICTD {
     public void guardar_min_max_desv(){
     	FileWriter fwf;
 		try {
-			fwf = new FileWriter( DATA_FOLDER + this.configuracion.replace(" ", "") + "-Factores.csv" );
+			fwf = new FileWriter( DATA_FOLDER + FILE_NAME + "-" +this.configuracion.replace(" ", "") + "-Factores.csv" );
 			PrintWriter pwf = new PrintWriter(fwf);
 			double [][] datos = new double[n-k][3+k];
 			
@@ -331,7 +334,7 @@ public class SCICTD {
 	public void guardar_estimaciones(){
 		try {
 			FileWriter estFile;
-			estFile = new FileWriter( DATA_FOLDER + this.configuracion.replace(" ", "") + "-Estimaciones.csv" );
+			estFile = new FileWriter( DATA_FOLDER + FILE_NAME + "-" +this.configuracion.replace(" ", "") + "-Estimaciones.csv" );
 			PrintWriter pwe = new PrintWriter(estFile);
 
 			
@@ -368,7 +371,7 @@ public class SCICTD {
 	
     public void guardar_errores(){
 		try {
-			FileWriter fw = new FileWriter( DATA_FOLDER + configuracion.replace(" ", "") + ".csv" );
+			FileWriter fw = new FileWriter( DATA_FOLDER + FILE_NAME + "-" +configuracion.replace(" ", "") + ".csv" );
 			PrintWriter pw = new PrintWriter(fw);
 			
 			pw.print(";");
@@ -412,15 +415,17 @@ public class SCICTD {
     public static void main(String[] args) {
         try {
             int n;
-            n = 8;
+            n = 8; //cambiar
             SCICTD programa = new SCICTD(8, 2);
             /*programa.configuracion =   "1 0 1 1 1 1 1 0 1 1 " 
         							 + "1 1 1 1 1 0 1 1 1 1 " 
     							 	 + "1 1 1 0 1 1 1 1 1 1 " 
 							 		 + "1 1 1 1 1 1 1 1 1 0 ";*/
            
-            programa.configuracion =   "1 0 0 1 1 1 1 0 ";
-                           
+            //programa.configuracion =   "1 0 0 1 1 1 1 0 ";
+            
+            programa.configuracion =   "1 0 1 0 1 0 1 1 "; //cambiar
+            
             System.out.println("Ejecutando programa. Configuracion: " + programa.configuracion);
             programa.evaluate(programa.getConfiguracion(programa.configuracion, n));
             

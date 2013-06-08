@@ -80,3 +80,8 @@ LgpCpp/src/parameters.h
 #analisis
 LgpCpp/analisis
 
+#cosas
+LgpCpp/analisis-link
+LgpCpp/data/viejos/
+MathModel/data/results/
+

@@ -186,7 +186,7 @@ def macro_mutation(genome):
         genome.height += 1
         
         
-    if genome.height > Parameters.num_min_instructions and \
+    elif genome.height > Parameters.num_min_instructions and \
     (not insertion or genome.height == Parameters.num_max_instructions):
         ''' Si es mayor a la  min. cant. de instrucciones y  no es insercion o
             tiene el numero maximo de instrucciones'''

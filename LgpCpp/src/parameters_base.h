@@ -22,8 +22,8 @@ std::string CONFIG = "10011110";
 //#define K 35//5
 #define K 5
 //#define Q 10
-#define DELTA 4
-#define CNT_PRUEBAS 1
+#define DELTA 6
+#define CNT_PRUEBAS 3
 
 
 /******************************* DATOS **********************************/
