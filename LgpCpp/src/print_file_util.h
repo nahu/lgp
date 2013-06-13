@@ -273,20 +273,20 @@ void trafo_counters_to_file(std::string trafo, std::string folder, int primero){
 	f << get_counters_sum(Individual::cant_micro_const)		<< ";\n";
 
 	/* ************************************************************** */
-	int veces = NUM_GENERATIONS * GEN_TO_MIGRATE * DEMES;
+	int veces = (NUM_GENERATIONS + 1) * GEN_TO_MIGRATE * DEMES;
 	f<<";";
 	f<<"Prob. Efect. Trafo #" << trafo << ":"<<";";
-	f << (double)(get_counters_sum(Lgp::cant_migracion)/veces)				<< ";";
-	f << (double)(get_counters_sum(Individual::cant_crossover)/veces)		<< ";";
+	f << ((double)get_counters_sum(Lgp::cant_migracion)/((NUM_GENERATIONS + 1) * DEMES))<< ";";
+	f << ((double)get_counters_sum(Individual::cant_crossover)/veces)		<< ";";
 
-	f << (double)(get_counters_sum(Individual::cant_macro)/veces)			<< ";";
-	f << (double)(get_counters_sum(Individual::cant_macro_del)/veces)		<< ";";
-	f << (double)(get_counters_sum(Individual::cant_macro_ins)/veces)		<< ";";
+	f << ((double)get_counters_sum(Individual::cant_macro)/(veces*2))			<< ";";
+	f << ((double)get_counters_sum(Individual::cant_macro_del)/(double)get_counters_sum(Individual::cant_macro))		<< ";";
+	f << ((double)get_counters_sum(Individual::cant_macro_ins)/(double)get_counters_sum(Individual::cant_macro))		<< ";";
 
-	f << (double)(get_counters_sum(Individual::cant_micro)/veces)			<< ";";
-	f << (double)(get_counters_sum(Individual::cant_micro_ope)/veces)		<< ";";
-	f << (double)(get_counters_sum(Individual::cant_micro_reg)/veces)		<< ";";
-	f << (double)(get_counters_sum(Individual::cant_micro_const)/veces)		<< ";\n";
+	f << ((double)get_counters_sum(Individual::cant_micro)/(veces*2))			<< ";";
+	f << ((double)get_counters_sum(Individual::cant_micro_ope)/(double)get_counters_sum(Individual::cant_micro))		<< ";";
+	f << ((double)get_counters_sum(Individual::cant_micro_reg)/(double)get_counters_sum(Individual::cant_micro))		<< ";";
+	f << (double)(get_counters_sum(Individual::cant_micro_const)/(double)get_counters_sum(Individual::cant_micro))		<< ";\n";
 	f.close();
 }
 void global_counters_to_file(std::string folder, int global_cant_crossover, int global_cant_migracion,
@@ -314,20 +314,20 @@ void global_counters_to_file(std::string folder, int global_cant_crossover, int 
 	f << global_cant_micro_const << ";\n";
 
 	/* ************************************ */
-	double veces = NUM_GENERATIONS * GEN_TO_MIGRATE * cant_trafos * DEMES;
+	double veces =  (NUM_GENERATIONS + 1) * GEN_TO_MIGRATE * cant_trafos * DEMES;
 	f << ";";
 	f << "PROBABILIDAD: ;";
-	f << global_cant_migracion/veces << ";";
-	f << global_cant_crossover/veces << ";";
+	f << (double)global_cant_migracion/((NUM_GENERATIONS + 1) * DEMES * cant_trafos)<< ";";
+	f << (double)global_cant_crossover/veces << ";";
 
-	f << (double) (global_cant_macro/veces) << ";";
-	f << (double) (global_cant_macro_del/global_cant_macro) << ";";
-	f << (double) (global_cant_macro_ins/global_cant_macro) << ";";
+	f << ((double)global_cant_macro/(veces*2)) << ";";
+	f << ((double)global_cant_macro_del/global_cant_macro) << ";";
+	f << ((double)global_cant_macro_ins/global_cant_macro) << ";";
 
-	f << (double) (global_cant_micro/veces) << ";";
-	f << (double) (global_cant_micro_ope/global_cant_micro) << ";";
-	f << (double) (global_cant_micro_reg/global_cant_micro) << ";";
-	f << (double) (global_cant_micro_const/global_cant_micro) << ";\n";
+	f << ((double)global_cant_micro/(veces*2)) << ";";
+	f << ((double)global_cant_micro_ope/global_cant_micro) << ";";
+	f << ((double)global_cant_micro_reg/global_cant_micro) << ";";
+	f << ((double)global_cant_micro_const/global_cant_micro) << ";\n";
 	/* ************************************ */
 	f << ";";
 	f << "GENERACIONES: ;";

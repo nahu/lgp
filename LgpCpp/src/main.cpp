@@ -37,8 +37,6 @@
 #include "lgp.h"
 #include "print_file_util.h"
 //using namespace std;
-
-
 //todo: crear contadores globales de operadores geneticos y migracion.
 int global_cant_crossover = 0;
 int global_cant_migracion = 0;
@@ -56,7 +54,7 @@ void init_individual_counters(){
 	std::cout << "--- ----------------------- ---" << std::endl;
 	std::cout << "Inicializacion de contadores Individuales" << std::endl;
 	std::cout << "--- ----------------------- ---" << std::endl;
-	for (int i = 0; i<DEMES; i++){
+	for (int i = 0; i<NUM_PROCESSORS; i++){
 		Individual::cant_macro[i] = 0;
 		Individual::cant_macro_del[i] = 0;
 		Individual::cant_macro_ins[i] = 0;
@@ -71,7 +69,7 @@ void init_Lgp_counters(){
 	std::cout << "--- ----------------------- ---" << std::endl;
 	std::cout << "Inicializacion de contadores por transformador" << std::endl;
 	std::cout << "--- ----------------------- ---" << std::endl;
-	for (int i = 0; i<DEMES; i++){
+	for (int i = 0; i<NUM_PROCESSORS; i++){
 		Lgp::cant_migracion[i] = 0;
 	}
 	init_individual_counters();
@@ -120,25 +118,6 @@ void update_counters(){
 	global_cant_micro_ope += get_counters_sum(Individual::cant_micro_ope);
 	std::cout << "****------------------------------------------------------------****\n";
 }
-/* Se puede borrar desde aca */
-void print_trafo_counters(std::vector<int> vect, std::string valor){
-	std::cout<<"\n"<<valor<<"\n";
-	for (int i = 0; i<DEMES; i++){
-		std::cout<<valor<<"["<<i<<"]"<<vect[i]<<"\n";
-	}
-}
-void print_global_counter(){
-	std::cout<<"\nglobal_cant_crossover"<<"\t "<<global_cant_crossover <<std::endl;
-	std::cout<<"global_cant_macro"<<"\t "<<global_cant_macro <<std::endl;
-	std::cout<<"global_cant_macro_del"<<"\t "<<global_cant_macro_del<<std::endl;
-	std::cout<<"global_cant_macro_ins"<<"\t "<<global_cant_macro_ins<<std::endl;
-	std::cout<<"global_cant_micro"<<"\t "<<global_cant_micro<<std::endl;
-	std::cout<<"global_cant_micro_const"<<"\t "<<global_cant_micro_const<<std::endl;
-	std::cout<<"global_cant_micro_ope"<<"\t "<<global_cant_micro_ope<<std::endl;
-	std::cout<<"global_cant_micro_reg"<<"\t "<<global_cant_micro_reg<<std::endl;
-	std::cout<<"global_cant_migracion"<<"\t "<<global_cant_migracion<<std::endl;
-}
-/* Se puede borrar hasta aca */
 /*
  * ******************************************************************************************
  *  									MAIN
@@ -165,18 +144,6 @@ int main(int argc, char ** argv) {
 		primero = 1;
 
 		init_global_counters();
-		std::cout<<"### 1 ###\n";
-		print_trafo_counters(Lgp::cant_migracion, "Migracion");
-		print_trafo_counters(Individual::cant_crossover, "Crossover");
-		print_trafo_counters(Individual::cant_macro, "Macro");
-		print_trafo_counters(Individual::cant_macro_del, "Macro Del");
-		print_trafo_counters(Individual::cant_macro_ins, "Macro Ins");
-		print_trafo_counters(Individual::cant_micro, "Micro");
-		print_trafo_counters(Individual::cant_micro_const, "Micro Const");
-		print_trafo_counters(Individual::cant_micro_reg, "Micro Reg");
-		print_trafo_counters(Individual::cant_micro_ope, "Micro Oper");
-		print_global_counter();
-		std::cout<<"### ###\n";
 
 		std::stringstream st; st << p;
 		std::string folder = folder_orig + st.str() + "/";
@@ -221,20 +188,6 @@ int main(int argc, char ** argv) {
 
 			init_Lgp_counters();
 
-			std::cout<<"### 2 ###\n";
-			print_trafo_counters(Lgp::cant_migracion, "Migracion");
-			print_trafo_counters(Individual::cant_crossover, "Crossover");
-			print_trafo_counters(Individual::cant_macro, "Macro");
-			print_trafo_counters(Individual::cant_macro_del, "Macro Del");
-			print_trafo_counters(Individual::cant_macro_ins, "Macro Ins");
-			print_trafo_counters(Individual::cant_micro, "Micro");
-			print_trafo_counters(Individual::cant_micro_const, "Micro Const");
-			print_trafo_counters(Individual::cant_micro_reg, "Micro Reg");
-			print_trafo_counters(Individual::cant_micro_ope, "Micro Oper");
-			print_global_counter();
-			std::cout<<"### ###\n";
-
-
 			int i = *it;
 			t_begin = clock();
 			clock_gettime(CLOCK_REALTIME, &real_t_begin);
@@ -248,19 +201,6 @@ int main(int argc, char ** argv) {
 			lgp->evolve();
 
 			update_counters();
-
-			std::cout<<"### 3 ###\n";
-			print_trafo_counters(Lgp::cant_migracion, "Migracion");
-			print_trafo_counters(Individual::cant_crossover, "Crossover");
-			print_trafo_counters(Individual::cant_macro, "Macro");
-			print_trafo_counters(Individual::cant_macro_del, "Macro Del");
-			print_trafo_counters(Individual::cant_macro_ins, "Macro Ins");
-			print_trafo_counters(Individual::cant_micro, "Micro");
-			print_trafo_counters(Individual::cant_micro_const, "Micro Const");
-			print_trafo_counters(Individual::cant_micro_reg, "Micro Reg");
-			print_trafo_counters(Individual::cant_micro_ope, "Micro Oper");
-			print_global_counter();
-			std::cout<<"### ###\n";
 
 			best_individuals_training = lgp->best_individuals_of_demes(TRAINING);
 			//best_individuals_validation = lgp->best_individuals_of_demes(VALIDATION);
@@ -331,18 +271,7 @@ int main(int argc, char ** argv) {
 			delete lgp;
 			primero = 0;
 		}//End for de transformadores
-			std::cout<<"### 4 ###\n";
-			print_trafo_counters(Lgp::cant_migracion, "Migracion");
-			print_trafo_counters(Individual::cant_crossover, "Crossover");
-			print_trafo_counters(Individual::cant_macro, "Macro");
-			print_trafo_counters(Individual::cant_macro_del, "Macro Del");
-			print_trafo_counters(Individual::cant_macro_ins, "Macro Ins");
-			print_trafo_counters(Individual::cant_micro, "Micro");
-			print_trafo_counters(Individual::cant_micro_const, "Micro Const");
-			print_trafo_counters(Individual::cant_micro_reg, "Micro Reg");
-			print_trafo_counters(Individual::cant_micro_ope, "Micro Oper");
-			print_global_counter();
-			std::cout<<"### ###\n";
+
 		main_end = clock();
 		clock_gettime(CLOCK_REALTIME, &real_main_end);
 		duration = (double) (main_end - main_begin) / CLOCKS_PER_SEC;

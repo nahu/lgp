@@ -27,7 +27,7 @@ public:
 /*
  * Inicializacion de variables (para que no de "undefined reference to"
  */
-std::vector<int>  Lgp::cant_migracion (DEMES,0);
+std::vector<int>  Lgp::cant_migracion (NUM_PROCESSORS,0);
 
 Lgp::Lgp(int config_position, int demes, int population_size, int num_generation) {
 	//std::cout<<"Const. LGP\n";

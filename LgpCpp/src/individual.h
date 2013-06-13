@@ -56,14 +56,14 @@ public:
 	static std::vector<int> cant_micro_ope;
 	static std::vector<int> cant_crossover;
 };
-std::vector<int> Individual::cant_macro(DEMES,0);
-std::vector<int> Individual::cant_macro_del(DEMES,0);
-std::vector<int> Individual::cant_macro_ins(DEMES,0);
-std::vector<int> Individual::cant_micro(DEMES,0);
-std::vector<int> Individual::cant_micro_reg(DEMES,0);
-std::vector<int> Individual::cant_micro_const(DEMES,0);
-std::vector<int> Individual::cant_micro_ope(DEMES,0);
-std::vector<int> Individual::cant_crossover(DEMES,0);
+std::vector<int> Individual::cant_macro(NUM_PROCESSORS,0);
+std::vector<int> Individual::cant_macro_del(NUM_PROCESSORS,0);
+std::vector<int> Individual::cant_macro_ins(NUM_PROCESSORS,0);
+std::vector<int> Individual::cant_micro(NUM_PROCESSORS,0);
+std::vector<int> Individual::cant_micro_reg(NUM_PROCESSORS,0);
+std::vector<int> Individual::cant_micro_const(NUM_PROCESSORS,0);
+std::vector<int> Individual::cant_micro_ope(NUM_PROCESSORS,0);
+std::vector<int> Individual::cant_crossover(NUM_PROCESSORS,0);
 /*
  * Inicializacion de variables (para que no de "undefined reference to"
  */
@@ -483,6 +483,7 @@ void Individual::check_max_min_instructions(std::string name,
 
 void Individual::crossover(Individual * &genome1, Individual * &genome2) { //, Individual * &child1, Individual * &child2
 	Individual::cant_crossover[omp_get_thread_num()]+=1;
+	std::cout<<"\n** Crossover: "<< Individual::cant_crossover[omp_get_thread_num()]<< " \tHilo: "<<omp_get_thread_num();
 	genome1->check_max_min_instructions("genome1", "Antes Crossover");
 	genome2->check_max_min_instructions("genome2", "Antes Crossover");
 	Individual * mom, *sister;
