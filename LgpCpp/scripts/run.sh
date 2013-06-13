@@ -3,7 +3,7 @@
 PARAMETERS=(../data/parameters*)
 FILE=../src/parameters.h
 OUT_DIR=./resultados/$1/
-ORIGINAL=../src/parameters_base.py
+ORIGINAL=../src/parameters_base.h
 
 
 mkdir .$OUT_DIR
