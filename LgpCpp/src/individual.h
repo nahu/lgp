@@ -928,7 +928,7 @@ double * Individual::eval_individual(int tipo) {
 	error_quad[size] = error_a_quad;
 	error_quad[size + 1] = error_prom_quad;
 	error_quad[size + 2] = config_position;
-
+	/*
 	if (tipo == VALIDATION) {
 		std::cout << "Approximations en Validacion\n";
 		for (int h = 0; h < size; h++) {
@@ -936,6 +936,7 @@ double * Individual::eval_individual(int tipo) {
 		}
 		std::cout << "-------------------------------\n";
 	}
+	*/
 	delete [] approximation;
 
 	return error_quad;

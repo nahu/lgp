@@ -270,7 +270,7 @@ void Lgp::evolve() {
 		}
 
 
-		if ((generation % FREQ_STATS) == 0) {
+		if ((generation % FREQ_STATS) == 0 || generation == 1) {
 			std::cout << "\n==================================================\n";
 			std::cout << "Generación #" << generation;
 			std::cout << "\n==================================================\n";
