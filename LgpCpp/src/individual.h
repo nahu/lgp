@@ -483,7 +483,6 @@ void Individual::check_max_min_instructions(std::string name,
 
 void Individual::crossover(Individual * &genome1, Individual * &genome2) { //, Individual * &child1, Individual * &child2
 	Individual::cant_crossover[omp_get_thread_num()]+=1;
-	std::cout<<"\n** Crossover: "<< Individual::cant_crossover[omp_get_thread_num()]<< " \tHilo: "<<omp_get_thread_num();
 	genome1->check_max_min_instructions("genome1", "Antes Crossover");
 	genome2->check_max_min_instructions("genome2", "Antes Crossover");
 	Individual * mom, *sister;
