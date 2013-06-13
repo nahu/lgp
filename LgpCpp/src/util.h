@@ -140,3 +140,4 @@ void write_duration(std::string message, double duration){
 	std::cout << message << hours << ":" << minutes << ":" << seconds << " (" << duration << " seconds)\n";
 
 }
+

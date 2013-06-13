@@ -22,7 +22,12 @@ public:
 	//int config_position;
 	int num_demes;
 	Deme * population;
+	static std::vector<int>  cant_migracion;
 };
+/*
+ * Inicializacion de variables (para que no de "undefined reference to"
+ */
+std::vector<int>  Lgp::cant_migracion (NUM_PROCESSORS,0);
 
 Lgp::Lgp(int config_position, int demes, int population_size, int num_generation) {
 	//std::cout<<"Const. LGP\n";
@@ -185,6 +190,8 @@ void Lgp::deme_evolve(int deme_index) {
 
 void Lgp::evolve() {
 	//std::cout<<"evolve\n";
+	//Inicializa los contadores de operadores.
+	//Todo: guardar el fitnes del el fitnes del mejor en la primera generación 	y del mejor en la última generación
 	int for_replace;
 	std::vector<Individual>::iterator ini, end, it;
 
@@ -209,6 +216,7 @@ void Lgp::evolve() {
 		}
 
 		if (random_flip_coin(P_MIGRATION)) {
+			Lgp::cant_migracion[omp_get_thread_num()]+=1;
 			ini = population[num_demes - 1].list_ind->end() - for_replace;
 			end = population[num_demes - 1].list_ind->end();
 			it = population[0].list_ind->begin();
@@ -240,6 +248,7 @@ void Lgp::evolve() {
 
 		for (int i = 1; i < num_demes; i++) {
 			if (random_flip_coin (P_MIGRATION)) {
+				Lgp::cant_migracion[omp_get_thread_num()]+=1;
 				ini = population[i - 1].list_ind->end() - for_replace;
 				end = population[i - 1].list_ind->end();
 				it = population[i].list_ind->begin();
@@ -279,4 +288,3 @@ void Lgp::evolve() {
 	}
 	best_individual_in_training();
 }
-
