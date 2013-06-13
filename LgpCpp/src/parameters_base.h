@@ -7,7 +7,8 @@
 
 #define _USE_MATH_DEFINES
 
-#define FILE_ANALISIS "./analisis-link/analisis.csv"
+#define FILE_ANALISIS "./analisis/analisis.csv"
+#define FILE_PROBABILIDADES "./analisis/probabilidades.csv"
 
 #define FILE_NAME "./data/Datos8-exp2.txt"
 

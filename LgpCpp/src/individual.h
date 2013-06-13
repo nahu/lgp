@@ -46,7 +46,28 @@ public:
 	double sigma; //era dev
 	int config_position;
 	bool evaluated;
+
+	static std::vector<int> cant_macro;
+	static std::vector<int> cant_macro_del;
+	static std::vector<int> cant_macro_ins;
+	static std::vector<int> cant_micro;
+	static std::vector<int> cant_micro_reg;
+	static std::vector<int> cant_micro_const;
+	static std::vector<int> cant_micro_ope;
+	static std::vector<int> cant_crossover;
 };
+std::vector<int> Individual::cant_macro(DEMES,0);
+std::vector<int> Individual::cant_macro_del(DEMES,0);
+std::vector<int> Individual::cant_macro_ins(DEMES,0);
+std::vector<int> Individual::cant_micro(DEMES,0);
+std::vector<int> Individual::cant_micro_reg(DEMES,0);
+std::vector<int> Individual::cant_micro_const(DEMES,0);
+std::vector<int> Individual::cant_micro_ope(DEMES,0);
+std::vector<int> Individual::cant_crossover(DEMES,0);
+/*
+ * Inicializacion de variables (para que no de "undefined reference to"
+ */
+
 
 //para la función de comparación de std::sort
 struct compare_ob1 {
@@ -461,6 +482,7 @@ void Individual::check_max_min_instructions(std::string name,
 
 
 void Individual::crossover(Individual * &genome1, Individual * &genome2) { //, Individual * &child1, Individual * &child2
+	Individual::cant_crossover[omp_get_thread_num()]+=1;
 	genome1->check_max_min_instructions("genome1", "Antes Crossover");
 	genome2->check_max_min_instructions("genome2", "Antes Crossover");
 	Individual * mom, *sister;
@@ -578,13 +600,19 @@ void Individual::crossover(Individual * &genome1, Individual * &genome2) { //, I
 
 void Individual::macro_mutation() {
 	//Agrega o quita instrucciones  -- Alg. 6.1 -- p_ins > p_del //
+
+	//Contador de macromutaciones
+	Individual::cant_macro[omp_get_thread_num()]+=1;
+
 	bool insertion = random_flip_coin(P_INS);
 	int mutation_point = randint(0, program->height - 2);
 
 	//std::cout << "mutation_point: " << mutation_point << "\n";
 	if (program->height < NUM_MAX_INSTRUCTIONS && (insertion || program->height == NUM_MIN_INSTRUCTIONS)) {
 
-		//std::cout << "agrega instruccion\n";
+		//Contador de inserciones.
+		Individual::cant_macro_ins[omp_get_thread_num()]+=1;
+
 		// Si no supera la max. cant. de instrucciones y es insercion o tiene el numero minimo de instrucciones
 		Instruction new_instruction;
 		new_instruction.create_new_instruction();
@@ -621,7 +649,10 @@ void Individual::macro_mutation() {
 
 	} else if (program->height > NUM_MIN_INSTRUCTIONS && (!insertion || program->height == NUM_MAX_INSTRUCTIONS)) {
 		//Si es mayor a la  min. cant. de instrucciones y  no es insercion o tiene el numero maximo de instrucciones
-		//std::cout << "elimina instruccion\n";
+
+		//Contador de eliminaciones.
+		Individual::cant_macro_del[omp_get_thread_num()]+=1;
+
 		Instruction * new_list = new Instruction[program->height - 1];
 		if (mutation_point != 0) {
 			std::copy(program->list_inst, program->list_inst + mutation_point, new_list);
@@ -699,7 +730,10 @@ void Individual::micro_mutation() {
 	 * p_regmut = probabilidad de mutar un registro
 	 * p_opermut = probabilidad de mutar una operación
 	 * p_constmut = probabilidad de mutar una constante efectiva
+	 * Individual::cant_micro++ Contador de inserciones
 	 */
+	Individual::cant_micro[omp_get_thread_num()]+=1;
+
 	program->get_effective_instructions();
 	int * indices = program->get_effective_instructions_with_indices();
 	std::vector<int> v_indices;
@@ -720,10 +754,7 @@ void Individual::micro_mutation() {
 					randint(0, constants_indices.size() - 1));
 			register_mutation_index =
 					program->list_inst[ins_with_constant_index].op2;
-			/*std::cout << "\nprogram->list_reg[" << register_mutation_index
-					<< "] = " << program->list_reg[register_mutation_index]
-					<< "\n";*/
-			//program->list_reg[register_mutation_index] += (pow((-1),(randint(0, 1))) * randfloat(0.0, STEP_SIZE_CONST));
+			Individual::cant_micro_const[omp_get_thread_num()]+=1;
 		} else {
 			//no hay instrucciones efectivas con registros constantes variables
 			type = select_micro_mutacion_type(_random());
@@ -790,6 +821,7 @@ void Individual::micro_mutation() {
 			program->list_inst[mutation_point].op2 = op;
 			break;
 		}
+		Individual::cant_micro_reg[omp_get_thread_num()]+=1;
 	}
 
 	int diff_op = 0;
@@ -802,31 +834,9 @@ void Individual::micro_mutation() {
 		}
 
 		program->list_inst[mutation_point].oper = diff_op;
+		Individual::cant_micro_ope[omp_get_thread_num()]+=1;
 	}
 	set_altered();
-
-	//para borrar desde aca
-	/*
-	std::cout << "##Info de control: " << "\n";
-	std::cout << "Instrucciones efectivas:\n";
-	Program::print_list_int(program->effective_list_inst, program->n_eff);
-	std::cout << "Mutation type = " << type << "\nMutation_point = "
-			<< mutation_point << "\npos_to_replace = " << pos_to_replace
-			<< "\n";
-	if (type == OPERACIONES) {
-		std::cout << "Nueva operacion = " << diff_op << "\n";
-	} else if (type == REGISTROS) {
-		std::cout << "Nuevo Registro = " << op << "\n";
-	} else {
-		std::cout << "Constantes efectivas: \n";
-		for (int i = 0; i < constants_indices.size(); i++) {
-			std::cout << constants_indices.at(i) << "  ";
-		}
-		std::cout << "\nNuevo valor de program->list_reg["
-				<< register_mutation_index << "] = "
-				<< program->list_reg[register_mutation_index] << "\n";
-	}
-	//hasta aca*/
 }
 
 
@@ -940,6 +950,5 @@ double * Individual::eval_individual(int tipo) {
 
 	return error_quad;
 }
-
 
 

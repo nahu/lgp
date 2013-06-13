@@ -229,3 +229,118 @@ void save_global_results(Individual * best_global , std::string folder) {
 	save_to_analisis_file(folder, errprom, max, faltante.str());
 }
 
+int get_counters_sum(std::vector<int> vect){
+	int total = 0;
+	for (int i = 0; i < vect.size(); i++)
+		total += vect[i];
+	return total;
+}
+
+void trafo_counters_to_file(std::string trafo, std::string folder, int primero){
+	std::ofstream f;
+	std::string file = FILE_PROBABILIDADES;
+	f.open(file.c_str(), std::ofstream::app);
+	f.precision(6);
+	if (primero){
+		f << folder << ";"<<"Transf.;"<<"Migracion;"<<"Crossover;"<<"Macro_Mut;";
+		f << "Macro_del;" << "Macro_ins;" << "Micro ;" << "Micro Operadores;" << "Micro Registros;";
+		f << "Micro Constante;"<<  "\n";
+		f << ";" << ";";
+		f << P_MIGRATION << ";";
+		f << P_CROSSOVER << ";";
+		f << P_MACRO_MUTATION << ";";
+		f << P_DEL << ";";
+		f << P_INS<< ";";
+		f << P_MICRO_MUTATION << ";";
+		f << P_OPERMUT<< ";";
+		f << P_REGMUT<< ";";
+		f << P_CONSTMUT<< ";";
+		f << "\n";
+
+	}
+	f << ";";
+	f << "TRANSFORMADOR "<<trafo << " ;";
+	f << get_counters_sum(Lgp::cant_migracion)				<< ";";
+	f << get_counters_sum(Individual::cant_crossover)		<< ";";
+
+	f << get_counters_sum(Individual::cant_macro)			<< ";";
+	f << get_counters_sum(Individual::cant_macro_del)		<< ";";
+	f << get_counters_sum(Individual::cant_macro_ins)		<< ";";
+
+	f << get_counters_sum(Individual::cant_micro)			<< ";";
+	f << get_counters_sum(Individual::cant_micro_ope)		<< ";";
+	f << get_counters_sum(Individual::cant_micro_reg)		<< ";";
+	f << get_counters_sum(Individual::cant_micro_const)		<< ";\n";
+
+	/* ************************************************************** */
+	int veces = NUM_GENERATIONS * GEN_TO_MIGRATE * DEMES;
+	f<<";";
+	f<<"Prob. Efect. Trafo #" << trafo << ":"<<";";
+	f << (double)(get_counters_sum(Lgp::cant_migracion)/veces)				<< ";";
+	f << (double)(get_counters_sum(Individual::cant_crossover)/veces)		<< ";";
+
+	f << (double)(get_counters_sum(Individual::cant_macro)/veces)			<< ";";
+	f << (double)(get_counters_sum(Individual::cant_macro_del)/veces)		<< ";";
+	f << (double)(get_counters_sum(Individual::cant_macro_ins)/veces)		<< ";";
+
+	f << (double)(get_counters_sum(Individual::cant_micro)/veces)			<< ";";
+	f << (double)(get_counters_sum(Individual::cant_micro_ope)/veces)		<< ";";
+	f << (double)(get_counters_sum(Individual::cant_micro_reg)/veces)		<< ";";
+	f << (double)(get_counters_sum(Individual::cant_micro_const)/veces)		<< ";\n";
+	f.close();
+}
+void global_counters_to_file(std::string folder, int global_cant_crossover, int global_cant_migracion,
+		int global_cant_macro, int  global_cant_macro_del, int global_cant_macro_ins, int global_cant_micro,
+		int global_cant_micro_reg,int global_cant_micro_const, int global_cant_micro_ope, int cant_trafos)
+{
+	std::ofstream f;
+	std::string file = FILE_PROBABILIDADES;
+	f.open(file.c_str(), std::ofstream::app);
+	f.precision(6);
+
+	f << ";";
+	f << "TOTAL: ;";
+	f << global_cant_migracion << ";";
+	f << global_cant_crossover << ";";
+
+
+	f << global_cant_macro << ";";
+	f << global_cant_macro_del << ";";
+	f << global_cant_macro_ins << ";";
+
+	f << global_cant_micro << ";";
+	f << global_cant_micro_ope << ";";
+	f << global_cant_micro_reg << ";";
+	f << global_cant_micro_const << ";\n";
+
+	/* ************************************ */
+	double veces = NUM_GENERATIONS * GEN_TO_MIGRATE * cant_trafos * DEMES;
+	f << ";";
+	f << "PROBABILIDAD: ;";
+	f << global_cant_migracion/veces << ";";
+	f << global_cant_crossover/veces << ";";
+
+	f << (double) (global_cant_macro/veces) << ";";
+	f << (double) (global_cant_macro_del/global_cant_macro) << ";";
+	f << (double) (global_cant_macro_ins/global_cant_macro) << ";";
+
+	f << (double) (global_cant_micro/veces) << ";";
+	f << (double) (global_cant_micro_ope/global_cant_micro) << ";";
+	f << (double) (global_cant_micro_reg/global_cant_micro) << ";";
+	f << (double) (global_cant_micro_const/global_cant_micro) << ";\n";
+	/* ************************************ */
+	f << ";";
+	f << "GENERACIONES: ;";
+	f << NUM_GENERATIONS << ";\n";
+	/* ************************************ */
+	f << ";";
+	f << "GEN_TO_MIGRATE: ;";
+	f << GEN_TO_MIGRATE << ";\n";
+	/* ************************************ */
+	f << ";";
+	f << "DEMES: ;";
+	f << DEMES << ";\n";
+	f.close();
+}
+
+
