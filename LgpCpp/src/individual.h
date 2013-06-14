@@ -744,7 +744,7 @@ void Individual::micro_mutation() {
 	int op = -1;
 	int ins_with_constant_index, register_mutation_index;
 	std::vector<int> constants_indices;
-	type = CONSTANTES;
+
 
 	if (type == CONSTANTES) {
 		constants_indices = program->get_effective_constant_indices();
