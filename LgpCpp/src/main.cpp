@@ -198,11 +198,14 @@ int main(int argc, char ** argv) {
 
 			Lgp * lgp = new Lgp(i, DEMES, POPULATION_SIZE, NUM_GENERATIONS);
 
+			Individual  best_init = *(lgp->best_individual_in_training());
+
 			lgp->evolve();
 
 			update_counters();
 
 			best_individuals_training = lgp->best_individuals_of_demes(TRAINING);
+
 			//best_individuals_validation = lgp->best_individuals_of_demes(VALIDATION);
 			best_global[global_pos++] = *(lgp->best_individual_in_training());
 
@@ -257,7 +260,7 @@ int main(int argc, char ** argv) {
 				{
 					std::stringstream posicion;
 					posicion<<i;
-					trafo_counters_to_file(posicion.str(), folder, primero);
+					trafo_counters_to_file(posicion.str(), folder, primero, &best_init, &best_global[global_pos-1]);
 				}
 			}
 
