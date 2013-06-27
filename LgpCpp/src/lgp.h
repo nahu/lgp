@@ -208,7 +208,6 @@ void Lgp::evolve() {
 	int for_replace;
 	std::vector<Individual>::iterator ini, end, it;
 
-	double previous_diff = 0.0;
 	double actual_diff = 0.0;
 	int stopped_gen = 0;
 	Individual best_init, best_end;
@@ -299,7 +298,6 @@ void Lgp::evolve() {
 
 		/* ******************** Controles para estancamiento ******************** */
 		best_end = *(best_individual_in_training());
-		previous_diff = actual_diff;
 		actual_diff = (best_end.error - best_init.error);
 
 		/* Si se mantuvo el error despues de GEN_TO_MIGRATE, o si el avance actual es menor al anterior */
@@ -320,6 +318,7 @@ void Lgp::evolve() {
 					}
 				}
 			}
+			stopped_gen = 0;
 
 		}
 		/* ***************** Fin de Controles para estancamiento ***************** */
