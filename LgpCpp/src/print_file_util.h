@@ -236,7 +236,7 @@ int get_counters_sum(std::vector<int> vect){
 	return total;
 }
 
-void trafo_counters_to_file(std::string trafo, std::string folder, int primero){
+void trafo_counters_to_file(std::string trafo, std::string folder, int primero, Individual *best_init, Individual *best_end){
 	std::ofstream f;
 	std::string file = FILE_PROBABILIDADES;
 	f.open(file.c_str(), std::ofstream::app);
@@ -244,8 +244,8 @@ void trafo_counters_to_file(std::string trafo, std::string folder, int primero){
 	if (primero){
 		f << folder << ";"<<"Transf.;"<<"Migracion;"<<"Crossover;"<<"Macro_Mut;";
 		f << "Macro_del;" << "Macro_ins;" << "Micro ;" << "Micro Operadores;" << "Micro Registros;";
-		f << "Micro Constante;"<<  "\n";
-		f << ";" << ";";
+		f << "Micro Constante;"<< "Err. Best Init;"<< "Err. Best End;" << "\n";
+		f << "Parametrizado" << ";";
 		f << P_MIGRATION << ";";
 		f << P_CROSSOVER << ";";
 		f << P_MACRO_MUTATION << ";";
@@ -259,7 +259,7 @@ void trafo_counters_to_file(std::string trafo, std::string folder, int primero){
 
 	}
 	f << ";";
-	f << "TRANSFORMADOR "<<trafo << " ;";
+	f << "Transformador "<<trafo << " ;";
 	f << get_counters_sum(Lgp::cant_migracion)				<< ";";
 	f << get_counters_sum(Individual::cant_crossover)		<< ";";
 
@@ -270,7 +270,9 @@ void trafo_counters_to_file(std::string trafo, std::string folder, int primero){
 	f << get_counters_sum(Individual::cant_micro)			<< ";";
 	f << get_counters_sum(Individual::cant_micro_ope)		<< ";";
 	f << get_counters_sum(Individual::cant_micro_reg)		<< ";";
-	f << get_counters_sum(Individual::cant_micro_const)		<< ";\n";
+	f << get_counters_sum(Individual::cant_micro_const)		<< ";";
+	f << best_init->error << ";";
+	f << best_end->error << ";" << "\n";
 
 	/* ************************************************************** */
 	int veces = (NUM_GENERATIONS + 1) * GEN_TO_MIGRATE * DEMES;
