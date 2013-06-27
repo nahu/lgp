@@ -208,6 +208,12 @@ void Lgp::evolve() {
 	int for_replace;
 	std::vector<Individual>::iterator ini, end, it;
 
+	double previous_diff = 0.0;
+	double actual_diff = 0.0;
+	int stopped_gen = 0;
+	Individual best_init, best_end;
+
+
 	while (!termination_criteria()) {
 		generation++;
 		//std::cout << "Generación #" << generation << "\n";
@@ -291,6 +297,32 @@ void Lgp::evolve() {
 			}
 		}
 
+		/* ******************** Controles para estancamiento ******************** */
+		best_end = *(best_individual_in_training());
+		previous_diff = actual_diff;
+		actual_diff = (best_end.error - best_init.error);
+
+		/* Si se mantuvo el error despues de GEN_TO_MIGRATE, o si el avance actual es menor al anterior */
+		if (best_end.error >= best_init.error || actual_diff < (ERROR_STEP/generation) || actual_diff < (MIN_ERROR_STEP)){
+			stopped_gen++;
+		}
+
+		if (stopped_gen == CANT_ESTANCAMIENTO){
+			std::cout << "ESTANCAMIENTO: Se procede a realizar las mutaciones a toda la poblacion \n";
+			for (int i = 1; i < num_demes; i++) {
+				for (int j = 0; j < population[i].deme_size; j++){
+					if (random_flip_coin(P_MACRO_MUTATION)) {
+						population[i].list_ind->at(j).macro_mutation();
+					}
+
+					if (random_flip_coin(P_MICRO_MUTATION)) {
+						population[i].list_ind->at(j).micro_mutation();
+					}
+				}
+			}
+
+		}
+		/* ***************** Fin de Controles para estancamiento ***************** */
 
 		if ((generation % FREQ_STATS) == 0 || generation == 1) {
 			std::cout << "\n==================================================\n";

@@ -171,6 +171,9 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define MIGRATION_RATE 0.01
 #define GEN_TO_MIGRATE 250
 
+#define CANT_ESTANCAMIENTO 3
+#define ERROR_STEP 100000
+#define MIN_ERROR_STEP 100
 
 
 /***************************************  PROBABILIDADES **************************************
