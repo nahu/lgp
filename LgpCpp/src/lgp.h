@@ -11,7 +11,7 @@ class Lgp {
 public:
 	Lgp(int config_position, int demes, int population_size, int num_generations);
 	~Lgp();
-	Individual * best_individual_in_training();
+	Individual * best_individual_in_training(bool verbose=false);
 	Individual ** best_individuals_of_demes(int tipo);
 	bool termination_criteria();
 	void deme_evolve(int deme_index);
@@ -20,6 +20,7 @@ public:
 	unsigned int generation;
 	unsigned int num_generation;
 	//int config_position;
+	double best_error;
 	int num_demes;
 	Deme * population;
 	static std::vector<int>  cant_migracion;
@@ -33,6 +34,7 @@ Lgp::Lgp(int config_position, int demes, int population_size, int num_generation
 	//std::cout<<"Const. LGP\n";
 
 	generation = 0;
+	best_error = HUGE_NUMBER;
 	this->num_generation = num_generation;
 	int div, pop_size_per_deme;
 
@@ -62,11 +64,13 @@ Lgp::~Lgp() {
 }
 
 
-Individual* Lgp::best_individual_in_training() {
+Individual* Lgp::best_individual_in_training(bool verbose) {
 	Individual ** deme_best = new Individual *[num_demes];
 	Individual * best = 0;
 
 	//todo: paralelizar
+	int chunks = num_demes / (NUM_PROCESSORS);
+	#pragma omp parallel for schedule(static, chunks)
 	for (int i = 0; i < num_demes; i++) {
 		deme_best[i] = population[i].best_training();
 	}
@@ -79,11 +83,15 @@ Individual* Lgp::best_individual_in_training() {
 		}
 	}
 
-	std::cout << "Los mejores de Entrenamietno\n";
-	for (int i = 0; i < num_demes; i++) {
-		std::cout << "+++++++++DEME " << i << "\n";
-		deme_best[i]->print_individual();
+	if (verbose) {
+		std::cout << "Los mejores de Entrenamietno\n";
+		for (int i = 0; i < num_demes; i++) {
+			std::cout << "+++++++++DEME " << i << "\n";
+			deme_best[i]->print_individual();
+		}
 	}
+
+	best_error = best->error;
 
 	return best;
 }
@@ -108,7 +116,12 @@ Individual** Lgp::best_individuals_of_demes(int tipo) {
 
 
 inline bool Lgp::termination_criteria() {
-	return (generation > num_generation);
+
+	if ((best_error < ERROR_TO_STOP) || (generation > NUM_MAX_GENERATION)) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 

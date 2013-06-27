@@ -152,7 +152,9 @@ int main(int argc, char ** argv) {
 		clock_t main_begin, main_end, t_begin, t_end;
 		timespec real_main_begin, real_main_end, real_t_begin, real_t_end;
 		Individual ** best_individuals_training;
-		std::vector<int> posiciones (N - K);
+		//std::vector<int> posiciones (N_K);
+		std::vector<int> posiciones (1); //sacar para procesar todos
+
 		std::vector<double *> list_training_errors(DEMES), list_validation_errors(DEMES);
 		double duration;
 
@@ -170,7 +172,7 @@ int main(int argc, char ** argv) {
 
 		//Se escriben los parametros
 		parameters_to_file(folder + "/parametros.txt");
-
+		/*
 		int index = 0;
 		for (int i = 0; i < N; i++) {
 			if (CONFIG[i] == '0') {
@@ -178,6 +180,9 @@ int main(int argc, char ** argv) {
 				index++;
 			}
 		}
+		*/
+		posiciones[0] = CONFIG_POSITION; //sacar para procesar todos
+
 		//Aca se agregan los mejores individuos por cada trafo
 		Individual * best_global = new Individual[posiciones.size()];
 		int global_pos = 0;

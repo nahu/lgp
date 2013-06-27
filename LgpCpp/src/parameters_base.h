@@ -7,10 +7,10 @@
 
 #define _USE_MATH_DEFINES
 
-#define FILE_ANALISIS "./analisis/analisis.csv"
-#define FILE_PROBABILIDADES "./analisis/probabilidades.csv"
+#define FILE_ANALISIS "./analisis-link/analisis.csv"
+#define FILE_PROBABILIDADES "./analisis-link/probabilidades.csv"
 
-#define FILE_NAME "./data/Datos8-exp2.txt"
+#define FILE_NAME "./data/Datos8-exp4-2.txt"
 
 //#define FILE_NAME "./data/Datos60.txt"
 //#define FILE_NAME_DR "./data/datos_reducidos.txt"
@@ -19,15 +19,26 @@
 std::string CONFIG = "10101011";
 //std::string CONFIG = "1011111011111110111111101111111111111110";
 
+#define CONFIG_POSITION 1 //el transformador dentro de la configuración a encontrar
+
+
 #define N 8
 //#define N 40
 
 #define K 5
 //#define K 35
 
+
+#define N_K (N - K)
 //#define Q 10
 #define DELTA 6
+
+
 #define CNT_PRUEBAS 3
+
+/*condiciones de parada */
+#define ERROR_TO_STOP 1
+#define NUM_MAX_GENERATION 10000
 
 
 /******************************* DATOS **********************************/
@@ -63,12 +74,12 @@ la convención para asegurar que el programa tenga una salida es que la
 
 
 #define NUM_MIN_INSTRUCTIONS (3 * K)
-#define NUM_MAX_INSTRUCTIONS (12 * K)
-#define NUM_INI_INSTRUCTIONS (7 * K)
+#define NUM_MAX_INSTRUCTIONS (19 * K)
+#define NUM_INI_INSTRUCTIONS (6 * K)
 #define NUM_OPERATORS 9
 
 
-#define NUM_VAR_REGISTER 7//K
+#define NUM_VAR_REGISTER 9//K
 
 #ifdef Q
 	#define NUM_CONST_IN_REGISTERS (Q + DELTA)
@@ -77,7 +88,7 @@ la convención para asegurar que el programa tenga una salida es que la
 #endif
 
 #define NUM_OUT_REGISTERS 1
-#define NUM_CONST_RANDOM_REGISTERS 5//K
+#define NUM_CONST_RANDOM_REGISTERS 4//K
 #define NUM_CONST_MATH_REGISTERS 4
 #define NUM_CONTS_REGISTERS (NUM_CONST_RANDOM_REGISTERS + NUM_CONST_IN_REGISTERS + NUM_CONST_MATH_REGISTERS)
 #define NUM_REGISTERS (NUM_CONTS_REGISTERS + NUM_VAR_REGISTER + NUM_OUT_REGISTERS)
@@ -151,14 +162,14 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 
 
-#define NUM_GENERATIONS 800
-#define POPULATION_SIZE 25000
-#define DEMES 8
-#define FREQ_STATS 50
-#define POOL_SIZE 8
-#define POOL_REPRODUCTION 2
-#define MIGRATION_RATE 0.015
-#define GEN_TO_MIGRATE 350
+#define NUM_GENERATIONS 1500
+#define POPULATION_SIZE 1048576
+#define DEMES 32
+#define FREQ_STATS 100
+#define POOL_SIZE 64
+#define POOL_REPRODUCTION 4
+#define MIGRATION_RATE 0.01
+#define GEN_TO_MIGRATE 250
 
 
 
@@ -185,13 +196,13 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 *************************************************************************************************/
 
 
-#define P_MIGRATION 0.9
-#define P_MIGRATION_CRITERIA 0.8
+#define P_MIGRATION 0.8
+#define P_MIGRATION_CRITERIA 1
 
 
 #define P_REG_OP1_CONST 0.4
 #define P_REG_OP2_CONST 0.6
-#define P_REG_CONST_DELTA 0.8
+#define P_REG_CONST_DELTA 0.7
 #define P_CONST_IN 0.80
 #define CONST_MIN 0 //50
 #define CONST_MAX 1 //50
@@ -203,13 +214,14 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 
 #define P_MICRO_MUTATION 0.9//0.90
-#define P_REGMUT 0.50
-#define P_OPERMUT 0.45
+#define P_REGMUT 0.25
+#define P_OPERMUT 0.7
 #define P_CONSTMUT 0.05
-#define STEP_SIZE_CONST 5.0
+
+#define STEP_SIZE_CONST 0.1
 
 
-#define P_CROSSOVER 0.5//0.10
+#define P_CROSSOVER 0.8//0.10
 
 
 
