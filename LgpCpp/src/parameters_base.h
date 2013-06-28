@@ -38,7 +38,7 @@ std::string CONFIG = "10101011";
 
 /*condiciones de parada */
 #define ERROR_TO_STOP 1
-#define NUM_MAX_GENERATION 10000
+#define NUM_MAX_GENERATION 6000
 
 
 /******************************* DATOS **********************************/
@@ -163,15 +163,15 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 
 #define NUM_GENERATIONS 1500
-#define POPULATION_SIZE 1048576
-#define DEMES 32
+#define POPULATION_SIZE 524288 //19
+#define DEMES 16
 #define FREQ_STATS 100
-#define POOL_SIZE 64
+#define POOL_SIZE 32
 #define POOL_REPRODUCTION 4
 #define MIGRATION_RATE 0.01
 #define GEN_TO_MIGRATE 250
 
-#define CANT_ESTANCAMIENTO 3
+#define CANT_ESTANCAMIENTO 10
 #define ERROR_STEP 100000
 #define MIN_ERROR_STEP 100
 

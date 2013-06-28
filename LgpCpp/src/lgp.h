@@ -210,8 +210,8 @@ void Lgp::evolve() {
 
 	double actual_diff = 0.0;
 	int stopped_gen = 0;
-	Individual best_init, best_end;
-
+	double best_init, best_end;
+	int re_creation_times = 0;
 
 	while (!termination_criteria()) {
 		generation++;
@@ -219,6 +219,9 @@ void Lgp::evolve() {
 		for_replace = MIGRATION_RATE * (float) population[0].deme_size;
 		//for_replace = 3;
 		//std::cout << "for replace " << for_replace << "\n";
+
+		best_individual_in_training();
+		best_init = best_error;
 
 		//todo paralelizar
 		int chunks = num_demes / (NUM_PROCESSORS);
@@ -297,27 +300,37 @@ void Lgp::evolve() {
 		}
 
 		/* ******************** Controles para estancamiento ******************** */
-		best_end = *(best_individual_in_training());
-		actual_diff = (best_end.error - best_init.error);
+		best_individual_in_training();
+		best_end = best_error;
+		actual_diff = (best_end - best_init);
 
 		/* Si se mantuvo el error despues de GEN_TO_MIGRATE, o si el avance actual es menor al anterior */
-		if (best_end.error >= best_init.error || actual_diff < (ERROR_STEP/generation) || actual_diff < (MIN_ERROR_STEP)){
+		if (actual_diff < (ERROR_STEP/generation) || actual_diff < (MIN_ERROR_STEP)){
 			stopped_gen++;
 		}
 
-		if (stopped_gen == CANT_ESTANCAMIENTO){
+		if (stopped_gen == CANT_ESTANCAMIENTO) {
 			std::cout << "ESTANCAMIENTO: Se procede a realizar las mutaciones a toda la poblacion \n";
+			re_creation_times++;
+			//todo paralelizar
+			int chunks = num_demes / (NUM_PROCESSORS);
+			#pragma omp parallel for schedule(static, chunks)
 			for (int i = 1; i < num_demes; i++) {
-				for (int j = 0; j < population[i].deme_size; j++){
-					if (random_flip_coin(P_MACRO_MUTATION)) {
-						population[i].list_ind->at(j).macro_mutation();
+				if (random_flip_coin(0.4)) {
+
+					for (int j = 0; j < population[i].deme_size; j++){
+						if (random_flip_coin(P_MACRO_MUTATION)) {
+							population[i].list_ind->at(j).macro_mutation();
+						}
+
+						if (random_flip_coin(P_MICRO_MUTATION)) {
+							population[i].list_ind->at(j).micro_mutation();
+						}
 					}
 
-					if (random_flip_coin(P_MICRO_MUTATION)) {
-						population[i].list_ind->at(j).micro_mutation();
-					}
 				}
 			}
+
 			stopped_gen = 0;
 
 		}
@@ -325,9 +338,11 @@ void Lgp::evolve() {
 
 		if ((generation % FREQ_STATS) == 0 || generation == 1) {
 			std::cout << "\n==================================================\n";
-			std::cout << "Generación #" << generation;
+			std::cout << "Generación #" << generation << "\n";
+			std::cout << "Veces recreadas: " << re_creation_times;
 			std::cout << "\n==================================================\n";
-			best_individual_in_training();
+			best_individual_in_training(true);
+			re_creation_times = 0;
 		}
 	}
 	best_individual_in_training();
