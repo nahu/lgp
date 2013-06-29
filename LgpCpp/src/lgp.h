@@ -339,10 +339,11 @@ void Lgp::evolve() {
 						Individual * del_temp = temp;
 
 						Individual::crossover(new_individual, temp);
-						(*j) = (*temp);
+						(*j) = (*new_individual);
 
 						delete del_new_individual;
 						delete del_temp;
+						delete temp;
 					}
 				}
 
