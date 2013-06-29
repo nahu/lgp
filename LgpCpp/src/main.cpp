@@ -287,7 +287,7 @@ int main(int argc, char ** argv) {
 		duration = (real_main_end.tv_sec - real_main_begin.tv_sec);
 		write_duration("Duración REAL: ", duration);
 		std::cout << "------- antes de escribir resultados -----------";
-		save_global_results(best_global, folder);
+		save_global_results(best_global, posiciones.size(), folder);
 
 		global_counters_to_file( folder, global_cant_crossover, global_cant_migracion, global_cant_macro,
 				global_cant_macro_del, global_cant_macro_ins, global_cant_micro, global_cant_micro_reg,

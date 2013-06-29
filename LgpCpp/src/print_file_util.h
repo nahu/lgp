@@ -178,7 +178,7 @@ void save_to_analisis_file(std::string folder, double err, double max, std::stri
 	f.close();
 }
 
-void save_global_results(Individual * best_global , std::string folder) {
+void save_global_results(Individual * best_global , int cant_trafos, std::string folder) {
 	/*
 	 * Se debe calcular el error promedio y el error maximo.
 	 * Se debe escribir lo siguiente (agregando al archivo)
@@ -189,8 +189,8 @@ void save_global_results(Individual * best_global , std::string folder) {
 	f.open(file.c_str());
 	f.precision(6);
 	std::string row;
-	std::vector<double *> error_list(N-K);
-	for (int j = 0; j < N-K; j++) {
+	std::vector<double *> error_list(cant_trafos);
+	for (int j = 0; j < cant_trafos ; j++) { //Por cada transformador
 		error_list[j] = best_global[j].eval_individual(VALIDATION);
 	}
 	double sum_prom_errores = 0;
@@ -222,7 +222,7 @@ void save_global_results(Individual * best_global , std::string folder) {
 			max = error_list.at(i)[size-2];
 		}
 	}
-	double errprom = sum_prom_errores/(N-K);
+	double errprom = sum_prom_errores/(cant_trafos);
 	f << "Error promedio total: ;" << errprom<< ";\n";
 	f << "Error maximo: ;" << max << ";\n";
 	f.close();
