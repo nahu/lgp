@@ -335,12 +335,14 @@ void Lgp::evolve() {
 						Individual * new_individual = new Individual();
 						Individual * temp = new Individual(*j);
 						new_individual->create_new_individual((*j).config_position);
+						Individual * del_new_individual = new_individual;
+						Individual * del_temp = temp;
 
 						Individual::crossover(new_individual, temp);
 						(*j) = (*temp);
 
-						delete new_individual;
-						delete temp;
+						delete del_new_individual;
+						delete del_temp;
 					}
 				}
 
