@@ -38,7 +38,7 @@ std::string CONFIG = "10101011";
 
 /*condiciones de parada */
 #define ERROR_TO_STOP 1
-#define NUM_MAX_GENERATION 6000
+#define NUM_MAX_GENERATION 3000
 
 
 /******************************* DATOS **********************************/
@@ -172,8 +172,8 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define GEN_TO_MIGRATE 250
 
 #define CANT_ESTANCAMIENTO 10
-#define ERROR_STEP 100000
-#define MIN_ERROR_STEP 100
+#define ERROR_STEP 10000
+#define MIN_ERROR_STEP 10
 
 
 /***************************************  PROBABILIDADES **************************************

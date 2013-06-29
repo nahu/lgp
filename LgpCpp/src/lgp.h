@@ -304,6 +304,12 @@ void Lgp::evolve() {
 		best_end = best_error;
 		actual_diff = (best_end - best_init);
 
+
+		std::cout << "generación #" << generation;
+		std::cout << "  - best_init: " << best_init;
+		std::cout << "  - best_end: " << best_end;
+		std::cout << "  - diff: " << actual_diff << "\n";;
+
 		/* Si se mantuvo el error despues de GEN_TO_MIGRATE, o si el avance actual es menor al anterior */
 		if (actual_diff < (ERROR_STEP/generation) || actual_diff < (MIN_ERROR_STEP)){
 			stopped_gen++;
@@ -316,29 +322,28 @@ void Lgp::evolve() {
 			int chunks = num_demes / (NUM_PROCESSORS);
 			#pragma omp parallel for schedule(static, chunks)
 			for (int i = 1; i < num_demes; i++) {
-				if (random_flip_coin(0.5)) {
 
-					for (std::vector<Individual>::iterator j = population[i].list_ind->begin(); j != population[i].list_ind->end(); ++j){
-						switch(randint(1,3)) {
-						case 1:
-							(*j).macro_mutation();
-							break;
-						case 2:
-							(*j).micro_mutation();
-							break;
-						case 3:
-							Individual * new_individual = new Individual();
-							Individual * temp = new Individual(*j);
-							new_individual->create_new_individual((*j).config_position);
+				for (std::vector<Individual>::iterator j = population[i].list_ind->begin(); j != population[i].list_ind->end(); ++j){
+					switch(randint(1,3)) {
+					case 1:
+						(*j).macro_mutation();
+						break;
+					case 2:
+						(*j).micro_mutation();
+						break;
+					case 3:
+						Individual * new_individual = new Individual();
+						Individual * temp = new Individual(*j);
+						new_individual->create_new_individual((*j).config_position);
 
-							Individual::crossover(new_individual, temp);
-							(*j) = (*temp);
+						Individual::crossover(new_individual, temp);
+						(*j) = (*temp);
 
-							delete new_individual;
-							delete temp;
-						}
+						delete new_individual;
+						delete temp;
 					}
 				}
+
 			}
 			stopped_gen = 0;
 
