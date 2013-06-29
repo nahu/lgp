@@ -316,21 +316,30 @@ void Lgp::evolve() {
 			int chunks = num_demes / (NUM_PROCESSORS);
 			#pragma omp parallel for schedule(static, chunks)
 			for (int i = 1; i < num_demes; i++) {
-				if (random_flip_coin(0.4)) {
+				if (random_flip_coin(0.5)) {
 
-					for (int j = 0; j < population[i].deme_size; j++){
-						if (random_flip_coin(P_MACRO_MUTATION)) {
-							population[i].list_ind->at(j).macro_mutation();
-						}
+					for (std::vector<Individual>::iterator j = population[i].list_ind->begin(); j != population[i].list_ind->end(); ++j){
+						switch(randint(1,3)) {
+						case 1:
+							(*j).macro_mutation();
+							break;
+						case 2:
+							(*j).micro_mutation();
+							break;
+						case 3:
+							Individual * new_individual = new Individual();
+							Individual * temp = new Individual(*j);
+							new_individual->create_new_individual((*j).config_position);
 
-						if (random_flip_coin(P_MICRO_MUTATION)) {
-							population[i].list_ind->at(j).micro_mutation();
+							Individual::crossover(new_individual, temp);
+							(*j) = (*temp);
+
+							delete new_individual;
+							delete temp;
 						}
 					}
-
 				}
 			}
-
 			stopped_gen = 0;
 
 		}
