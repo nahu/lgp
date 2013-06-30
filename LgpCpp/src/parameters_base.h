@@ -19,7 +19,7 @@
 //std::string CONFIG = "10101011";
 std::string CONFIG = "1011111011111110111111101111111111111110";
 
-#define CONFIG_POSITION 1 //el transformador dentro de la configuración a encontrar
+#define CONFIG_POSITION 7 //el transformador dentro de la configuración a encontrar
 
 
 //#define N 8
