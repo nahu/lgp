@@ -74,7 +74,7 @@ la convención para asegurar que el programa tenga una salida es que la
 
 
 #define NUM_MIN_INSTRUCTIONS (3 * K)
-#define NUM_MAX_INSTRUCTIONS (19 * K)
+#define NUM_MAX_INSTRUCTIONS (10 * K)
 #define NUM_INI_INSTRUCTIONS (6 * K)
 #define NUM_OPERATORS 9
 
@@ -212,8 +212,8 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 
 #define P_MACRO_MUTATION 0.6//0.50
-#define P_INS 0.55
-#define P_DEL 0.45
+#define P_INS 0.51
+#define P_DEL 0.49
 
 
 #define P_MICRO_MUTATION 0.9//0.90

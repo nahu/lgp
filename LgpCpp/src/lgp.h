@@ -302,6 +302,7 @@ void Lgp::evolve() {
 		}
 
 		/* ******************** Controles para estancamiento ******************** */
+
 		best_individual_in_training();
 		best_end = best_error;
 		actual_diff = (best_init - best_end);
@@ -314,12 +315,12 @@ void Lgp::evolve() {
 
 
 
-		/* Si se mantuvo el error despues de GEN_TO_MIGRATE, o si el avance actual es menor al anterior */
+		// Si se mantuvo el error despues de GEN_TO_MIGRATE, o si el avance actual es menor al anterior
 		if (stopped_gen < CANT_ESTANCAMIENTO) {
 			sum_diff += actual_diff;
 			stopped_gen++;
 		} else { //stopped_gen == CANT_ESTANCAMIENTO
-				/* Si se mantuvo el error despues de GEN_TO_MIGRATE, o si el avance actual es menor al anterior */
+				// Si se mantuvo el error despues de GEN_TO_MIGRATE, o si el avance actual es menor al anterior
 			std::cout << "Condicion\n";
 			std::cout << "sum_dif: "<< sum_diff << " < ";
 			std::cout << "ERROR_STEP/generation: "<< (ERROR_STEP/generation) << " || ";
@@ -335,7 +336,7 @@ void Lgp::evolve() {
 				for (int i = 0; i < num_demes; i++) {
 
 					for (std::vector<Individual>::iterator j = population[i].list_ind->begin(); j != population[i].list_ind->end(); ++j){
-						switch(randint(1,2)) {
+						switch(randint(3,3)) {
 						case 1:
 							(*j).macro_mutation();
 							break;
@@ -368,6 +369,7 @@ void Lgp::evolve() {
 			stopped_gen = 0;
 
 		}
+
 		/* ***************** Fin de Controles para estancamiento ***************** */
 
 		if ((generation % FREQ_STATS) == 0 || generation == 1) {
