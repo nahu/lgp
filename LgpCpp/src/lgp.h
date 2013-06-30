@@ -93,6 +93,7 @@ Individual* Lgp::best_individual_in_training(bool verbose) {
 
 	best_error = best->error;
 
+	delete [] deme_best;
 	return best;
 }
 
@@ -209,6 +210,7 @@ void Lgp::evolve() {
 	std::vector<Individual>::iterator ini, end, it;
 
 	double actual_diff = 0.0;
+	double sum_diff = 0.0;
 	int stopped_gen = 0;
 	double best_init, best_end;
 	int re_creation_times = 0;
@@ -302,52 +304,67 @@ void Lgp::evolve() {
 		/* ******************** Controles para estancamiento ******************** */
 		best_individual_in_training();
 		best_end = best_error;
-		actual_diff = (best_end - best_init);
+		actual_diff = (best_init - best_end);
 
 
 		std::cout << "generación #" << generation;
 		std::cout << "  - best_init: " << best_init;
 		std::cout << "  - best_end: " << best_end;
-		std::cout << "  - diff: " << actual_diff << "\n";;
+		std::cout << "  - diff: " << actual_diff << "\n";
+
+
 
 		/* Si se mantuvo el error despues de GEN_TO_MIGRATE, o si el avance actual es menor al anterior */
-		if (actual_diff < (ERROR_STEP/generation) || actual_diff < (MIN_ERROR_STEP)){
+		if (stopped_gen < CANT_ESTANCAMIENTO) {
+			sum_diff += actual_diff;
 			stopped_gen++;
-		}
+		} else { //stopped_gen == CANT_ESTANCAMIENTO
+				/* Si se mantuvo el error despues de GEN_TO_MIGRATE, o si el avance actual es menor al anterior */
+			std::cout << "Condicion\n";
+			std::cout << "sum_dif: "<< sum_diff << " < ";
+			std::cout << "ERROR_STEP/generation: "<< (ERROR_STEP/generation) << " || ";
+			std::cout << "sum_dif: "<< sum_diff << " < ";
+			std::cout << "MIN_ERROR_STEP: "<< MIN_ERROR_STEP << "\n";
 
-		if (stopped_gen == CANT_ESTANCAMIENTO) {
-			std::cout << "ESTANCAMIENTO: Se procede a realizar las mutaciones a toda la poblacion \n";
-			re_creation_times++;
-			//todo paralelizar
-			int chunks = num_demes / (NUM_PROCESSORS);
-			#pragma omp parallel for schedule(static, chunks)
-			for (int i = 1; i < num_demes; i++) {
+			if (sum_diff < (ERROR_STEP/generation) || sum_diff < (MIN_ERROR_STEP)){
+				std::cout << "ESTANCAMIENTO: Se procede a realizar las mutaciones a toda la poblacion \n";
+				re_creation_times++;
+				//todo paralelizar
+				int chunks = num_demes / (NUM_PROCESSORS);
+				#pragma omp parallel for schedule(static, chunks)
+				for (int i = 0; i < num_demes; i++) {
 
-				for (std::vector<Individual>::iterator j = population[i].list_ind->begin(); j != population[i].list_ind->end(); ++j){
-					switch(randint(1,3)) {
-					case 1:
-						(*j).macro_mutation();
-						break;
-					case 2:
-						(*j).micro_mutation();
-						break;
-					case 3:
-						Individual * new_individual = new Individual();
-						Individual * temp = new Individual(*j);
-						new_individual->create_new_individual((*j).config_position);
-						Individual * del_new_individual = new_individual;
-						Individual * del_temp = temp;
+					for (std::vector<Individual>::iterator j = population[i].list_ind->begin(); j != population[i].list_ind->end(); ++j){
+						switch(randint(1,2)) {
+						case 1:
+							(*j).macro_mutation();
+							break;
+						case 2:
+							(*j).micro_mutation();
+							break;
+						case 3:
 
-						Individual::crossover(new_individual, temp);
-						(*j) = (*new_individual);
+							Individual * new_individual = new Individual();
+							Individual * temp = new Individual(*j);
+							new_individual->create_new_individual((*j).config_position);
 
-						delete del_new_individual;
-						delete del_temp;
-						delete temp;
+
+							Individual::crossover(new_individual, temp);
+
+
+							(*j).operator=(*temp);
+
+
+							delete new_individual;
+							delete temp;
+
+							break;
+						}
 					}
-				}
 
+				}
 			}
+			sum_diff = 0.0;
 			stopped_gen = 0;
 
 		}
