@@ -24,7 +24,7 @@ public:
 	void check_max_min_instructions(std::string name, std::string place);
 	static void crossover(Individual * &genome1, Individual * &genome2);
 	void clone(Individual * orig);
-	void print_individual();
+	void print_individual(bool resume=false);
 	void exchange(const Individual * dest, const Individual * origin, int * cp_dest, int * cp_origin);
 
 	//ordenan de mejor a peor
@@ -36,8 +36,10 @@ public:
 	void macro_mutation();
 	void micro_mutation();
 	static int select_micro_mutacion_type(float prob);
-	static int get_random_register(int &op, std::vector<int> reg_eff, Instruction * instruction);
-
+	static int get_random_register(int &op, Instruction * instruction, std::vector<int> reg_eff);
+	int manhattan_op_distance(const Individual * ind);
+	void print_op_diversity();
+	bool check_op_diversity();
 	Program * program;
 
 	double fitness;
@@ -432,8 +434,54 @@ void Individual::check(int deme, int index) {
 	std::cout << "sigma: " << sigma << "\n";
 }
 
+int Individual::manhattan_op_distance(const Individual * ind) {
+	int distance = 0;
 
-void Individual::print_individual() {
+	for (int i = 1; i <= NUM_OPERATORS; i++) {
+		if (program->op_diversity[i] < 0 || ind->program->op_diversity[i] < 0) {
+			std::cout << " \n\n\n" << "op_diversity negative !!!!!!!: " << " \n\n\n";
+			std::cout << "\n Individuo 1" << " \n";
+			for (int j = 1; j <= NUM_OPERATORS; j++) {
+					std::cout << "op[" << j <<"]: " << program->op_diversity[j] << " \n";
+			}
+			std::cout << "\n Individuo 2" << " \n";
+			for (int j = 1; j <= NUM_OPERATORS; j++) {
+					std::cout << "op[" << j <<"]: " << ind->program->op_diversity[j] << " \n";
+			}
+		}
+		distance += std::abs(program->op_diversity[i] - ind->program->op_diversity[i]);
+	}
+
+	if (distance < 0 ) {
+		std::cout << " \n\n\n" << "Distance Negative !!!!!!!: " << " \n\n\n";
+	}
+
+	return distance;
+}
+
+void Individual::print_op_diversity() {
+
+	for (int j = 1; j <= NUM_OPERATORS; j++) {
+		std::cout << "op[" << j <<"]: " << program->op_diversity[j];
+		if (program->op_diversity[j] < 0) {
+			std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
+		}
+		std::cout << "\n";
+	}
+}
+
+
+bool Individual::check_op_diversity() {
+
+	for (int j = 1; j <= NUM_OPERATORS; j++) {
+		if (program->op_diversity[j] < 0) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void Individual::print_individual(bool resume) {
 	std::cout << "Config Pos: " << config_position << "\n";
 	std::cout << "Training error: " << error << "\n";
 	std::cout << "Trainig Deviation: " << sigma << "\n";
@@ -448,18 +496,20 @@ void Individual::print_individual() {
 		program->list_inst[i].print_instruction();
 	}*/
 
-	std::cout << "\n";
-	std::cout << "List Effective: " << "\n";
-	for (int i = 0; i < program->n_eff; i++) {
-		//std::cout << i << "- ";
-		std::cout << program->effective_list_inst[i].get_str_instruction();
-	}
+	if (!resume) {
+		std::cout << "\n";
+		std::cout << "List Effective: " << "\n";
+		for (int i = 0; i < program->n_eff; i++) {
+			//std::cout << i << "- ";
+			std::cout << program->effective_list_inst[i].get_str_instruction();
+		}
 
-	std::cout << "\n";
-	//std::cout.precision(15);
-	std::cout << "Registers: " << "\n";
-	for (int i = 0; i < NUM_INDIVIDUAL_REGISTERS; i++) {
-		std::cout << "r_all[" << i << "] = " << program->list_reg[i] << "\n";
+		std::cout << "\n";
+		//std::cout.precision(15);
+		std::cout << "Registers: " << "\n";
+		for (int i = 0; i < NUM_INDIVIDUAL_REGISTERS; i++) {
+			std::cout << "r_all[" << i << "] = " << program->list_reg[i] << "\n";
+		}
 	}
 
 }
@@ -675,7 +725,7 @@ void Individual::macro_mutation() {
 
 
 
-int Individual::get_random_register(int &pos_to_replace, std::vector<int> reg_eff = { }, Instruction * instruction = 0) {
+int Individual::get_random_register(int &pos_to_replace, Instruction * instruction = 0,  std::vector<int> reg_eff = { }) {
 	int _register = 0;
 
 	switch (pos_to_replace) {
@@ -691,6 +741,13 @@ int Individual::get_random_register(int &pos_to_replace, std::vector<int> reg_ef
 		} else {
 			int n = randint(0, reg_eff.size() - 1);
 			_register = reg_eff.at(n);
+
+			int count = 0;
+			while (_register == instruction->dest && count < WHILE_BLOCK) {
+				n = randint(0, reg_eff.size() - 1);
+				_register = reg_eff.at(n);
+				count++;
+			}
 		}
 	case (OPERAND_1) :
 		//Cambio: se permite al primer operando ser variable o constante de entrada
@@ -699,8 +756,21 @@ int Individual::get_random_register(int &pos_to_replace, std::vector<int> reg_ef
 		} else {
 			if (random_flip_coin(P_REG_CONST_DELTA)) {
 				_register = randint(CONST_IN_DELTA_MIN, CONST_IN_DELTA_MAX);
+
+				int count = 0;
+				while (_register == instruction->op1 && count < WHILE_BLOCK) {
+					_register = randint(CONST_IN_DELTA_MIN, CONST_IN_DELTA_MAX);
+					count++;
+				}
+
 			} else {
 				_register = randint(CONST_IN_MIN, CONST_IN_MAX);
+
+				int count = 0;
+				while (_register == instruction->op1 && count < WHILE_BLOCK) {
+					_register = randint(CONST_IN_MIN, CONST_IN_MAX);
+					count++;
+				}
 			}
 		}
 	case (OPERAND_2) :
@@ -711,14 +781,41 @@ int Individual::get_random_register(int &pos_to_replace, std::vector<int> reg_ef
 			if (random_flip_coin (P_CONST_IN)) {
 				if (random_flip_coin(P_REG_CONST_DELTA)) {
 					_register = randint(CONST_IN_DELTA_MIN, CONST_IN_DELTA_MAX);
+
+					int count = 0;
+					while (_register == instruction->op2 && count < WHILE_BLOCK) {
+						_register = randint(CONST_IN_DELTA_MIN, CONST_IN_DELTA_MAX);
+						count++;
+					}
+
 				} else {
 					_register = randint(CONST_IN_MIN, CONST_IN_MAX);
+
+					int count = 0;
+					while (_register == instruction->op2 && count < WHILE_BLOCK) {
+						_register = randint(CONST_IN_MIN, CONST_IN_MAX);
+						count++;
+					}
+
 				}
 			} else {
 				_register = randint(CONST_AL_MIN, CONST_AL_MAX);
+
+				int count = 0;
+				while (_register == instruction->op2 && count < WHILE_BLOCK) {
+					_register = randint(CONST_AL_MIN, CONST_AL_MAX);
+					count++;
+				}
 			}
 		} else {
 			_register = randint(VAR_MIN, VAR_MAX);
+
+			int count = 0;
+			while (_register == instruction->op2 && count < WHILE_BLOCK) {
+				_register = randint(VAR_MIN, VAR_MAX);
+				count++;
+			}
+
 		}
 	}
 
@@ -794,7 +891,7 @@ void Individual::micro_mutation() {
 					std::vector<int>::iterator i = std::find(reg_eff.begin(), reg_eff.end(), program->list_inst[mutation_point].dest);
 					if (i != reg_eff.end()) {
 						reg_eff.erase(i); //remover el registro destino de los registros efectivos
-						op = get_random_register(pos_to_replace, reg_eff, &program->list_inst[mutation_point]);
+						op = get_random_register(pos_to_replace, &program->list_inst[mutation_point], reg_eff);
 					}
 				}
 			} else { //el punto de mutación es la última instrucción con el r[0]
@@ -804,10 +901,10 @@ void Individual::micro_mutation() {
 					//operación unaria, cambiar el segundo operando
 					pos_to_replace = OPERAND_2;
 				}
-				op = get_random_register(pos_to_replace);
+				op = get_random_register(pos_to_replace, &program->list_inst[mutation_point]);
 			}
 		} else { //para los casos de operandos op1 y op2
-			op = get_random_register(pos_to_replace);
+			op = get_random_register(pos_to_replace, &program->list_inst[mutation_point]);
 		}
 
 		switch (pos_to_replace) {

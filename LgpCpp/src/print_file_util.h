@@ -20,6 +20,15 @@ void parameters_to_file(std::string f_param) {
 	f << "training_lines\t" << TRAINING_LINES << "\n";
 	f << "validation_lines\t" << VALIDATION_LINES << "\n";
 
+	f << "\n----Nuevos\n";
+	f << "CONFIG_POSITION\t" << CONFIG_POSITION << "\n";
+	f << "CNT_PRUEBAS\t" << CNT_PRUEBAS << "\n";
+	f << "ERROR_TO_STOP\t" << ERROR_TO_STOP << "\n";
+	f << "NUM_MAX_GENERATION\t" << NUM_MAX_GENERATION << "\n";
+	f << "CANT_ESTANCAMIENTO\t" << CANT_ESTANCAMIENTO  << "\n";
+	f << "ERROR_STEP\t" << ERROR_STEP << "\n";
+	f << "MIN_ERROR_STEP\t" << MIN_ERROR_STEP << "\n";
+
 	f << "\n--Algoritmo Evolutivo\n";
 	f << "num_generations\t" << NUM_GENERATIONS << "\n";
 	f << "pool_size\t" << POOL_SIZE << "\n";

@@ -182,11 +182,10 @@ int main(int argc, char ** argv) {
 		}
 		*/
 		posiciones[0] = CONFIG_POSITION; //sacar para procesar todos
-
 		//Aca se agregan los mejores individuos por cada trafo
 		Individual * best_global = new Individual[posiciones.size()];
 		int global_pos = 0;
-		std::vector<double *>  list_global_errors(posiciones.size());
+		std::vector<double *> list_global_errors(posiciones.size());
 
 		//****************************** PROCESAMIENTO DE TRANSFORMADORES *****************************
 		for (std::vector<int>::iterator it = posiciones.begin(); it != posiciones.end(); ++it) {
@@ -297,3 +296,4 @@ int main(int argc, char ** argv) {
 
 	return 0;
 }
+

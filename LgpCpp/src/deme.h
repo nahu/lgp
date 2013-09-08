@@ -26,6 +26,7 @@ public:
 	//void deme_evolve();
 	Participant * indices_selection(unsigned int pool_size);
 	Individual ** tournament_with_mutation(Participant * indices, int ini, int end);
+	Individual* tournament(Participant * indices, int ini, int end);
 	void override_loosers(Participant * indices, int ini, int end, Individual ** winners);
 
 	std::vector<Individual> *list_ind;
@@ -212,7 +213,63 @@ Individual** Deme::tournament_with_mutation(Participant * indices, int ini, int 
 	return r;
 }
 
+Individual* Deme::tournament(Participant * indices, int ini, int end) {
+	int choosen = ini;
 
+	/*
+	std::cout<<"to replace\n";
+	std::cout<<"ini " << ini << "   ";
+	std::cout<<"end " << end << "\n";
+	*/
+
+	int pos = indices[choosen].pop_position;
+	int to_replace[POOL_REPRODUCTION];
+	to_replace[0] = ini;
+
+	int tamanho = list_ind->size();
+	if ((tamanho != deme_size) || (deme_size < pos)) {
+		std::cout<<"Problemas deme_size "<< deme_size << ", tamanho " << tamanho << ", pos " << pos <<"\n";
+	}
+
+
+	//std::cout<<"Problemas deme_size "<< deme_size << ", tamanho " << tamanho << ", pos " << pos <<"\n";
+	list_ind->at(pos).eval_fitness();
+
+	int replace_count = 1;
+
+	for (int i = ini + 1; i < end; i++) {
+
+		list_ind->at(indices[i].pop_position).eval_fitness();
+		//std::cout<<"(*it).pop_position "<<(*it).pop_position<<"\n";
+		//std::cout<<"(*chosen).pop_position "<<(*choosen).pop_position<<"\n";
+		if (Individual::compare_fitness(list_ind->at(indices[choosen].pop_position), list_ind->at(indices[i].pop_position))) {
+			choosen = i;
+		}
+
+		if (replace_count < POOL_REPRODUCTION) {
+			to_replace[replace_count] = i;
+			replace_count++;
+		} else {
+			for (int j = 0; j < POOL_REPRODUCTION; j++) {
+				if (Individual::compare_fitness(list_ind->at(indices[i].pop_position), list_ind->at(indices[to_replace[j]].pop_position))) {
+					to_replace[j] = i;
+					break;
+				}
+			}
+		}
+
+	}
+
+	//perdedores a sobreescribir por el mejor ganador (modificado/sin modificar)
+	for (int j = 0; j < POOL_REPRODUCTION; j++) {
+		indices[to_replace[j]].status = REPLACE;
+	}
+
+	//establecer los estados de los participantes
+	indices[choosen].status = WINNER; //ganador
+
+	return &list_ind->at(indices[choosen].pop_position);
+}
 
 //Se remplaza los perdedores por el mejor entre (ganador modificado, ganador NO modificado) y se actualizan los indices dentro de la población
 void Deme::override_loosers(Participant * indices, int ini, int end, Individual ** winners) {
@@ -246,3 +303,6 @@ void Deme::override_loosers(Participant * indices, int ini, int end, Individual 
 
 	list_ind->at(win_pos) = *(winners[worst_replace]);
 }
+
+
+

@@ -162,18 +162,21 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 
 
-#define NUM_GENERATIONS 1000
-#define POPULATION_SIZE 262144 //18
+#define NUM_GENERATIONS 10000
+#define POPULATION_SIZE 1024//262144 //18
 #define DEMES 16
 #define FREQ_STATS 100
-#define POOL_SIZE 32
-#define POOL_REPRODUCTION 4
+#define POOL_SIZE 8//32
+#define POOL_REPRODUCTION 2 //4
 #define MIGRATION_RATE 0.01
-#define GEN_TO_MIGRATE 250
+#define GEN_TO_MIGRATE 100 //250
 
 #define CANT_ESTANCAMIENTO 10
 #define ERROR_STEP 50
 #define MIN_ERROR_STEP 1
+
+#define TOURNAMENTS 6 //número par
+#define P_DIVERSITY 0.5
 
 
 /***************************************  PROBABILIDADES **************************************
@@ -237,3 +240,4 @@ utilizando multiprocessing de Python
 
 
 #define NUM_PROCESSORS 4 //NÚMERO DE PROCESOS WORKERS
+#define WHILE_BLOCK 1000 //para evitar whiles infinitos, por si pudiera llegarse a dar

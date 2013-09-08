@@ -125,37 +125,155 @@ inline bool Lgp::termination_criteria() {
 	}
 }
 
+int get_win_pos(Participant * indices, int ini, int end) {
+	int pos = -1;
+	for ( ;ini < end; ++ini) {
+		if (indices[ini].status == WINNER) {
+			pos = indices[ini].pop_position;
+		}
+	}
+	return pos;
+}
+
 
 //se podría llevar a deme
 void Lgp::deme_evolve(int deme_index) {
 	Participant * selected_indices;
 	//Individual ** to_tournament[2];
-	Individual ** winners[2];
-	int ini[2], end[2];
+	Individual * winners[TOURNAMENTS];
 
+	int ini[TOURNAMENTS], end[TOURNAMENTS];
+	int tournaments_selected[2];
 
+	Individual ** winners_selected[2];
+
+	int diver = 0;
 	for (int gen = 0; gen < GEN_TO_MIGRATE; gen++) {
-		selected_indices = population[deme_index].indices_selection(POOL_SIZE * 2);
+//		std::cout << ".....GEN to migrate" << gen << "\n";
+		selected_indices = population[deme_index].indices_selection(POOL_SIZE * TOURNAMENTS);
 
-		ini[0] = 0;
-		end[0] = POOL_SIZE;
-		ini[1] = POOL_SIZE;
-		end[1] = POOL_SIZE * 2;
+		int limite = 0;
+		for (int t = 0; t < TOURNAMENTS; t++) {
+			ini[t] = limite;
+			end[t] = limite + POOL_SIZE;
+			limite += POOL_SIZE;
+		}
+
+//		std::cout << "%%%%%% Ganadores de torneos" << "\n";
+
+
+		for (int i = 0; i < TOURNAMENTS; i++) {
+			winners[i] = population[deme_index].tournament(selected_indices, ini[i], end[i]);
+//			std::cout << "Winner " << i << "\n";
+//			winners[i]->print_individual(true);
+//			std::cout << "\n";
+		}
+
+		//guardar los dos ganadores por diversidad o por fitness en winners_mutated
+		if (random_flip_coin(P_DIVERSITY)) {
+//			std::cout << "++++por diversidad" << "\n";
+			//encontrar los dos mas distantes
+			diver = 1;
+			int max_distance = -1;
+			int distance;
+
+			//establecer la diversidad de los ganadores
+			for (int i = 0; i < TOURNAMENTS; i++) {
+//				std::cout << "winner " << i << "\n";
+				winners[i]->program->set_op_diversity();
+//				if (winners[i]->check_op_diversity()) {
+//					winners[i]->print_op_diversity();
+//				}
+			}
+
+			//calcular las distancias y encontrar los dos mas alejados
+			for (int i = 0; i < TOURNAMENTS; i++) {
+				for (int j = i + 1; j < TOURNAMENTS - 1; j++) {
+					distance = winners[i]->manhattan_op_distance(winners[j]);
+//					std::cout << " === distincia " << distance << "\n";
+					if (distance > max_distance) {
+						max_distance = distance;
+						tournaments_selected[0] = i;
+						tournaments_selected[1] = j;
+					}
+				}
+			}
+
+//			std::cout << "----torneo d 1: " << tournaments_selected[0] << "\n";
+//			std::cout << "----torneo d 2: " << tournaments_selected[1] << "\n";
+
+		} else {
+//			std::cout << "----por fitness" << "\n";
+			//seleccionar los dos con mayor fitness
+			tournaments_selected[0] = 0;
+
+			for (int i = 1; i < TOURNAMENTS; i++) {
+				if (Individual::compare_fitness(*winners[tournaments_selected[0]], *winners[i])) {
+					tournaments_selected[0] = i;
+				}
+			}
+
+			tournaments_selected[1] = 0;
+//			std::cout << "**** torneo 0: " << tournaments_selected[0] << "\n";
+			while (tournaments_selected[1] == tournaments_selected[0]) {
+				tournaments_selected[1]++;
+//				std::cout << "    **** torneo 1: " << tournaments_selected[1] << "\n";
+			}
+
+			for (int i = 0; i < TOURNAMENTS; i++) {
+				if (i != tournaments_selected[0]) {
+					if (Individual::compare_fitness(*winners[tournaments_selected[1]], *winners[i])) {
+						tournaments_selected[1] = i;
+					}
+				}
+			}
+//			std::cout << "----torneo f 1: " << tournaments_selected[0] << "\n";
+//			std::cout << "----torneo f 2: " << tournaments_selected[1] << "\n";
+		}
 
 		for (int i = 0; i < 2; i++) {
-			winners[i] = population[deme_index].tournament_with_mutation(selected_indices, ini[i], end[i]);
+			Individual ** win_and_offpring = new Individual*[2];
+
+			win_and_offpring[0] = new Individual(*winners[tournaments_selected[i]]);
+			win_and_offpring[1] = winners[tournaments_selected[i]];
+
+
+
+
+			winners_selected[i] = win_and_offpring;
+
+//			std::cout << "\n$$$$$$ Ganadores para modificar " << i << "\n\n";
+//			winners_selected[i][0]->print_individual();
+//			std::cout << "\n";
+//			winners_selected[i][1]->print_individual();
+
+			if (random_flip_coin(P_MACRO_MUTATION)) {
+				winners_selected[i][0]->macro_mutation();
+			}
+
+			if (random_flip_coin(P_MICRO_MUTATION)) {
+				winners_selected[i][0]->micro_mutation();
+			}
 		}
 
 		if (random_flip_coin (P_CROSSOVER)) {
 			//los que pudieron ser modificados por la macro y micro mutación
-			Individual::crossover(winners[0][0], winners[1][0]);
+			Individual::crossover(winners_selected[0][0], winners_selected[1][0]);
+		}
+
+
+		for (int j = 0; j < (TOURNAMENTS / 2); j++) {
+			population[deme_index].override_loosers(selected_indices, ini[j], end[j], winners_selected[0]);
+		}
+
+		for (int j = (TOURNAMENTS / 2); j < TOURNAMENTS; j ++) {
+			population[deme_index].override_loosers(selected_indices, ini[j], end[j], winners_selected[1]);
 		}
 
 		for (int i = 0; i < 2; i++) {
-			population[deme_index].override_loosers(selected_indices, ini[i], end[i], winners[i]);
-			//eliminar la copia del ganador de cada torneo, se creó en tournament_with_mutation
-			delete winners[i][0];
-			delete [] winners[i];
+			//eliminar la copia del ganador de cada torneo, se creó en mas arriba
+			delete winners_selected[i][0];
+			delete [] winners_selected[i];
 		}
 
 		delete [] selected_indices;
@@ -314,7 +432,7 @@ void Lgp::evolve() {
 		std::cout << "  - diff: " << actual_diff << "\n";
 
 
-
+		/*
 		// Si se mantuvo el error despues de GEN_TO_MIGRATE, o si el avance actual es menor al anterior
 		if (stopped_gen < CANT_ESTANCAMIENTO) {
 			sum_diff += actual_diff;
@@ -336,7 +454,7 @@ void Lgp::evolve() {
 				for (int i = 0; i < num_demes; i++) {
 
 					for (std::vector<Individual>::iterator j = population[i].list_ind->begin(); j != population[i].list_ind->end(); ++j){
-						switch(randint(3,3)) {
+						switch(randint(1,3)) {
 						case 1:
 							(*j).macro_mutation();
 							break;
@@ -369,7 +487,7 @@ void Lgp::evolve() {
 			stopped_gen = 0;
 
 		}
-
+		*/
 		/* ***************** Fin de Controles para estancamiento ***************** */
 
 		if ((generation % FREQ_STATS) == 0 || generation == 1) {

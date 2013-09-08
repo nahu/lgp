@@ -223,7 +223,7 @@ public:
 	int get_effective_registers(int position, std::vector<int> &indices);
 	static void print_list_int(Instruction * list_inst, int height);
 	static void init_registers();
-
+	void set_op_diversity();
 
 	Instruction *list_inst;
 	Instruction *effective_list_inst; //puntero dentro de la lista de abajo
@@ -235,6 +235,8 @@ public:
 	int n_eff;
 	double *list_reg;
 	//int name;
+
+	int * op_diversity;
 
 	static double R_OUT[NUM_OUT_REGISTERS];
 	static double R_VAR[NUM_VAR_REGISTER];
@@ -346,6 +348,13 @@ Program::Program(const Program& source) :
 		effective_indices_memory_space = 0;
 	}
 
+	if (source.op_diversity) {
+		op_diversity = new int[NUM_OPERATORS + 1];
+		std::copy(source.op_diversity, source.op_diversity + NUM_OPERATORS + 1, op_diversity);
+	} else {
+		op_diversity = 0;
+	}
+
 }
 
 Program& Program::operator=(const Program& source) {
@@ -392,6 +401,14 @@ Program& Program::operator=(const Program& source) {
 		effective_indices = &(effective_indices_memory_space[height - n_eff]);
 	}
 
+	if (source.op_diversity) {
+		if (!op_diversity) {
+			op_diversity = new int[NUM_OPERATORS + 1];
+		}
+
+		std::copy(source.op_diversity, source.op_diversity + NUM_OPERATORS + 1, op_diversity);
+	}
+
 	return *this;
 }
 
@@ -401,6 +418,7 @@ Program::Program() {
 	height = randint(NUM_MIN_INSTRUCTIONS, NUM_INI_INSTRUCTIONS);
 	n_eff = -1;
 	list_inst = new Instruction[height];
+	op_diversity = 0;
 
 	for (int i = 0; i < height; i++) {
 		list_inst[i].create_new_instruction();
@@ -441,6 +459,10 @@ Program::~Program() {
 	delete [] list_inst;
 	delete [] list_reg;
 
+	if (op_diversity) {
+		delete [] op_diversity;
+	}
+
 	if (effective_memory_space){
 		delete [] effective_memory_space;
 	}
@@ -461,6 +483,7 @@ Program::Program(int new_height) {
 	effective_indices = 0;
 	effective_indices_memory_space = 0;
 	height_eff_space = 0;
+	op_diversity = 0;
 }
 
 Instruction* Program::get_effective_instructions() {
@@ -512,6 +535,21 @@ Instruction* Program::get_effective_instructions() {
 	effective_indices = &(effective_indices_memory_space[indice]);
 
 	return effective_list_inst;
+}
+
+
+void Program::set_op_diversity() {
+	if (op_diversity == 0) { //si todavía no se le asignó
+		op_diversity = new int[NUM_OPERATORS + 1];
+	}
+
+	for (int i = 0; i <= NUM_OPERATORS; i++) {
+		op_diversity[i] = 0;
+	}
+
+	for (int i = 0; i < height; i++) {
+		op_diversity[list_inst[i].oper]++;
+	}
 }
 
 
