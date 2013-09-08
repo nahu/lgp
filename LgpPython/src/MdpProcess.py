@@ -8,19 +8,25 @@ Prueba de reduccion de dimensinalidad
 - U{Vanessa Cañete<mailto:vanessa.can.89@gmail.com>}
 
 """
-import numpy as np
-import mdp
-import Util
+
+from Util import get_matrix_from_file
 import Parameters
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.mlab as mlab
+import matplotlib.cbook as cbook
+import matplotlib.ticker as ticker
+import mdp
 import csv
 import os
 
 class MdpProcess():
     def __init__(self):
         print "Constructor"
+        
     def process(self):
         filename = "../data/Datos60.txt"
-        col, fil, data = Util.get_matrix_from_file(filename)
+        col, fil, data = get_matrix_from_file(filename)
         data = zip(*data)
         for i in range(Parameters.n -1 , 0, -1):
             if Parameters.config[i] == '0':
@@ -106,9 +112,98 @@ class MdpProcess():
             
         f.close()  
         print "Se termino de escribir el archivo"
+        
+        
+    def plot_one_data_series(self, order):
+        filename = "../data/Datos60.txt"
+        col, fil, data = get_matrix_from_file(filename)
+
+        #data = zip(*data)
+        
+        data_t = data[:200]
+        data_v = data[200:]
+        
+        data_t = zip(*data_t)
+        data_v = zip(*data_v)
+        
+        print ">> Creando array de numpy"
+        x_t = np.array(data_t, float)
+        x_v = np.array(data_v, float)
+
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.plot(x_t[order], 'o-')
+        ax.plot(range(200, 200 + len(x_v[order])), x_v[order], 'go-')
+
+
+    def get_discrete_values(self):
+        filename = "../data/Datos60.txt"
+        col, fil, data = get_matrix_from_file(filename)
+
+        #data = zip(*data)
+        
+        data_t = data[:200]
+        data_v = data[200:]
+        
+        #data_t = zip(*data_t)
+        #data_v = zip(*data_v)
+        data_t.sort()
+        data_v.sort()
+        
+        print "Valores en entrenamiento"
+        valores = set([])
+        
+        
+        for fila in data_t:
+            for valor in fila:
+                valores.add(valor)
+        
+
+        print sorted(valores)
+        print "cantidad: ", str(len(valores))
+        
+        print "Valores en validación"
+        valores = set([])
+        
+        
+        for fila in data_v:
+            for valor in fila:
+                valores.add(valor)
+        
+        
+        
+        print sorted(valores)
+        print "cantidad: ", str(len(valores))
+        
+        print "Valores en todo"
+        valores = set([])
+        
+        
+        for fila in data:
+            for valor in fila:
+                valores.add(valor)
+        
+        
+        
+        print sorted(valores)
+        print "cantidad: ", str(len(valores))
+
 
 if __name__ == "__main__":
     m = MdpProcess()
-    m.process()
+    #m.process()
+    """
+    salida = []
+    for i in range (40) :
+        print "Transformador ", str(i)
+        m.plot_one_data_series(i)
+        res = raw_input("res: ")
+        salida.append(res)
+    
+    print "Resultado"
+    print salida
+    """
+    m.get_discrete_values()
         
         

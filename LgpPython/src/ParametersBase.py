@@ -11,7 +11,8 @@ Módulo que define las funciones asociadas al algoritmo LGP
 
 from multiprocessing import cpu_count
 
-import Util
+#import Util
+#from Util import get_matrix_from_file
 import os
 
 
@@ -36,7 +37,7 @@ def init_reg_in_const():
     return const
 
 def read_samples():
-    n_data, lines_data, data = Util.get_matrix_from_file(filename)
+    n_data, lines_data, data = get_matrix_from_file(filename)
     
     if ( n_data != n or lines_data != lines):
         print "El archivo no coincide con los parámetros"
@@ -248,5 +249,6 @@ chunk_size_step = demes // num_processors
 ****************************************  CARGA DE DATOS ***************************************
                 Carga de datos e inicialización de registros de entrada
 '''
-data_samples = read_samples()
-r_const = init_reg_in_const()
+
+#data_samples = read_samples()
+#r_const = init_reg_in_const()

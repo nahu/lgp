@@ -244,14 +244,16 @@ def create_data_file(data_file, n, t, exp):
     f.write("\n")
     
     
-    c_min = 2
-    c_max = 20
+    c_min = 0.5
+    c_max = 1
+    c1_min = 1
+    c1_max = 10
     #los datos
     c = []
     
     for trafo in range(n):
         param = {}
-        param["c1"] = random.uniform(c_min, c_max)
+        param["c1"] = random.uniform(c1_min, c1_max)
         param["c2"] = random.uniform(c_min, c_max)
         c.append(param)
         print "Trafo " + str(trafo) + "\n\t c1: " + str(param["c1"]) + ", c2: " + str(param["c2"]) + "\n" 
@@ -286,10 +288,10 @@ if __name__ == "__main__":
     random_flip_coin(0.4)
     """ 
     
-    data_file = "../data/Datos8-exp4.txt"
+    data_file = "../data/Datos8-exp2-2.txt"
     n = 8
-    t = 248
-    exp = 4
+    t = 4000
+    exp = 2
     config = "10101011"
     
     create_data_file(data_file, n, t, exp)
