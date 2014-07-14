@@ -1,0 +1,13 @@
+|*=============================================*|
+|   Prerequisitos (Ubicados en git/lgp/LgpCpp)  |
+|*=============================================*|
+
+- Existencia de la carpeta analisis-link (esto deberia apuntar al dropbox)
+- Existencia de la carpeta resultados  (esto deberia apuntar al dropbox)
+
+|*=============================================*|
+|                  Ejecucion                    |
+|*=============================================*|
+1. Ejecutar ./scripts/create_parameters.sh <cantidad de archivos>
+2. Modificar los archivos. 
+3. Ejecutar ./scripts/run.sh <nombre_prueba> (podriamos poner yyyyMMddhhmmss o algo asi)
