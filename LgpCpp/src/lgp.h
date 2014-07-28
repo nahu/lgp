@@ -14,7 +14,7 @@ public:
 	Individual * best_individual_in_training(bool verbose=false);
 	Individual ** best_individuals_of_demes(int tipo);
 	bool termination_criteria();
-	void deme_evolve(int deme_index);
+	void deme_evolve(int deme_index, int current_gen);
 	void evolve();
 
 	unsigned int generation;
@@ -24,16 +24,24 @@ public:
 	int num_demes;
 	Deme * population;
 	static std::vector<int>  cant_migracion;
+	static std::vector<double *> errores_x_deme_training;
+	static std::vector<double *> errores_x_deme_validation;
+	static int generacion_real;
 };
 /*
  * Inicializacion de variables (para que no de "undefined reference to"
  */
 std::vector<int>  Lgp::cant_migracion (NUM_PROCESSORS,0);
+std::vector<double *> Lgp::errores_x_deme_training (DEMES);
+std::vector<double *> Lgp::errores_x_deme_validation (DEMES);
+int Lgp::generacion_real = 0;
+
 
 Lgp::Lgp(int config_position, int demes, int population_size, int num_generation) {
 	//std::cout<<"Const. LGP\n";
 
 	generation = 0;
+	this->generacion_real = 0;
 	best_error = HUGE_NUMBER;
 	this->num_generation = num_generation;
 	int div, pop_size_per_deme;
@@ -55,7 +63,10 @@ Lgp::Lgp(int config_position, int demes, int population_size, int num_generation
 	//se podría paralelizar, create_new_deme también.. ver si es factible hacerlo en ambos lugares
 	for (int i = 0; i < num_demes; i++) {
 		population[i].create_new_deme(pop_size_per_deme, config_position);
+		errores_x_deme_training[i] = new double[NUM_MAX_GENERATION*GEN_TO_MIGRATE + GEN_TO_MIGRATE];
+		errores_x_deme_validation[i] = new double[NUM_MAX_GENERATION*GEN_TO_MIGRATE + GEN_TO_MIGRATE];
 	}
+	std::cout<<"Inicializado con tamaño "<< NUM_MAX_GENERATION*GEN_TO_MIGRATE + GEN_TO_MIGRATE<< std::endl;
 }
 
 
@@ -137,7 +148,7 @@ int get_win_pos(Participant * indices, int ini, int end) {
 
 
 //se podría llevar a deme
-void Lgp::deme_evolve(int deme_index) {
+void Lgp::deme_evolve(int deme_index, int current_gen) {
 	Participant * selected_indices;
 	//Individual ** to_tournament[2];
 	Individual * winners[TOURNAMENTS];
@@ -149,7 +160,7 @@ void Lgp::deme_evolve(int deme_index) {
 
 	int diver = 0;
 	for (int gen = 0; gen < GEN_TO_MIGRATE; gen++) {
-//		std::cout << ".....GEN to migrate" << gen << "\n";
+		std::cout << ".....GEN to migrate" << gen << "\n";
 		selected_indices = population[deme_index].indices_selection(POOL_SIZE * TOURNAMENTS);
 
 		int limite = 0;
@@ -277,6 +288,10 @@ void Lgp::deme_evolve(int deme_index) {
 		}
 
 		delete [] selected_indices;
+
+		/* Almacenamiento de errores por deme */
+		Lgp::errores_x_deme_training[deme_index][current_gen+gen] =  population[deme_index].best_training()->error;
+		Lgp::errores_x_deme_validation[deme_index][current_gen+gen] =  population[deme_index].best_validation()->error;
 	}
 
 	population[deme_index].evaluate_individuals();
@@ -335,7 +350,8 @@ void Lgp::evolve() {
 
 	while (!termination_criteria()) {
 		generation++;
-		//std::cout << "Generación #" << generation << "\n";
+
+		std::cout << "Generación #" << generation << "Generacion REAL "<< Lgp::generacion_real << "\n";
 		for_replace = MIGRATION_RATE * (float) population[0].deme_size;
 		//for_replace = 3;
 		//std::cout << "for replace " << for_replace << "\n";
@@ -347,7 +363,7 @@ void Lgp::evolve() {
 		int chunks = num_demes / (NUM_PROCESSORS);
 		#pragma omp parallel for schedule(static, chunks)
 		for (int i = 0; i < num_demes; i++) {
-			deme_evolve(i);
+			deme_evolve(i, Lgp::generacion_real);
 
 			//int index = 0;
 /*			for (std::vector<Individual>::iterator it = population[i].list_ind->begin(); it != population[i].list_ind->end(); ++it) {
@@ -355,6 +371,9 @@ void Lgp::evolve() {
 				index++;
 			}*/
 		}
+		std::cout<< "Generacion Real "<< Lgp::generacion_real << std::endl;
+
+		Lgp::generacion_real += GEN_TO_MIGRATE;//3//6//9//12
 
 		if (random_flip_coin(P_MIGRATION)) {
 			Lgp::cant_migracion[omp_get_thread_num()]+=1;
@@ -495,7 +514,7 @@ void Lgp::evolve() {
 			std::cout << "Generación #" << generation << "\n";
 			std::cout << "Veces recreadas: " << re_creation_times;
 			std::cout << "\n==================================================\n";
-			best_individual_in_training(true);
+			best_individual_in_training(); //true);
 			re_creation_times = 0;
 		}
 	}

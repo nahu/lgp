@@ -266,6 +266,20 @@ int main(int argc, char ** argv) {
 					posicion<<i;
 					trafo_counters_to_file(posicion.str(), folder, primero, &best_init, &best_global[global_pos-1]);
 				}
+
+				#pragma omp section
+				{
+					std::stringstream posicion;
+					posicion<<i;
+					errors_generation_to_file(posicion.str(), folder, TRAINING);
+				}
+
+				#pragma omp section
+				{
+					std::stringstream posicion;
+					posicion<<i;
+					errors_generation_to_file(posicion.str(), folder, VALIDATION);
+				}
 			}
 
 			//Borrar cosas antes de la siguiente iteracion

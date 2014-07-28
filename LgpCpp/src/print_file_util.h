@@ -354,4 +354,35 @@ void global_counters_to_file(std::string folder, int global_cant_crossover, int 
 	f.close();
 }
 
+void errors_generation_to_file(std::string trafo, std::string folder, int tipo){
+	std::ofstream f;
+	std::string file="";
+	std::vector<double *> lista;
+
+	if (tipo==TRAINING){
+		file = folder + FILE_NAME_ERRORES_X_DEME_TRAINING;
+		lista = Lgp::errores_x_deme_training;
+	}else{
+		file = folder + FILE_NAME_ERRORES_X_DEME_VALIDATION;
+		lista = Lgp::errores_x_deme_validation;
+	}
+
+
+	f.open(file.c_str(), std::ofstream::app);
+	f.precision(6);
+	f << folder << "\n";
+	f << "Generacion;";
+	for (int i=0; i<DEMES; i++)
+		f<< "DEME" << i << ";";
+	f<< "\n";
+	for (int i = 0; i < Lgp::generacion_real; i++){//Por cada generacion
+		f<< i << ";" ;
+		for (int j = 0; j < lista.size(); j++){//Por cada deme
+			f<< lista[j][i] << ";"; //Impresion de los errores del deme i...
+		}
+		f<< "\n";
+	}
+	f.close();
+}
+
 

@@ -9,17 +9,13 @@
 
 #define FILE_ANALISIS "./analisis-link/analisis.csv"
 #define FILE_PROBABILIDADES "./analisis-link/probabilidades.csv"
-
-//#define FILE_NAME "./data/Datos8-exp4-2.txt"
-
-#define FILE_NAME "./data/Datos60.txt"
-//#define FILE_NAME_DR "./data/datos_reducidos.txt"
-
+#define FILE_NAME_ERRORES_X_DEME_TRAINING "errores_x_deme_training.csv"
+#define FILE_NAME_ERRORES_X_DEME_VALIDATION "errores_x_deme_validation.csv"
+#define FILE_NAME "./data/prueba_incremento/datos_2900_factor_03.csv"
 //Solo faltan 5 transformadores. [1,7,15,23,39]
-//std::string CONFIG = "10101011";
 std::string CONFIG = "1011111011111110111111101111111111111110";
 
-#define CONFIG_POSITION 7 //el transformador dentro de la configuración a encontrar
+#define CONFIG_POSITION 1 //el transformador dentro de la configuración a encontrar
 
 
 //#define N 8
@@ -34,17 +30,17 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 #define DELTA 5
 
 
-#define CNT_PRUEBAS 3
+#define CNT_PRUEBAS 2
 
 /*condiciones de parada */
 #define ERROR_TO_STOP 45
-#define NUM_MAX_GENERATION 1500
+#define NUM_MAX_GENERATION 1000
 
 
 /******************************* DATOS **********************************/
-#define LINES 248
-#define TRAINING_LINES 200
-#define VALIDATION_LINES 48
+#define LINES 2974
+#define TRAINING_LINES 2500
+#define VALIDATION_LINES 474
 #define TRAINING 0
 #define VALIDATION 1
 
@@ -74,8 +70,8 @@ la convención para asegurar que el programa tenga una salida es que la
 
 
 #define NUM_MIN_INSTRUCTIONS (3 * K)
-#define NUM_MAX_INSTRUCTIONS (10 * K)
-#define NUM_INI_INSTRUCTIONS (6 * K)
+#define NUM_MAX_INSTRUCTIONS (15 * K)
+#define NUM_INI_INSTRUCTIONS (10 * K)
 #define NUM_OPERATORS 9
 
 
@@ -162,14 +158,14 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 
 
-#define NUM_GENERATIONS 10000
-#define POPULATION_SIZE 1024//262144 //18
+#define NUM_GENERATIONS 3
+#define POPULATION_SIZE 262144 //18
 #define DEMES 16
 #define FREQ_STATS 100
 #define POOL_SIZE 8//32
 #define POOL_REPRODUCTION 2 //4
 #define MIGRATION_RATE 0.01
-#define GEN_TO_MIGRATE 100 //250
+#define GEN_TO_MIGRATE 50 //250
 
 #define CANT_ESTANCAMIENTO 10
 #define ERROR_STEP 50
