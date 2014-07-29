@@ -370,15 +370,15 @@ void errors_generation_to_file(std::string trafo, std::string folder, int tipo){
 
 	f.open(file.c_str(), std::ofstream::app);
 	f.precision(6);
-	f << folder << "\n";
-	f << "Generacion;";
+//	f << folder << "\n";
+	f << "Generacion,";
 	for (int i=0; i<DEMES; i++)
-		f<< "DEME" << i << ";";
+		f<< "DEME" << i << ",";
 	f<< "\n";
 	for (int i = 0; i < Lgp::generacion_real; i++){//Por cada generacion
-		f<< i << ";" ;
+		f<< i << "," ;
 		for (int j = 0; j < lista.size(); j++){//Por cada deme
-			f<< lista[j][i] << ";"; //Impresion de los errores del deme i...
+			f<< lista[j][i] << ","; //Impresion de los errores del deme i...
 		}
 		f<< "\n";
 	}

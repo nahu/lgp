@@ -160,7 +160,7 @@ void Lgp::deme_evolve(int deme_index, int current_gen) {
 
 	int diver = 0;
 	for (int gen = 0; gen < GEN_TO_MIGRATE; gen++) {
-		std::cout << ".....GEN to migrate" << gen << "\n";
+		//std::cout << ".....GEN to migrate" << gen << "\n";
 		selected_indices = population[deme_index].indices_selection(POOL_SIZE * TOURNAMENTS);
 
 		int limite = 0;
@@ -351,7 +351,7 @@ void Lgp::evolve() {
 	while (!termination_criteria()) {
 		generation++;
 
-		std::cout << "Generación #" << generation << "Generacion REAL "<< Lgp::generacion_real << "\n";
+		//std::cout << "Generación #" << generation << "Generacion REAL "<< Lgp::generacion_real << "\n";
 		for_replace = MIGRATION_RATE * (float) population[0].deme_size;
 		//for_replace = 3;
 		//std::cout << "for replace " << for_replace << "\n";
@@ -371,9 +371,8 @@ void Lgp::evolve() {
 				index++;
 			}*/
 		}
-		std::cout<< "Generacion Real "<< Lgp::generacion_real << std::endl;
 
-		Lgp::generacion_real += GEN_TO_MIGRATE;//3//6//9//12
+		Lgp::generacion_real += GEN_TO_MIGRATE;
 
 		if (random_flip_coin(P_MIGRATION)) {
 			Lgp::cant_migracion[omp_get_thread_num()]+=1;
@@ -514,7 +513,7 @@ void Lgp::evolve() {
 			std::cout << "Generación #" << generation << "\n";
 			std::cout << "Veces recreadas: " << re_creation_times;
 			std::cout << "\n==================================================\n";
-			best_individual_in_training(); //true);
+			best_individual_in_training(true);
 			re_creation_times = 0;
 		}
 	}

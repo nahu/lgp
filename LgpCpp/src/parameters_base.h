@@ -11,7 +11,7 @@
 #define FILE_PROBABILIDADES "./analisis-link/probabilidades.csv"
 #define FILE_NAME_ERRORES_X_DEME_TRAINING "errores_x_deme_training.csv"
 #define FILE_NAME_ERRORES_X_DEME_VALIDATION "errores_x_deme_validation.csv"
-#define FILE_NAME "./data/prueba_incremento/datos_2900_factor_03.csv"
+#define FILE_NAME "./data/prueba_incremento/datos_2974_factor_03.csv"
 //Solo faltan 5 transformadores. [1,7,15,23,39]
 std::string CONFIG = "1011111011111110111111101111111111111110";
 
@@ -34,7 +34,7 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 
 /*condiciones de parada */
 #define ERROR_TO_STOP 45
-#define NUM_MAX_GENERATION 1000
+#define NUM_MAX_GENERATION 1500
 
 
 /******************************* DATOS **********************************/
@@ -70,8 +70,8 @@ la convención para asegurar que el programa tenga una salida es que la
 
 
 #define NUM_MIN_INSTRUCTIONS (3 * K)
-#define NUM_MAX_INSTRUCTIONS (15 * K)
-#define NUM_INI_INSTRUCTIONS (10 * K)
+#define NUM_MAX_INSTRUCTIONS (10 * K)
+#define NUM_INI_INSTRUCTIONS (6 * K)
 #define NUM_OPERATORS 9
 
 
@@ -165,7 +165,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define POOL_SIZE 8//32
 #define POOL_REPRODUCTION 2 //4
 #define MIGRATION_RATE 0.01
-#define GEN_TO_MIGRATE 50 //250
+#define GEN_TO_MIGRATE 100 //250
 
 #define CANT_ESTANCAMIENTO 10
 #define ERROR_STEP 50
