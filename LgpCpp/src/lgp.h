@@ -81,7 +81,9 @@ Individual* Lgp::best_individual_in_training(bool verbose) {
 
 	//todo: paralelizar
 	int chunks = num_demes / (NUM_PROCESSORS);
+	#ifdef PARALLELIZED
 	#pragma omp parallel for schedule(static, chunks)
+	#endif
 	for (int i = 0; i < num_demes; i++) {
 		deme_best[i] = population[i].best_training();
 	}
@@ -129,7 +131,8 @@ Individual** Lgp::best_individuals_of_demes(int tipo) {
 
 inline bool Lgp::termination_criteria() {
 
-	if ((best_error < ERROR_TO_STOP) || (generation > NUM_MAX_GENERATION)) {
+	//if ((best_error < ERROR_TO_STOP) || (generation > NUM_MAX_GENERATION)) {
+	if (generation > NUM_MAX_GENERATION) {
 		return true;
 	} else {
 		return false;
@@ -149,6 +152,7 @@ int get_win_pos(Participant * indices, int ini, int end) {
 
 //se podría llevar a deme
 void Lgp::deme_evolve(int deme_index, int current_gen) {
+	//std::cout << "deme evolve " << std::endl;
 	Participant * selected_indices;
 	//Individual ** to_tournament[2];
 	Individual * winners[TOURNAMENTS];
@@ -336,7 +340,7 @@ void Lgp::deme_evolve(int deme_index, int current_gen) {
 
 
 void Lgp::evolve() {
-	//std::cout<<"evolve\n";
+	std::cout<<"evolve\n";
 	//Inicializa los contadores de operadores.
 	//Todo: guardar el fitnes del el fitnes del mejor en la primera generación 	y del mejor en la última generación
 	int for_replace;
@@ -351,7 +355,7 @@ void Lgp::evolve() {
 	while (!termination_criteria()) {
 		generation++;
 
-		//std::cout << "Generación #" << generation << "Generacion REAL "<< Lgp::generacion_real << "\n";
+		std::cout << "Generación #" << generation << "Generacion REAL "<< Lgp::generacion_real << "\n";
 		for_replace = MIGRATION_RATE * (float) population[0].deme_size;
 		//for_replace = 3;
 		//std::cout << "for replace " << for_replace << "\n";
@@ -359,9 +363,10 @@ void Lgp::evolve() {
 		best_individual_in_training();
 		best_init = best_error;
 
-		//todo paralelizar
+		#ifdef PARALLELIZED
 		int chunks = num_demes / (NUM_PROCESSORS);
 		#pragma omp parallel for schedule(static, chunks)
+		#endif
 		for (int i = 0; i < num_demes; i++) {
 			deme_evolve(i, Lgp::generacion_real);
 
@@ -375,7 +380,9 @@ void Lgp::evolve() {
 		Lgp::generacion_real += GEN_TO_MIGRATE;
 
 		if (random_flip_coin(P_MIGRATION)) {
-			Lgp::cant_migracion[omp_get_thread_num()]+=1;
+			#ifdef USING_OMP
+			Lgp::cant_migracion[omp_get_thread_num()]+=1
+			#endif
 			ini = population[num_demes - 1].list_ind->end() - for_replace;
 			end = population[num_demes - 1].list_ind->end();
 			it = population[0].list_ind->begin();
@@ -407,7 +414,10 @@ void Lgp::evolve() {
 
 		for (int i = 1; i < num_demes; i++) {
 			if (random_flip_coin (P_MIGRATION)) {
+				#ifdef USING_OMP
 				Lgp::cant_migracion[omp_get_thread_num()]+=1;
+				#endif
+
 				ini = population[i - 1].list_ind->end() - for_replace;
 				end = population[i - 1].list_ind->end();
 				it = population[i].list_ind->begin();

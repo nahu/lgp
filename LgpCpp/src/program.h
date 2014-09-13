@@ -290,7 +290,7 @@ void Program::init_registers() {
 			}
 		}
 		//R_CONST[t][K] = sum / K;
-		R_CONST[t][K] = DATA[t][N];
+		//R_CONST[t][K] = DATA[t][N];
 	}
 #else
 	double ** r_const_rd = get_matrix_from_file(FILE_NAME_DR, false);
@@ -642,7 +642,7 @@ double Program::execute_program(double * input) {
 			break;
 		}
 		case DIV: {
-			if (operand_2 == 0) {
+			if (operand_2 == 0 || operand_2 == 0.0) {
 				r_all[instructions[i].dest] = operand_1 + C_UNDEF;
 			} else {
 				r_all[instructions[i].dest] = operand_1 / operand_2;
@@ -654,7 +654,7 @@ double Program::execute_program(double * input) {
 			break;
 		}
 		case LOG10: {
-			if (operand_2 == 0) {
+			if (operand_2 == 0 || operand_2 == 0.0) {
 				r_all[instructions[i].dest] = operand_1 + C_UNDEF;
 			} else {
 				r_all[instructions[i].dest] = log10(std::abs(operand_2));

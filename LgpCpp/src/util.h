@@ -5,6 +5,7 @@
  *      Author: Vanessa Cañete, Nahuel Hernández
  */
 #include <iomanip>
+
 float _random() {
 	//This will generate a number from 0.0 to 1.0, inclusive.
 	float r = (float) rand() / (float) RAND_MAX;
@@ -14,6 +15,10 @@ float _random() {
 
 float _random(float x) {
 	//This will generate a number from 0.0 to some arbitrary float, x
+	if (x == 0.0) {
+		return 0.0;
+	}
+
 	float r2 = (float) rand() / ((float) RAND_MAX / x);
 
 	return r2;
@@ -25,7 +30,13 @@ float randfloat(float LO, float HI) {
 		return HI;
 	}
 
-	float r3 = LO + (float) rand() / ((float) RAND_MAX / (HI - LO));
+	float fraction = (HI - LO);
+	float r3 = LO;
+
+	if (fraction != 0) {
+		r3 = LO + (float) rand() / ((float) RAND_MAX / fraction);
+	}
+
 	return r3;
 }
 
@@ -34,8 +45,12 @@ int randint(int LO, int HI) {
 		return HI;
 	}
 
+	int fraction = (HI - LO + 1);
+	int r = LO;
 
-	int r = LO + (rand() % (HI - LO + 1) );
+	if (fraction != 0) {
+		r = LO + (rand() % fraction);
+	}
 
 	return r;
 }

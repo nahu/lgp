@@ -321,7 +321,13 @@ void Individual::eval_fitness() {
 	error = error_prom_quad;
 	sigma = sqrt(error_dev);
 
-	fitness = 1 / ((W_OB1 * error) + (W_OB2 * sigma));
+	double weight = ((W_OB1 * error) + (W_OB2 * sigma));
+	if (weight != 0) {
+		fitness = 1 / weight;
+	} else {
+		fitness = HUGE_NUMBER;
+	}
+ 	
 
 
 	if (!finite(fitness)) {
@@ -533,7 +539,10 @@ void Individual::check_max_min_instructions(std::string name,
 
 
 void Individual::crossover(Individual * &genome1, Individual * &genome2) { //, Individual * &child1, Individual * &child2
+	#ifdef USING_OMP
 	Individual::cant_crossover[omp_get_thread_num()]+=1;
+	#endif
+
 	genome1->check_max_min_instructions("genome1", "Antes Crossover");
 	genome2->check_max_min_instructions("genome2", "Antes Crossover");
 	Individual * mom, *sister;
@@ -606,7 +615,14 @@ void Individual::crossover(Individual * &genome1, Individual * &genome2) { //, I
 		}
 
 		if (min_segment_size_dad <= 0) {
-			min_segment_size_dad = 1;
+			//std::cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Crossover" << "\n";
+			//std::cout << "+++ min " << min_segment_size_dad << "\n";
+			//std::cout << "+++ max " << max_segment_size_dad << "\n";
+			if (max_segment_size_dad > 1) {
+				min_segment_size_dad = 1;
+			} else {
+				min_segment_size_dad = 0;
+			}
 		}
 
 		dad_segment_size = randint(min_segment_size_dad, max_segment_size_dad);
@@ -625,6 +641,7 @@ void Individual::crossover(Individual * &genome1, Individual * &genome2) { //, I
 		//std::cout << "cp dad : " << cuts_points_dad[0] << " , " << cuts_points_dad[1] << "\n";
 
 		//Se intercambian los bloques en los nuevos creados
+
 		sister->exchange(mom, dad, cuts_points_mom, cuts_points_dad);
 		brother->exchange(dad, mom, cuts_points_dad, cuts_points_mom);
 
@@ -652,8 +669,10 @@ void Individual::crossover(Individual * &genome1, Individual * &genome2) { //, I
 void Individual::macro_mutation() {
 	//Agrega o quita instrucciones  -- Alg. 6.1 -- p_ins > p_del //
 
+	#ifdef USING_OMP
 	//Contador de macromutaciones
 	Individual::cant_macro[omp_get_thread_num()]+=1;
+	#endif
 
 	bool insertion = random_flip_coin(P_INS);
 	int mutation_point = randint(0, program->height - 2);
@@ -661,8 +680,10 @@ void Individual::macro_mutation() {
 	//std::cout << "mutation_point: " << mutation_point << "\n";
 	if (program->height < NUM_MAX_INSTRUCTIONS && (insertion || program->height == NUM_MIN_INSTRUCTIONS)) {
 
+		#ifdef USING_OMP
 		//Contador de inserciones.
 		Individual::cant_macro_ins[omp_get_thread_num()]+=1;
+		#endif
 
 		// Si no supera la max. cant. de instrucciones y es insercion o tiene el numero minimo de instrucciones
 		Instruction new_instruction;
@@ -701,8 +722,10 @@ void Individual::macro_mutation() {
 	} else if (program->height > NUM_MIN_INSTRUCTIONS && (!insertion || program->height == NUM_MAX_INSTRUCTIONS)) {
 		//Si es mayor a la  min. cant. de instrucciones y  no es insercion o tiene el numero maximo de instrucciones
 
+		#ifdef USING_OMP
 		//Contador de eliminaciones.
 		Individual::cant_macro_del[omp_get_thread_num()]+=1;
+		#endif
 
 		Instruction * new_list = new Instruction[program->height - 1];
 		if (mutation_point != 0) {
@@ -830,7 +853,9 @@ void Individual::micro_mutation() {
 	 * p_constmut = probabilidad de mutar una constante efectiva
 	 * Individual::cant_micro++ Contador de inserciones
 	 */
+	#ifdef USING_OMP
 	Individual::cant_micro[omp_get_thread_num()]+=1;
+	#endif
 
 	program->get_effective_instructions();
 	int * indices = program->get_effective_instructions_with_indices();
@@ -842,8 +867,7 @@ void Individual::micro_mutation() {
 	int op = -1;
 	int ins_with_constant_index, register_mutation_index;
 	std::vector<int> constants_indices;
-
-
+	
 	if (type == CONSTANTES) {
 		constants_indices = program->get_effective_constant_indices();
 
@@ -852,17 +876,22 @@ void Individual::micro_mutation() {
 					randint(0, constants_indices.size() - 1));
 			register_mutation_index =
 					program->list_inst[ins_with_constant_index].op2;
+			#ifdef USING_OMP
 			Individual::cant_micro_const[omp_get_thread_num()]+=1;
+			#endif
 		} else {
+			
 			//no hay instrucciones efectivas con registros constantes variables
 			type = select_micro_mutacion_type(_random());
 			//si vuelve a salir constante, se elige mutación de registro o operaciones con igual probabilidad
 			if (type == CONSTANTES) {
 				type = random_flip_coin(0.5) ? REGISTROS : OPERACIONES;
 			}
+			
+			//type = OPERACIONES;
 		}
 	}
-
+	
 	if (type == REGISTROS) {
 		if (program->n_eff == 1) {
 			//una sola instrucción efectiva, no se puede cambiar r[0]
@@ -878,14 +907,14 @@ void Individual::micro_mutation() {
 				//operación unaria, cambiar el segundo operando o el destino
 				pos_to_replace = random_flip_coin(0.5) ? DEST : OPERAND_2;
 		}
-
+		
 		if (pos_to_replace == DEST) { //destino
 			//si no es el último índice, la última
 
 			if ((index + 1) < program->n_eff) {
-				/*Se obtiene la lista de registros efectivos en esa posición, para reemplazar
-				 * en la instrucción y permitir que siga siendo efectiva                 *
-				 */
+				//Se obtiene la lista de registros efectivos en esa posición, para reemplazar
+				//  en la instrucción y permitir que siga siendo efectiva                 *
+				 
 				std::vector<int> reg_eff;
 				int to_mutate = program->get_effective_registers(indices[index + 1], reg_eff);
 				if (!reg_eff.empty()) {
@@ -904,6 +933,7 @@ void Individual::micro_mutation() {
 				}
 				op = get_random_register(pos_to_replace, &program->list_inst[mutation_point]);
 			}
+		
 		} else { //para los casos de operandos op1 y op2
 			op = get_random_register(pos_to_replace, &program->list_inst[mutation_point]);
 		}
@@ -919,9 +949,12 @@ void Individual::micro_mutation() {
 			program->list_inst[mutation_point].op2 = op;
 			break;
 		}
+		#ifdef USING_OMP
 		Individual::cant_micro_reg[omp_get_thread_num()]+=1;
+		#endif
 	}
-
+	
+	
 	int diff_op = 0;
 
 	if (type == OPERACIONES) {
@@ -932,8 +965,12 @@ void Individual::micro_mutation() {
 		}
 
 		program->list_inst[mutation_point].oper = diff_op;
+		#ifdef USING_OMP
 		Individual::cant_micro_ope[omp_get_thread_num()]+=1;
+		#endif
+
 	}
+
 	set_altered();
 }
 

@@ -26,7 +26,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <string.h>
+#if PARALLELIZED
 #include <omp.h>
+#endif
 #include <time.h>
 
 #include "parameters.h"
@@ -132,7 +134,7 @@ int main(int argc, char ** argv) {
 	if (argc == 1) {
 		std::cout << "No se ha recibido ningun parametro para el programa." << std::endl;
 	} else {
-		std::cout <<"Se recibio argumento" << std::string (argv[1]) << std::endl;
+		std::cout << "Se recibio argumento" << std::string (argv[1]) << std::endl;
 		folder_orig = std::string (argv[1]);
 	}
 
@@ -143,7 +145,7 @@ int main(int argc, char ** argv) {
 	for (int p = 0; p < CNT_PRUEBAS; p++) {
 		primero = 1;
 
-		init_global_counters();
+		//init_global_counters();
 
 		std::stringstream st; st << p;
 		std::string folder = folder_orig + st.str() + "/";
@@ -171,6 +173,7 @@ int main(int argc, char ** argv) {
 		}
 
 		//Se escriben los parametros
+		std::cout << "antes del parameters" << std::endl;	
 		parameters_to_file(folder + "/parametros.txt");
 		/*
 		int index = 0;
@@ -183,10 +186,13 @@ int main(int argc, char ** argv) {
 		*/
 		posiciones[0] = CONFIG_POSITION; //sacar para procesar todos
 		//Aca se agregan los mejores individuos por cada trafo
+		std::cout << "antes del best_global" << std::endl;	
 		Individual * best_global = new Individual[posiciones.size()];
 		int global_pos = 0;
+		std::cout << "antes del list_global_errors" << std::endl;
 		std::vector<double *> list_global_errors(posiciones.size());
 
+		std::cout << "antes del for" << std::endl;	
 		//****************************** PROCESAMIENTO DE TRANSFORMADORES *****************************
 		for (std::vector<int>::iterator it = posiciones.begin(); it != posiciones.end(); ++it) {
 
@@ -202,10 +208,15 @@ int main(int argc, char ** argv) {
 
 			Lgp * lgp = new Lgp(i, DEMES, POPULATION_SIZE, NUM_GENERATIONS);
 
+			std::cout << "antes del best" << std::endl;	
 			Individual  best_init = *(lgp->best_individual_in_training());
+			std::cout << "despues del best " << std::endl;
+
+			std::cout << "antes del evolve " << std::endl;
 
 			lgp->evolve();
 
+			std::cout << "despues del evolve " << std::endl;
 			update_counters();
 
 			best_individuals_training = lgp->best_individuals_of_demes(TRAINING);
@@ -226,16 +237,19 @@ int main(int argc, char ** argv) {
 			write_duration(st.str() +  "Duración REAL: ", duration);
 
 			//****************************** Obtener listas de errores *****************************
+			#if PARALLELIZED
 			int chunks = DEMES / (NUM_PROCESSORS);
 			#pragma omp parallel for schedule(static, chunks)
+			#endif
 			for (int j = 0; j < DEMES; j++) {
 				list_training_errors[j] = best_individuals_training[j]->eval_individual(TRAINING);
 				list_validation_errors[j] = best_individuals_training[j]->eval_individual(VALIDATION);
 			}
 
 			//****************************** ESCRIBIR EN ARCHIVOS *****************************
-
+			#if PARALLELIZED
 			#pragma omp parallel sections // starts a new team
+			#endif
 			{
 				{
 					std::stringstream f_errors_training;
@@ -244,7 +258,9 @@ int main(int argc, char ** argv) {
 					errors_to_file(f_errors_training.str(), list_training_errors, TRAINING_LINES + 3);
 				}
 
+				#if PARALLELIZED
 				#pragma omp section
+				#endif
 				{
 					std::stringstream f_errors_val;
 					f_errors_val.str("");
@@ -252,7 +268,9 @@ int main(int argc, char ** argv) {
 					errors_to_file(f_errors_val.str(), list_validation_errors, VALIDATION_LINES + 3);
 				}
 
+				#if PARALLELIZED
 				#pragma omp section
+				#endif	
 				{
 					std::stringstream f_programs;
 					f_programs.str("");
@@ -260,21 +278,27 @@ int main(int argc, char ** argv) {
 					programs_to_file(f_programs.str(), best_individuals_training);
 				}
 
+				#if PARALLELIZED
 				#pragma omp section
+				#endif
 				{
 					std::stringstream posicion;
 					posicion<<i;
 					trafo_counters_to_file(posicion.str(), folder, primero, &best_init, &best_global[global_pos-1]);
 				}
 
+				#if PARALLELIZED
 				#pragma omp section
+				#endif
 				{
 					std::stringstream posicion;
 					posicion<<i;
 					errors_generation_to_file(posicion.str(), folder, TRAINING);
 				}
 
+				#if PARALLELIZED
 				#pragma omp section
+				#endif
 				{
 					std::stringstream posicion;
 					posicion<<i;
@@ -302,6 +326,7 @@ int main(int argc, char ** argv) {
 		std::cout << "------- antes de escribir resultados -----------";
 		save_global_results(best_global, posiciones.size(), folder);
 		save_global_results_validation(best_global, posiciones.size(), folder);
+
 
 		global_counters_to_file( folder, global_cant_crossover, global_cant_migracion, global_cant_macro,
 				global_cant_macro_del, global_cant_macro_ins, global_cant_micro, global_cant_micro_reg,
