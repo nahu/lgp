@@ -85,3 +85,5 @@ LgpCpp/analisis-link
 LgpCpp/data/viejos/
 MathModel/data/results/
 
+#sublime project
+*.sublime*
