@@ -12,6 +12,7 @@ entre otras
 
 import random
 import Parameters
+import math
 
 def sum_errors(list_of_errors):
     error_total = 0
@@ -271,6 +272,52 @@ def create_data_file(data_file, n, t, exp):
         f.write(row)
     
 
+def wagner(x):
+    if x < 1:
+        valorActual = math.sin(1) + math.sqrt(1)
+    elif x <= 20:
+        valorActual = math.sin(x) + math.sqrt(x)
+    elif x <= 40:
+        valorActual = math.e - math.sqrt(x - 20) 
+    else:
+        valorActual = math.sin(x) - math.sqrt(x)
+
+    return valorActual
+
+
+def create_data_file_lgp(data_file, n, t):
+    
+    f = open(data_file, "w")
+    
+    #escribir las dos primeras lineas
+    f.write(str(n + 1))
+    f.write("\n")
+    f.write(str(t))
+    f.write("\n")
+    
+
+    #los datos
+
+
+    for x in range(1, t + 1):
+        row = ""
+
+        row += str(x);
+        row += ";"
+
+        valorActual = wagner(x)
+        row += str(valorActual);
+        row += ";"
+
+        for i in range(1, n):
+            valorActual = wagner(x - i)
+            row += str(valorActual);
+            if i != (n - 1):
+                row += ";"
+
+        row += "\n"
+        f.write(row)
+
 
 if __name__ == "__main__":
     """
@@ -288,12 +335,11 @@ if __name__ == "__main__":
     random_flip_coin(0.4)
     """ 
     
-    data_file = "../data/Datos8-exp2-2.txt"
-    n = 8
-    t = 4000
-    exp = 2
-    config = "10101011"
+    data_file = "../data/wagner80.csv"
+    n = 7
+    t = 80
     
-    create_data_file(data_file, n, t, exp)
+    #create_data_file(data_file, n, t, exp)
+    create_data_file_lgp(data_file, n, t)
     
     
