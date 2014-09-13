@@ -32,7 +32,7 @@ public class SCICTD {
     public int k;
     public int n;
     public String configuracion = "";
-    public String FILE_NAME = "Datos8-exp4.txt"; //cambiar
+    public String FILE_NAME = "Datos8-exp2-2.txt"; //cambiar
     
     public SCICTD(int cantidadTrafos, int numeroDeObjetivos) throws FileNotFoundException, IOException, ClassNotFoundException {
         numberOfTrafos_ = cantidadTrafos;
@@ -416,15 +416,16 @@ public class SCICTD {
         try {
             int n;
             n = 8; //cambiar
-            SCICTD programa = new SCICTD(8, 2);
+            SCICTD programa = new SCICTD(n, 2);
             /*programa.configuracion =   "1 0 1 1 1 1 1 0 1 1 " 
         							 + "1 1 1 1 1 0 1 1 1 1 " 
     							 	 + "1 1 1 0 1 1 1 1 1 1 " 
 							 		 + "1 1 1 1 1 1 1 1 1 0 ";*/
            
-            //programa.configuracion =   "1 0 0 1 1 1 1 0 ";
+            programa.configuracion =   "1 0 0 1 1 1 1 0 ";
             
-            programa.configuracion =   "1 0 1 0 1 0 1 1 "; //cambiar
+            //programa.configuracion =   "1 1 1 0 1 1 0 1 1 1 1 1 0 1 1 0 1 1 1 0 0 1 1 1 1 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 "; //cambiar
+            
             
             System.out.println("Ejecutando programa. Configuracion: " + programa.configuracion);
             programa.evaluate(programa.getConfiguracion(programa.configuracion, n));
