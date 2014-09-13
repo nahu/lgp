@@ -238,6 +238,56 @@ void save_global_results(Individual * best_global , int cant_trafos, std::string
 	save_to_analisis_file(folder, errprom, max, faltante.str());
 }
 
+void save_global_results_validation(Individual * best_global , int cant_trafos, std::string folder) {
+	/*
+	 * Se debe calcular el error promedio y el error maximo.
+	 * Se debe escribir lo siguiente (agregando al archivo)
+	 *
+	 */
+	std::ofstream f;
+	std::string file = folder + "APROXIMACIONES_VALIDACION.csv";
+	f.open(file.c_str());
+	f.precision(6);
+	std::string row;
+	std::vector<double *> error_list(cant_trafos);
+	for (int j = 0; j < cant_trafos ; j++) { //Por cada transformador
+		error_list[j] = best_global[j].eval_individual_result(VALIDATION);
+	}
+	double sum_prom_errores = 0;
+	int size = VALIDATION_LINES + 3;
+	f<<folder<<"\n";
+	for (int t = 0; t < size; t++) {
+		if (t == size - 3) {
+			f<<"Error total;";
+		} else if (t == size - 2) {
+			f<<"Error promedio;";
+		} else if (t == size - 1) {
+			f<<"Posicion;";
+		} else {
+			f<<t<<";";
+		}
+
+		for (unsigned i = 0; i < error_list.size(); i++) {
+			f << "" << std::fixed << error_list.at(i)[t] << ";";
+		}
+		f << "\n";
+	}
+	double max = error_list.at(0)[size-2];
+	std::stringstream faltante;
+
+	for (unsigned i = 0; i < error_list.size(); i++) {
+		faltante<<error_list.at(i)[size-1]<<"#";
+		sum_prom_errores += error_list.at(i)[size-2]; //el promedio de errores de la instancia de prueba
+		if (error_list.at(i)[size-2] > max){ //El maximo error de los transformadores
+			max = error_list.at(i)[size-2];
+		}
+	}
+	double errprom = sum_prom_errores/(cant_trafos);
+	f << "Error promedio total: ;" << errprom<< ";\n";
+	f << "Error maximo: ;" << max << ";\n";
+	f.close();
+}
+
 int get_counters_sum(std::vector<int> vect){
 	int total = 0;
 	for (int i = 0; i < vect.size(); i++)

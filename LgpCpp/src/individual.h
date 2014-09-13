@@ -17,6 +17,7 @@ public:
 	//Evaluacion de fitness
 	void eval_fitness();
 	double * eval_individual(int tipo);
+	double * eval_individual_result(int tipo);
 	void set_altered();
 	double evaluate(int obj) const;
 
@@ -1010,6 +1011,102 @@ double * Individual::eval_individual(int tipo) {
 			error_quad[index] = pow((result - Program::DATA[t][config_position]), 2.0);
 			if (!finite(error_quad[index])) {
 				error_quad[index] = HUGE_NUMBER;
+			}
+		}
+
+		//****************************** CALCULAR SUMA & PROM *****************************
+		error_a_quad += error_quad[index];
+		index++;
+	}
+
+	if (!finite(error_a_quad)) {
+		error_a_quad = HUGE_NUMBER;
+	} else if (error_a_quad == 0.0) {
+		std::cout << "Error Cero\n";
+		std::cout << "error_a_quad " << error_a_quad << "\n";
+		std::cout << "///Errores\n";
+		for (int t = ini; t < end; t++) {
+			std::cout << "error_quad[" << t << "] " << error_quad[t] << "\n";
+		}
+		error_a_quad = 0.000000001;
+	}
+
+	error_prom_quad = error_a_quad / size;
+
+	error_quad[size] = error_a_quad;
+	error_quad[size + 1] = error_prom_quad;
+	error_quad[size + 2] = config_position;
+	/*
+	if (tipo == VALIDATION) {
+		std::cout << "Approximations en Validacion\n";
+		for (int h = 0; h < size; h++) {
+			std::cout << "[" << (h + TRAINING_LINES) << "] " << approximation[h] << "\n";
+		}
+		std::cout << "-------------------------------\n";
+	}
+	*/
+	delete [] approximation;
+
+	return error_quad;
+}
+
+double * Individual::eval_individual_result(int tipo) {
+	program->get_effective_instructions();
+
+	double result;
+	double * int_t;
+	double error_a_quad, error_prom_quad;
+	int size;
+	int ini, end;
+	int approximation_offset;
+
+	if (tipo == TRAINING) {
+		size = TRAINING_LINES;
+		ini = 0;
+		end = TRAINING_LINES;
+	} else if(tipo == VALIDATION) {
+		size = VALIDATION_LINES;
+		ini = TRAINING_LINES;
+		end = LINES;
+	}
+
+	double * error_quad = new double[size+3];
+	double * approximation = new double[size];
+
+	int index = 0;
+	error_a_quad = 0.0;
+	for (int t = ini; t < end; t++) {
+		int_t = Program::R_CONST[t];
+
+#ifdef Q
+		int offset = Q;
+#else
+		int offset = K;
+#endif
+
+		for (int in_index = 1; in_index < DELTA; ++in_index) { // La posición offset está ocupada por el promedio de las mediciones
+			if ((t - in_index) >= 0) {
+				int_t[offset + in_index] = Program::DATA[t - in_index][N];
+			} else {
+				int_t[offset + in_index] = Program::DATA[t][N];
+			}
+		}
+
+		result = program->execute_program(int_t);
+
+/*		if(tipo == VALIDATION) {
+			approximation[t - TRAINING_LINES] = result;
+		}*/
+
+		if (!finite(result)) {
+/*			if(tipo == VALIDATION) {
+				approximation[t - TRAINING_LINES] = C_UNDEF;
+			}*/
+		 	error_quad[index] = C_UNDEF;
+		} else {
+			error_quad[index] = result;
+			if (!finite(error_quad[index])) {
+				error_quad[index] = C_UNDEF;
 			}
 		}
 

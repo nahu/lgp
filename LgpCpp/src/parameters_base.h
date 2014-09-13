@@ -34,7 +34,7 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 
 /*condiciones de parada */
 #define ERROR_TO_STOP 45
-#define NUM_MAX_GENERATION 1500
+#define NUM_MAX_GENERATION 1000
 
 
 /******************************* DATOS **********************************/
@@ -159,7 +159,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 
 #define NUM_GENERATIONS 3
-#define POPULATION_SIZE 262144 //18
+#define POPULATION_SIZE 416000//262144 //18
 #define DEMES 16
 #define FREQ_STATS 100
 #define POOL_SIZE 8//32
