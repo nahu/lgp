@@ -381,7 +381,7 @@ void Lgp::evolve() {
 
 		if (random_flip_coin(P_MIGRATION)) {
 			#ifdef USING_OMP
-			Lgp::cant_migracion[omp_get_thread_num()]+=1
+			Lgp::cant_migracion[omp_get_thread_num()]+=1;
 			#endif
 			ini = population[num_demes - 1].list_ind->end() - for_replace;
 			end = population[num_demes - 1].list_ind->end();

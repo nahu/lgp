@@ -26,12 +26,13 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <string.h>
-#if PARALLELIZED
-#include <omp.h>
-#endif
+
 #include <time.h>
 
 #include "parameters.h"
+#ifdef PARALLELIZED
+#include <omp.h>
+#endif
 #include "util.h"
 #include "program.h"
 #include "individual.h"
@@ -139,7 +140,9 @@ int main(int argc, char ** argv) {
 	}
 
 	srand((unsigned)time(0));
-	//omp_set_num_threads(NUM_PROCESSORS);
+	#ifdef USING_OMP
+	omp_set_num_threads(NUM_PROCESSORS);
+	#endif
 	Program::init_registers();
 	int primero;
 	for (int p = 0; p < CNT_PRUEBAS; p++) {
@@ -237,7 +240,7 @@ int main(int argc, char ** argv) {
 			write_duration(st.str() +  "Duración REAL: ", duration);
 
 			//****************************** Obtener listas de errores *****************************
-			#if PARALLELIZED
+			#ifdef PARALLELIZED
 			int chunks = DEMES / (NUM_PROCESSORS);
 			#pragma omp parallel for schedule(static, chunks)
 			#endif
@@ -247,7 +250,7 @@ int main(int argc, char ** argv) {
 			}
 
 			//****************************** ESCRIBIR EN ARCHIVOS *****************************
-			#if PARALLELIZED
+			#ifdef PARALLELIZED
 			#pragma omp parallel sections // starts a new team
 			#endif
 			{
@@ -258,7 +261,7 @@ int main(int argc, char ** argv) {
 					errors_to_file(f_errors_training.str(), list_training_errors, TRAINING_LINES + 3);
 				}
 
-				#if PARALLELIZED
+				#ifdef PARALLELIZED
 				#pragma omp section
 				#endif
 				{
@@ -268,7 +271,7 @@ int main(int argc, char ** argv) {
 					errors_to_file(f_errors_val.str(), list_validation_errors, VALIDATION_LINES + 3);
 				}
 
-				#if PARALLELIZED
+				#ifdef PARALLELIZED
 				#pragma omp section
 				#endif	
 				{
@@ -278,7 +281,7 @@ int main(int argc, char ** argv) {
 					programs_to_file(f_programs.str(), best_individuals_training);
 				}
 
-				#if PARALLELIZED
+				#ifdef PARALLELIZED
 				#pragma omp section
 				#endif
 				{
@@ -287,7 +290,7 @@ int main(int argc, char ** argv) {
 					trafo_counters_to_file(posicion.str(), folder, primero, &best_init, &best_global[global_pos-1]);
 				}
 
-				#if PARALLELIZED
+				#ifdef PARALLELIZED
 				#pragma omp section
 				#endif
 				{
@@ -296,7 +299,7 @@ int main(int argc, char ** argv) {
 					errors_generation_to_file(posicion.str(), folder, TRAINING);
 				}
 
-				#if PARALLELIZED
+				#ifdef PARALLELIZED
 				#pragma omp section
 				#endif
 				{

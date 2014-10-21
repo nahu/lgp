@@ -11,7 +11,7 @@
 #define FILE_PROBABILIDADES "./analisis-link/probabilidades.csv"
 #define FILE_NAME_ERRORES_X_DEME_TRAINING "errores_x_deme_training.csv"
 #define FILE_NAME_ERRORES_X_DEME_VALIDATION "errores_x_deme_validation.csv"
-#define FILE_NAME "./data/prueba_incremento/datos_2974_factor_03.csv"
+#define FILE_NAME "./data/Datos60.txt"
 //Solo faltan 5 transformadores. [1,7,15,23,39]
 std::string CONFIG = "1011111011111110111111101111111111111110";
 
@@ -30,7 +30,7 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 #define DELTA 5
 
 
-#define CNT_PRUEBAS 2
+#define CNT_PRUEBAS 5
 
 /*condiciones de parada */
 #define ERROR_TO_STOP 45
@@ -38,9 +38,9 @@ std::string CONFIG = "1011111011111110111111101111111111111110";
 
 
 /******************************* DATOS **********************************/
-#define LINES 2974
-#define TRAINING_LINES 2500
-#define VALIDATION_LINES 474
+#define LINES 248
+#define TRAINING_LINES 200
+#define VALIDATION_LINES 48
 #define TRAINING 0
 #define VALIDATION 1
 
@@ -159,7 +159,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 
 
 #define NUM_GENERATIONS 3
-#define POPULATION_SIZE 416000//262144 //18
+#define POPULATION_SIZE 262144
 #define DEMES 16
 #define FREQ_STATS 100
 #define POOL_SIZE 8//32
