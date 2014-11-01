@@ -14,11 +14,15 @@ void parameters_to_file(std::string f_param) {
 	f << "config\t" << CONFIG << "\n";
 	f << "n\t" << N << "\n";
 	f << "k\t" << K << "\n";
+	f << "nt\t" << NT << "\n";
+	f << "delta\t" << DELTA << "\n";
 
 	f << "\n----Muestra de datos\n";
 	f << "lines\t" << LINES << "\n";
 	f << "training_lines\t" << TRAINING_LINES << "\n";
 	f << "validation_lines\t" << VALIDATION_LINES << "\n";
+	f << "FILE_NAME\t" << FILE_NAME << "\n";
+
 
 	f << "\n----Nuevos\n";
 	f << "CONFIG_POSITION\t" << CONFIG_POSITION << "\n";
@@ -46,6 +50,8 @@ void parameters_to_file(std::string f_param) {
 	f << "p_reg_op1_const\t" << P_REG_OP1_CONST << "\n";
 	f << "p_reg_op2_const\t" << P_REG_OP2_CONST << "\n";
 	f << "p_const_in\t" << P_CONST_IN << "\n";
+	f << "P_REG_CONST_DELTA\t" << P_REG_CONST_DELTA << "\n";
+
 
 	f << "\n----Crossover\n";
 	f << "p_crossover\t" << P_CROSSOVER << "\n";

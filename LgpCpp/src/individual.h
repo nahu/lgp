@@ -256,6 +256,7 @@ void Individual::eval_fitness() {
 		int offset = K;
 #endif
 
+		/*
 		for (int index = 1; index < DELTA; ++index) { // La posición offset está ocupada por el promedio de las mediciones
 			if ((t - index) >= 0) {
 				int_t[offset + index] = Program::DATA[t - index][N];
@@ -263,7 +264,7 @@ void Individual::eval_fitness() {
 				int_t[offset + index] = Program::DATA[t][N];
 			}
 		}
-
+		 */
 
 		result = program->execute_program(int_t);
 
@@ -301,9 +302,9 @@ void Individual::eval_fitness() {
 		std::cout << "Error Cero\n";
 		std::cout << "error_a_quad " << error_a_quad << "\n";
 		std::cout << "///Errores\n";
-		for (int t = 0; t < TRAINING_LINES; t++) {
+		/*for (int t = 0; t < TRAINING_LINES; t++) {
 			std::cout << "error_quad[" << t << "] " << error_quad[t] << "\n";
-		}
+		}*/
 		error_prom_quad = 0.000000001;
 	}
 

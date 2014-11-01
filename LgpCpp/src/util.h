@@ -79,6 +79,7 @@ void imprimir_matriz(const char * file_name, double ** matriz, int n, int m) {
 			printf("%.6f \t", matriz[current_sample][current_trafo]);
 		}
 		printf("\n");
+		printf("--\n");
 	}
 	printf("\n");
 }

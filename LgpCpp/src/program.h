@@ -271,7 +271,10 @@ void Program::init_registers() {
 
 	R_CONST = new double*[LINES];
 
-#if !defined FILE_NAME_DR
+#if defined FILE_NAME_DR
+	double ** r_const_rd = get_matrix_from_file(FILE_NAME_DR, true);
+	imprimir_matriz("r_const_rd", r_const_rd, LINES, NT);
+#endif
 
 	//double sum = 0.0;
 
@@ -281,6 +284,7 @@ void Program::init_registers() {
 
 	for (int t = 0; t < LINES; t++) {
 		//sum = 0.0;
+
 		for (int i = 0, j = 0; i < N; i++) {
 			//std::cout << "t: " << t << " i: " <<  i <<"\n";
 			if (CONFIG[i] == '1') {
@@ -289,35 +293,39 @@ void Program::init_registers() {
 				j++;
 			}
 		}
+#if defined FILE_NAME_DR
+		int last = 0;
+		for(int d=0; d<DELTA; d++){
+
+			if((t-d)==0) {
+				last = d;
+				R_CONST[t][K + d] = r_const_rd[t - d][NT];
+			} else 	if((t-d)>0){
+				R_CONST[t][K + d] = r_const_rd[t-d][NT];
+			} else {
+				R_CONST[t][K + d] = r_const_rd[t - last][NT];
+			}
+		}
+#else
+		for(int d=0; d<DELTA; d++){
+			if((t-d)==0) {
+				last = d;
+				R_CONST[t][K + d] = r_const_rd[t - d][N];
+			} else 	if((t-d)>0){
+				R_CONST[t][K + d] = r_const_rd[t-d][N];
+			} else {
+				R_CONST[t][K + d] = r_const_rd[t - last][N];
+			}
+		}
+#endif
 		//R_CONST[t][K] = sum / K;
 		//R_CONST[t][K] = DATA[t][N];
 	}
-#else
-	double ** r_const_rd = get_matrix_from_file(FILE_NAME_DR, false);
 
-	//double sum = 0.0;
+	imprimir_matriz("r const", R_CONST, LINES,  K + DELTA);
+	std::cout << " K + DELTA: " <<  K + DELTA << "\n";
 
-	for (int t = 0; t < LINES; t++) {
-		R_CONST[t] = new double[Q + DELTA];
-	}
 
-	for (int t = 0; t < LINES; t++) {
-
-		for (int i = 0; i < (Q + DELTA); i++) {
-			R_CONST[t][i] = r_const_rd[t][i];
-		}
-		/*sum = 0.0;
-		for (int i = 0; i < N; i++) {
-			if (CONFIG[i] == '1') {
-				sum += DATA[t][i];
-			}
-		}*/
-		//R_CONST[t][Q] = sum / Q;
-		R_CONST[t][Q] = DATA[t][N];
-	}
-
-#endif
-	//imprimir_matriz(R_CONST, LINES, K);
 }
 
 

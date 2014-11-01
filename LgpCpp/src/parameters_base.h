@@ -11,18 +11,21 @@
 #define FILE_PROBABILIDADES "./analisis-link/probabilidades.csv"
 #define FILE_NAME_ERRORES_X_DEME_TRAINING "errores_x_deme_training.csv"
 #define FILE_NAME_ERRORES_X_DEME_VALIDATION "errores_x_deme_validation.csv"
-#define FILE_NAME "./data/Datos60.txt"
+#define FILE_NAME_DR "./data/Datos60.txt"
+#define FILE_NAME "./data/datos_reducidos.csv"
 //Solo faltan 5 transformadores. [1,7,15,23,39]
-std::string CONFIG = "1011111011111110111111101111111111111110";
+std::string CONFIG = "01111111111";
 
 #define CONFIG_POSITION 1 //el transformador dentro de la configuración a encontrar
 
 
 //#define N 8
-#define N 40
+#define N 11
+
+#define NT 40
 
 //#define K 5
-#define K 35
+#define K 10
 
 
 #define N_K (N - K)
