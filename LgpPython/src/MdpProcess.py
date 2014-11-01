@@ -19,6 +19,7 @@ import matplotlib.ticker as ticker
 import mdp
 import csv
 import os
+import copy
 
 class MdpProcess():
     def __init__(self):
@@ -28,11 +29,16 @@ class MdpProcess():
         filename = "../data/Datos60.txt"
         col, fil, data = get_matrix_from_file(filename)
         data = zip(*data)
+        
+        ceros = {}
         for i in range(Parameters.n -1 , 0, -1):
             if Parameters.config[i] == '0':
                 print ">> Borrando..." + str(i)
+                ceros[i] = copy.copy(data[i])
                 del data[i]
                 
+        print ceros
+        
         data = zip(*data)
         
         data_t = data[:200]
@@ -52,8 +58,9 @@ class MdpProcess():
         print ">> VALIDACAION" 
         print ">> Se tienen " + str(x_v.shape[1]) + " variables, " + str(x_v.shape[0]) + " observaciones"
         
-        out_dim = 10
+        out_dim = 5
         in_dim = 35
+
         pcanode1 = mdp.nodes.PCANode(input_dim=in_dim, output_dim=out_dim, dtype='float64', reduce=True)
         #pcanode1 = mdp.nodes.PCANode()
         #pcanode1.reduce = Tr
@@ -97,14 +104,15 @@ class MdpProcess():
         lol_v = y_v.tolist()
         lol = lol_t + lol_v
 
-        file = "../data/datos_reducidos.txt"
+        file = "../data/datos_reducidos.csv"
         f = open(file, "w")
         
-        f.write(str(out_dim) + '\n')
+        f.write(str(out_dim + 1) + '\n')
         f.write(str(fil) + '\n')
         
         for t in range(len(lol)):#248
             row = ""
+            row = str(ceros[Parameters.index_to_predict][t]) + ";"
             for i in range(len(lol[t])):#10
                 row += (str(lol[t][i]) + ";")
             row += "\n"
@@ -192,7 +200,7 @@ class MdpProcess():
 
 if __name__ == "__main__":
     m = MdpProcess()
-    #m.process()
+    m.process()
     """
     salida = []
     for i in range (40) :

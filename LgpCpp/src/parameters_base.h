@@ -241,5 +241,5 @@ utilizando multiprocessing de Python
 #define NUM_PROCESSORS 4 //NÚMERO DE PROCESOS WORKERS
 #define WHILE_BLOCK 1000 //para evitar whiles infinitos, por si pudiera llegarse a dar
 
-//#define PARALLELIZED 0 //se usa paralelización
-//#define USING_OMP 0 //para guardar en el vector de cantidades cuando es se usa paralelización
+#define PARALLELIZED 0 //se usa paralelización
+#define USING_OMP 0 //para guardar en el vector de cantidades cuando es se usa paralelización

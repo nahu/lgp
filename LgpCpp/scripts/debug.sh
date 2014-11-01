@@ -6,8 +6,8 @@ OUT_DIR=./resultados/$1/
 ORIGINAL=../src/parameters_base.h
 
 
-mkdir .$OUT_DIR
-printf "Creado .$OUT_DIR\n"
+#mkdir .$OUT_DIR
+#printf "Creado .$OUT_DIR\n"
 
 for (( i=0; i < ${#PARAMETERS[@]}; i++ )); do
 	p=${PARAMETERS[$i]}
@@ -16,12 +16,13 @@ for (( i=0; i < ${#PARAMETERS[@]}; i++ )); do
 	ln -s $p $FILE
 	
 	cd ..
-	mkdir $OUT_DIR$i
-	printf "Usando - $p - salida en $OUT_DIR$i/salida-$i.txt\n"
+	#mkdir $OUT_DIR$i
+	#printf "Usando - $p - salida en $OUT_DIR$i/salida-$i.txt\n"
 	printf "Compilando...\n"
-	g++ ./src/main.cpp -Wall -O3  -fopenmp -lrt -w -o ./OpenMP/LgpCpp
-	printf "Ejecutando...\n"
-	./OpenMP/LgpCpp $OUT_DIR$i/ > $OUT_DIR$i/salida-$i.txt
+	g++ ./src/main.cpp -Wall -O3 -g3 -p -fmessage-length=0  -MMD -MP -fopenmp -lrt -w -o ./debug/lgp
+
+	#printf "Depurando...\n"
+	#gdb ./OpenMP/LgpCpp $OUT_DIR$i/ > $OUT_DIR$i/salida-$i.txt
 	cd ./scripts
 done
 
