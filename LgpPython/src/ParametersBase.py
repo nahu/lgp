@@ -46,7 +46,7 @@ def read_samples():
     return data
 
 #Solo faltan 5 transformadores. [1,7,15,23,39]
-config = "1011111011" + "1111101111" + "1110111111" + "1111111110"
+config = "1011111011111110111111101111111111111110"
 n = len(config)
 index_to_predict = 1
 
