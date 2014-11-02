@@ -290,8 +290,8 @@ void save_global_results_validation(Individual * best_global , int cant_trafos, 
 		}
 	}
 	double errprom = sum_prom_errores/(cant_trafos);
-	f << "--- ;" << errprom<< ";\n";
-	f << "---- ;" << max << ";\n";
+	f << "---;" << errprom<< ";\n";
+	f << "---;" << max << ";\n";
 	f.close();
 }
 
