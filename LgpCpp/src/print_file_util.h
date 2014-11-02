@@ -265,11 +265,11 @@ void save_global_results_validation(Individual * best_global , int cant_trafos, 
 	f<<folder<<"\n";
 	for (int t = 0; t < size; t++) {
 		if (t == size - 3) {
-			f<<"Error total;";
+			f<<"---;";
 		} else if (t == size - 2) {
-			f<<"Error promedio;";
+			f<<"---;";
 		} else if (t == size - 1) {
-			f<<"Posicion;";
+			f<<"---;";
 		} else {
 			f<<t<<";";
 		}
@@ -290,8 +290,8 @@ void save_global_results_validation(Individual * best_global , int cant_trafos, 
 		}
 	}
 	double errprom = sum_prom_errores/(cant_trafos);
-	f << "Error promedio total: ;" << errprom<< ";\n";
-	f << "Error maximo: ;" << max << ";\n";
+	f << "--- ;" << errprom<< ";\n";
+	f << "---- ;" << max << ";\n";
 	f.close();
 }
 

@@ -1026,6 +1026,7 @@ double * Individual::eval_individual(int tipo) {
 		int offset = K;
 #endif
 
+/*
 		for (int in_index = 1; in_index < DELTA; ++in_index) { // La posición offset está ocupada por el promedio de las mediciones
 			if ((t - in_index) >= 0) {
 				int_t[offset + in_index] = Program::DATA[t - in_index][N];
@@ -1033,7 +1034,7 @@ double * Individual::eval_individual(int tipo) {
 				int_t[offset + in_index] = Program::DATA[t][N];
 			}
 		}
-
+*/
 		result = program->execute_program(int_t);
 
 /*		if(tipo == VALIDATION) {
@@ -1063,9 +1064,12 @@ double * Individual::eval_individual(int tipo) {
 		std::cout << "Error Cero\n";
 		std::cout << "error_a_quad " << error_a_quad << "\n";
 		std::cout << "///Errores\n";
+		/*
 		for (int t = ini; t < end; t++) {
 			std::cout << "error_quad[" << t << "] " << error_quad[t] << "\n";
 		}
+		*/
+
 		error_a_quad = 0.000000001;
 	}
 
@@ -1122,6 +1126,7 @@ double * Individual::eval_individual_result(int tipo) {
 		int offset = K;
 #endif
 
+		/*
 		for (int in_index = 1; in_index < DELTA; ++in_index) { // La posición offset está ocupada por el promedio de las mediciones
 			if ((t - in_index) >= 0) {
 				int_t[offset + in_index] = Program::DATA[t - in_index][N];
@@ -1129,6 +1134,7 @@ double * Individual::eval_individual_result(int tipo) {
 				int_t[offset + in_index] = Program::DATA[t][N];
 			}
 		}
+		*/
 
 		result = program->execute_program(int_t);
 
@@ -1159,9 +1165,12 @@ double * Individual::eval_individual_result(int tipo) {
 		std::cout << "Error Cero\n";
 		std::cout << "error_a_quad " << error_a_quad << "\n";
 		std::cout << "///Errores\n";
+		/*
 		for (int t = ini; t < end; t++) {
 			std::cout << "error_quad[" << t << "] " << error_quad[t] << "\n";
 		}
+		*/
+		
 		error_a_quad = 0.000000001;
 	}
 
