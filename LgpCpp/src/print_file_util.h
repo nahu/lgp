@@ -51,6 +51,7 @@ void parameters_to_file(std::string f_param) {
 	f << "p_reg_op2_const\t" << P_REG_OP2_CONST << "\n";
 	f << "p_const_in\t" << P_CONST_IN << "\n";
 	f << "P_REG_CONST_DELTA\t" << P_REG_CONST_DELTA << "\n";
+	f << "P_DIVERSITY\t" << P_DIVERSITY << "\n";
 
 
 	f << "\n----Crossover\n";

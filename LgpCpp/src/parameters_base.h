@@ -16,7 +16,7 @@
 //Solo faltan 5 transformadores. [1,7,15,23,39]
 std::string CONFIG = "01111111111";
 
-#define CONFIG_POSITION 1 //el transformador dentro de la configuración a encontrar
+#define CONFIG_POSITION 0 //el transformador dentro de la configuración a encontrar
 
 
 //#define N 8
@@ -175,7 +175,7 @@ r[2*k + 1] .. r[3*k] registros de entrada constantes
 #define MIN_ERROR_STEP 1
 
 #define TOURNAMENTS 6 //número par
-#define P_DIVERSITY 0.5
+#define P_DIVERSITY 0
 
 
 /***************************************  PROBABILIDADES **************************************
